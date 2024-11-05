@@ -1,0 +1,62 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Barlow', sans-serif;
+}
+.header-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 1300px;
+    height: 65px;
+    margin: auto;
+}
+.header .brand{
+    width: 20%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+.header .brand img{
+    width: 15%;
+    margin-right: 5px;
+}
+.header .brand .logo{
+    color: #FF7200;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 1.8em;
+}
+.header .menu{
+    display: flex;
+    justify-content: end;
+    align-items: center ;
+    width: 80%;
+    background: #ebebeb;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    height: 100%;
+}
+.header .search{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-left: 15px;
+}
+.header .menu .search input{
+    width: 20%;
+    height: 30px;
+    border-radius: 10px;
+    border: 1px solid #ebebeb;
+}
+.header .menu .action{
+    display: flex;
+    justify-content: end;
+    align-items: center; 
+    width: 5%;
+}
+.header .action img{
+    width: 100%;
+}
