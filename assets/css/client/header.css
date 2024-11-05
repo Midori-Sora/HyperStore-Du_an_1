@@ -1,0 +1,267 @@
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    color: #fff;
+    font-family: Barlow, sans-serif;
+}
+header{
+    background-color: #171717;
+}
+.header-container{
+    max-width: 1300px;
+    height: 65px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header .logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    height: 100%;
+}
+header .logo img{
+    width: 15%;
+}
+header .logo h1{
+    color: #FF7200;
+    font-size: 20px;
+    margin-left: 4%;
+    letter-spacing: 5px;
+}
+.menu{
+    height: 100%;
+    position: relative;
+}
+.menu>ul{
+    display: flex;
+    line-height: 65px;
+    list-style: none;
+    height: 100%;
+}
+.menu>ul>li{
+    position: relative;
+    margin-right: 40px;
+}   
+.menu>ul>li>a{
+    width: 100%;
+    height: 100%;
+    text-decoration: none;
+    color: gainsboro;
+    font-family: Montserrat, sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    font-weight: bold;
+}
+.menu>ul>li>a::before{
+    content: "";
+    background: #6d6d6d;
+    height: 2%;
+    width: 0px;
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.menu>ul>li:hover>a::before{
+    width: 100%;
+}
+.menu>ul>li.has-child::after{
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f107";
+    color: white;
+    position: absolute;
+    top: 2px;
+    right: -20px;
+}
+.icons{
+    height: 100%;
+    position: relative;
+}
+.icons>ul{
+    display: flex;
+    height: 100%;
+    line-height: 65px;
+    list-style: none;
+}
+.icons>ul>li{
+    position: relative;
+    height: 100%;
+}
+.icons>ul>li i {
+    color: #fff;
+    padding: 0 20px;
+    z-index: 2;
+}
+.icons>ul>li::before{
+    content: "";
+    background: #6d6d6d;
+    width: 0%;
+    height: 2%;
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+}
+.icons>ul>li:hover::before{
+    transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    width: 100%;
+}
+.icons .search form{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 65px;
+}
+.icons .search input{
+    width: 350%;
+    height: 30px;
+    border: none;
+    outline: none;
+    position: absolute;
+    right: 0;
+    border-radius: 10px;
+    padding-left: 5px;
+    color: #000;
+    display: none;
+}
+.icons .search:hover input{
+    display: block;
+}
+.icons .search button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+    position: relative;
+}
+.icons .search:hover i{
+    color: #000;
+}
+#cart:hover .cart{
+    display: block;
+}
+.cart{
+    width: 280px;
+    max-height: 540px;
+    margin: auto;
+    text-align: center;
+    background-color: #fff;
+    padding: 1% 10px;
+    transition: all 0.5s;
+    z-index: 4;
+    position: absolute;
+    right: 0px;
+    border: 1px solid #b1b1b1;
+    display: none;
+}
+.producct{
+    max-height: 400px;
+    overflow-y: scroll;
+}
+.fa-caret-up{
+    position: fixed;
+    right: 80px;
+    top: 57px;
+    z-index: 7;
+}
+.cart .items{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border-bottom: 1px solid #000;
+}
+.items nav{
+    color: #000;
+    width: 120px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cart img{
+    width: 60px;
+    height: 60px;
+}
+.cart .name{
+    font-size: 20px;
+    font-family: Barlow, sans-serif;
+}
+.cart .price{
+    font-size: 15px;
+    font-family: Barlow, sans-serif;
+    color: #b1b1b1;
+    font-weight: 500;
+}sup{
+    color: #b1b1b1;
+    font-family: Barlow, sans-serif;
+}
+.cart button{
+    background-color: #FF7200;
+    padding: 7px 80px;
+    font-weight: 500;
+    font-family: Barlow, sans-serif;
+    font-size: 16px;
+}
+.price-total{
+    display: flex;
+    justify-content: space-between;
+}
+.price-total p{
+    font-family: Barlow, sans-serif;
+    color: #6d6d6d;
+    font-size: 18px;
+    font-weight: 500;
+}
+.price-total span{
+    font-family: Barlow, sans-serif;
+    color: #6d6d6d;
+    font-size: 18px;
+    font-weight: 500;
+}
+.sub-menu{
+    background-color: #000;
+    width: 200px;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+}
+.sub-menu li{
+    list-style: none;
+    margin-left: 10%;
+    position: relative;
+}
+.sub-menu>li>a{
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: rgb(184, 184, 184);
+    font-size: 14px;
+    font-family: Barlow, sans-serif;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+}
+.sub-menu>li:hover>a{
+    color: #fff;
+}
+.menu .sub-menu>li>a::before{
+    content: "";
+    background: #6d6d6d;
+    height: 2%;
+    width: 0px;
+    position: absolute;
+    bottom: 15px;
+    left: 0;
+    transition: 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.menu .sub-menu>li:hover>a::before{
+    width: 60%;
+}
+.menu>ul>li:hover>.sub-menu{
+    display: block;
+}

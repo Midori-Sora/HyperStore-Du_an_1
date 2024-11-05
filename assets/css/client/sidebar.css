@@ -1,0 +1,43 @@
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Barlow', sans-serif;
+}
+.sidebar-container{
+    border: 1px solid #ebebeb;
+    border-radius: 15px;
+    overflow: hidden;
+}
+.sidebar-container h2{
+    background: #FF7200;
+    padding: 6px 20px;
+    border-radius: 15px;
+    font-size: 17px;
+    color: #FFF;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+}
+.sidebar-container ul{
+    padding: 0 15px;
+    list-style: none;
+}
+.sidebar-container ul li{
+    padding: 8.5px 0px 8.5px 0px;
+    border-bottom: 1px solid #ebebeb;
+}
+.sidebar-container ul li i{
+    margin-right: 10px;
+    color: #000;
+}
+.sidebar-container ul li a{
+    text-decoration: none;
+    color: #363636;
+}
+.sidebar-container ul li:hover a{
+    color: #FF7200;
+}
+.sidebar-container ul li:hover{
+    color: #FF7200;
+}
