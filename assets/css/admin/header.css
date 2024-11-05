@@ -44,6 +44,7 @@
     justify-content: start;
     align-items: center;
     margin-left: 15px;
+    position: relative;
 }
 .header .menu .search input{
     width: 20%;
@@ -51,12 +52,34 @@
     border-radius: 10px;
     border: 1px solid #ebebeb;
 }
+.header .search button{
+    background: transparent;
+    border: none;
+    position: relative;
+}
+.header .search ion-icon{
+    font-size: 20px;
+    position: absolute;
+    right: 0;
+    bottom: 10px;
+
+}
 .header .menu .action{
     display: flex;
     justify-content: end;
     align-items: center; 
     width: 5%;
+    margin-right: 15px;
 }
 .header .action img{
     width: 100%;
+    border-radius: 50%;
+    border: 1px solid #ebebeb;
+}
+.header .action a:last-child{
+    margin-left: 10px;
+}
+.header .action ion-icon{
+    font-size: 20px;
+    color: #000;
 }
