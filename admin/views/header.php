@@ -25,7 +25,7 @@
                 </form>
                 <div class="action">
                     <a href="#"><img src="../../Uploads/User/nam.jpg" alt=""></a>
-                    <a href="#"><ion-icon name="cart-outline"></ion-icon></a>
+                    <!-- <a href="#"><ion-icon name="cart-outline"></ion-icon></a> -->
                 </div>
             </div>
         </div>
