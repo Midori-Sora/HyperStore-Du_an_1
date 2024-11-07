@@ -10,5 +10,8 @@
         case 'product':
             MainController::productController();
             break;
+        case 'editProduct':
+            MainController::editProductController();
+            break;
     }
 ?>

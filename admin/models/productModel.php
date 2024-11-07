@@ -7,8 +7,14 @@ class ProductModel extends MainModel
     }
     public function getProductList()
     {
-        $sql = "SELECT * FROM san_pham.*, danhmuc.ten_danh_muc FROM san_pham INNER JOIN danh_muc ON san_pham.danh_muc_id = danh_muc.danh_muc_id";
-        
+        $sql = "SELECT products.*,categories.cate_name
+                FROM products
+                INNER JOIN categories
+                ON products.cate_id = categories.cate_id";
+        $stmt = $this->SUNNY->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
     }
 }
 ?>
