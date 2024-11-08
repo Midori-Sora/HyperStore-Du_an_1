@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="././assets/css/admin/home.css">
+    <link rel="stylesheet" href="././assets/css/admin/product.css">
     <link 
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -89,7 +89,7 @@ main tbody td{
                         <tr>
                             <td><?php echo $product['product_id']; ?></td>
                             <td><?php echo $product['product_name']; ?></td>
-                            <td><img src="././Uploads/Product/Apple/i1.png" alt="" width="100"></td>
+                            <td><img src="../Uploads/Product/<?php echo $product['product_image']?>" alt="" width="100"></td>
                             <td><?php echo number_format($product['product_price']); ?></td>
                             <td><?php echo $product['product_importDate']; ?></td>
                             <td><?php echo $product['product_describe']; ?></td>

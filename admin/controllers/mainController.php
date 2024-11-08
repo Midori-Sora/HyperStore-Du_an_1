@@ -11,9 +11,9 @@ class MainController
         $products = $productModel->getProductList();
         require_once './views/product.php';
     }
-    public static function editProductController()
-    {
-        if(isset($_POST['']))
-    }
+    // public static function editProductController()
+    // {
+    //     if(isset($_POST['']))
+    // }
 }
 ?>
