@@ -23,22 +23,3 @@ header{
     border-radius: 15px;
     overflow: hidden;
 }
-main table{
-    width: 100%;
-    text-align: center;
-    border-radius: 15px;
-}
-main table thead{
-    height: 40px;
-    background: #303030;
-}
-main table tr th{
-    color: #999999;
-    font-weight: normal;
-}
-main tbody{
-    background: #0b0b31;
-}
-main tbody img{
-    width: 10%;
-}

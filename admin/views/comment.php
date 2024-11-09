@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản lý sản phẩm</title>
+    <title>Quản lý bình luận</title>
     <link rel="stylesheet" href="././assets/css/admin/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,6 +42,7 @@
     }
     .table {
         margin-top: 20px;
+        background: white;
     }
     .table thead {
         background-color: #f8f9fa;
@@ -49,38 +50,40 @@
     .table th {
         font-weight: 600;
         color: #495057;
-        vertical-align: middle;
+        padding: 15px;
     }
     .table td {
+        padding: 15px;
         vertical-align: middle;
     }
-    .product-image {
-        width: 80px;
-        height: 80px;
-        object-fit: cover;
-        border-radius: 5px;
+    .comment-content {
+        max-width: 400px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .btn-action {
-        padding: 5px 15px;
-        margin: 0 5px;
-        border-radius: 5px;
+        padding: 6px 12px;
+        margin: 0 3px;
+        border-radius: 4px;
         font-size: 14px;
+        transition: all 0.3s;
     }
     .btn-edit {
         background-color: #4CAF50;
         color: white;
-        border: none;
     }
     .btn-delete {
         background-color: #f44336;
         color: white;
-        border: none;
     }
     .btn-edit:hover {
         background-color: #45a049;
+        color: white;
     }
     .btn-delete:hover {
         background-color: #da190b;
+        color: white;
     }
     .page-title {
         color: #333;
@@ -89,20 +92,36 @@
     }
     .alert {
         margin-bottom: 20px;
+        border-radius: 8px;
     }
-    .product-status {
-        padding: 5px 10px;
-        border-radius: 15px;
-        font-size: 12px;
-        font-weight: 500;
-    }
-    .status-active {
+    .alert-success {
         background-color: #e8f5e9;
+        border-color: #c8e6c9;
         color: #2e7d32;
     }
-    .status-inactive {
+    .alert-danger {
         background-color: #ffebee;
+        border-color: #ffcdd2;
         color: #c62828;
+    }
+    .btn-add {
+        background-color: #2196F3;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+    }
+    .btn-add:hover {
+        background-color: #1976D2;
+        color: white;
+    }
+    .user-name {
+        font-weight: 500;
+        color: #1976D2;
+    }
+    .product-name {
+        font-weight: 500;
+        color: #333;
     }
 </style>
 <body>
@@ -115,16 +134,16 @@
         </div>
         <main>
             <div class="container-fluid">
-                <div class="d-flex justify-content-between align-items-center">
-                    <h2 class="page-title">Quản lý sản phẩm</h2>
-                    <a href="?action=addProduct" class="btn btn-primary">
-                        <i class="fas fa-plus"></i> Thêm sản phẩm mới
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2 class="page-title">Quản lý bình luận</h2>
+                    <a href="?action=addComment" class="btn btn-add">
+                        <i class="fas fa-plus me-2"></i>Thêm bình luận
                     </a>
                 </div>
 
                 <?php if (isset($_SESSION['error'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show">
-                        <i class="fas fa-exclamation-circle"></i>
+                        <i class="fas fa-exclamation-circle me-2"></i>
                         <?php 
                             echo $_SESSION['error'];
                             unset($_SESSION['error']);
@@ -135,7 +154,7 @@
 
                 <?php if (isset($_SESSION['success'])): ?>
                     <div class="alert alert-success alert-dismissible fade show">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle me-2"></i>
                         <?php 
                             echo $_SESSION['success'];
                             unset($_SESSION['success']);
@@ -145,50 +164,33 @@
                 <?php endif; ?>
 
                 <div class="table-responsive">
-                    <table class="table table-hover">
+                    <table class="table">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Ảnh</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Giá</th>
-                                <th>Danh mục</th>
-                                <th>Trạng thái</th>
+                                <th>Sản phẩm</th>
+                                <th>Người dùng</th>
+                                <th>Nội dung bình luận</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($products as $product) : ?>
-                                <tr>
-                                    <td><?php echo $product['pro_id']; ?></td>
-                                    <td>
-                                        <img src="../Uploads/<?php echo $product['img']?>" 
-                                             class="product-image" 
-                                             alt="<?php echo $product['pro_name']; ?>">
-                                    </td>
-                                    <td>
-                                        <div class="fw-bold"><?php echo $product['pro_name']; ?></div>
-                                        <small class="text-muted">Lượt xem: <?php echo $product['pro_view']; ?></small>
-                                    </td>
-                                    <td><?php echo number_format($product['price'], 0, ',', '.'); ?>đ</td>
-                                    <td><?php echo $product['cate_name']; ?></td>
-                                    <td>
-                                        <span class="product-status <?php echo $product['pro_status'] == 'active' ? 'status-active' : 'status-inactive'; ?>">
-                                            <?php echo $product['pro_status']; ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-action btn-edit" 
-                                           href="?action=editProduct&id=<?php echo $product['pro_id']; ?>">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a class="btn btn-action btn-delete" 
-                                           href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>"
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
+                            <?php foreach ($comments as $comment): ?>
+                            <tr>
+                                <td class="product-name"><?php echo htmlspecialchars($comment['pro_name']); ?></td>
+                                <td class="user-name"><?php echo htmlspecialchars($comment['user_name']); ?></td>
+                                <td class="comment-content"><?php echo htmlspecialchars($comment['content']); ?></td>
+                                <td>
+                                    <a href="?action=editComment&id=<?php echo $comment['com_id']; ?>" 
+                                       class="btn btn-action btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="?action=deleteComment&id=<?php echo $comment['com_id']; ?>" 
+                                       class="btn btn-action btn-delete"
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa bình luận này?')">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

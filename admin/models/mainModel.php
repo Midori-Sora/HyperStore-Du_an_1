@@ -17,7 +17,7 @@ class MainModel
         $password = "";
         try {
             $SUNNY = new PDO(
-                "mysql:host=localhost;dbname=hyperstore",
+                "mysql:host=localhost;dbname=duan1",
                 $username,
                 $password
             );

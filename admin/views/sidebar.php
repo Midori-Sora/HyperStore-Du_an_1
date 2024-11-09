@@ -3,62 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="././assets/css/admin/sidebar.css">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <title>Sidebar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <style>
-    *{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-    font-family: 'Barlow', sans-serif;
-}
-.sidebar-container ul{
-    list-style: none;
-}
-.sidebar-container ul li{
-    margin: 15px 10px;
-    height: 40px;
-    line-height: 40px;
-    border-radius: 5px;
-}
-.sidebar-container ul li a{
-    text-decoration: none;
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    color: #000;
-    margin-left: 10px;
-}
-.sidebar-container ul li ion-icon{
-    margin-right: 10px;
-    color: #000;
-    background: #ebebeb;
-    padding: 5px;
-    border-radius: 5px;
-    transition: 0.5s;
-}
-.sidebar-container ul li:hover ion-icon{
-    background-image: linear-gradient(to bottom right,#bf5600,#ff8c2d);
-    margin-right: 20px;
-}
-.sidebar-container ul li:hover{
-    background: #fff;
-    box-shadow: 0 5px 5px #c6c6c6;
-}
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .sidebar-container {
+        background: white;
+        border-radius: 10px;
+        padding: 20px 0;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-container ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .sidebar-container ul li {
+        padding: 0 15px;
+        margin: 5px 0;
+    }
+
+    .sidebar-container ul li a {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        padding: 12px 15px;
+        color: #666;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-container ul li a i {
+        font-size: 20px;
+        margin-right: 10px;
+        width: 25px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+
+    .sidebar-container ul li a span {
+        font-size: 15px;
+        font-weight: 500;
+    }
+
+    .sidebar-container ul li a:hover {
+        background: #f8f9fa;
+        color: #1976D2;
+    }
+
+    .sidebar-container ul li a:hover i {
+        color: #1976D2;
+        transform: translateX(3px);
+    }
+
+    .sidebar-container ul li.active a {
+        background: #e3f2fd;
+        color: #1976D2;
+    }
+
+    .sidebar-container ul li.active a i {
+        color: #1976D2;
+    }
+
+    .divider {
+        height: 1px;
+        background: #eee;
+        margin: 10px 15px;
+    }
 </style>
 <body>
     <div class="sidebar-container">
         <ul>
-            <li><a href="#"><ion-icon name="home-outline"></ion-icon>Bảng điều khiển</a></li>
-            <li><a href="#"><ion-icon name="library-outline"></ion-icon>Danh mục</a></li>
-            <li><a href="#"><ion-icon name="images-outline"></ion-icon>Ảnh trình chiếu</a></li>
-            <li><a href="#"><ion-icon name="phone-portrait-outline"></ion-icon>Sản phẩm</a></li>
-            <li><a href="#"><ion-icon name="person-outline"></ion-icon>Tài khoản</a></li>
-            <li><a href="#"><ion-icon name="chatbubbles-outline"></ion-icon>Bình luận</a></li>
-            <li><a href="#"><ion-icon name="cart-outline"></ion-icon>Đơn hàng</a></li>
+            <li class="active">
+                <a href="./index.php?action=home">
+                    <i class="fas fa-home"></i>
+                    <span>Bảng điều khiển</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-list"></i>
+                    <span>Danh mục</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-images"></i>
+                    <span>Ảnh trình chiếu</span>
+                </a>
+            </li>
+            <li>
+                <a href="./index.php?action=product">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>Sản phẩm</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-users"></i>
+                    <span>Tài khoản</span>
+                </a>
+            </li>
+            <li>
+                <a href="./index.php?action=comment">
+                    <i class="fas fa-comments"></i>
+                    <span>Bình luận</span>
+                </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span>Đơn hàng</span>
+                </a>
+            </li>
         </ul>
     </div>
 </body>
