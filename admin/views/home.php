@@ -3,58 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thống kê</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="././assets/css/admin/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <style>
-    *{
+    * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
     }
-    body{
+    body {
         background: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 80px;
     }
-    header{
-        margin-bottom: 50px;
+    header {
+        margin-bottom: 30px;
     }
-    .main{
+    .main {
         display: flex;
-        justify-content: space-between;
-        width: 1300px;
-        margin: auto;
+        justify-content: flex-end;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
     }
-    .main .sidebar{
-        width: 20%;
-    }
-    .main main{
-        width: 80%;
-        border-radius: 15px;
-        overflow: hidden;
+    .main main {
+        width: calc(100% - 270px);
+        margin-left: 270px;
     }
     .stats-card {
         background: white;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        transition: all 0.3s ease;
+    }
+    .stats-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .stats-card h5 {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+    }
+    .stats-card h3 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+    }
+    .stats-card p {
+        margin: 0;
+        font-size: 0.9rem;
+    }
+    .stats-card i {
+        margin-right: 5px;
     }
     .chart-container {
         background: white;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 20px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    ul{
-        margin: 0;
-        padding: 0;
+    .chart-container h4 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    table th, table td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+    }
+    table th {
+        font-weight: 600;
+        color: #666;
+        background: #f8f9fa;
+    }
+    table tr:hover {
+        background: #f8f9fa;
     }
 </style>
 <body>

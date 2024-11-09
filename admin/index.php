@@ -7,6 +7,7 @@
     require_once 'controllers/productController.php';
     require_once 'controllers/commentController.php';
     require_once 'models/mainModel.php';
+    require_once 'controllers/authController.php';
 
     $action = $_GET['action'] ?? 'home';
 

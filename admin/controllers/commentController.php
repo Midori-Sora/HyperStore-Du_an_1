@@ -33,39 +33,5 @@ class CommentController {
             exit();
         }
     }
-
-    public static function addCommentController()
-    {
-        try {
-            $commentModel = new CommentModel();
-            
-            if(isset($_POST['them'])) {
-                if(empty($_POST['user_id']) || empty($_POST['pro_id']) || empty($_POST['content'])) {
-                    throw new Exception('Vui lòng điền đầy đủ thông tin');
-                }
-                
-                $user_id = intval($_POST['user_id']);
-                $pro_id = intval($_POST['pro_id']);
-                $content = trim($_POST['content']);
-                
-                if($commentModel->addComment($user_id, $pro_id, $content)) {
-                    $_SESSION['success'] = 'Thêm bình luận thành công';
-                    header('location: index.php?action=comment');
-                    exit();
-                } else {
-                    throw new Exception('Không thể thêm bình luận');
-                }
-            }
-            
-            $users = $commentModel->getUsersList();
-            $products = $commentModel->getProductsList();
-            
-            require_once './views/add-comment.php';
-        } catch (Exception $e) {
-            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
-            header('Location: index.php?action=comment');
-            exit();
-        }
-    }
 }
 ?>

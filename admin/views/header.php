@@ -4,169 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <style>
-    .header-container {
+    .header {
         background: white;
         padding: 15px 30px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    .header-content {
-        max-width: 1400px;
-        margin: 0 auto;
+    .nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .brand-logo {
-        width: 15%;
-    }
-
-    .brand-name {
+    .nav-left h3 {
+        color: #1976D2;
         font-size: 24px;
         font-weight: 600;
-        color: #1976D2;
-        margin: 0;
     }
 
-    .header-right {
+    .nav-right {
         display: flex;
         align-items: center;
         gap: 20px;
     }
 
-    .admin-info {
+    .nav-right .user-info {
         display: flex;
         align-items: center;
         gap: 10px;
+        padding: 8px 15px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s;
     }
 
-    .admin-avatar {
-        width: 40px;
-        height: 40px;
+    .nav-right .user-info:hover {
+        background: #f5f5f5;
+    }
+
+    .user-info img {
+        width: 35px;
+        height: 35px;
         border-radius: 50%;
         object-fit: cover;
-        border: 2px solid #1976D2;
     }
 
-    .admin-name {
+    .user-info .user-name {
+        font-size: 15px;
         font-weight: 500;
         color: #333;
-        margin: 0;
-    }
-
-    .header-actions {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-    }
-
-    .notification-btn {
-        position: relative;
-        background: none;
-        border: none;
-        color: #666;
-        font-size: 20px;
-        cursor: pointer;
-        transition: color 0.3s;
-    }
-
-    .notification-badge {
-        position: absolute;
-        top: -5px;
-        right: -5px;
-        background: #f44336;
-        color: white;
-        border-radius: 50%;
-        padding: 2px 6px;
-        font-size: 12px;
-    }
-
-    .notification-btn:hover {
-        color: #1976D2;
     }
 
     .logout-btn {
-        background-color: #f5f5f5;
-        color: #666;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 5px;
         display: flex;
         align-items: center;
-        gap: 5px;
+        gap: 8px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 8px;
+        background: #f5f5f5;
+        color: #666;
+        font-size: 15px;
+        cursor: pointer;
         transition: all 0.3s;
     }
 
     .logout-btn:hover {
-        background-color: #ff4444;
+        background: #ff4444;
         color: white;
     }
 
-    .dropdown-menu {
-        min-width: 200px;
-        padding: 10px 0;
-        border: none;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-
-    .dropdown-item {
-        padding: 8px 20px;
-        color: #666;
-        transition: all 0.3s;
-    }
-
-    .dropdown-item:hover {
-        background-color: #f8f9fa;
-        color: #1976D2;
-    }
-
-    .dropdown-item i {
-        margin-right: 10px;
-        width: 20px;
+    .logout-btn i {
+        font-size: 16px;
     }
 </style>
 <body>
-    <div class="header-container">
-        <div class="header-content">
-            <div class="brand">
-                <img src="../Uploads/Logo/logo.png" alt="Logo" class="brand-logo">
-                <h1 class="brand-name">Admin Dashboard</h1>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-left">
+                <h3>Admin Dashboard</h3>
             </div>
-
-            <div class="header-right">
-                <div class="header-actions">
-                    <button class="notification-btn">
-                        <i class="fas fa-bell"></i>
-                        <span class="notification-badge">3</span>
-                    </button>
-
-                    <div class="dropdown">
-                        <button class="btn dropdown-toggle admin-info" type="button" data-bs-toggle="dropdown">
-                            <img src="../Uploads/User/nam.jpg" alt="Admin" class="admin-avatar">
-                            <span class="admin-name">Admin Name</span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-user"></i>Hồ sơ</a></li>
-                            <li><a class="dropdown-item" href="#"><i class="fas fa-cog"></i>Cài đặt</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="#"><i class="fas fa-sign-out-alt"></i>Đăng xuất</a></li>
-                        </ul>
-                    </div>
+            <div class="nav-right">
+                <div class="user-info">
+                    <img src="../Uploads/User/nam.jpg" alt="User avatar">
+                    <span class="user-name">Admin</span>
                 </div>
+                <a href="logout.php" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đăng xuất</span>
+                </a>
             </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        </nav>
+    </header>
 </body>
 </html>

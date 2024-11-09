@@ -19,6 +19,12 @@
         border-radius: 10px;
         padding: 20px 0;
         box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        position: fixed;
+        top: 100px;
+        left: 20px;
+        width: 250px;
+        height: calc(100vh - 120px);
+        overflow-y: auto;
     }
 
     .sidebar-container ul {
@@ -81,6 +87,23 @@
         height: 1px;
         background: #eee;
         margin: 10px 15px;
+    }
+
+    .sidebar-container::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb {
+        background: #ddd;
+        border-radius: 5px;
+    }
+
+    .sidebar-container::-webkit-scrollbar-thumb:hover {
+        background: #ccc;
     }
 </style>
 <body>

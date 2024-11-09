@@ -35,44 +35,30 @@ class CommentModel extends MainModel {
         }
     }
 
-    public function addComment($user_id, $pro_id, $content) 
-    {
-        try {
-            $sql = "INSERT INTO comments (user_id, pro_id, content) 
-                    VALUES (:user_id, :pro_id, :content, NOW())";
-            $stmt = $this->SUNNY->prepare($sql);
-            
-            $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
-            $stmt->bindParam(':pro_id', $pro_id, PDO::PARAM_INT);
-            $stmt->bindParam(':content', $content, PDO::PARAM_STR);
-            
-            $result = $stmt->execute();
-            
-            if (!$result) {
-                error_log("SQL Error: " . print_r($stmt->errorInfo(), true));
-            }
-            
-            return $result;
-        } catch (PDOException $e) {
-            error_log("Add comment error: " . $e->getMessage());
-            return false;
-        }
-    }
-
     public function getUsersList()
     {
-        $sql = "SELECT user_id, user_name FROM users";
-        $stmt = $this->SUNNY->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT user_id, user_name FROM users";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error getting users list: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function getProductsList()
     {
-        $sql = "SELECT pro_id, pro_name FROM products";
-        $stmt = $this->SUNNY->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT pro_id, pro_name FROM products";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            error_log("Error getting products list: " . $e->getMessage());
+            return [];
+        }
     }
 }
 ?>
