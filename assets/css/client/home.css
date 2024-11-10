@@ -19,96 +19,151 @@
 .category .banner{
     margin-left: 30px;
 }
-.category-list{
+.category-list {
     width: 1300px;
-    margin: auto;
+    margin: 50px auto;
 }
-.category-item{
+
+.category-item {
+    margin-bottom: 40px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+}
+
+.category-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 30px;
 }
-.all{
-    color: #000;
-    cursor: pointer;
-}
-.all:hover{
-    text-decoration: underline;
-}
-.category-title{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.category-title h2{
-    background: #FF7200;
-    padding: 9px 20px;
-    border-radius: 20px;
-    font-size: 16px;
+
+.category-title h2 {
+    background: linear-gradient(45deg, #FF7200, #ff9248);
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-size: 18px;
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: .01em;
+    letter-spacing: 1px;
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(255,114,0,0.2);
 }
-.product-list{
+
+.all {
+    color: #333;
+    font-weight: 500;
+    cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    position: relative;
+    gap: 8px;
+    transition: all 0.3s;
 }
-.product-box{
-    border: 1px solid #ebebeb;
-    border-radius: 15px;
-    width: 22%;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-.product-box img{
-    width: 40%;
-    margin-top: 20px;
-}
-.product-infor{
-    padding: 15px 10px;
-}
-.product-infor .product-name{
-    font-size: 1.07143em;
-    line-height: 24px;
-    color: #1c1c1c;
-    font-weight: 400;
-    margin-bottom: 10px;
-}
-.product-infor .product-price{
+
+.all:hover {
     color: #FF7200;
-    font-size: 1.07143em;
-    line-height: 1.71429em;
-    display: block;
-    font-weight: 600;
+    transform: translateX(5px);
 }
-.product-box a{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.product-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.product-box {
+    background: #fff;
+    border-radius: 15px;
+    padding: 15px;
+    transition: all 0.3s;
+    position: relative;
+    border: 1px solid #f0f0f0;
+}
+
+.product-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.product-image {
+    position: relative;
+    padding-top: 100%;
+    overflow: hidden;
+    border-radius: 12px;
+    margin-bottom: 15px;
     width: 100%;
-    height: 100%;
+}
+
+.product-image img {
     position: absolute;
-    top: 100%;
-    left: 0;
-    text-decoration: none;
-    transition: 0.5s;
+    top: 5%;
+    left: 15%;
+    width: 70%;
+    object-fit: cover;
+    transition: transform 0.5s;
 }
-.product-box:hover a{
-    top: 0;
+
+.product-box:hover .product-image img {
+    transform: scale(1.08);
 }
-.product-box:hover img, .product-box:hover .product-name, .product-box:hover .product-price{
-    opacity: 0.5;
+
+.product-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.3s;
 }
-.product-box button{
-    padding: 8px 20px;
-    background: #FF7200;
+
+.product-box:hover .product-actions {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.action-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
     border: none;
-    border-radius: 6px;
+    background: #FF7200;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-.product-box a button:hover{
-    background: #80BB35;
+
+.action-btn:hover {
+    color: white;
+    transform: scale(1.1);
+}
+
+.product-infor {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.product-name {
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.product-price {
+    color: #FF7200;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.product-rating {
+    color: #ffc107;
+    font-size: 14px;
+    margin-bottom: 15px;
 }
 .section_banner{
     width: 1300px;

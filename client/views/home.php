@@ -22,130 +22,116 @@
         </div>
     </div>
     <div class="category-list">
-
         <div class="category-item">
             <div class="category-title">
                 <h2>Asus</h2>
-                <div class="all">Xem tất cả</div>
+                <div class="all">
+                    Xem tất cả <i class="fas fa-arrow-right"></i>
+                </div>
             </div>
             <div class="product-list">
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
+                <a href="#" class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <div class="product-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
                     </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
                     <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
+                        <div class="product-name">iPhone 13</div>
                         <div class="product-price">13.990.000<span>₫</span></div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
                     </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
+                </a>
+
+                <a href="#" class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <div class="product-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
+                        <div class="product-name">iPhone 13</div>
                         <div class="product-price">13.990.000<span>₫</span></div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
                     </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
+                </a>
+
+                <a href="#" class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <div class="product-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
                     <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
+                        <div class="product-name">iPhone 13</div>
                         <div class="product-price">13.990.000<span>₫</span></div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
                     </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
+                </a>
+
+                <a href="#" class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <div class="product-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-infor">
+                        <div class="product-name">iPhone 13</div>
+                        <div class="product-price">13.990.000<span>₫</span></div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </a>
+                <!-- Repeat product-box for other products -->
             </div>
         </div>
-
-        <div class="category-item">
-            <div class="category-title">
-                <h2>Asus</h2>
-                <div class="all">Xem tất cả</div>
-            </div>
-            <div class="product-list">
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-            </div>
-        </div>
-
-        <div class="category-item">
-            <div class="category-title">
-                <h2>Asus</h2>
-                <div class="all">Xem tất cả</div>
-            </div>
-            <div class="product-list">
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-                <div class="product-box">
-                    <img src="../../Uploads/Product/Asus/a1.png" alt="">
-                    <div class="product-infor">
-                        <div class="product-name">Iphone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                    </div>
-                    <a href="#"><button>Xem chi tiết</button></a>
-                </div>
-            </div>
-        </div>
-
     </div>
     <div class="section_banner">
         <div class="item"><img src="../../Uploads/Banner/Frame 2012 (2).png" alt=""></div>
