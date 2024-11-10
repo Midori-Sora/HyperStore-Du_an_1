@@ -65,6 +65,23 @@
         padding: 12px 15px;
         border: 1px solid #dce0e4;
         margin-bottom: 20px;
+        height: auto;
+        max-height: none;
+        position: relative;
+    }
+    .form-select:focus {
+        position: relative;
+        z-index: 1000;
+        border-color: #1976D2;
+        box-shadow: 0 0 0 0.2rem rgba(25,118,210,0.1);
+    }
+    .form-select option {
+        padding: 8px;
+        background-color: white;
+        color: #2c3345;
+    }
+    .form-select option:hover {
+        background-color: #f8f9fa;
     }
     .btn-submit {
         background: #1976D2;
@@ -112,6 +129,11 @@
         border-radius: 8px;
         margin-bottom: 20px;
     }
+    .price-increase {
+        color: #666;
+        font-size: 0.9em;
+        margin-left: 5px;
+    }
 </style>
 <body>
     <header>
@@ -158,6 +180,59 @@
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">RAM</label>
+                                        <div id="ram-options">
+                                            <div class="ram-option mb-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-11">
+                                                        <select class="form-select" name="ram_type[]" required>
+                                                            <option value="">Chọn RAM</option>
+                                                            <option value="128GB">128GB (+0đ)</option>
+                                                            <option value="256GB">256GB (+200.000đ)</option>
+                                                            <option value="512GB">512GB (+500.000đ)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-ram">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="add-ram">
+                                            <i class="fas fa-plus"></i> Thêm RAM
+                                        </button>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Màu sắc</label>
+                                        <div id="color-options">
+                                            <div class="color-option mb-2">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-11">
+                                                        <select class="form-select" name="color_type[]" required>
+                                                            <option value="">Chọn màu</option>
+                                                            <option value="Vàng">Vàng (+500.000đ)</option>
+                                                            <option value="Xanh">Xanh (+0đ)</option>
+                                                            <option value="Đỏ">Đỏ (+0đ)</option>
+                                                            <option value="Trắng">Trắng (+0đ)</option>
+                                                            <option value="Hồng">Hồng (+0đ)</option>
+                                                            <option value="Đen">Đen (+0đ)</option>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-1">
+                                                        <button type="button" class="btn btn-danger btn-sm remove-color">
+                                                            <i class="fas fa-times"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="add-color">
+                                            <i class="fas fa-plus"></i> Thêm màu sắc
+                                        </button>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -224,6 +299,31 @@
             preview.style.display = 'none';
         }
     }
+
+    document.getElementById('add-ram').onclick = function() {
+        const template = document.querySelector('.ram-option').cloneNode(true);
+        template.querySelector('select[name="ram_type[]"]').value = '';
+        document.getElementById('ram-options').appendChild(template);
+    };
+
+    document.getElementById('add-color').onclick = function() {
+        const template = document.querySelector('.color-option').cloneNode(true);
+        template.querySelector('select[name="color_type[]"]').value = '';
+        document.getElementById('color-options').appendChild(template);
+    };
+
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('remove-ram')) {
+            if (document.querySelectorAll('.ram-option').length > 1) {
+                e.target.closest('.ram-option').remove();
+            }
+        }
+        if (e.target.classList.contains('remove-color')) {
+            if (document.querySelectorAll('.color-option').length > 1) {
+                e.target.closest('.color-option').remove();
+            }
+        }
+    });
     </script>
 </body>
 </html> 

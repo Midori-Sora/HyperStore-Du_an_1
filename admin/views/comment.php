@@ -112,6 +112,22 @@
         text-overflow: ellipsis;
         white-space: nowrap;
     }
+    .no-data {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 30px 0;
+    }
+    
+    .no-data i {
+        color: #ccc;
+        margin-bottom: 15px;
+    }
+    
+    .no-data p {
+        color: #666;
+        font-size: 1.1rem;
+    }
 </style>
 <body>
     <header>
@@ -139,25 +155,36 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($comments as $comment): ?>
-                            <tr>
-                                <td><?php echo $comment['com_id']; ?></td>
-                                <td><?php echo $comment['user_name']; ?></td>
-                                <td><?php echo $comment['pro_name']; ?></td>
-                                <td class="content-cell"><?php echo $comment['content']; ?></td>
-                                <td>
-                                    <a href="?action=editComment&id=<?php echo $comment['com_id']; ?>" 
-                                       class="btn-action btn-edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="?action=deleteComment&id=<?php echo $comment['com_id']; ?>" 
-                                       class="btn-action btn-delete"
-                                       onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
+                            <?php if (empty($comments)): ?>
+                                <tr>
+                                    <td colspan="5" class="text-center py-4">
+                                        <div class="no-data">
+                                            <i class="fas fa-comments text-muted mb-3" style="font-size: 3rem;"></i>
+                                            <p class="text-muted mb-0">Không có bình luận nào</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php else: ?>
+                                <?php foreach($comments as $comment): ?>
+                                <tr>
+                                    <td><?php echo $comment['com_id']; ?></td>
+                                    <td><?php echo $comment['user_name']; ?></td>
+                                    <td><?php echo $comment['pro_name']; ?></td>
+                                    <td class="content-cell"><?php echo $comment['content']; ?></td>
+                                    <td>
+                                        <a href="?action=editComment&id=<?php echo $comment['com_id']; ?>" 
+                                           class="btn-action btn-edit">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="?action=deleteComment&id=<?php echo $comment['com_id']; ?>" 
+                                           class="btn-action btn-delete"
+                                           onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

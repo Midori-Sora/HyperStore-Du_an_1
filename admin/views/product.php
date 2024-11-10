@@ -95,10 +95,15 @@
         border-radius: 8px;
     }
     .btn-action {
-        padding: 6px 12px;
-        margin: 0 3px;
-        border-radius: 6px;
-        transition: all 0.2s;
+        width: 36px;
+        height: 36px;
+        padding: 0;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        border: none;
     }
     .btn-edit {
         background: #4CAF50;
@@ -111,6 +116,10 @@
     .btn-action:hover {
         transform: translateY(-2px);
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        opacity: 0.9;
+    }
+    .btn-action i {
+        font-size: 14px;
     }
     .modal-content {
         border: none;
@@ -192,6 +201,14 @@
     .bg-danger {
         background-color: #dc3545 !important;
     }
+
+    /* Style mới cho cột thao tác */
+    .action-column {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        align-items: center;
+    }
 </style>
 <body>
     <header>
@@ -236,6 +253,8 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá</th>
+                                <th>Ram</th>
+                                <th>Màu sắc</th>
                                 <th>Danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
@@ -252,6 +271,30 @@
                                         echo number_format($product['price'], 0, ',', '.'); 
                                     ?> VNĐ
                                 </td>
+                                <td>
+                                    <?php 
+                                        $ram_options = explode(', ', $product['ram_options']);
+                                        if (!empty($ram_options[0])) {
+                                            foreach($ram_options as $option) {
+                                                echo "<div class='option-item'>$option</div>";
+                                            }
+                                        } else {
+                                            echo '<span class="text-muted">Chưa có</span>';
+                                        }
+                                    ?>
+                                </td>
+                                <td>
+                                    <?php 
+                                        $color_options = explode(', ', $product['color_options']);
+                                        if (!empty($color_options[0])) {
+                                            foreach($color_options as $option) {
+                                                echo "<div class='option-item'>$option</div>";
+                                            }
+                                        } else {
+                                            echo '<span class="text-muted">Chưa có</span>';
+                                        }
+                                    ?>
+                                </td>
                                 <td><?php echo $product['cate_name']; ?></td>
                                 <td>
                                     <?php 
@@ -261,14 +304,19 @@
                                     ?>
                                 </td>
                                 <td>
-                                    <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" class="btn-action btn-edit">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
-                                       class="btn-action btn-delete" 
-                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
-                                        <i class="fas fa-trash"></i>
-                                    </a>
+                                    <div class="action-column">
+                                        <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
+                                           class="btn-action btn-edit" 
+                                           title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
+                                           class="btn-action btn-delete" 
+                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
+                                           title="Xóa">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach; ?>

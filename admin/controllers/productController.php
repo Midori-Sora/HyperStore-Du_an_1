@@ -25,9 +25,18 @@ class ProductController {
             $cate_id = $_POST['cate_id'];
             $img = $_POST['img'];
             
+            // Xử lý dữ liệu RAM và Color
+            $ram_data = [
+                'types' => isset($_POST['ram_type']) ? $_POST['ram_type'] : []
+            ];
+            
+            $color_data = [
+                'types' => isset($_POST['color_type']) ? $_POST['color_type'] : []
+            ];
+            
             $target = PATH_ROOT . '/Uploads/Product/' . $img;
             if(file_exists($target)) {
-                if($productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id)) {
+                if($productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_data, $color_data)) {
                     $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
@@ -87,9 +96,18 @@ class ProductController {
                 $cate_id = $_POST['cate_id'];
                 $img = $_POST['img'];
                 
+                // Xử lý dữ liệu RAM và Color
+                $ram_data = [
+                    'types' => isset($_POST['ram_type']) ? $_POST['ram_type'] : []
+                ];
+                
+                $color_data = [
+                    'types' => isset($_POST['color_type']) ? $_POST['color_type'] : []
+                ];
+                
                 $target = PATH_ROOT . '/Uploads/Product/' . $img;
                 if(file_exists($target)) {
-                    if($productModel->addProduct($name, $img, $price, $description, $status, $cate_id)) {
+                    if($productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $ram_data, $color_data)) {
                         $_SESSION['success'] = 'Thêm sản phẩm thành công';
                         header('location: index.php?action=product');
                         exit();
@@ -100,7 +118,6 @@ class ProductController {
                     $_SESSION['error'] = 'Ảnh không tồn tại trong thư mục Uploads/Product';
                 }
             }
-            
             require_once './views/add-product.php';
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
