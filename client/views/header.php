@@ -8,17 +8,22 @@
     <link 
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        .header-container a {
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="header-container">
-            <div class="logo">
+            <a href="home.php" class="logo">
                 <img src="../../Uploads/Logo/logo.png" alt="">
                 <h1>
                     Hyper <br>
                     Store
                 </h1>
-            </div>
+            </a>
             <div class="menu">
                 <ul>
                     <li><a href="#">Trang chủ</a></li>

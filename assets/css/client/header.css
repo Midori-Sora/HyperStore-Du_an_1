@@ -16,6 +16,9 @@ header{
     justify-content: space-between;
     align-items: center;
 }
+.header-container a {
+    text-decoration: none;
+}
 header .logo{
     display: flex;
     justify-content: center;
@@ -31,6 +34,10 @@ header .logo h1{
     font-size: 20px;
     margin-left: 4%;
     letter-spacing: 5px;
+    text-decoration: none;
+}
+.logo{
+    text-decoration: none;
 }
 .menu{
     height: 100%;

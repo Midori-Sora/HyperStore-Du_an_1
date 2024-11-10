@@ -336,6 +336,68 @@ ALTER TABLE `products`
 --
 ALTER TABLE `thumbnails`
   ADD CONSTRAINT `thumbnails_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+
+--
+-- Cấu trúc bảng cho bảng `product_ram`
+--
+
+CREATE TABLE `product_ram` (
+  `ram_id` int(11) NOT NULL,
+  `ram_size` varchar(20) NOT NULL,
+  `pro_id` int(11) NOT NULL,
+  `price_increase` int(11) DEFAULT 0,
+  `ram_status` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Chỉ mục cho bảng `product_ram`
+--
+ALTER TABLE `product_ram`
+  ADD PRIMARY KEY (`ram_id`),
+  ADD KEY `pro_id` (`pro_id`);
+
+--
+-- AUTO_INCREMENT cho bảng `product_ram`
+--
+ALTER TABLE `product_ram`
+  MODIFY `ram_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Các ràng buộc cho bảng `product_ram`
+--
+ALTER TABLE `product_ram`
+  ADD CONSTRAINT `product_ram_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+
+--
+-- Cấu trúc bảng cho bảng `product_color`
+--
+
+CREATE TABLE `product_color` (
+  `color_id` int(11) NOT NULL,
+  `color_name` varchar(50) NOT NULL,
+  `pro_id` int(11) NOT NULL,
+  `price_increase` int(11) DEFAULT 0,
+  `color_status` tinyint(1) DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Chỉ mục cho bảng `product_color`
+--
+ALTER TABLE `product_color`
+  ADD PRIMARY KEY (`color_id`),
+  ADD KEY `pro_id` (`pro_id`);
+
+--
+-- AUTO_INCREMENT cho bảng `product_color`
+--
+ALTER TABLE `product_color`
+  MODIFY `color_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Các ràng buộc cho bảng `product_color`
+--
+ALTER TABLE `product_color`
+  ADD CONSTRAINT `product_color_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

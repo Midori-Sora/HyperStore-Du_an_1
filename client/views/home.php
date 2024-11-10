@@ -17,7 +17,7 @@
         <div class="sidebar">
             <?php include 'sidebar.php' ?>
         </div>
-        <div class="banner">
+        <div class="slideshowimg">
             <?php include 'slideshow.php' ?>
         </div>
     </div>
@@ -30,9 +30,34 @@
                 </div>
             </div>
             <div class="product-list">
+                <a href="product-detail.php" class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
+                        <div class="product-actions">
+                            <button class="action-btn">
+                                <i class="fas fa-heart"></i>
+                            </button>
+                            <button class="action-btn">
+                                <i class="fas fa-shopping-cart"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="product-infor">
+                        <div class="product-name">iPhone 11</div>
+                        <div class="product-price">13.990.000<span>₫</span></div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+                </a>
+
                 <a href="#" class="product-box">
                     <div class="product-image">
-                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <img src="../../Uploads/Product/iphone-13.png" alt="">
                         <div class="product-actions">
                             <button class="action-btn">
                                 <i class="fas fa-heart"></i>
@@ -57,7 +82,7 @@
 
                 <a href="#" class="product-box">
                     <div class="product-image">
-                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <img src="../../Uploads/Product/iphone-12-xanhnhat.png" alt="">
                         <div class="product-actions">
                             <button class="action-btn">
                                 <i class="fas fa-heart"></i>
@@ -68,7 +93,7 @@
                         </div>
                     </div>
                     <div class="product-infor">
-                        <div class="product-name">iPhone 13</div>
+                        <div class="product-name">iPhone 12</div>
                         <div class="product-price">13.990.000<span>₫</span></div>
                         <div class="product-rating">
                             <i class="fas fa-star"></i>
@@ -82,32 +107,7 @@
 
                 <a href="#" class="product-box">
                     <div class="product-image">
-                        <img src="../../Uploads/Product/a1.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn">
-                                <i class="fas fa-heart"></i>
-                            </button>
-                            <button class="action-btn">
-                                <i class="fas fa-shopping-cart"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <div class="product-name">iPhone 13</div>
-                        <div class="product-price">13.990.000<span>₫</span></div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                        </div>
-                    </div>
-                </a>
-
-                <a href="#" class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/a1.png" alt="">
+                        <img src="../../Uploads/Product/iphone-14-vangkim.png" alt="">
                         <div class="product-actions">
                             <button class="action-btn">
                                 <i class="fas fa-heart"></i>
