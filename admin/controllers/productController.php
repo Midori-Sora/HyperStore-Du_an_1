@@ -27,17 +27,17 @@ class ProductController {
             // Xử lý upload ảnh
             if(!empty($_FILES['img']['name'])) {
                 $imagePath = time() . '_' . $_FILES['img']['name'];
-                $target = PATH_ROOT . '/Uploads/' . $imagePath;
+                $target = PATH_ROOT . '/Uploads/Product/' . $imagePath;
                 
                 if ($product['img']) {
-                    $oldImagePath = PATH_ROOT . '/Uploads/' . $product['img'];
+                    $oldImagePath = PATH_ROOT . '/Uploads/Product/' . $product['img'];
                     if(file_exists($oldImagePath)) {
                         unlink($oldImagePath);
                     }
                 }
                 
-                if (!file_exists(PATH_ROOT . '/Uploads/')) {
-                    mkdir(PATH_ROOT . '/Uploads/', 0777, true);
+                if (!file_exists(PATH_ROOT . '/Uploads/Product/')) {
+                    mkdir(PATH_ROOT . '/Uploads/Product/', 0777, true);
                 }
                 
                 if(move_uploaded_file($_FILES['img']['tmp_name'], $target)) {
@@ -79,7 +79,7 @@ class ProductController {
 
             // Xóa ảnh cũ nếu tồn tại
             if ($product['img']) {
-                $imagePath = PATH_ROOT . '/Uploads/' . $product['img'];
+                $imagePath = PATH_ROOT . '/Uploads/Product/' . $product['img'];
                 if (file_exists($imagePath)) {
                     unlink($imagePath);
                 }
@@ -116,9 +116,9 @@ class ProductController {
                 // Xử lý upload ảnh
                 if(!empty($_FILES['img']['name'])) {
                     $imagePath = time() . '_' . $_FILES['img']['name'];
-                    $target = PATH_ROOT . '/Uploads/' . $imagePath;
+                    $target = PATH_ROOT . '/Uploads/Product/' . $imagePath;
                     
-                    if (!file_exists(PATH_ROOT . '/Uploads/')) {
+                    if (!file_exists(PATH_ROOT . '/Uploads/Product/')) {
                         mkdir(PATH_ROOT . '/Uploads/', 0777, true);
                     }
                     

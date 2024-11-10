@@ -96,7 +96,7 @@
                     <img src="../Uploads/User/nam.jpg" alt="User avatar">
                     <span class="user-name">Admin</span>
                 </div>
-                <a href="logout.php" class="logout-btn">
+                <a href="#" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Đăng xuất</span>
                 </a>
