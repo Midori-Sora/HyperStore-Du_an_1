@@ -91,14 +91,13 @@ INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`)
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `order_code` varchar(20) NOT NULL,
-  `status` tinyint(1) DEFAULT 1,
+  `status` tinyint(1) DEFAULT 1 COMMENT '1: Chờ xác nhận, 2: Đang xử lý, 3: Đang giao, 4: Đã giao, 5: Đã hủy',
   `order_date` datetime DEFAULT current_timestamp(),
   `pay_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `price` int(11) NOT NULL,
-  `total` int(11) DEFAULT NULL,
-  `deal` int(11) DEFAULT 0
+  `total` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -115,9 +114,9 @@ CREATE TABLE `payments` (
   `phone_number` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
   `import_date` datetime DEFAULT current_timestamp(),
-  `status` tinyint(1) DEFAULT 1,
+  `status` tinyint(1) DEFAULT 1 COMMENT '1: Chờ thanh toán, 2: Đã thanh toán',
   `total` int(11) DEFAULT NULL,
-  `pay_method` tinyint(1) DEFAULT 1
+  `pay_method` tinyint(1) DEFAULT 1 COMMENT '1: Thanh toán online, 2: Thanh toán khi nhận hàng'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -129,7 +128,7 @@ CREATE TABLE `payments` (
 CREATE TABLE `products` (
   `pro_id` int(11) NOT NULL,
   `pro_name` varchar(50) NOT NULL,
-  `price` int(11) NOT NULL,
+  `price` varchar(50) NOT NULL,
   `img` varchar(255) NOT NULL,
   `import_date` date DEFAULT NULL,
   `description` text DEFAULT NULL,
@@ -404,35 +403,40 @@ ALTER TABLE `product_color`
   ADD CONSTRAINT `product_color_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
 
 --
--- Cấu trúc bảng cho bảng `order_status`
+-- Cấu trúc bảng cho bảng `product_deals`
 --
 
-CREATE TABLE `order_status` (
-  `status_id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
-  `status_name` varchar(50) NOT NULL,
-  `status_date` datetime DEFAULT current_timestamp(),
-  `note` text DEFAULT NULL
+CREATE TABLE `product_deals` (
+  `deal_id` int(11) NOT NULL,
+  `pro_id` int(11) NOT NULL,
+  `discount_amount` int(11) NOT NULL,
+  `discount_type` tinyint(1) DEFAULT 1 COMMENT '1: Giảm theo %, 2: Giảm theo số tiền',
+  `start_date` datetime NOT NULL,
+  `end_date` datetime NOT NULL,
+  `deal_status` tinyint(1) DEFAULT 1 COMMENT '1: Đang áp dụng, 0: Không áp dụng',
+  `description` text DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Chỉ mục cho bảng `order_status`
+-- Chỉ mục cho bảng `product_deals`
 --
-ALTER TABLE `order_status`
-  ADD PRIMARY KEY (`status_id`),
-  ADD KEY `order_id` (`order_id`);
+ALTER TABLE `product_deals`
+  ADD PRIMARY KEY (`deal_id`),
+  ADD KEY `pro_id` (`pro_id`);
 
 --
--- AUTO_INCREMENT cho bảng `order_status`
+-- AUTO_INCREMENT cho bảng `product_deals`
 --
-ALTER TABLE `order_status`
-  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `product_deals`
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Các ràng buộc cho bảng `order_status`
+-- Các ràng buộc cho bảng `product_deals`
 --
-ALTER TABLE `order_status`
-  ADD CONSTRAINT `order_status_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+ALTER TABLE `product_deals`
+  ADD CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+
 
 COMMIT;
 

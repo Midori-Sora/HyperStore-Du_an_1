@@ -112,6 +112,86 @@
         transform: translateY(-2px);
         box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
+    .modal-content {
+        border: none;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .modal-header {
+        padding: 1rem 1rem 0;
+    }
+
+    .btn-close {
+        background-color: #f8f9fa;
+        padding: 0.5rem;
+        border-radius: 50%;
+    }
+
+    .btn-close:hover {
+        background-color: #e9ecef;
+        transform: rotate(90deg);
+        transition: all 0.3s ease;
+    }
+
+    .modal-body i.fa-exclamation-circle {
+        color: #ffc107;
+        text-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+    }
+
+    .modal-body h4 {
+        color: #2c3345;
+        font-weight: 600;
+    }
+
+    .modal-body p {
+        color: #6c757d;
+    }
+
+    .btn {
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background-color: #f8f9fa;
+        border: none;
+        color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #e9ecef;
+        color: #2c3345;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        border: none;
+    }
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+    .badge {
+        padding: 8px 12px;
+        font-size: 12px;
+        font-weight: 500;
+        border-radius: 6px;
+    }
+
+    .bg-success {
+        background-color: #28a745 !important;
+    }
+
+    .bg-danger {
+        background-color: #dc3545 !important;
+    }
 </style>
 <body>
     <header>
@@ -129,6 +209,25 @@
                         <i class="fas fa-plus"></i> Thêm sản phẩm mới
                     </a>
                 </div>
+                <?php if (isset($_SESSION['success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?php 
+                            echo $_SESSION['success'];
+                            unset($_SESSION['success']);
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['error'])): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?php 
+                            echo $_SESSION['error'];
+                            unset($_SESSION['error']);
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -137,6 +236,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
                                 <th>Giá</th>
+                                <th>Danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
                             </tr>
@@ -147,15 +247,26 @@
                                 <td><?php echo $product['pro_id']; ?></td>
                                 <td><?php echo $product['pro_name']; ?></td>
                                 <td><img src="../Uploads/Product/<?php echo $product['img']; ?>" class="product-image"></td>
-                                <td><?php echo number_format($product['price']); ?>đ</td>
-                                <td><?php echo $product['pro_status']; ?></td>
+                                <td>
+                                    <?php 
+                                        echo number_format($product['price'], 0, ',', '.'); 
+                                    ?> VNĐ
+                                </td>
+                                <td><?php echo $product['cate_name']; ?></td>
+                                <td>
+                                    <?php 
+                                        echo $product['pro_status'] == 1 ? 
+                                            '<span class="badge bg-success">Hoạt động</span>' : 
+                                            '<span class="badge bg-danger">Không hoạt động</span>'; 
+                                    ?>
+                                </td>
                                 <td>
                                     <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" class="btn-action btn-edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
-                                       class="btn-action btn-delete"
-                                       onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                       class="btn-action btn-delete" 
+                                       onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                 </td>

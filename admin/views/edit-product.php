@@ -52,6 +52,17 @@
         border-radius: 8px;
         box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
+    .current-image, .select-new-image {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
+    .preview-container {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
 </style>
 <body>
     <header>
@@ -81,12 +92,39 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Hình ảnh hiện tại</label>
-                        <div>
-                            <img src="../Uploads/Product/<?=$product['img']?>" class="product-image" alt="Current product image">
+                        <label class="form-label">Hình ảnh sản phẩm</label>
+                        <div class="current-image mb-3">
+                            <p class="mb-2">Ảnh hiện tại:</p>
+                            <img src="../Uploads/Product/<?=$product['img']?>" 
+                                 class="product-image" 
+                                 alt="Current product image"
+                                 style="max-width: 200px; height: auto;">
                         </div>
-                        <input class="form-control mt-2" type="file" name="img" id="imageInput">
-                        <img id="preview" class="preview-image" alt="Preview image">
+                        <div class="select-new-image">
+                            <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
+                            <select class="form-select" name="img" id="imageSelect">
+                                <option value="<?=$product['img']?>">Giữ ảnh hiện tại (<?=$product['img']?>)</option>
+                                <?php 
+                                $imageDir = PATH_ROOT . '/Uploads/Product/';
+                                $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+                                foreach($images as $image): 
+                                    $imageName = basename($image);
+                                    if($imageName != $product['img']):
+                                ?>
+                                    <option value="<?php echo $imageName; ?>"><?php echo $imageName; ?></option>
+                                <?php 
+                                    endif;
+                                endforeach; 
+                                ?>
+                            </select>
+                            <div class="preview-container mt-3" style="display: none;">
+                                <p class="mb-2">Xem trước ảnh mới:</p>
+                                <img id="preview" 
+                                     class="preview-image" 
+                                     alt="Preview image"
+                                     style="max-width: 200px; height: auto; display: none;">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mb-3">
@@ -101,7 +139,14 @@
 
                     <div class="mb-3">
                         <label class="form-label">Trạng thái</label>
-                        <input class="form-control" type="text" name="pro_status" value="<?=$product['pro_status']?>" required>
+                        <select class="form-select" name="pro_status" required>
+                            <option value="1" <?php echo ($product['pro_status'] == 1) ? 'selected' : ''; ?>>
+                                Hoạt động
+                            </option>
+                            <option value="0" <?php echo ($product['pro_status'] == 0) ? 'selected' : ''; ?>>
+                                Không hoạt động
+                            </option>
+                        </select>
                     </div>
 
                     <div class="mb-3">
@@ -124,11 +169,19 @@
     </div>
 
     <script>
-        // Preview image before upload
-        document.getElementById('imageInput').onchange = function(e) {
+        document.getElementById('imageSelect').onchange = function() {
             const preview = document.getElementById('preview');
-            preview.style.display = 'block';
-            preview.src = URL.createObjectURL(e.target.files[0]);
+            const previewContainer = document.querySelector('.preview-container');
+            const selectedImage = this.value;
+            
+            if(selectedImage && selectedImage !== '<?=$product['img']?>') {
+                preview.src = '../Uploads/Product/' + selectedImage;
+                preview.style.display = 'block';
+                previewContainer.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+                previewContainer.style.display = 'none';
+            }
         }
     </script>
 </body>

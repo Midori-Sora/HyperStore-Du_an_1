@@ -57,12 +57,28 @@ class ProductModel extends MainModel
     public function deleteProduct($id)
     {
         try {
+            // Bắt đầu transaction
+            $this->SUNNY->beginTransaction();
+            
+            // Xóa sản phẩm
             $sql = "DELETE FROM products WHERE pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+            $result = $stmt->execute();
             
-            return $stmt->execute();
+            if ($result) {
+                // Nếu xóa thành công thì commit
+                $this->SUNNY->commit();
+                return true;
+            } else {
+                // Nếu có lỗi thì rollback
+                $this->SUNNY->rollBack();
+                return false;
+            }
+            
         } catch (PDOException $e) {
+            // Nếu có lỗi thì rollback
+            $this->SUNNY->rollBack();
             error_log("Delete error: " . $e->getMessage());
             return false;
         }
