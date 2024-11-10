@@ -90,6 +90,9 @@ INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`)
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
+  `order_code` varchar(20) NOT NULL,
+  `status` tinyint(1) DEFAULT 1,
+  `order_date` datetime DEFAULT current_timestamp(),
   `pay_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
@@ -111,7 +114,8 @@ CREATE TABLE `payments` (
   `address` varchar(255) DEFAULT NULL,
   `phone_number` varchar(20) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `import_date` date DEFAULT NULL,
+  `import_date` datetime DEFAULT current_timestamp(),
+  `status` tinyint(1) DEFAULT 1,
   `total` int(11) DEFAULT NULL,
   `pay_method` tinyint(1) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -398,6 +402,38 @@ ALTER TABLE `product_color`
 --
 ALTER TABLE `product_color`
   ADD CONSTRAINT `product_color_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+
+--
+-- Cấu trúc bảng cho bảng `order_status`
+--
+
+CREATE TABLE `order_status` (
+  `status_id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `status_name` varchar(50) NOT NULL,
+  `status_date` datetime DEFAULT current_timestamp(),
+  `note` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Chỉ mục cho bảng `order_status`
+--
+ALTER TABLE `order_status`
+  ADD PRIMARY KEY (`status_id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- AUTO_INCREMENT cho bảng `order_status`
+--
+ALTER TABLE `order_status`
+  MODIFY `status_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- Các ràng buộc cho bảng `order_status`
+--
+ALTER TABLE `order_status`
+  ADD CONSTRAINT `order_status_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`);
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -11,7 +11,6 @@
 </head>
 <body>
     <div class="slideshow">
-        <img src="../../Uploads/Slides/b1.png" alt="">
         <img src="../../Uploads/Slides/b2.png" alt="">  
         <img src="../../Uploads/Slides/b3.png" alt="">
         <img src="../../Uploads/Slides/b4.png" alt="">
@@ -19,8 +18,8 @@
         <img src="../../Uploads/Slides/b6.png" alt="">
         <img src="../../Uploads/Slides/b7.png" alt="">
         <div class="action">
-            <div class="prev"><i class="fa-solid fa-circle-chevron-left"></i></div>
-            <div class="next"><i class="fa-solid fa-circle-chevron-right"></i></div>
+            <div class="prev"><i class="fa-solid fa-angle-left"></i></div>
+            <div class="next"><i class="fa-solid fa-angle-right"></i></div>
         </div>
     </div>
 

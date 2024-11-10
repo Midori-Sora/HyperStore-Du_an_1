@@ -12,14 +12,12 @@
     <div class="sidebar-container">
         <h2>Danh mục</h2>
         <ul>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Asus</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Xiaomi</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Realme</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Samsung</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Apple</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Oppo</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Oppo</a></li>
-            <li><i class="fa-solid fa-circle-right"></i><a href="#">Oppo</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 11</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 12</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 13</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 14</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 15</a></li>
+            <li><i class="fa-solid fa-circle-right"></i><a href="#">Iphone 16</a></li>
         </ul>
     </div>
 </body>
