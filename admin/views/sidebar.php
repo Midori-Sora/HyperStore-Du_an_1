@@ -139,8 +139,8 @@
                     <span>Tài khoản</span>
                 </a>
             </li>
-            <li>
-                <a href="./index.php?action=comment">
+            <li class="<?php echo $currentAction === 'comment' ? 'active' : ''; ?>">
+                <a href="index.php?action=comment">
                     <i class="fas fa-comments"></i>
                     <span>Bình luận</span>
                 </a>

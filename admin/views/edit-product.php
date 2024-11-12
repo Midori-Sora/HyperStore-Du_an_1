@@ -97,8 +97,7 @@
                             <p class="mb-2">Ảnh hiện tại:</p>
                             <img src="../Uploads/Product/<?=$product['img']?>" 
                                  class="product-image" 
-                                 alt="Current product image"
-                                 style="max-width: 200px; height: auto;">
+                                 alt="Current product image">
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
@@ -119,10 +118,7 @@
                             </select>
                             <div class="preview-container mt-3" style="display: none;">
                                 <p class="mb-2">Xem trước ảnh mới:</p>
-                                <img id="preview" 
-                                     class="preview-image" 
-                                     alt="Preview image"
-                                     style="max-width: 200px; height: auto; display: none;">
+                                <img id="preview" class="preview-image" alt="Preview image">
                             </div>
                         </div>
                     </div>
@@ -140,18 +136,14 @@
                     <div class="mb-3">
                         <label class="form-label">Trạng thái</label>
                         <select class="form-select" name="pro_status" required>
-                            <option value="1" <?php echo ($product['pro_status'] == 1) ? 'selected' : ''; ?>>
-                                Hoạt động
-                            </option>
-                            <option value="0" <?php echo ($product['pro_status'] == 0) ? 'selected' : ''; ?>>
-                                Không hoạt động
-                            </option>
+                            <option value="1" <?php echo ($product['pro_status'] == 1) ? 'selected' : ''; ?>>Hoạt động</option>
+                            <option value="0" <?php echo ($product['pro_status'] == 0) ? 'selected' : ''; ?>>Không hoạt động</option>
                         </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Danh mục</label>
-                        <select class="form-control" name="cate_id" required>
+                        <select class="form-select" name="cate_id" required>
                             <?php foreach($categories as $category): ?>
                                 <option value="<?=$category['cate_id']?>" 
                                     <?php echo ($category['cate_id'] == $product['cate_id']) ? 'selected' : ''; ?>>
@@ -163,118 +155,28 @@
 
                     <div class="mb-3">
                         <label class="form-label">RAM</label>
-                        <div id="ram-options">
-                            <?php 
-                            $ram_options = explode(', ', $product['ram_options'] ?? '');
-                            if (!empty($ram_options)) {
-                                foreach($ram_options as $ram): 
-                                    $ram_type = trim(explode(' (+', $ram)[0]); // Lấy phần RAM type (ví dụ: 128GB)
-                            ?>
-                            <div class="ram-option mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-11">
-                                        <select class="form-select" name="ram_type[]" required>
-                                            <option value="">Chọn RAM</option>
-                                            <option value="128GB" <?php echo ($ram_type == '128GB') ? 'selected' : ''; ?>>128GB (+0đ)</option>
-                                            <option value="256GB" <?php echo ($ram_type == '256GB') ? 'selected' : ''; ?>>256GB (+200.000đ)</option>
-                                            <option value="512GB" <?php echo ($ram_type == '512GB') ? 'selected' : ''; ?>>512GB (+500.000đ)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger btn-sm remove-ram">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php 
-                                endforeach;
-                            } else {
-                            // Nếu không có RAM options, hiển thị một option trống
-                            ?>
-                            <div class="ram-option mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-11">
-                                        <select class="form-select" name="ram_type[]" required>
-                                            <option value="">Chọn RAM</option>
-                                            <option value="128GB">128GB (+0đ)</option>
-                                            <option value="256GB">256GB (+200.000đ)</option>
-                                            <option value="512GB">512GB (+500.000đ)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger btn-sm remove-ram">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="add-ram">
-                            <i class="fas fa-plus"></i> Thêm RAM
-                        </button>
+                        <select class="form-select" name="ram_id" required>
+                            <option value="">Chọn RAM</option>
+                            <?php foreach($ramOptions as $ram): ?>
+                                <option value="<?=$ram['ram_id']?>" 
+                                    <?php echo ($ram['ram_id'] == $product['ram_id']) ? 'selected' : ''; ?>>
+                                    <?=$ram['ram_type']?> (+<?=number_format($ram['ram_price'], 0, ',', '.')?>đ)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">Màu sắc</label>
-                        <div id="color-options">
-                            <?php 
-                            $color_options = explode(', ', $product['color_options'] ?? '');
-                            if (!empty($color_options)) {
-                                foreach($color_options as $color): 
-                                    $color_type = trim(explode(' (+', $color)[0]); // Lấy phần Color type (ví dụ: Vàng)
-                            ?>
-                            <div class="color-option mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-11">
-                                        <select class="form-select" name="color_type[]" required>
-                                            <option value="">Chọn màu</option>
-                                            <option value="Vàng" <?php echo ($color_type == 'Vàng') ? 'selected' : ''; ?>>Vàng (+500.000đ)</option>
-                                            <option value="Xanh" <?php echo ($color_type == 'Xanh') ? 'selected' : ''; ?>>Xanh (+0đ)</option>
-                                            <option value="Đỏ" <?php echo ($color_type == 'Đỏ') ? 'selected' : ''; ?>>Đỏ (+0đ)</option>
-                                            <option value="Trắng" <?php echo ($color_type == 'Trắng') ? 'selected' : ''; ?>>Trắng (+0đ)</option>
-                                            <option value="Hồng" <?php echo ($color_type == 'Hồng') ? 'selected' : ''; ?>>Hồng (+0đ)</option>
-                                            <option value="Đen" <?php echo ($color_type == 'Đen') ? 'selected' : ''; ?>>Đen (+0đ)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger btn-sm remove-color">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php 
-                                endforeach;
-                            } else {
-                            // Nếu không có Color options, hiển thị một option trống
-                            ?>
-                            <div class="color-option mb-2">
-                                <div class="row align-items-center">
-                                    <div class="col-md-11">
-                                        <select class="form-select" name="color_type[]" required>
-                                            <option value="">Chọn màu</option>
-                                            <option value="Vàng">Vàng (+500.000đ)</option>
-                                            <option value="Xanh">Xanh (+0đ)</option>
-                                            <option value="Đỏ">Đỏ (+0đ)</option>
-                                            <option value="Trắng">Trắng (+0đ)</option>
-                                            <option value="Hồng">Hồng (+0đ)</option>
-                                            <option value="Đen">Đen (+0đ)</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-1">
-                                        <button type="button" class="btn btn-danger btn-sm remove-color">
-                                            <i class="fas fa-times"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php } ?>
-                        </div>
-                        <button type="button" class="btn btn-outline-secondary btn-sm mt-2" id="add-color">
-                            <i class="fas fa-plus"></i> Thêm màu sắc
-                        </button>
+                        <select class="form-select" name="color_id" required>
+                            <option value="">Chọn màu</option>
+                            <?php foreach($colorOptions as $color): ?>
+                                <option value="<?=$color['color_id']?>"
+                                    <?php echo ($color['color_id'] == $product['color_id']) ? 'selected' : ''; ?>>
+                                    <?=$color['color_type']?> (+<?=number_format($color['color_price'], 0, ',', '.')?>đ)
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
                     </div>
 
                     <button class="btn btn-primary" name="sua" type="submit">Cập nhật</button>
@@ -299,31 +201,6 @@
                 previewContainer.style.display = 'none';
             }
         }
-
-        document.getElementById('add-ram').onclick = function() {
-            const template = document.querySelector('.ram-option').cloneNode(true);
-            template.querySelector('select[name="ram_type[]"]').value = '';
-            document.getElementById('ram-options').appendChild(template);
-        };
-
-        document.getElementById('add-color').onclick = function() {
-            const template = document.querySelector('.color-option').cloneNode(true);
-            template.querySelector('select[name="color_type[]"]').value = '';
-            document.getElementById('color-options').appendChild(template);
-        };
-
-        document.addEventListener('click', function(e) {
-            if (e.target.classList.contains('remove-ram')) {
-                if (document.querySelectorAll('.ram-option').length > 1) {
-                    e.target.closest('.ram-option').remove();
-                }
-            }
-            if (e.target.classList.contains('remove-color')) {
-                if (document.querySelectorAll('.color-option').length > 1) {
-                    e.target.closest('.color-option').remove();
-                }
-            }
-        });
     </script>
 </body>
 </html>

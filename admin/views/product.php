@@ -209,6 +209,26 @@
         justify-content: center;
         align-items: center;
     }
+
+    .option-item {
+        background: #f8f9fa;
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 13px;
+        margin-bottom: 4px;
+        display: inline-block;
+    }
+    
+    .price-tag {
+        color: #28a745;
+        font-weight: 500;
+        margin-left: 4px;
+    }
+    
+    .text-muted {
+        color: #6c757d;
+        font-size: 13px;
+    }
 </style>
 <body>
     <header>
@@ -252,9 +272,10 @@
                                 <th>ID</th>
                                 <th>Tên sản phẩm</th>
                                 <th>Hình ảnh</th>
-                                <th>Giá</th>
-                                <th>Ram</th>
+                                <th>Giá gốc</th>
+                                <th>RAM</th>
                                 <th>Màu sắc</th>
+                                <th>Tổng giá</th>
                                 <th>Danh mục</th>
                                 <th>Trạng thái</th>
                                 <th>Thao tác</th>
@@ -266,34 +287,33 @@
                                 <td><?php echo $product['pro_id']; ?></td>
                                 <td><?php echo $product['pro_name']; ?></td>
                                 <td><img src="../Uploads/Product/<?php echo $product['img']; ?>" class="product-image"></td>
+                                <td><?php echo number_format($product['price'], 0, ',', '.'); ?> đ</td>
                                 <td>
-                                    <?php 
-                                        echo number_format($product['price'], 0, ',', '.'); 
-                                    ?> VNĐ
+                                    <?php if($product['ram_type']): ?>
+                                        <div class="option-item">
+                                            <?php echo $product['ram_type']; ?>
+                                            <span class="price-tag">
+                                                +<?php echo number_format($product['ram_price'], 0, ',', '.'); ?> đ
+                                            </span>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted">Chưa có</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php 
-                                        $ram_options = explode(', ', $product['ram_options']);
-                                        if (!empty($ram_options[0])) {
-                                            foreach($ram_options as $option) {
-                                                echo "<div class='option-item'>$option</div>";
-                                            }
-                                        } else {
-                                            echo '<span class="text-muted">Chưa có</span>';
-                                        }
-                                    ?>
+                                    <?php if($product['color_type']): ?>
+                                        <div class="option-item">
+                                            <?php echo $product['color_type']; ?>
+                                            <span class="price-tag">
+                                                +<?php echo number_format($product['color_price'], 0, ',', '.'); ?> đ
+                                            </span>
+                                        </div>
+                                    <?php else: ?>
+                                        <span class="text-muted">Chưa có</span>
+                                    <?php endif; ?>
                                 </td>
                                 <td>
-                                    <?php 
-                                        $color_options = explode(', ', $product['color_options']);
-                                        if (!empty($color_options[0])) {
-                                            foreach($color_options as $option) {
-                                                echo "<div class='option-item'>$option</div>";
-                                            }
-                                        } else {
-                                            echo '<span class="text-muted">Chưa có</span>';
-                                        }
-                                    ?>
+                                    <strong><?php echo number_format($product['total_price'], 0, ',', '.'); ?> đ</strong>
                                 </td>
                                 <td><?php echo $product['cate_name']; ?></td>
                                 <td>
@@ -306,14 +326,14 @@
                                 <td>
                                     <div class="action-column">
                                         <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
-                                           class="btn-action btn-edit" 
-                                           title="Sửa">
+                                            class="btn-action btn-edit" 
+                                            title="Sửa">
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
-                                           class="btn-action btn-delete" 
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
-                                           title="Xóa">
+                                            class="btn-action btn-delete" 
+                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
+                                            title="Xóa">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

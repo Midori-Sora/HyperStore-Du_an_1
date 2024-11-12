@@ -2,73 +2,84 @@
 require_once './models/productModel.php';
 
 class ProductController {
+    private static $productModel;
+
+    public static function init() {
+        if (!self::$productModel) {
+            self::$productModel = new ProductModel();
+        }
+    }
     
-    public static function productController()
-    {
-        $productModel = new ProductModel();
-        $products = $productModel->getProductList();
-        require_once './views/product.php';
+    public static function productController() {
+        try {
+            self::init();
+            $products = self::$productModel->getProductList();
+            require_once './views/product.php';
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
+            header('Location: index.php');
+            exit();
+        }
     }
 
-    public static function editProductController()
-    {
-        $productModel = new ProductModel();
-        $id = $_GET['id'];
-        $product = $productModel->getProductById($id);
-        $categories = $productModel->getCategories();
-        
-        if(isset($_POST['sua'])) {
-            $name = $_POST['pro_name'];
-            $price = $_POST['price'];
-            $description = $_POST['description'];
-            $status = $_POST['pro_status'];
-            $cate_id = $_POST['cate_id'];
-            $img = $_POST['img'];
+    public static function editProductController() {
+        try {
+            self::init();
+            if (!isset($_GET['id'])) {
+                throw new Exception('ID không hợp lệ');
+            }
+
+            $id = $_GET['id'];
+            $product = self::$productModel->getProductById($id);
+            if (!$product) {
+                throw new Exception('Không tìm thấy sản phẩm');
+            }
+
+            $categories = self::$productModel->getCategories();
+            $ramOptions = self::$productModel->getRamOptions();
+            $colorOptions = self::$productModel->getColorOptions();
             
-            // Xử lý dữ liệu RAM và Color
-            $ram_data = [
-                'types' => isset($_POST['ram_type']) ? $_POST['ram_type'] : []
-            ];
-            
-            $color_data = [
-                'types' => isset($_POST['color_type']) ? $_POST['color_type'] : []
-            ];
-            
-            $target = PATH_ROOT . '/Uploads/Product/' . $img;
-            if(file_exists($target)) {
-                if($productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_data, $color_data)) {
+            if(isset($_POST['sua'])) {
+                $name = $_POST['pro_name'];
+                $price = $_POST['price'];
+                $description = $_POST['description'];
+                $status = $_POST['pro_status'];
+                $cate_id = $_POST['cate_id'];
+                $ram_id = $_POST['ram_id'];
+                $color_id = $_POST['color_id'];
+                $img = $_POST['img'];
+
+                if(self::$productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
                     $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
                 } else {
-                    $_SESSION['error'] = 'Cập nhật sản phẩm thất bại';
+                    throw new Exception('Cập nhật sản phẩm thất bại');
                 }
-            } else {
-                $_SESSION['error'] = 'Ảnh không tồn tại trong thư mục Uploads/Product';
             }
+            
+            require_once './views/edit-product.php';
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
+            header('Location: index.php?action=product');
+            exit();
         }
-        
-        require_once './views/edit-product.php';
     }
 
-    public static function deleteProductController()
-    {
+    public static function deleteProductController() {
         try {
+            self::init();
             if (!isset($_GET['id'])) {
                 throw new Exception('ID không hợp lệ');
             }
             
             $id = $_GET['id'];
-            $productModel = new ProductModel();
-            
-            // Lấy thông tin sản phẩm trước khi xóa
-            $product = $productModel->getProductById($id);
+            $product = self::$productModel->getProductById($id);
             if (!$product) {
                 throw new Exception('Không tìm thấy sản phẩm');
             }
 
-            // Thực hiện xóa sản phẩm
-            if ($productModel->deleteProduct($id)) {
+            if (self::$productModel->deleteProduct($id)) {
                 $_SESSION['success'] = 'Xóa sản phẩm thành công';
             } else {
                 throw new Exception('Không thể xóa sản phẩm');
@@ -82,11 +93,12 @@ class ProductController {
         exit();
     }
 
-    public static function addProductController()
-    {
+    public static function addProductController() {
         try {
-            $productModel = new ProductModel();
-            $categories = $productModel->getCategories();
+            self::init();
+            $categories = self::$productModel->getCategories();
+            $ramOptions = self::$productModel->getRamOptions();
+            $colorOptions = self::$productModel->getColorOptions();
             
             if(isset($_POST['them'])) {
                 $name = $_POST['pro_name'];
@@ -94,28 +106,21 @@ class ProductController {
                 $description = $_POST['description'];
                 $status = $_POST['pro_status'];
                 $cate_id = $_POST['cate_id'];
+                $ram_id = $_POST['ram_id'];
+                $color_id = $_POST['color_id'];
                 $img = $_POST['img'];
                 
-                // Xử lý dữ liệu RAM và Color
-                $ram_data = [
-                    'types' => isset($_POST['ram_type']) ? $_POST['ram_type'] : []
-                ];
-                
-                $color_data = [
-                    'types' => isset($_POST['color_type']) ? $_POST['color_type'] : []
-                ];
-                
                 $target = PATH_ROOT . '/Uploads/Product/' . $img;
-                if(file_exists($target)) {
-                    if($productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $ram_data, $color_data)) {
-                        $_SESSION['success'] = 'Thêm sản phẩm thành công';
-                        header('location: index.php?action=product');
-                        exit();
-                    } else {
-                        $_SESSION['error'] = 'Thêm sản phẩm thất bại';
-                    }
+                if(!file_exists($target)) {
+                    throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Product');
+                }
+
+                if(self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
+                    $_SESSION['success'] = 'Thêm sản phẩm thành công';
+                    header('location: index.php?action=product');
+                    exit();
                 } else {
-                    $_SESSION['error'] = 'Ảnh không tồn tại trong thư mục Uploads/Product';
+                    throw new Exception('Thêm sản phẩm thất bại');
                 }
             }
             require_once './views/add-product.php';

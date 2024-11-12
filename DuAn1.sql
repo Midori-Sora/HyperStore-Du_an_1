@@ -19,20 +19,27 @@ SET time_zone = "+00:00";
 CREATE DATABASE IF NOT EXISTS `duan1` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `duan1`;
 
--- Tạo bảng users
+-- Tạo bảng roles (vai trò)
+CREATE TABLE `roles` (
+    `role_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `role_name` VARCHAR(50) NOT NULL,
+    `description` TEXT,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tạo bảng users (người dùng)
 CREATE TABLE `users` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_name` varchar(50) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `user_password` varchar(50) NOT NULL,
-  `address` varchar(255) DEFAULT NULL,
-  `phone_number` varchar(20) NOT NULL,
-  `sex` tinyint(1) NOT NULL,
-  `avata` varchar(255) DEFAULT NULL,
-  `role` tinyint(1) DEFAULT 0,
-  `import_date` date DEFAULT NULL,
-  `user_status` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`user_id`)
+    `user_id` INT PRIMARY KEY AUTO_INCREMENT,
+    `username` VARCHAR(50) NOT NULL UNIQUE,
+    `password` VARCHAR(255) NOT NULL,
+    `email` VARCHAR(100) NOT NULL UNIQUE,
+    `fullname` VARCHAR(100),
+    `phone` VARCHAR(20),
+    `address` TEXT,
+    `role_id` INT,
+    `status` TINYINT DEFAULT 1,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (`role_id`) REFERENCES `roles`(`role_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tạo bảng categories
@@ -43,6 +50,24 @@ CREATE TABLE `categories` (
   `description` text DEFAULT NULL,
   `cate_status` tinyint(1) DEFAULT 1,
   PRIMARY KEY (`cate_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tạo bảng product_ram
+CREATE TABLE `product_ram` (
+  `ram_id` int(11) NOT NULL AUTO_INCREMENT,
+  `ram_type` varchar(50) NOT NULL,
+  `ram_price` decimal(10,2) DEFAULT 0,
+  `created_at` timestamp DEFAULT current_timestamp(),
+  PRIMARY KEY (`ram_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Tạo bảng product_color
+CREATE TABLE `product_color` (
+  `color_id` int(11) NOT NULL AUTO_INCREMENT,
+  `color_type` varchar(50) NOT NULL,
+  `color_price` decimal(10,2) DEFAULT 0,
+  `created_at` timestamp DEFAULT current_timestamp(),
+  PRIMARY KEY (`color_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Tạo bảng products
@@ -56,51 +81,18 @@ CREATE TABLE `products` (
   `pro_view` int(11) DEFAULT 0,
   `pro_status` tinyint(1) DEFAULT 1,
   `cate_id` int(11) NOT NULL,
+  `ram_id` int(11) DEFAULT NULL,
+  `color_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`pro_id`),
   KEY `cate_id` (`cate_id`),
-  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `categories` (`cate_id`)
+  KEY `ram_id` (`ram_id`),
+  KEY `color_id` (`color_id`),
+  CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `categories` (`cate_id`),
+  CONSTRAINT `products_ibfk_2` FOREIGN KEY (`ram_id`) REFERENCES `product_ram` (`ram_id`) ON DELETE SET NULL,
+  CONSTRAINT `products_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tạo lại bảng product_ram với giá tăng cố định
-CREATE TABLE `product_ram` (
-  `ram_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pro_id` int(11) NOT NULL,
-  `ram_type` enum('128GB','256GB','512GB') NOT NULL,
-  `price_increase` int(11) GENERATED ALWAYS AS (
-    CASE ram_type
-      WHEN '128GB' THEN 0
-      WHEN '256GB' THEN 200000
-      WHEN '512GB' THEN 500000
-    END
-  ) STORED,
-  `stock` int(11) DEFAULT 0,
-  `status` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`ram_id`),
-  UNIQUE KEY `unique_product_ram` (`pro_id`, `ram_type`),
-  KEY `pro_id` (`pro_id`),
-  CONSTRAINT `product_ram_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tạo lại bảng product_color với giá tăng cố định cho màu vàng
-CREATE TABLE `product_color` (
-  `color_id` int(11) NOT NULL AUTO_INCREMENT,
-  `pro_id` int(11) NOT NULL,
-  `color_type` enum('Vàng','Xanh','Đỏ','Trắng','Hồng','Đen') NOT NULL,
-  `price_increase` int(11) GENERATED ALWAYS AS (
-    CASE color_type
-      WHEN 'Vàng' THEN 500000
-      ELSE 0
-    END
-  ) STORED,
-  `stock` int(11) DEFAULT 0,
-  `status` tinyint(1) DEFAULT 1,
-  PRIMARY KEY (`color_id`),
-  UNIQUE KEY `unique_product_color` (`pro_id`, `color_type`),
-  KEY `pro_id` (`pro_id`),
-  CONSTRAINT `product_color_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
--- Tạo lại bảng cart
+-- Tạo bảng cart
 CREATE TABLE `cart` (
   `cart_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -151,7 +143,7 @@ CREATE TABLE `payments` (
   CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tạo lại bảng orders
+-- Tạo bảng orders
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_code` varchar(20) NOT NULL,
@@ -201,6 +193,23 @@ CREATE TABLE `product_deals` (
   KEY `pro_id` (`pro_id`),
   CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Thêm dữ liệu mẫu cho roles
+INSERT INTO `roles` (`role_name`, `description`) VALUES
+('Admin', 'Quản trị viên hệ thống'),
+('User', 'Người dùng thông thường');
+
+-- Thêm dữ liệu mẫu cho RAM
+INSERT INTO `product_ram` (`ram_type`, `ram_price`) VALUES
+('128GB', 0),
+('256GB', 200000),
+('512GB', 500000);
+
+-- Thêm dữ liệu mẫu cho Color
+INSERT INTO `product_color` (`color_type`, `color_price`) VALUES
+('Đen', 0),
+('Trắng', 0),
+('Vàng', 500000);
 
 COMMIT;
 

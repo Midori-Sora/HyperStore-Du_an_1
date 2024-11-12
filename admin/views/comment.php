@@ -4,19 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý bình luận</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
     body {
-        background: #f5f5f5;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f8f9fa;
         padding-top: 80px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .main {
         display: flex;
@@ -24,109 +19,123 @@
         margin: 0 auto;
         padding: 20px;
     }
-    .main main {
+    main {
         width: calc(100% - 270px);
         margin-left: 270px;
+    }
+    .card {
         background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 20px;
+        border: none;
     }
-    .page-header {
+    .card-header {
+        background: none;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
+    }
+    .card-header h2 {
+        margin: 0;
+        color: #2c3345;
+        font-size: 24px;
+        font-weight: 600;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
+        gap: 12px;
     }
-    .btn-add {
-        background: #1976D2;
-        color: white;
-        padding: 10px 24px;
-        border-radius: 8px;
-        text-decoration: none;
-        transition: all 0.3s;
-        font-weight: 500;
-    }
-    .btn-add:hover {
-        background: #1565C0;
-        color: white;
-        transform: translateY(-2px);
+    .card-header h2 i {
+        color: #4a90e2;
     }
     .table {
         margin-top: 20px;
         border-collapse: separate;
-        border-spacing: 0 8px;
+        border-spacing: 0 12px;
     }
-    .table th {
-        background: #f8f9fa;
-        color: #495057;
-        font-weight: 600;
-        padding: 15px;
+    .table thead th {
         border: none;
-    }
-    .table td {
-        padding: 15px;
-        vertical-align: middle;
-        background: white;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-    }
-    .table tr td:first-child {
-        border-left: 1px solid #eee;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-    }
-    .table tr td:last-child {
-        border-right: 1px solid #eee;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
-    .table tr:hover td {
         background: #f8f9fa;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: all 0.2s;
+        padding: 15px;
+        font-weight: 600;
+        color: #2c3345;
     }
-    .btn-action {
-        padding: 6px 12px;
-        margin: 0 3px;
-        border-radius: 6px;
-        transition: all 0.2s;
+    .comment-item td {
+        background: white;
+        border: none;
+        padding: 20px 15px;
+        vertical-align: middle;
     }
-    .btn-edit {
-        background: #4CAF50;
-        color: white;
+    .comment-item {
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
     }
-    .btn-delete {
-        background: #f44336;
-        color: white;
-    }
-    .btn-action:hover {
+    .comment-item:hover {
         transform: translateY(-2px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        color: white;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     }
-    .content-cell {
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .user-avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background: #e9ecef;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+    }
+    .user-name {
+        font-weight: 500;
+        color: #2c3345;
+    }
+    .product-link {
+        color: #4a90e2;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.2s;
+    }
+    .product-link:hover {
+        color: #357abd;
+    }
+    .comment-content {
+        color: #4a5568;
         max-width: 300px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
-    .no-data {
+    .comment-date {
+        color: #6c757d;
+        font-size: 0.9rem;
+    }
+    .comment-actions {
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 30px 0;
+        gap: 8px;
     }
-    
-    .no-data i {
-        color: #ccc;
-        margin-bottom: 15px;
+    .btn-action {
+        padding: 8px 16px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        transition: all 0.2s;
     }
-    
-    .no-data p {
-        color: #666;
-        font-size: 1.1rem;
+    .btn-danger {
+        background: #dc3545;
+        border: none;
+    }
+    .btn-danger:hover {
+        background: #c82333;
+        transform: translateY(-1px);
+    }
+    .alert {
+        border-radius: 12px;
+        padding: 15px 20px;
+        margin-bottom: 25px;
     }
 </style>
 <body>
@@ -134,62 +143,98 @@
         <?php include 'header.php' ?>
     </header>
     <div class="main">
-        <div class="sidebar">
-            <?php include 'sidebar.php'; ?>
-        </div>
+        <?php include 'sidebar.php'; ?>
         <main>
-            <div class="container-fluid">
-                <div class="page-header">
-                    <h2>Quản lý bình luận</h2>
-                </div>
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-comments"></i>
+                            Quản lý bình luận
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <?php 
+                                    echo $_SESSION['success'];
+                                    unset($_SESSION['success']);
+                                ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <?php endif; ?>
 
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Người dùng</th>
-                                <th>Sản phẩm</th>
-                                <th>Nội dung</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php if (empty($comments)): ?>
-                                <tr>
-                                    <td colspan="5" class="text-center py-4">
-                                        <div class="no-data">
-                                            <i class="fas fa-comments text-muted mb-3" style="font-size: 3rem;"></i>
-                                            <p class="text-muted mb-0">Không có bình luận nào</p>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php else: ?>
-                                <?php foreach($comments as $comment): ?>
-                                <tr>
-                                    <td><?php echo $comment['com_id']; ?></td>
-                                    <td><?php echo $comment['user_name']; ?></td>
-                                    <td><?php echo $comment['pro_name']; ?></td>
-                                    <td class="content-cell"><?php echo $comment['content']; ?></td>
-                                    <td>
-                                        <a href="?action=editComment&id=<?php echo $comment['com_id']; ?>" 
-                                           class="btn-action btn-edit">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="?action=deleteComment&id=<?php echo $comment['com_id']; ?>" 
-                                           class="btn-action btn-delete"
-                                           onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-danger alert-dismissible fade show">
+                                <i class="fas fa-exclamation-circle me-2"></i>
+                                <?php 
+                                    echo $_SESSION['error'];
+                                    unset($_SESSION['error']);
+                                ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <?php endif; ?>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>NGƯỜI DÙNG</th>
+                                        <th>SẢN PHẨM</th>
+                                        <th>NỘI DUNG</th>
+                                        <th>THỜI GIAN</th>
+                                        <th>THAO TÁC</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($comments as $comment): ?>
+                                    <tr class="comment-item">
+                                        <td>
+                                            <div class="user-info">
+                                                <div class="user-avatar">
+                                                    <i class="fas fa-user"></i>
+                                                </div>
+                                                <span class="user-name"><?= htmlspecialchars($comment['username']) ?></span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="product-link">
+                                                <?= htmlspecialchars($comment['pro_name']) ?>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <div class="comment-content">
+                                                <?= htmlspecialchars($comment['content']) ?>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="comment-date">
+                                                <i class="far fa-clock me-1"></i>
+                                                <?= $comment['import_date'] ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="comment-actions">
+                                                <a href="index.php?action=deleteComment&id=<?= $comment['com_id'] ?>" 
+                                                   class="btn btn-danger btn-action"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
+                                                    <i class="fas fa-trash-alt me-1"></i>
+                                                    Xóa
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
