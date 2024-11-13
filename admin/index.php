@@ -33,8 +33,5 @@
         case 'deleteComment':
             CommentController::deleteCommentController();
             break;
-        case 'addComment':
-            CommentController::addCommentController();
-            break;
     }
 ?>

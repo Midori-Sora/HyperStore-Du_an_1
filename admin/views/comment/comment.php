@@ -140,10 +140,10 @@
 </style>
 <body>
     <header>
-        <?php include 'header.php' ?>
+        <?php include './views/layout/header.php' ?>
     </header>
     <div class="main">
-        <?php include 'sidebar.php'; ?>
+        <?php include './views/layout/sidebar.php'; ?>
         <main>
             <div class="container">
                 <div class="card">

@@ -12,7 +12,7 @@ class CommentController {
         try {
             $model = new CommentModel();
             $comments = $model->getCommentList();
-            require_once './views/comment.php';
+            require_once './views/comment/comment.php';
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
             header('Location: index.php');
@@ -22,7 +22,7 @@ class CommentController {
 
     public static function deleteCommentController() {
         try {
-            if (!isset($_GET['id'])) {
+            if (!isset($_GET['id'])) {  
                 throw new Exception("ID không hợp lệ");
             }
 

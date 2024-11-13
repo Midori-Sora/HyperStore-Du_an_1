@@ -14,7 +14,7 @@ class ProductController {
         try {
             self::init();
             $products = self::$productModel->getProductList();
-            require_once './views/product.php';
+            require_once './views/product/product.php';
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php');
@@ -58,7 +58,7 @@ class ProductController {
                 }
             }
             
-            require_once './views/edit-product.php';
+            require_once './views/product/edit-product.php';
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php?action=product');
@@ -123,7 +123,7 @@ class ProductController {
                     throw new Exception('Thêm sản phẩm thất bại');
                 }
             }
-            require_once './views/add-product.php';
+            require_once './views/product/add-product.php';
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php?action=product');

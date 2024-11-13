@@ -66,11 +66,11 @@
 </style>
 <body>
     <header>
-        <?php include 'header.php' ?>
+        <?php include './views/layout/header.php' ?>
     </header>
     <div class="main">
         <div class="sidebar">
-            <?php include 'sidebar.php'; ?>
+            <?php include './views/layout/sidebar.php'; ?>
         </div>
         <main>
             <div class="container">

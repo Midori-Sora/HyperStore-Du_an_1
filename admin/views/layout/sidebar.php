@@ -112,7 +112,7 @@
             <li class="active">
                 <a href="./index.php?action=home">
                     <i class="fas fa-home"></i>
-                    <span>Bảng điều khiển</span>
+                    <span>Thống kê</span>
                 </a>
             </li>
             <li>
