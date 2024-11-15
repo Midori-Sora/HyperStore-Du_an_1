@@ -1,16 +1,19 @@
 <?php
 require_once './models/productModel.php';
 
-class ProductController {
+class ProductController
+{
     private static $productModel;
 
-    public static function init() {
+    public static function init()
+    {
         if (!self::$productModel) {
             self::$productModel = new ProductModel();
         }
     }
-    
-    public static function productController() {
+
+    public static function productController()
+    {
         try {
             self::init();
             $products = self::$productModel->getProductList();
@@ -22,7 +25,8 @@ class ProductController {
         }
     }
 
-    public static function editProductController() {
+    public static function editProductController()
+    {
         try {
             self::init();
             if (!isset($_GET['id'])) {
@@ -38,8 +42,8 @@ class ProductController {
             $categories = self::$productModel->getCategories();
             $ramOptions = self::$productModel->getRamOptions();
             $colorOptions = self::$productModel->getColorOptions();
-            
-            if(isset($_POST['sua'])) {
+
+            if (isset($_POST['sua'])) {
                 $name = $_POST['pro_name'];
                 $price = $_POST['price'];
                 $description = $_POST['description'];
@@ -49,7 +53,7 @@ class ProductController {
                 $color_id = $_POST['color_id'];
                 $img = $_POST['img'];
 
-                if(self::$productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
+                if (self::$productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
                     $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
@@ -57,7 +61,7 @@ class ProductController {
                     throw new Exception('Cập nhật sản phẩm thất bại');
                 }
             }
-            
+
             require_once './views/product/edit-product.php';
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
@@ -66,13 +70,14 @@ class ProductController {
         }
     }
 
-    public static function deleteProductController() {
+    public static function deleteProductController()
+    {
         try {
             self::init();
             if (!isset($_GET['id'])) {
                 throw new Exception('ID không hợp lệ');
             }
-            
+
             $id = $_GET['id'];
             $product = self::$productModel->getProductById($id);
             if (!$product) {
@@ -84,23 +89,23 @@ class ProductController {
             } else {
                 throw new Exception('Không thể xóa sản phẩm');
             }
-            
         } catch (Exception $e) {
             $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
         }
-        
+
         header('Location: index.php?action=product');
         exit();
     }
 
-    public static function addProductController() {
+    public static function addProductController()
+    {
         try {
             self::init();
             $categories = self::$productModel->getCategories();
             $ramOptions = self::$productModel->getRamOptions();
             $colorOptions = self::$productModel->getColorOptions();
-            
-            if(isset($_POST['them'])) {
+
+            if (isset($_POST['them'])) {
                 $name = $_POST['pro_name'];
                 $price = $_POST['price'];
                 $description = $_POST['description'];
@@ -109,13 +114,13 @@ class ProductController {
                 $ram_id = $_POST['ram_id'];
                 $color_id = $_POST['color_id'];
                 $img = $_POST['img'];
-                
+
                 $target = PATH_ROOT . '/Uploads/Product/' . $img;
-                if(!file_exists($target)) {
+                if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Product');
                 }
 
-                if(self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
+                if (self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)) {
                     $_SESSION['success'] = 'Thêm sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
