@@ -6,6 +6,7 @@
     require_once 'controllers/mainController.php';
     require_once 'controllers/productController.php';
     require_once 'controllers/commentController.php';
+    require_once 'controllers/bannerController.php';
     require_once "./commons/env.php";
     require_once "./commons/function.php";
 
@@ -32,6 +33,18 @@
             break;
         case 'deleteComment':
             CommentController::deleteCommentController();
+            break;
+        case 'banner':
+            BannerController::bannerController();
+            break;
+        case 'addBanner':
+            BannerController::addBannerController();
+            break;
+        case 'deleteBanner':
+            BannerController::deleteBannerController();
+            break;
+        case 'editBanner':
+            BannerController::editBannerController();
             break;
     }
 ?>
