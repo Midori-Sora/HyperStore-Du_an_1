@@ -32,7 +32,7 @@
         
         let currentSlide = 0;
         let isPlaying = true;
-        let slideInterval = setInterval(nextSlide, 3000); // Chạy tự động mỗi 3 giây
+        let slideInterval = setInterval(nextSlide, 2000); // Chạy tự động mỗi 3 giây
         
         // Ẩn tất cả slides trừ slide đầu tiên
         slides.forEach((slide, index) => {

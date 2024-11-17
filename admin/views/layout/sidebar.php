@@ -124,7 +124,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="./index.php?action=banner">
                     <i class="fas fa-images"></i>
                     <span>Ảnh trình chiếu</span>
                 </a>
