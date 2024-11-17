@@ -156,7 +156,7 @@
                                             <td><?= $banner['title'] ?></td>
                                             <td>
                                                 <span class="status-badge <?= $banner['status'] ? 'status-active' : 'status-inactive' ?>">
-                                                    <?= $banner['status'] ? 'Hiển thị' : 'Ẩn' ?>
+                                                    <?= $banner['status'] ? 'Hiển thị' : 'Ẩn' ?>    
                                                 </span>
                                             </td>
                                             <td><?= date('d/m/Y H:i', strtotime($banner['created_at'])) ?></td>
