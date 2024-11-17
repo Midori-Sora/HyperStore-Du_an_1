@@ -48,17 +48,16 @@ class CategoryModel
         global $MainModel;
 
 
-        $stmt = $MainModel->SUNNY->prepare("UPDATE categories SET cate_name = ?, img = ?, description = ?, cate_status = ? WHERE cate_id = ?");
+        $stmt = $MainModel->SUNNY->prepare("UPDATE categories SET cate_name = ?, img = ?, description = ?, cate_status = ? WHERE cate_id = ? DESC");
 
 
-        if (!$stmt->execute([
+        if (!$stmt->execute([   
             $data['cate_name'],
             $data['img'],
             $data['description'],
             $data['cate_status'],
             $data['cate_id']
         ])) {
-
             print_r($stmt->errorInfo());
             return false;
         }
