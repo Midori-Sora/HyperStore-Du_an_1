@@ -74,10 +74,26 @@ class CategoryModel
     {
         global $MainModel;
         try {
+            // Bắt đầu transaction
+            $MainModel->SUNNY->beginTransaction();
+
+            // Xóa category
             $stmt = $MainModel->SUNNY->prepare("DELETE FROM categories WHERE cate_id = ?");
-            return $stmt->execute([$id]);
+            $result = $stmt->execute([$id]);
+
+            if ($result) {
+                // Nếu xóa thành công thì commit
+                $MainModel->SUNNY->commit();
+                return true;
+            } else {
+                // Nếu có lỗi thì rollback
+                $MainModel->SUNNY->rollBack();
+                return false;
+            }
         } catch (PDOException $e) {
-            echo "Delete category failed: " . $e->getMessage();
+            // Nếu có lỗi thì rollback
+            $MainModel->SUNNY->rollBack();
+            error_log("Delete category failed: " . $e->getMessage());
             return false;
         }
     }

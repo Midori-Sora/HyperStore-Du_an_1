@@ -100,11 +100,30 @@ class CategoryController
 
     public static function deleteCategoryController($id)
     {
-        if (CategoryModel::deleteCategory($id)) {
-            header("Location: index.php?action=category");
-            exit();
-        } else {
-            echo "Không thể xóa danh mục.";
+        try {
+            // Kiểm tra xem category có tồn tại không
+            $category = CategoryModel::getCategoryById($id);
+            if (!$category) {
+                $_SESSION['error'] = "Danh mục không tồn tại.";
+                header("Location: index.php?action=category");
+                exit();
+            }
+
+            // Thực hiện xóa
+            if (CategoryModel::deleteCategory($id)) {
+                // Xóa file ảnh nếu tồn tại
+                if (!empty($category['img']) && file_exists($category['img'])) {
+                    unlink($category['img']);
+                }
+                $_SESSION['success'] = "Xóa danh mục thành công.";
+            } else {
+                $_SESSION['error'] = "Không thể xóa danh mục.";
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Có lỗi xảy ra: " . $e->getMessage();
         }
+
+        header("Location: index.php?action=category");
+        exit();
     }
 }

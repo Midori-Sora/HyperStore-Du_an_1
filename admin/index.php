@@ -11,6 +11,9 @@ session_start();
 require_once 'controllers/mainController.php';
 require_once 'controllers/productController.php';
 require_once 'controllers/commentController.php';
+require_once 'controllers/categoryController.php';
+require_once 'controllers/userController.php';
+require_once 'controllers/bannerController.php';
 require_once "./commons/env.php";
 require_once "./commons/function.php";
 
@@ -37,5 +40,67 @@ switch ($action) {
         break;
     case 'deleteComment':
         CommentController::deleteCommentController();
+        break;
+    case 'category':
+        CategoryController::categoryController();
+        break;
+    
+    case 'addCategory':
+        CategoryController::addCategoryController();
+        break;
+    
+    case 'editCategory':
+        $id = $_GET['id'] ?? null;
+        if ($id) {
+            CategoryController::editCategoryController($id);
+        } else {
+            echo "Không tìm thấy ID danh mục.";
+        }
+        break;
+    
+    case 'updateCategory':
+        CategoryController::updateCategoryController();
+        break;
+    
+    case 'deleteCategory':
+            $id = $_GET['id'] ?? null;
+            if ($id) {
+                CategoryController::deleteCategoryController($id);
+            } else {
+                echo "Không tìm thấy ID danh mục để xóa.";
+        }
+        break;
+    
+    case 'editUser':
+        UserController::editUserController();
+        break;
+    
+    case 'storeUser':
+        UserController::storeUserController();
+        break;
+    
+    case 'user':
+        UserController::userController();
+        break;
+    
+    case 'addUser':
+        UserController::addUserController();
+        break;
+    
+    case 'updateUser':
+        UserController::updateUserController();
+        break;
+    
+    case 'deleteUser':
+        UserController::deleteUserController();
+        break;
+    case 'banner':
+        BannerController::bannerController();
+        break;
+    case 'addBanner':
+        BannerController::addBannerController();
+        break;
+    case 'deleteBanner':
+        BannerController::deleteBannerController();
         break;
 }
