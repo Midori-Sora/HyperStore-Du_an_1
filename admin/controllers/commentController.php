@@ -5,7 +5,7 @@ class CommentController {
     public static function commentController() {
         $commentModel = new CommentModel();
         $comments = $commentModel->getCommentList();
-        require_once './views/comment.php';
+        require_once './views/comment/comment.php';
     }
 
     public static function deleteCommentController() 
