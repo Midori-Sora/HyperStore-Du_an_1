@@ -8,6 +8,7 @@ class CommentModel extends MainModel {
             $sql = "SELECT 
                         c.com_id,
                         c.content,
+                        c.cmt_status,
                         DATE_FORMAT(c.import_date, '%d/%m/%Y %H:%i') as import_date,
                         c.pro_id,
                         p.pro_name,
@@ -25,20 +26,49 @@ class CommentModel extends MainModel {
 
     public function updateCommentStatus($id, $status) {
         try {
+            $checkSql = "SELECT com_id FROM comments WHERE com_id = :id";
+            $checkStmt = $this->SUNNY->prepare($checkSql);
+            $checkStmt->execute([':id' => $id]);
+            
+            if (!$checkStmt->fetch()) {
+                throw new Exception("Bình luận không tồn tại");
+            }
+
             $sql = "UPDATE comments 
-                    SET status = :status,
-                        updated_at = CURRENT_TIMESTAMP
+                    SET cmt_status = :status
                     WHERE com_id = :id";
 
             $stmt = $this->SUNNY->prepare($sql);
-            return $stmt->execute([
+            $result = $stmt->execute([
                 ':id' => $id,
                 ':status' => $status
             ]);
 
+            if (!$result) {
+                throw new Exception("Cập nhật thất bại");
+            }
+
+            return true;
+
         } catch (PDOException $e) {
             error_log("UpdateCommentStatus Error: " . $e->getMessage());
             throw new Exception("Không thể cập nhật trạng thái bình luận");
+        }
+    }
+
+    private function logCommentAction($commentId, $action) {
+        try {
+            $sql = "INSERT INTO comment_logs (comment_id, action, admin_id, created_at) 
+                    VALUES (:comment_id, :action, :admin_id, CURRENT_TIMESTAMP)";
+            
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([
+                ':comment_id' => $commentId,
+                ':action' => $action,
+                ':admin_id' => $_SESSION['admin_id'] ?? null
+            ]);
+        } catch (PDOException $e) {
+            error_log("Log Comment Action Error: " . $e->getMessage());
         }
     }
 

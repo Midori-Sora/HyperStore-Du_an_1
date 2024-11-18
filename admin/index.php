@@ -8,7 +8,7 @@ define('PATH_ROOT', dirname(__DIR__));
 session_start();
 
 
-require_once 'controllers/mainController.php';
+require_once 'controllers/homeController.php';
 require_once 'controllers/productController.php';
 require_once 'controllers/commentController.php';
 require_once 'controllers/categoryController.php';
@@ -21,7 +21,7 @@ $action = $_GET['action'] ?? 'home';
 
 switch ($action) {
     case 'home':
-        MainController::homeController();
+        HomeController::homeController();
         break;
     case 'product':
         ProductController::productController();
@@ -35,20 +35,42 @@ switch ($action) {
     case 'addProduct':
         ProductController::addProductController();
         break;
+    case 'productDetail':
+        ProductController::productDetailController();
+        break;
+    case 'productVariant':
+        ProductController::productVariantController();
+        break;
+    case 'addRam':
+        ProductController::addRamController();
+        break;
+    case 'addColor':
+        ProductController::addColorController();
+        break;
+    case 'deleteRam':
+        ProductController::deleteRamController();
+        break;
+    case 'deleteColor':
+        ProductController::deleteColorController();
+        break;
+    case 'updateQuantity':
+        ProductController::updateQuantityController();
+        break;
     case 'comment':
         CommentController::commentController();
         break;
     case 'deleteComment':
         CommentController::deleteCommentController();
         break;
+    case 'updateCommentStatus':
+        CommentController::updateStatusController();
+        break;
     case 'category':
         CategoryController::categoryController();
         break;
-    
     case 'addCategory':
         CategoryController::addCategoryController();
         break;
-    
     case 'editCategory':
         $id = $_GET['id'] ?? null;
         if ($id) {

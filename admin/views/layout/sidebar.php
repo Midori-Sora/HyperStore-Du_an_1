@@ -109,45 +109,56 @@
 </style>
 
 <body>
+    <?php
+    // Lấy action hiện tại từ URL
+    $currentAction = $_GET['action'] ?? 'home';
+    ?>
+
     <div class="sidebar-container">
         <ul>
-            <li class="active">
+            <li class="<?php echo $currentAction === 'home' ? 'active' : ''; ?>">
                 <a href="./index.php?action=home">
                     <i class="fas fa-home"></i>
                     <span>Thống kê</span>
                 </a>
             </li>
-            <li>
+            <li class="<?php echo $currentAction === 'category' ? 'active' : ''; ?>">
                 <a href="./index.php?action=category">
                     <i class="fas fa-list"></i>
                     <span>Danh mục</span>
                 </a>
             </li>
-            <li>
+            <li class="<?php echo $currentAction === 'banner' ? 'active' : ''; ?>">
                 <a href="./index.php?action=banner">
                     <i class="fas fa-images"></i>
                     <span>Ảnh trình chiếu</span>
                 </a>
             </li>
-            <li>
+            <li class="<?php echo $currentAction === 'product' ? 'active' : ''; ?>">
                 <a href="./index.php?action=product">
                     <i class="fas fa-mobile-alt"></i>
                     <span>Sản phẩm</span>
                 </a>
             </li>
-            <li>
+            <li class="<?php echo $currentAction === 'productVariant' ? 'active' : ''; ?>">
+                <a href="./index.php?action=productVariant">
+                    <i class="fas fa-sliders"></i>
+                    <span>Quản lý biến thể sản phẩm</span>
+                </a>
+            </li>
+            <li class="<?php echo $currentAction === 'user' ? 'active' : ''; ?>">
                 <a href="./index.php?action=user">
                     <i class="fas fa-users"></i>
                     <span>Tài khoản</span>
                 </a>
             </li>
             <li class="<?php echo $currentAction === 'comment' ? 'active' : ''; ?>">
-                <a href="index.php?action=comment">
+                <a href="./index.php?action=comment">
                     <i class="fas fa-comments"></i>
                     <span>Bình luận</span>
                 </a>
             </li>
-            <li>
+            <li class="<?php echo $currentAction === 'order' ? 'active' : ''; ?>">
                 <a href="#">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Đơn hàng</span>

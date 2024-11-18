@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" href="../Uploads/Logo/logo.png">
 </head>
 <style>
     * {
@@ -35,6 +36,9 @@
         margin-left: 270px;
     }
     .stats-card {
+        text-decoration: none;
+        color: inherit;
+        display: block;
         background: white;
         border-radius: 15px;
         padding: 25px;
@@ -42,9 +46,12 @@
         box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         transition: all 0.3s ease;
     }
+
     .stats-card:hover {
         transform: translateY(-5px);
         box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        text-decoration: none;
+        color: inherit;
     }
     .stats-card h5 {
         color: #666;
@@ -105,32 +112,46 @@
                 <!-- Thống kê tổng quan -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <div class="stats-card">
+                        <a href="#" class="stats-card">
                             <h5>Tổng doanh thu</h5>
-                            <h3 class="text-primary">150.000.000đ</h3>
-                            <p class="text-success"><i class="fas fa-arrow-up"></i> 15% so với tháng trước</p>
-                        </div>
+                            <h3 class="text-primary"><?php echo number_format($totalRevenue, 0, ',', '.'); ?>đ</h3>
+                            <p>
+                                <i class="fas fa-chart-line me-2"></i>Doanh thu hiện tại
+                            </p>
+                        </a>
                     </div>
                     <div class="col-md-3">
-                        <div class="stats-card">
-                            <h5>Đơn hàng mới</h5>
-                            <h3 class="text-success">45</h3>
-                            <p class="text-success"><i class="fas fa-arrow-up"></i> 8% so với tháng trước</p>
-                        </div>
+                        <a href="./index.php?action=product" class="stats-card">
+                            <h5>Sản phẩm</h5>
+                            <h3 class="text-success"><?php echo number_format($totalProducts['total']); ?></h3>
+                            <p>
+                                <i class="fas fa-check-circle me-2 text-success"></i>Hoạt động: <?php echo number_format($totalProducts['active']); ?>
+                                <br>
+                                <i class="fas fa-times-circle me-2 text-danger"></i>Không hoạt động: <?php echo number_format($totalProducts['inactive']); ?>
+                            </p>
+                        </a>
                     </div>
                     <div class="col-md-3">
-                        <div class="stats-card">
-                            <h5>Khách hàng mới</h5>
-                            <h3 class="text-info">128</h3>
-                            <p class="text-danger"><i class="fas fa-arrow-down"></i> 3% so với tháng trước</p>
-                        </div>
+                        <a href="./index.php?action=user" class="stats-card">
+                            <h5>Người dùng</h5>
+                            <h3 class="text-info"><?php echo number_format($totalUsers['total']); ?></h3>
+                            <p>
+                                <i class="fas fa-user-shield me-2"></i>Admin: <?php echo number_format($totalUsers['admin']); ?>
+                                <br>
+                                <i class="fas fa-users me-2"></i>Khách hàng: <?php echo number_format($totalUsers['customer']); ?>
+                            </p>
+                        </a>
                     </div>
                     <div class="col-md-3">
-                        <div class="stats-card">
-                            <h5>Tỷ lệ chuyển đổi</h5>
-                            <h3 class="text-warning">3.2%</h3>
-                            <p class="text-success"><i class="fas fa-arrow-up"></i> 1.2% so với tháng trước</p>
-                        </div>
+                        <a href="./index.php?action=comment" class="stats-card">
+                            <h5>Bình luận</h5>
+                            <h3 class="text-warning"><?php echo number_format($totalComments['total']); ?></h3>
+                            <p>
+                                <i class="fas fa-check me-2 text-success"></i>Đã duyệt: <?php echo number_format($totalComments['approved']); ?>
+                                <br>
+                                <i class="fas fa-clock me-2 text-warning"></i>Chờ duyệt: <?php echo number_format($totalComments['pending']); ?>
+                            </p>
+                        </a>
                     </div>
                 </div>
 
@@ -221,15 +242,16 @@
         new Chart(productCtx, {
             type: 'doughnut',
             data: {
-                labels: ['iPhone', 'Samsung', 'Xiaomi', 'Oppo', 'Khác'],
+                labels: ['iPhone 11', 'iPhone 12', 'iPhone 13', 'iPhone 14', 'iPhone 15', 'iPhone 16'],
                 datasets: [{
-                    data: [30, 25, 20, 15, 10],
+                    data: [30, 25, 20, 15, 10, 5],
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
                         'rgb(255, 205, 86)',
                         'rgb(75, 192, 192)',
-                        'rgb(153, 102, 255)'
+                        'rgb(153, 102, 255)',
+                        'rgb(255, 159, 64)'
                     ]
                 }]
             },

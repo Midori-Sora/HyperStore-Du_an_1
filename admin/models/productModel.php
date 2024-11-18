@@ -138,7 +138,10 @@ class ProductModel extends MainModel
     public function getRamOptions()
     {
         try {
-            $sql = "SELECT * FROM product_ram ORDER BY ram_price";
+            $sql = "SELECT * FROM product_ram 
+                    ORDER BY 
+                    ram_price ASC,
+                    CAST(REGEXP_REPLACE(ram_type, '[^0-9]', '') AS UNSIGNED)";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -158,6 +161,126 @@ class ProductModel extends MainModel
         } catch (PDOException $e) {
             error_log("Get color options error: " . $e->getMessage());
             return [];
+        }
+    }
+
+    public function addRam($ram_type, $ram_price) 
+    {
+        try {
+            $sql = "INSERT INTO product_ram (ram_type, ram_price) VALUES (:type, :price)";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([
+                ':type' => $ram_type,
+                ':price' => $ram_price
+            ]);
+        } catch (PDOException $e) {
+            error_log("Add RAM error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function editRam($ram_id, $ram_type, $ram_price)
+    {
+        try {
+            $sql = "UPDATE product_ram SET ram_type = :type, ram_price = :price WHERE ram_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([
+                ':type' => $ram_type,
+                ':price' => $ram_price,
+                ':id' => $ram_id
+            ]);
+        } catch (PDOException $e) {
+            error_log("Edit RAM error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteRam($ram_id)
+    {
+        try {
+            $sql = "DELETE FROM product_ram WHERE ram_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([':id' => $ram_id]);
+        } catch (PDOException $e) {
+            error_log("Delete RAM error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function addColor($color_type, $color_price)
+    {
+        try {
+            $sql = "INSERT INTO product_color (color_type, color_price) VALUES (:type, :price)";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([
+                ':type' => $color_type,
+                ':price' => $color_price
+            ]);
+        } catch (PDOException $e) {
+            error_log("Add color error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function editColor($color_id, $color_type, $color_price)
+    {
+        try {
+            $sql = "UPDATE product_color SET color_type = :type, color_price = :price WHERE color_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([
+                ':type' => $color_type,
+                ':price' => $color_price,
+                ':id' => $color_id
+            ]);
+        } catch (PDOException $e) {
+            error_log("Edit color error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function deleteColor($color_id)
+    {
+        try {
+            $sql = "DELETE FROM product_color WHERE color_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([':id' => $color_id]);
+        } catch (PDOException $e) {
+            error_log("Delete color error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function updateQuantity($pro_id, $quantity) 
+    {
+        try {
+            $sql = "UPDATE products SET quantity = :quantity WHERE pro_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            return $stmt->execute([
+                ':quantity' => $quantity,
+                ':id' => $pro_id
+            ]);
+        } catch (PDOException $e) {
+            error_log("Update quantity error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getProductDetail($id)
+    {
+        try {
+            $sql = "SELECT p.*, c.cate_name, pr.ram_type, pr.ram_price, pc.color_type, pc.color_price,
+                    (p.price + COALESCE(pr.ram_price, 0) + COALESCE(pc.color_price, 0)) as total_price
+                    FROM products p
+                    LEFT JOIN categories c ON p.cate_id = c.cate_id
+                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    WHERE p.pro_id = :id";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([':id' => $id]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Get product detail error: " . $e->getMessage());
+            return false;
         }
     }
 }
