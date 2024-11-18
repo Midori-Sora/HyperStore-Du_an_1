@@ -147,8 +147,8 @@
                     <span>Bình luận</span>
                 </a>
             </li>
-            <li>
-                <a href="#">
+            <li class="<?php echo $currentAction === 'order' ? 'active' : ''; ?>">
+                <a href="index.php?action=order">
                     <i class="fas fa-shopping-cart"></i>
                     <span>Đơn hàng</span>
                 </a>

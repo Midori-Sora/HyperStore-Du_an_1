@@ -8,14 +8,15 @@ define('PATH_ROOT', dirname(__DIR__));
 session_start();
 
 
+require_once "./commons/env.php"; // Load first for DB constants
+require_once "./commons/function.php"; // Load MainModel
 require_once 'controllers/mainController.php';
+require_once 'controllers/orderController.php'; // Move up
 require_once 'controllers/productController.php';
 require_once 'controllers/commentController.php';
 require_once 'controllers/categoryController.php';
 require_once 'controllers/userController.php';
 require_once 'controllers/bannerController.php';
-require_once "./commons/env.php";
-require_once "./commons/function.php";
 
 $action = $_GET['action'] ?? 'home';
 
@@ -102,5 +103,20 @@ switch ($action) {
         break;
     case 'deleteBanner':
         BannerController::deleteBannerController();
+        break;
+    case 'order':
+        OrderController::orderController();
+        break;
+    case 'orderDetail':
+        OrderController::orderDetailController();
+        break;
+    case 'updateOrderStatus':
+        OrderController::updateOrderStatusController();
+        break;
+    case 'searchOrder':
+        OrderController::searchOrderController();
+        break;
+    case 'sendSMS':
+        OrderController::sendSMSController();
         break;
 }
