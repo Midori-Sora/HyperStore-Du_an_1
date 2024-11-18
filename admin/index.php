@@ -95,7 +95,6 @@ switch ($action) {
             echo "Không tìm thấy ID danh mục để xóa.";
         }
         break;
-
     case 'editUser':
         UserController::editUserController();
         break;

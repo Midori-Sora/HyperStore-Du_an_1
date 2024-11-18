@@ -19,6 +19,12 @@
         {
             global $MainModel;
             try {
+                // Validate image before inserting
+                $imagePath = PATH_ROOT . '/' . $data['avatar'];
+                if (!self::validateImage($imagePath)) {
+                    throw new Exception("Ảnh không hợp lệ");
+                }
+
                 $stmt = $MainModel->SUNNY->prepare("INSERT INTO users (username, password, email, fullname, phone, address, avatar, role_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
                 return $stmt->execute([
                     $data['username'],
@@ -32,7 +38,7 @@
                     $data['status']
                 ]);
             } catch (PDOException $e) {
-                echo "Lỗi khi thêm người dùng: " . $e->getMessage();
+                error_log("Lỗi khi thêm người dùng: " . $e->getMessage());
                 return false;
             }
         }
@@ -132,5 +138,23 @@
             $stmt = $MainModel->SUNNY->prepare("SELECT COUNT(*) FROM users WHERE email = ?");
             $stmt->execute([$email]);
             return $stmt->fetchColumn() > 0;
+        }
+
+        public static function validateImage($imagePath)
+        {
+            // Kiểm tra xem file có tồn tại không
+            if (!file_exists($imagePath)) {
+                return false;
+            }
+
+            // Kiểm tra phần mở rộng của file
+            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+            $extension = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
+            
+            if (!in_array($extension, $allowedExtensions)) {
+                return false;
+            }
+
+            return true;
         }
     }

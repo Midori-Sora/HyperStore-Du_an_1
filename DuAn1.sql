@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 17, 2024 lúc 11:21 PM
+-- Thời gian đã tạo: Th10 18, 2024 lúc 12:53 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -130,17 +130,62 @@ INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`,
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
-  `order_code` varchar(20) NOT NULL,
-  `status` tinyint(1) DEFAULT 1,
-  `order_date` datetime DEFAULT current_timestamp(),
-  `pay_id` int(11) NOT NULL,
-  `pro_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `price` int(11) NOT NULL,
-  `total` int(11) DEFAULT NULL,
-  `ram_id` int(11) DEFAULT NULL,
-  `color_id` int(11) DEFAULT NULL
+  `order_code` varchar(50) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `total_amount` decimal(10,2) DEFAULT NULL,
+  `shipping_address` text DEFAULT NULL,
+  `shipping_phone` varchar(20) DEFAULT NULL,
+  `shipping_email` varchar(255) DEFAULT NULL,
+  `payment_method` tinyint(1) DEFAULT NULL,
+  `status` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `orders`
+--
+
+INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `payment_method`, `status`, `created_at`) VALUES
+(1, 'DH001', 1, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', 1, 1, '2024-03-18 01:30:00'),
+(2, 'DH002', 2, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', 2, 2, '2024-03-17 07:20:00'),
+(3, 'DH003', 3, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', 1, 3, '2024-03-16 09:45:00'),
+(4, 'DH004', 1, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', 2, 1, '2024-03-15 02:15:00'),
+(5, 'DH005', 2, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', 1, 2, '2024-03-14 04:30:00'),
+(6, 'DH006', 3, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', 2, 3, '2024-03-13 06:45:00'),
+(7, 'DH007', 1, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', 1, 1, '2024-03-12 08:20:00'),
+(8, 'DH008', 2, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', 2, 2, '2024-03-11 03:10:00'),
+(9, 'DH009', 3, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', 1, 3, '2024-03-10 05:30:00'),
+(10, 'DH010', 1, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', 2, 1, '2024-03-09 10:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `order_details`
+--
+
+CREATE TABLE `order_details` (
+  `detail_id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL,
+  `quantity` int(11) DEFAULT NULL,
+  `price` decimal(10,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `order_details`
+--
+
+INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
+(11, 1, 1, 1, 25990000.00),
+(12, 2, 2, 1, 31990000.00),
+(13, 3, 3, 1, 19990000.00),
+(14, 4, 4, 1, 45990000.00),
+(15, 5, 5, 1, 28990000.00),
+(16, 6, 6, 1, 33990000.00),
+(17, 7, 7, 1, 22990000.00),
+(18, 8, 8, 1, 41990000.00),
+(19, 9, 9, 1, 37990000.00),
+(20, 10, 10, 1, 29990000.00);
 
 -- --------------------------------------------------------
 
@@ -334,7 +379,7 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`) VALUES
 (1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 1, 1, '2024-11-13 07:46:27'),
-(2, 'duongbd', '$2y$10$lxw35rqoCgwKlI.LLZW1EuabrZJ.3OFKLC8g.Q51AuOIeKWg1lBY.', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:00:12'),
+(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:00:12'),
 (3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
 (4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
 (5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
@@ -383,10 +428,15 @@ ALTER TABLE `comments`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
-  ADD KEY `pay_id` (`pay_id`),
-  ADD KEY `pro_id` (`pro_id`),
-  ADD KEY `ram_id` (`ram_id`),
-  ADD KEY `color_id` (`color_id`);
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Chỉ mục cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD PRIMARY KEY (`detail_id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Chỉ mục cho bảng `payments`
@@ -477,7 +527,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT cho bảng `payments`
@@ -551,10 +607,14 @@ ALTER TABLE `comments`
 -- Các ràng buộc cho bảng `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`pay_id`) REFERENCES `payments` (`pay_id`),
-  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`),
-  ADD CONSTRAINT `orders_ibfk_3` FOREIGN KEY (`ram_id`) REFERENCES `product_ram` (`ram_id`) ON DELETE SET NULL,
-  ADD CONSTRAINT `orders_ibfk_4` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+
+--
+-- Các ràng buộc cho bảng `order_details`
+--
+ALTER TABLE `order_details`
+  ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`pro_id`);
 
 --
 -- Các ràng buộc cho bảng `payments`

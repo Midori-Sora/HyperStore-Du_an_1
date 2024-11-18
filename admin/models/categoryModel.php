@@ -48,7 +48,7 @@ class CategoryModel
         global $MainModel;
 
 
-        $stmt = $MainModel->SUNNY->prepare("UPDATE categories SET cate_name = ?, img = ?, description = ?, cate_status = ? WHERE cate_id = ? DESC");
+        $stmt = $MainModel->SUNNY->prepare("UPDATE categories SET cate_name = ?, img = ?, description = ?, cate_status = ? WHERE cate_id = ?");
 
 
         if (!$stmt->execute([   

@@ -159,7 +159,21 @@
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
-                            <input type="file" name="avatar" class="form-control" id="imageInput" accept="image/*">
+                            <select class="form-select" name="avatar" id="imageSelect">
+                                <option value="<?=$user['avatar']?>">Giữ ảnh hiện tại (<?=basename($user['avatar'])?>)</option>
+                                <?php 
+                                $imageDir = PATH_ROOT . '/Uploads/User/';
+                                $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
+                                foreach($images as $image): 
+                                    $imageName = basename($image);
+                                    if($imageName != basename($user['avatar'])):
+                                ?>
+                                    <option value="Uploads/User/<?php echo $imageName; ?>"><?php echo $imageName; ?></option>
+                                <?php 
+                                    endif;
+                                endforeach; 
+                                ?>
+                            </select>
                             <div class="preview-container mt-3" style="display: none;">
                                 <p class="mb-2">Xem trước ảnh mới:</p>
                                 <img id="preview" class="current-avatar" alt="Preview">
@@ -223,19 +237,15 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('imageInput').onchange = function(e) {
+        document.getElementById('imageSelect').onchange = function() {
             const preview = document.getElementById('preview');
             const previewContainer = document.querySelector('.preview-container');
-            const file = e.target.files[0];
+            const selectedImage = this.value;
             
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    previewContainer.style.display = 'block';
-                }
-                reader.readAsDataURL(file);
+            if(selectedImage && selectedImage !== '<?=$user['avatar']?>') {
+                preview.src = selectedImage;
+                preview.style.display = 'block';
+                previewContainer.style.display = 'block';
             } else {
                 preview.style.display = 'none';
                 previewContainer.style.display = 'none';

@@ -36,54 +36,57 @@ class UserController
     public static function storeUserController()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'username' => $_POST['username'],
-                'email' => $_POST['email'],
-                'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
-                'fullname' => $_POST['fullname'],
-                'phone' => $_POST['phone'],
-                'address' => $_POST['address'],
-                'role_id' => $_POST['role_id'],
-                'status' => isset($_POST['status']) ? 1 : 0,
-            ];
-
-
-            if (isset($_FILES['avata']) && $_FILES['avata']['error'] === UPLOAD_ERR_OK) {
-                $uploadDir = 'Uploads/User/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
+            try {
+                // Validate required fields
+                if (empty($_POST['username']) || empty($_POST['email']) || empty($_POST['password'])) {
+                    throw new Exception("Vui lòng điền đầy đủ thông tin bắt buộc");
                 }
 
-                $fileName = basename($_FILES['avata']['name']);
-                $uploadFilePath = $uploadDir . $fileName;
+                // Validate avatar selection
+                if (empty($_POST['avatar'])) {
+                    throw new Exception("Vui lòng chọn ảnh đại diện");
+                }
 
-                if (move_uploaded_file($_FILES['avata']['tmp_name'], $uploadFilePath)) {
-                    $data['avatar'] = $uploadFilePath;
+                $data = [
+                    'username' => $_POST['username'],
+                    'email' => $_POST['email'],
+                    'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
+                    'fullname' => $_POST['fullname'],
+                    'phone' => $_POST['phone'],
+                    'address' => $_POST['address'],
+                    'role_id' => $_POST['role_id'],
+                    'status' => isset($_POST['status']) ? 1 : 0,
+                    'avatar' => $_POST['avatar']
+                ];
+
+                // Check if username exists
+                if (UserModel::isUsernameExists($data['username'])) {
+                    throw new Exception("Tên người dùng đã tồn tại. Vui lòng chọn tên khác.");
+                }
+
+                // Check if email exists
+                if (UserModel::isEmailExists($data['email'])) {
+                    throw new Exception("Email đã tồn tại. Vui lòng chọn email khác.");
+                }
+
+                // Verify that the selected image exists
+                $imagePath = PATH_ROOT . '/' . $data['avatar'];
+                if (!file_exists($imagePath)) {
+                    throw new Exception("Ảnh đã chọn không tồn tại trong hệ thống");
+                }
+
+                if (UserModel::addUser($data)) {
+                    $_SESSION['success'] = "Thêm người dùng thành công";
+                    header("Location: index.php?action=user");
+                    exit();
                 } else {
-                    echo "Lỗi khi tải lên ảnh.";
-                    return;
+                    throw new Exception("Lỗi khi thêm người dùng vào cơ sở dữ liệu");
                 }
-            } else {
-                $data['avatar'] = null;
-            }
 
-            if (UserModel::isUsernameExists($data['username'])) {
-                echo "Tên người dùng đã tồn tại. Vui lòng chọn tên khác.";
-                return;
-            }
-
-
-            if (UserModel::isEmailExists($data['email'])) {
-                echo "Email đã tồn tại. Vui lòng chọn email khác.";
-                return;
-            }
-
-
-            if (UserModel::addUser($data)) {
-                header("Location: index.php?action=user");
+            } catch (Exception $e) {
+                $_SESSION['error'] = $e->getMessage();
+                header("Location: index.php?action=addUser");
                 exit();
-            } else {
-                echo "Lỗi khi thêm người dùng. Kiểm tra lại các thông tin và thử lại.";
             }
         }
 
@@ -105,38 +108,22 @@ class UserController
                 'address' => $_POST['address'],
                 'role_id' => $_POST['role_id'],
                 'status' => isset($_POST['status']) ? 1 : 0,
+                'avatar' => $_POST['avatar']
             ];
 
-
-            if (!empty($_FILES['avatar']['name'])) {
-                $uploadDir = 'Uploads/User/';
-                if (!is_dir($uploadDir)) {
-                    mkdir($uploadDir, 0777, true);
-                }
-
-                $fileName = basename($_FILES['avatar']['name']);
-                $uploadFilePath = $uploadDir . $fileName;
-
-                if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFilePath)) {
-                    $data['avatar'] = $uploadFilePath;
-                } else {
-                    echo "Lỗi khi tải lên ảnh.";
-                    return;
-                }
-            } else {
-
-                $user = UserModel::getUserById($data['user_id']);
-                $data['avatar'] = $user['avatar'];
+            if (!empty($_POST['password'])) {
+                $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
             }
 
             if (UserModel::updateUser($data)) {
                 header("Location: index.php?action=user");
                 exit();
             } else {
-                echo "Lỗi: Không thể cập nhật người dùng.";
+                $_SESSION['error'] = "Lỗi: Không thể cập nhật người dùng.";
+                header("Location: index.php?action=editUser&id=" . $data['user_id']);
+                exit();
             }
         }
-
 
         if (isset($_GET['id'])) {
             $user = UserModel::getUserById($_GET['id']);
