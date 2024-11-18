@@ -105,10 +105,16 @@
     }
     .comment-content {
         color: #4a5568;
-        max-width: 300px;
+        max-width: 200px; /* Giới hạn độ rộng tối đa */
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* Hiển thị tối đa 2 dòng */
+        -webkit-box-orient: vertical;
+        white-space: normal; /* Cho phép xuống dòng */
+        line-height: 1.4;
+        height: 2.8em; /* 2 dòng x 1.4 line-height */
     }
     .comment-date {
         color: #6c757d;
@@ -123,6 +129,9 @@
         border-radius: 8px;
         font-size: 0.9rem;
         transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
     }
     .btn-danger {
         background: #dc3545;
@@ -136,6 +145,19 @@
         border-radius: 12px;
         padding: 15px 20px;
         margin-bottom: 25px;
+    }
+    .btn-success {
+        background: #28a745;
+        border: none;
+        color: white;
+    }
+    .btn-success:hover {
+        background: #218838;
+        transform: translateY(-1px);
+    }
+    .btn-warning {
+        background: #ffc107;
+        border: none;
     }
 </style>
 <body>
@@ -180,11 +202,11 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>NGƯỜI DÙNG</th>
-                                        <th>SẢN PHẨM</th>
-                                        <th>NỘI DUNG</th>
-                                        <th>THỜI GIAN</th>
-                                        <th>THAO TÁC</th>
+                                        <th width="15%">NGƯỜI DÙNG</th>
+                                        <th width="20%">SẢN PHẨM</th>
+                                        <th width="20%">NỘI DUNG</th>
+                                        <th width="15%">THỜI GIAN</th>
+                                        <th width="30%">THAO TÁC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -215,12 +237,26 @@
                                             </span>
                                         </td>
                                         <td>
-                                            <div class="comment-actions">
+                                            <div class="comment-actions d-flex gap-2">
+                                                <?php if ($comment['cmt_status'] == 0): ?>
+                                                    <span class="badge bg-warning mb-2">Chờ duyệt</span>
+                                                    <a href="index.php?action=updateCommentStatus&id=<?= $comment['com_id'] ?>&status=1" 
+                                                       class="btn btn-success btn-sm"
+                                                       onclick="return confirm('Bạn có chắc muốn duyệt bình luận này?')">
+                                                        <i class="fas fa-check me-1"></i>Duyệt
+                                                    </a>
+                                                <?php else: ?>
+                                                    <span class="badge bg-success mb-2">Đã duyệt</span>
+                                                    <a href="index.php?action=updateCommentStatus&id=<?= $comment['com_id'] ?>&status=0" 
+                                                       class="btn btn-warning btn-sm"
+                                                       onclick="return confirm('Bạn có chắc muốn hủy duyệt bình luận này?')">
+                                                        <i class="fas fa-times me-1"></i>Hủy duyệt
+                                                    </a>
+                                                <?php endif; ?>
                                                 <a href="index.php?action=deleteComment&id=<?= $comment['com_id'] ?>" 
-                                                   class="btn btn-danger btn-action"
+                                                   class="btn btn-danger btn-sm"
                                                    onclick="return confirm('Bạn có chắc muốn xóa bình luận này?')">
-                                                    <i class="fas fa-trash-alt me-1"></i>
-                                                    Xóa
+                                                    <i class="fas fa-trash-alt me-1"></i>Xóa
                                                 </a>
                                             </div>
                                         </td>

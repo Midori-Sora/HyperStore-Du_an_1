@@ -4,20 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quản lý sản phẩm</title>
-    <link rel="stylesheet" href="././assets/css/admin/product.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
     body {
-        background: #f5f5f5;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: #f8f9fa;
         padding-top: 80px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
     .main {
         display: flex;
@@ -25,209 +19,83 @@
         margin: 0 auto;
         padding: 20px;
     }
-    .main main {
+    main {
         width: calc(100% - 270px);
         margin-left: 270px;
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-    .page-header {
+    .card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 20px;
+        border: none;
+    }
+    .card-header {
+        background: none;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 20px;
+        margin-bottom: 30px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 25px;
     }
     .btn-add {
         background: #1976D2;
         color: white;
-        padding: 10px 24px;
+        padding: 10px 20px;
         border-radius: 8px;
         text-decoration: none;
         transition: all 0.3s;
-        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
     }
     .btn-add:hover {
         background: #1565C0;
         color: white;
         transform: translateY(-2px);
     }
-    .table {
-        margin-top: 20px;
-        border-collapse: separate;
-        border-spacing: 0 8px;
-    }
-    .table th {
-        background: #f8f9fa;
-        color: #495057;
-        font-weight: 600;
-        padding: 15px;
-        border: none;
-    }
-    .table td {
-        padding: 15px;
-        vertical-align: middle;
-        background: white;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
-    }
-    .table tr td:first-child {
-        border-left: 1px solid #eee;
-        border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;
-    }
-    .table tr td:last-child {
-        border-right: 1px solid #eee;
-        border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px;
-    }
-    .table tr:hover td {
-        background: #f8f9fa;
-        transform: translateY(-1px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: all 0.2s;
-    }
     .product-image {
-        width: 60px;
+        width: 80px;
         height: 80px;
         object-fit: cover;
         border-radius: 8px;
     }
     .btn-action {
-        width: 36px;
-        height: 36px;
-        padding: 0;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        transition: all 0.2s ease;
-        border: none;
-    }
-    .btn-edit {
-        background: #4CAF50;
-        color: white;
-    }
-    .btn-delete {
-        background: #f44336;
-        color: white;
+        padding: 8px 15px;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s;
     }
     .btn-action:hover {
         transform: translateY(-2px);
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        opacity: 0.9;
     }
-    .btn-action i {
-        font-size: 14px;
-    }
-    .modal-content {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    .modal-header {
-        padding: 1rem 1rem 0;
-    }
-
-    .btn-close {
-        background-color: #f8f9fa;
-        padding: 0.5rem;
-        border-radius: 50%;
-    }
-
-    .btn-close:hover {
-        background-color: #e9ecef;
-        transform: rotate(90deg);
-        transition: all 0.3s ease;
-    }
-
-    .modal-body i.fa-exclamation-circle {
-        color: #ffc107;
-        text-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
-    }
-
-    .modal-body h4 {
-        color: #2c3345;
-        font-weight: 600;
-    }
-
-    .modal-body p {
-        color: #6c757d;
-    }
-
-    .btn {
-        border-radius: 8px;
+    .status-badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 13px;
         font-weight: 500;
-        transition: all 0.3s ease;
     }
-
-    .btn:hover {
-        transform: translateY(-2px);
+    .status-active {
+        background: #e8f5e9;
+        color: #2e7d32;
     }
-
-    .btn-secondary {
-        background-color: #f8f9fa;
-        border: none;
-        color: #6c757d;
+    .status-inactive {
+        background: #ffebee;
+        color: #c62828;
     }
-
-    .btn-secondary:hover {
-        background-color: #e9ecef;
-        color: #2c3345;
-    }
-
-    .btn-danger {
-        background-color: #dc3545;
-        border: none;
-    }
-
-    .btn-danger:hover {
-        background-color: #c82333;
-    }
-
-    .badge {
-        padding: 8px 12px;
-        font-size: 12px;
-        font-weight: 500;
-        border-radius: 6px;
-    }
-
-    .bg-success {
-        background-color: #28a745 !important;
-    }
-
-    .bg-danger {
-        background-color: #dc3545 !important;
-    }
-
-    /* Style mới cho cột thao tác */
-    .action-column {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        align-items: center;
-    }
-
     .option-item {
         background: #f8f9fa;
         padding: 6px 12px;
         border-radius: 6px;
         font-size: 13px;
-        margin-bottom: 4px;
         display: inline-block;
     }
-    
     .price-tag {
         color: #28a745;
         font-weight: 500;
         margin-left: 4px;
-    }
-    
-    .text-muted {
-        color: #6c757d;
-        font-size: 13px;
     }
 </style>
 <body>
@@ -239,112 +107,105 @@
             <?php include './views/layout/sidebar.php'; ?>
         </div>
         <main>
-            <div class="container-fluid">
-                <div class="page-header">
-                    <h2>Quản lý sản phẩm</h2>
-                    <a href="?action=addProduct" class="btn-add">
-                        <i class="fas fa-plus"></i> Thêm sản phẩm mới
-                    </a>
-                </div>
-                <?php if (isset($_SESSION['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <?php 
-                            echo $_SESSION['success'];
-                            unset($_SESSION['success']);
-                        ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>
+                            <i class="fas fa-box me-2"></i>
+                            Quản lý sản phẩm
+                        </h2>
+                        <a href="?action=addProduct" class="btn-add">
+                            <i class="fas fa-plus"></i>
+                            Thêm sản phẩm mới
+                        </a>
                     </div>
-                <?php endif; ?>
 
-                <?php if (isset($_SESSION['error'])): ?>
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <?php 
-                            echo $_SESSION['error'];
-                            unset($_SESSION['error']);
-                        ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <?php if (isset($_SESSION['success'])): ?>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <?php 
+                                echo $_SESSION['success'];
+                                unset($_SESSION['success']);
+                            ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <?php if (isset($_SESSION['error'])): ?>
+                        <div class="alert alert-danger alert-dismissible fade show">
+                            <i class="fas fa-exclamation-circle me-2"></i>
+                            <?php 
+                                echo $_SESSION['error'];
+                                unset($_SESSION['error']);
+                            ?>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th width="5%">ID</th>
+                                    <th width="15%">Tên sản phẩm</th>
+                                    <th width="10%">Hình ảnh</th>
+                                    <th width="10%">Giá gốc</th>
+                                    <th width="10%">Số lượng</th>
+                                    <th width="10%">Danh mục</th>
+                                    <th width="10%">Trạng thái</th>
+                                    <th width="20%">Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach($products as $product): ?>
+                                    <tr>
+                                        <td><?php echo $product['pro_id']; ?></td>
+                                        <td><?php echo $product['pro_name']; ?></td>
+                                        <td>
+                                            <img src="../Uploads/Product/<?php echo $product['img']; ?>" 
+                                                 class="product-image"
+                                                 alt="Product">
+                                        </td>
+                                        <td>
+                                            <strong><?php echo number_format($product['price'], 0, ',', '.'); ?> đ</strong>
+                                        </td>
+                                        <td>
+                                            <?php echo $product['quantity']; ?>
+                                        </td>
+                                        <td><?php echo $product['cate_name']; ?></td>
+                                        <td>
+                                            <span class="status-badge <?php echo $product['pro_status'] == 1 ? 'status-active' : 'status-inactive'; ?>">
+                                                <?php echo $product['pro_status'] == 1 ? 'Hoạt động' : 'Không hoạt động'; ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="?action=productDetail&id=<?php echo $product['pro_id']; ?>" 
+                                                class="btn btn-info btn-action me-2">
+                                                <i class="fas fa-eye me-1"></i>
+                                                Chi tiết
+                                            </a>
+                                            <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
+                                               class="btn btn-success btn-action me-2">
+                                                <i class="fas fa-edit me-1"></i>
+                                                Sửa
+                                            </a>
+                                            <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
+                                               class="btn btn-danger btn-action"
+                                               onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                                <i class="fas fa-trash me-1"></i>
+                                                Xóa
+                                            </a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
                     </div>
-                <?php endif; ?>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên sản phẩm</th>
-                                <th>Hình ảnh</th>
-                                <th>Giá gốc</th>
-                                <th>RAM</th>
-                                <th>Màu sắc</th>
-                                <th>Tổng giá</th>
-                                <th>Danh mục</th>
-                                <th>Trạng thái</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($products as $product): ?>
-                            <tr>
-                                <td><?php echo $product['pro_id']; ?></td>
-                                <td><?php echo $product['pro_name']; ?></td>
-                                <td><img src="../Uploads/Product/<?php echo $product['img']; ?>" class="product-image"></td>
-                                <td><?php echo number_format($product['price'], 0, ',', '.'); ?> đ</td>
-                                <td>
-                                    <?php if($product['ram_type']): ?>
-                                        <div class="option-item">
-                                            <?php echo $product['ram_type']; ?>
-                                            <span class="price-tag">
-                                                +<?php echo number_format($product['ram_price'], 0, ',', '.'); ?> đ
-                                            </span>
-                                        </div>
-                                    <?php else: ?>
-                                        <span class="text-muted">Chưa có</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <?php if($product['color_type']): ?>
-                                        <div class="option-item">
-                                            <?php echo $product['color_type']; ?>
-                                            <span class="price-tag">
-                                                +<?php echo number_format($product['color_price'], 0, ',', '.'); ?> đ
-                                            </span>
-                                        </div>
-                                    <?php else: ?>
-                                        <span class="text-muted">Chưa có</span>
-                                    <?php endif; ?>
-                                </td>
-                                <td>
-                                    <strong><?php echo number_format($product['total_price'], 0, ',', '.'); ?> đ</strong>
-                                </td>
-                                <td><?php echo $product['cate_name']; ?></td>
-                                <td>
-                                    <?php 
-                                        echo $product['pro_status'] == 1 ? 
-                                            '<span class="badge bg-success">Hoạt động</span>' : 
-                                            '<span class="badge bg-danger">Không hoạt động</span>'; 
-                                    ?>
-                                </td>
-                                <td>
-                                    <div class="action-column">
-                                        <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
-                                            class="btn-action btn-edit" 
-                                            title="Sửa">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
-                                            class="btn-action btn-delete" 
-                                            onclick="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?')"
-                                            title="Xóa">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

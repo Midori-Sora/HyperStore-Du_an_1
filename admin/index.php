@@ -7,22 +7,22 @@ define('PATH_ROOT', dirname(__DIR__));
 
 session_start();
 
-
-require_once "./commons/env.php"; // Load first for DB constants
-require_once "./commons/function.php"; // Load MainModel
-require_once 'controllers/mainController.php';
-require_once 'controllers/orderController.php'; // Move up
+require_once 'controllers/homeController.php';
 require_once 'controllers/productController.php';
 require_once 'controllers/commentController.php';
 require_once 'controllers/categoryController.php';
 require_once 'controllers/userController.php';
 require_once 'controllers/bannerController.php';
+require_once 'controllers/orderController.php';
+
+require_once "./commons/env.php";
+require_once "./commons/function.php";
 
 $action = $_GET['action'] ?? 'home';
 
 switch ($action) {
     case 'home':
-        MainController::homeController();
+        HomeController::homeController();
         break;
     case 'product':
         ProductController::productController();
@@ -36,11 +36,35 @@ switch ($action) {
     case 'addProduct':
         ProductController::addProductController();
         break;
+    case 'productDetail':
+        ProductController::productDetailController();
+        break;
+    case 'productVariant':
+        ProductController::productVariantController();
+        break;
+    case 'addRam':
+        ProductController::addRamController();
+        break;
+    case 'addColor':
+        ProductController::addColorController();
+        break;
+    case 'deleteRam':
+        ProductController::deleteRamController();
+        break;
+    case 'deleteColor':
+        ProductController::deleteColorController();
+        break;
+    case 'updateQuantity':
+        ProductController::updateQuantityController();
+        break;
     case 'comment':
         CommentController::commentController();
         break;
     case 'deleteComment':
         CommentController::deleteCommentController();
+        break;
+    case 'updateCommentStatus':
+        CommentController::updateStatusController();
         break;
     case 'category':
         CategoryController::categoryController();

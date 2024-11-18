@@ -7,244 +7,249 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        .form-container {
-            background: #ffffff;
+        body {
+            background: #f5f5f5;
+            padding-top: 80px;
+        }
+        .main {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        main {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+        }
+        .card {
+            background: white;
             border-radius: 15px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-            padding: 35px 40px;
-            max-width: 850px;
-            margin: 40px auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            padding: 30px;
+            margin-bottom: 20px;
         }
-
-        .page-title {
-            color: #2c3e50;
-            font-weight: 700;
-            margin-bottom: 30px;
-            position: relative;
+        .card-header {
+            background: none;
+            border-bottom: 2px solid #f0f0f0;
             padding-bottom: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-align: center;
-            font-size: 1.8rem;
+            margin-bottom: 25px;
         }
-
-        .page-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: linear-gradient(to right, #3498db, #2980b9);
-            border-radius: 2px;
-        }
-
-        .form-group {
-            margin-bottom: 22px;
-            position: relative;
-        }
-
-        .form-label {
+        .card-header h2 {
+            margin: 0;
+            color: #2c3345;
+            font-size: 24px;
             font-weight: 600;
-            color: #34495e;
-            margin-bottom: 8px;
-            font-size: 0.92rem;
-            display: block;
         }
-
+        .form-label {
+            font-weight: 500;
+            color: #2c3345;
+            margin-bottom: 8px;
+        }
         .form-control {
-            border: 2px solid #e9ecef;
             border-radius: 8px;
             padding: 12px 15px;
-            font-size: 0.95rem;
+            border: 1px solid #dce0e4;
+            margin-bottom: 20px;
             transition: all 0.3s ease;
-            background-color: #f8f9fa;
         }
-
         .form-control:focus {
-            border-color: #3498db;
-            box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.1);
-            background-color: #fff;
+            border-color: #1976D2;
+            box-shadow: 0 0 0 0.2rem rgba(25,118,210,0.1);
         }
-
-        .form-control-file {
-            padding: 12px;
-            background: #f8f9fa;
-            border: 2px dashed #bdc3c7;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-
-        .form-control-file:hover {
-            border-color: #3498db;
-            background: #ecf0f1;
-        }
-
         textarea.form-control {
-            min-height: 100px;
-            resize: vertical;
+            min-height: 120px;
         }
-
-        select.form-control {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 15px center;
-            background-size: 16px;
-            padding-right: 45px;
-        }
-
-        .form-check {
-            margin: 20px 0;
-            padding-left: 30px;
-        }
-
-        .form-check-input {
-            width: 18px;
-            height: 18px;
-            margin-right: 8px;
-            cursor: pointer;
-            border: 2px solid #bdc3c7;
-        }
-
-        .form-check-input:checked {
-            background-color: #3498db;
-            border-color: #3498db;
-        }
-
-        .form-check-label {
-            font-weight: 500;
-            cursor: pointer;
-            color: #34495e;
-        }
-
-        .btn-submit {
-            background: linear-gradient(45deg, #3498db, #2980b9);
-            border: none;
-            padding: 14px 35px;
-            font-weight: 600;
-            font-size: 1rem;
-            letter-spacing: 0.5px;
+        .form-select {
             border-radius: 8px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
-            width: 100%;
-            margin-top: 15px;
+            padding: 12px 15px;
+            border: 1px solid #dce0e4;
+            margin-bottom: 20px;
+            height: auto;
+        }
+        .form-select:focus {
+            border-color: #1976D2;
+            box-shadow: 0 0 0 0.2rem rgba(25,118,210,0.1);
+        }
+        .btn-submit {
+            background: #1976D2;
             color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
         }
-
         .btn-submit:hover {
+            background: #1565C0;
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.3);
-            background: linear-gradient(45deg, #2980b9, #3498db);
         }
-
-        .form-icon {
-            color: #3498db;
-            margin-right: 8px;
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+            padding: 12px 30px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 500;
+            margin-right: 10px;
+            transition: all 0.3s ease;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        .btn-cancel:hover {
+            background: #e0e0e0;
         }
-
-        .form-container {
-            animation: fadeIn 0.5s ease-out;
+        .preview-container {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
         }
-
-        .col-md-10 {
-            padding-top: 20px;
+        .preview-image {
+            max-width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: none;
         }
     </style>
 </head>
 
-<body class="bg-light">
-    <?php include "./views/layout/header.php"; ?>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-2">
-                <?php include "./views/layout/sidebar.php"; ?>
-            </div>
-            <div class="col-md-10">
-                <div class="form-container">
-                    <h2 class="page-title">Thêm Người Dùng Mới</h2>
-                    <form action="index.php?action=storeUser" method="POST" enctype="multipart/form-data">
-                        <div class="form-group">
-                            <label class="form-label" for="username">
-                                <i class="fas fa-user me-2"></i>Tên người dùng
-                            </label>
-                            <input type="text" class="form-control" id="username" name="username" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="email">
-                                <i class="fas fa-envelope me-2"></i>Email
-                            </label>
-                            <input type="email" class="form-control" id="email" name="email" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="password">
-                                <i class="fas fa-lock me-2"></i>Mật khẩu
-                            </label>
-                            <input type="password" class="form-control" id="password" name="password" required>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="fullname">
-                                <i class="fas fa-id-card me-2"></i>Họ và tên
-                            </label>
-                            <input type="text" class="form-control" id="fullname" name="fullname">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="phone">
-                                <i class="fas fa-phone me-2"></i>Số điện thoại
-                            </label>
-                            <input type="text" class="form-control" id="phone" name="phone">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="address">
-                                <i class="fas fa-map-marker-alt me-2"></i>Địa chỉ
-                            </label>
-                            <textarea class="form-control" id="address" name="address"></textarea>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="avatar">
-                                <i class="fas fa-image me-2"></i>Ảnh đại diện
-                            </label>
-                            <input type="file" class="form-control form-control-file" id="avatar" name="avata">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label class="form-label" for="role_id">
-                                <i class="fas fa-user-shield me-2"></i>Quyền
-                            </label>
-                            <select class="form-control" id="role_id" name="role_id">
-                                <option value="1">Admin</option>
-                                <option value="2">User</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="status" name="status" checked>
-                            <label class="form-check-label" for="status">
-                                <i class="fas fa-toggle-on me-2"></i>Hoạt động
-                            </label>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-primary btn-submit">
-                            <i class="fas fa-user-plus me-2"></i>Thêm người dùng
-                        </button>
-                    </form>
+<body>
+    <header>
+        <?php include './views/layout/header.php' ?>
+    </header>
+    <div class="main">
+        <div class="sidebar">
+            <?php include './views/layout/sidebar.php'; ?>
+        </div>
+        <main>
+            <div class="container">
+                <div class="card">
+                    <div class="card-header">
+                        <h2><i class="fas fa-user-plus me-2"></i>Thêm người dùng mới</h2>
+                    </div>
+                    <div class="card-body">
+                        <?php if (isset($_SESSION['error'])): ?>
+                            <div class="alert alert-danger">
+                                <?php 
+                                    echo $_SESSION['error'];
+                                    unset($_SESSION['error']);
+                                ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="index.php?action=storeUser" method="POST" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-user me-2"></i>Tên người dùng
+                                        </label>
+                                        <input type="text" class="form-control" name="username" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-envelope me-2"></i>Email
+                                        </label>
+                                        <input type="email" class="form-control" name="email" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-lock me-2"></i>Mật khẩu
+                                        </label>
+                                        <input type="password" class="form-control" name="password" required>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-id-card me-2"></i>Họ và tên
+                                        </label>
+                                        <input type="text" class="form-control" name="fullname">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-phone me-2"></i>Số điện thoại
+                                        </label>
+                                        <input type="text" class="form-control" name="phone">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-map-marker-alt me-2"></i>Địa chỉ
+                                        </label>
+                                        <textarea class="form-control" name="address" rows="4"></textarea>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-image me-2"></i>Ảnh đại diện
+                                        </label>
+                                        <input type="file" class="form-control" name="avata" id="imageInput" accept="image/*">
+                                        <div class="preview-container" style="display: none;">
+                                            <p class="mb-2">Xem trước ảnh:</p>
+                                            <img id="preview" class="preview-image" alt="Preview">
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label class="form-label">
+                                            <i class="fas fa-user-shield me-2"></i>Quyền
+                                        </label>
+                                        <select class="form-select" name="role_id">
+                                            <option value="1">Admin</option>
+                                            <option value="2">User</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="form-check mb-3">
+                                        <input type="checkbox" class="form-check-input" name="status" value="1" checked>
+                                        <label class="form-check-label">
+                                            <i class="fas fa-toggle-on me-2"></i>Hoạt động
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="text-end mt-4">
+                                <a href="?action=user" class="btn btn-cancel">
+                                    <i class="fas fa-times me-2"></i>Hủy
+                                </a>
+                                <button type="submit" class="btn btn-submit">
+                                    <i class="fas fa-save me-2"></i>Lưu người dùng
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
+        </main>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('imageInput').onchange = function(e) {
+            const preview = document.getElementById('preview');
+            const previewContainer = document.querySelector('.preview-container');
+            const file = e.target.files[0];
+            
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    previewContainer.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            } else {
+                preview.style.display = 'none';
+                previewContainer.style.display = 'none';
+            }
+        }
+    </script>
 </body>
 
 </html>

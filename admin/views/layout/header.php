@@ -23,6 +23,16 @@
         align-items: center;
     }
 
+    .nav-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .nav-left img {
+        width: 10%;
+    }
+
     .nav-left h3 {
         color: #1976D2;
         font-size: 24px;
@@ -89,6 +99,7 @@
     <header class="header">
         <nav class="nav">
             <div class="nav-left">
+                <img src="../Uploads/Logo/logo.png" alt="Logo">
                 <h3>Admin Dashboard</h3>
             </div>
             <div class="nav-right">

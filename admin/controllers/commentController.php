@@ -33,5 +33,36 @@ class CommentController {
             exit();
         }
     }
+
+    public static function updateStatusController() {
+        try {
+            if (!isset($_GET['id']) || !isset($_GET['status'])) {
+                throw new Exception('Thiếu thông tin cần thiết');
+            }
+            
+            $id = (int)$_GET['id'];
+            $status = (int)$_GET['status'];
+            
+            if (!in_array($status, [0, 1])) {
+                throw new Exception('Trạng thái không hợp lệ');
+            }
+            
+            $commentModel = new CommentModel();
+            
+            if ($commentModel->updateCommentStatus($id, $status)) {
+                $_SESSION['success'] = $status == 1 ? 
+                    'Duyệt bình luận thành công' : 
+                    'Hủy duyệt bình luận thành công';
+            } else {
+                throw new Exception('Cập nhật trạng thái thất bại');
+            }
+            
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
+        }
+        
+        header('Location: index.php?action=comment');
+        exit();
+    }
 }
 ?>

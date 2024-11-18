@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 16, 2024 lúc 06:28 PM
+-- Thời gian đã tạo: Th10 17, 2024 lúc 11:21 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -83,12 +83,12 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`cate_id`, `cate_name`, `img`, `description`, `cate_status`) VALUES
-(1, 'iPhone 11', 'Category/apple.webp', NULL, 1),
-(2, 'iPhone 12', 'Category/apple.webp', NULL, 1),
-(3, 'iPhone 13', 'Category/apple.webp', NULL, 1),
-(4, 'iPhone 14', 'Category/apple.webp', NULL, 1),
-(5, 'iPhone 15', 'Category/apple.webp', NULL, 1),
-(6, 'iPhone 16', 'Category/apple.webp', NULL, 1);
+(1, 'iPhone 11', '../uploads/Category/apple.webp', '', 1),
+(3, 'iPhone 13', '../uploads/Category/apple.webp', '', 1),
+(4, 'iPhone 14', '../uploads/Category/apple.webp', '', 1),
+(5, 'iPhone 15', '../uploads/Category/apple.webp', '', 1),
+(6, 'iPhone 16', '../uploads/Category/apple.webp', '', 1),
+(7, 'iPhone 12', 'uploads/Category/apple.webp', '', 1);
 
 -- --------------------------------------------------------
 
@@ -101,15 +101,26 @@ CREATE TABLE `comments` (
   `content` varchar(255) NOT NULL,
   `user_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
-  `import_date` datetime DEFAULT current_timestamp()
+  `import_date` datetime DEFAULT current_timestamp(),
+  `cmt_status` tinyint(1) NOT NULL DEFAULT 0 COMMENT '0: Chờ duyệt, 1: Đã duyệt'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `comments`
 --
 
-INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`) VALUES
-(1, 'Sản phẩm tốt', 1, 1, '2024-11-13 14:46:48');
+INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`, `cmt_status`) VALUES
+(1, 'Sản phẩm tốt', 1, 1, '2024-11-13 14:46:48', 1),
+(2, 'iPhone chạy rất mượt, pin trâu. Camera chụp đẹp trong mọi điều kiện ánh sáng.', 2, 1, '2024-03-15 08:30:00', 1),
+(3, 'Mình đã dùng được 2 tháng, máy hoạt động tốt. Tuy nhiên giá hơi cao.', 3, 1, '2024-03-14 15:45:00', 0),
+(4, 'Thiết kế đẹp, cầm vừa tay. Màn hình hiển thị sắc nét.', 4, 2, '2024-03-13 10:20:00', 1),
+(5, 'Sản phẩm tốt, đóng gói cẩn thận. Nhân viên tư vấn nhiệt tình.', 5, 2, '2024-03-12 14:15:00', 1),
+(6, 'Face ID nhận diện nhanh và chính xác. Chơi game không bị giật lag.', 6, 3, '2024-03-11 09:30:00', 1),
+(7, 'Máy đẹp, chụp ảnh xóa phông tốt. Tuy nhiên pin hơi tụt nhanh khi chơi game.', 7, 3, '2024-03-10 16:40:00', 1),
+(8, 'Mua về dùng rất hài lòng. Giao hàng nhanh, đúng mẫu như hình.', 8, 4, '2024-03-09 11:25:00', 0),
+(9, 'Sạc nhanh, màn hình 120Hz mượt mà. Khuyên mọi người nên mua.', 9, 4, '2024-03-08 13:50:00', 1),
+(10, 'Camera chụp đêm rất tốt. Màu sắc trung thực, chi tiết cao.', 2, 5, '2024-03-07 10:15:00', 0),
+(11, 'Máy mỏng nhẹ, thời lượng pin đủ dùng cả ngày dài.', 3, 5, '2024-03-06 15:30:00', 1);
 
 -- --------------------------------------------------------
 
@@ -160,6 +171,7 @@ CREATE TABLE `products` (
   `pro_id` int(11) NOT NULL,
   `pro_name` varchar(50) NOT NULL,
   `price` int(11) NOT NULL,
+  `quantity` int(11) DEFAULT 0,
   `img` varchar(255) NOT NULL,
   `import_date` date DEFAULT NULL,
   `description` text DEFAULT NULL,
@@ -174,27 +186,25 @@ CREATE TABLE `products` (
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `ram_id`, `color_id`) VALUES
-(1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 'iphone-16-nau.png', '2024-11-13', '', 0, 1, 6, 2, 1),
-(2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
-(3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 'iphone-16-nau.png', '2024-11-17', '', 0, 1, 6, 1, 1),
-(4, 'iPhone 16 128GB | Chính hãng VN/A', 22090000, 'iphone-16-xanh.png', '2024-11-17', '', 0, 1, 6, 1, 4),
-(5, 'iPhone 15 128GB | Chính hãng VN/A', 19690000, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
-(6, 'iPhone 13 128GB | Chính hãng VN/A', 13450000, 'iphone-13-hong.png', '2024-11-17', '', 0, 1, 3, 1, 6),
-(7, 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 25590000, 'iphone-14-den.png', '2024-11-17', '', 0, 1, 4, 1, 1),
-(8, 'iPhone 16 Pro Max 512GB | Chính hãng VN/A', 40790000, 'iphone-16-nau.png', '2024-11-17', '', 0, 1, 6, 3, 1),
-(9, 'iPhone 15 Plus 128GB | Chính hãng VN/A', 22690000, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
-(10, 'iPhone 14 Pro 128GB | Chính hãng VN/A', 22990000, 'iphone-14-den.png', '2024-11-17', '', 0, 1, 4, 1, 1),
-(11, 'iPhone 15 Pro 128GB | Chính hãng VN/A', 26690000, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 1, 1),
-(12, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 'iphone-12.png', '2024-11-17', '', 0, 1, 2, 1, 3),
-(13, 'iPhone 13 Pro Max 128GB | Chính hãng VN/A', 22990000, 'iphone-13-xanhmongket.png', '2024-11-17', '', 0, 1, 3, 1, 5),
-(14, 'iPhone 16 Plus 128GB | Chính hãng VN/A', 25490000, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
-(15, 'iPhone 14 Pro Max 256GB | Chính hãng VN/A', 27990000, 'iphone-14-vangkim.png', '2024-11-17', '', 0, 1, 4, 2, 3),
-(16, 'iPhone 11 64GB | Chính hãng VN/A', 8990000, 'iphone-11-trang.png', '2024-11-17', '', 0, 1, 1, 1, 2),
-(17, 'iPhone 14 128GB | Chính hãng VN/A', 17390000, 'iphone-14-vang.png', '2024-11-17', '', 0, 1, 4, 1, 3),
-(18, 'iPhone 12 64GB | Chính hãng VN/A', 10990000, 'iphone-12-den.png', '2024-11-17', '', 0, 1, 1, 1, 1),
-(19, 'iPhone 13 256GB | Chính hãng VN/A', 17290000, 'iphone-13-xanhmongket.png', '2024-11-17', '', 0, 1, 3, 2, 5),
-(20, 'iPhone 11 128GB | Chính hãng VN/A', 10090000, 'iphone-11-do.png', '2024-11-17', '', 0, 1, 1, 1, 7);
+INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `ram_id`, `color_id`) VALUES
+(1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 50, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
+(2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
+(3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 50, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
+(4, 'iPhone 16 128GB | Chính hãng VN/A', 22090000, 50, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
+(5, 'iPhone 15 128GB | Chính hãng VN/A', 19690000, 50, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
+(6, 'iPhone 13 128GB | Chính hãng VN/A', 13450000, 50, 'iphone-13-hong.png', '2024-11-17', '', 0, 1, 3, 1, 6),
+(7, 'iPhone 14 Pro Max 128GB | Chính hãng VN/A', 25590000, 50, 'iphone-14-den.png', '2024-11-17', '', 0, 1, 4, 1, 1),
+(8, 'iPhone 16 Pro Max 512GB | Chính hãng VN/A', 40790000, 50, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 3, 1),
+(9, 'iPhone 15 Plus 128GB | Chính hãng VN/A', 22690000, 50, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
+(10, 'iPhone 14 Pro 128GB | Chính hãng VN/A', 22990000, 50, 'iphone-14-den.png', '2024-11-17', '', 0, 1, 4, 1, 1),
+(11, 'iPhone 15 Pro 128GB | Chính hãng VN/A', 26690000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 1, 1),
+(13, 'iPhone 13 Pro Max 128GB | Chính hãng VN/A', 22990000, 50, 'iphone-13-xanhmongket.png', '2024-11-17', '', 0, 1, 3, 1, 5),
+(14, 'iPhone 16 Plus 128GB | Chính hãng VN/A', 25490000, 50, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
+(15, 'iPhone 14 Pro Max 256GB | Chính hãng VN/A', 27990000, 50, 'iphone-14-vangkim.png', '2024-11-17', '', 0, 1, 4, 2, 3),
+(16, 'iPhone 11 64GB | Chính hãng VN/A', 8990000, 50, 'iphone-11-trang.png', '2024-11-17', '', 0, 1, 1, 1, 2),
+(17, 'iPhone 14 128GB | Chính hãng VN/A', 17390000, 50, 'iphone-14-vang.png', '2024-11-17', '', 0, 1, 4, 1, 3),
+(19, 'iPhone 13 256GB | Chính hãng VN/A', 17290000, 50, 'iphone-13-xanhmongket.png', '2024-11-17', '', 0, 1, 3, 2, 5),
+(20, 'iPhone 11 128GB | Chính hãng VN/A', 10090000, 50, 'iphone-11-do.png', '2024-11-17', '', 0, 1, 1, 1, 7);
 
 -- --------------------------------------------------------
 
@@ -260,7 +270,9 @@ CREATE TABLE `product_ram` (
 INSERT INTO `product_ram` (`ram_id`, `ram_type`, `ram_price`, `created_at`) VALUES
 (1, '128GB', 0.00, '2024-11-12 20:16:16'),
 (2, '256GB', 200000.00, '2024-11-12 20:16:16'),
-(3, '512GB', 500000.00, '2024-11-12 20:16:16');
+(3, '512GB', 500000.00, '2024-11-12 20:16:16'),
+(4, '64GB', 0.00, '2024-11-17 16:53:31'),
+(5, '1TB', 2000000.00, '2024-11-17 21:19:31');
 
 -- --------------------------------------------------------
 
@@ -321,7 +333,16 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`) VALUES
-(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', NULL, 1, 1, '2024-11-13 07:46:27');
+(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 1, 1, '2024-11-13 07:46:27'),
+(2, 'duongbd', '$2y$10$lxw35rqoCgwKlI.LLZW1EuabrZJ.3OFKLC8g.Q51AuOIeKWg1lBY.', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:00:12'),
+(3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(6, 'phamthihoa', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hoapham@gmail.com', 'Phạm Thị Hoa', '0945678901', 'Ninh Kiều, Cần Thơ', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(7, 'hoangvantuan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tuanhoang@gmail.com', 'Hoàng Văn Tuấn', '0956789012', 'Ngô Quyền, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
+(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55');
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -444,13 +465,13 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
@@ -474,7 +495,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT cho bảng `product_color`
 --
 ALTER TABLE `product_color`
-  MODIFY `color_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `color_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `product_deals`
@@ -486,7 +507,7 @@ ALTER TABLE `product_deals`
 -- AUTO_INCREMENT cho bảng `product_ram`
 --
 ALTER TABLE `product_ram`
-  MODIFY `ram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `ram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -504,7 +525,7 @@ ALTER TABLE `thumbnails`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
