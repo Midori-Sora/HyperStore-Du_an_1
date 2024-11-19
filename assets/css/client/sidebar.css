@@ -5,39 +5,69 @@
     font-family: 'Barlow', sans-serif;
 }
 .sidebar-container{
-    border: 1px solid #ebebeb;
-    border-radius: 15px;
-    overflow: hidden;
+    background: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
 }
 .sidebar-container h2{
-    background: #FF7200;
-    padding: 6px 20px;
-    border-radius: 15px;
-    font-size: 17px;
-    color: #FFF;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.01em;
+    color: #333;
+    font-size: 18px;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #FF7200;
 }
 .sidebar-container ul{
-    padding: 0 15px;
     list-style: none;
 }
 .sidebar-container ul li{
-    padding: 8.5px 0px 8.5px 0px;
-    border-bottom: 1px solid #ebebeb;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease;
 }
-.sidebar-container ul li i{
+.sidebar-container ul li:last-child{
+    border-bottom: none;
+}
+.sidebar-container ul li:hover{
+    padding-left: 5px;
+    background: #fff5ee;
+}
+.sidebar-container ul li i:first-child{
+    color: #FF7200;
     margin-right: 10px;
-    color: #000;
+    width: 20px;
+    text-align: center;
 }
 .sidebar-container ul li a{
+    color: #333;
     text-decoration: none;
-    color: #363636;
+    flex: 1;
+    font-size: 15px;
+    transition: color 0.3s ease;
 }
 .sidebar-container ul li:hover a{
     color: #FF7200;
 }
-.sidebar-container ul li:hover{
-    color: #FF7200;
+.sidebar-container ul li .fa-chevron-right{
+    color: #ccc;
+    font-size: 12px;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.sidebar-container ul li:hover .fa-chevron-right{
+    opacity: 1;
+    transform: translateX(5px);
+}
+/* Responsive */
+@media (max-width: 992px){
+    .sidebar-container{
+        margin-bottom: 20px;
+    }
+}
+@media (max-width: 768px){
+    .sidebar-container{
+        display: none;
+    }
 }

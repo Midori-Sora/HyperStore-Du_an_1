@@ -26,6 +26,7 @@ class HomeController
             $totalComments = self::$mainModel->countComments();
             $totalRevenue = self::$mainModel->getTotalRevenue();
             $topProducts = self::$mainModel->getTopProducts();
+            $totalOrders = self::$mainModel->countOrders();
 
             require_once './views/home.php';
         } catch (Exception $e) {

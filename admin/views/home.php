@@ -112,15 +112,6 @@
                 <!-- Thống kê tổng quan -->
                 <div class="row mb-4">
                     <div class="col-md-3">
-                        <a href="#" class="stats-card">
-                            <h5>Tổng doanh thu</h5>
-                            <h3 class="text-primary"><?php echo number_format($totalRevenue, 0, ',', '.'); ?>đ</h3>
-                            <p>
-                                <i class="fas fa-chart-line me-2"></i>Doanh thu hiện tại
-                            </p>
-                        </a>
-                    </div>
-                    <div class="col-md-3">
                         <a href="./index.php?action=product" class="stats-card">
                             <h5>Sản phẩm</h5>
                             <h3 class="text-success"><?php echo number_format($totalProducts['total']); ?></h3>
@@ -150,6 +141,19 @@
                                 <i class="fas fa-check me-2 text-success"></i>Đã duyệt: <?php echo number_format($totalComments['approved']); ?>
                                 <br>
                                 <i class="fas fa-clock me-2 text-warning"></i>Chờ duyệt: <?php echo number_format($totalComments['pending']); ?>
+                            </p>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="./index.php?action=order" class="stats-card">
+                            <h5>Đơn hàng</h5>
+                            <h3 class="text-warning"><?php echo number_format($totalOrders['total']); ?></h3>
+                            <p>
+                                <i class="fas fa-check me-2 text-success"></i>Hoàn thành: <?php echo number_format($totalOrders['completed']); ?>
+                                <br>
+                                <i class="fas fa-cog me-2 text-primary"></i>Đang xử lý: <?php echo number_format($totalOrders['processing']); ?>
+                                <br>
+                                <i class="fas fa-clock me-2 text-warning"></i>Chờ xử lý: <?php echo number_format($totalOrders['pending']); ?>
                             </p>
                         </a>
                     </div>

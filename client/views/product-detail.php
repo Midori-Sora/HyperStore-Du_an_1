@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="header">
-        <?php include 'header.php' ?>
+        <?php include 'layout/header.php' ?>
     </div>
 
     <div class="container">
@@ -20,9 +20,9 @@
                 </div>
                 <div class="thumbnail-list">
                     <img src="../../Uploads/Product/iphone-11-do.png" alt="" class="thumbnail active">
-                    <img src="../../Uploads/Product/iphone-13.png" alt="" class="thumbnail">
-                    <img src="../../Uploads/Product/iphone-12-xanhnhat.png" alt="" class="thumbnail">
-                    <img src="../../Uploads/Product/iphone-14-vangkim.png" alt="" class="thumbnail">
+                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
+                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
+                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
                 </div>
             </div>
 
@@ -95,13 +95,226 @@
         <div class="related-products">
             <h2>Sản phẩm liên quan</h2>
             <div class="product-list">
-                <!-- Danh sách sản phẩm liên quan -->
+                <div class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 12">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                        <div class="product-tag">Mới</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 16</h3>
+                        <div class="product-price">
+                            <span class="current-price">15.990.000₫</span>
+                            <span class="original-price">17.990.000₫</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                            <span>(38)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 13">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                        <div class="product-tag sale">-15%</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 16</h3>
+                        <div class="product-price">
+                            <span class="current-price">18.990.000₫</span>
+                            <span class="original-price">21.990.000₫</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span>(52)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 14">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 16</h3>
+                        <div class="product-price">
+                            <span class="current-price">21.990.000₫</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(67)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-box">
+                    <div class="product-image">
+                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 15">
+                        <div class="product-actions">
+                            <button class="action-btn"><i class="fas fa-heart"></i></button>
+                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                        </div>
+                        <div class="product-tag hot">Hot</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">iPhone 16</h3>
+                        <div class="product-price">
+                            <span class="current-price">24.990.000₫</span>
+                        </div>
+                        <div class="product-rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <span>(89)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-comments">
+            <h2>Đánh giá sản phẩm</h2>
+            <div class="comments-summary">
+                <div class="rating-overview">
+                    <div class="average-rating">
+                        <span class="rating">4.5</span>
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span class="total-reviews">(45 đánh giá)</span>
+                    </div>
+                    <div class="rating-bars">
+                        <div class="rating-bar">
+                            <span>5 sao</span>
+                            <div class="bar">
+                                <div class="fill" style="width: 70%"></div>
+                            </div>
+                            <span>35</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>4 sao</span>
+                            <div class="bar">
+                                <div class="fill" style="width: 20%"></div>
+                            </div>
+                            <span>5</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>3 sao</span>
+                            <div class="bar">
+                                <div class="fill" style="width: 10%"></div>
+                            </div>
+                            <span>3</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>2 sao</span>
+                            <div class="bar">
+                                <div class="fill" style="width: 0%"></div>
+                            </div>
+                            <span>0</span>
+                        </div>
+                        <div class="rating-bar">
+                            <span>1 sao</span>
+                            <div class="bar">
+                                <div class="fill" style="width: 5%"></div>
+                            </div>
+                            <span>2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comment-form">
+                <h3>Viết đánh giá của bạn</h3>
+                <form action="" method="POST">
+                    <div class="rating-select">
+                        <span>Đánh giá của bạn:</span>
+                        <div class="star-rating">
+                            <input type="radio" id="star5" name="rating" value="5">
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Họ và tên" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="comment" placeholder="Nhận xét của bạn" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Gửi đánh giá</button>
+                </form>
+            </div>
+
+            <div class="comments-list">
+                <div class="comment-item">
+                    <div class="user-avatar">
+                        <img src="../../Uploads/User/nam.jpg" alt="User Avatar">
+                    </div>
+                    <div class="comment-content">
+                        <div class="user-info">
+                            <h4>Nguyễn Văn A</h4>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <span class="comment-date">15/03/2024</span>
+                        </div>
+                        <p class="comment-text">Sản phẩm rất tốt, đóng gói cẩn thận, giao hàng nhanh!</p>
+                        <div class="comment-actions">
+                            <button class="like-btn"><i class="far fa-thumbs-up"></i> Hữu ích (12)</button>
+                            <button class="reply-btn"><i class="far fa-comment"></i> Trả lời</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Thêm các comment-item khác tương tự -->
             </div>
         </div>
     </div>
 
     <div class="footer">
-        <?php include 'footer.php' ?>
+        <?php include 'layout/footer.php' ?>
     </div>
 
     <script>

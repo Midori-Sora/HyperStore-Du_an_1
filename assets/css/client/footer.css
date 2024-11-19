@@ -2,124 +2,150 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
-    color: #fff;
-    font-family: Barlow, sans-serif;
+    font-family: 'Barlow', sans-serif;
 }
 footer{
     background-color: #171717;
-    padding-top: 30px;
-    cursor: pointer;
+    padding: 50px 0 0;
     margin-top: 50px;
 }
 .footer-container{
     width: 1300px;
-    margin: auto;
+    margin: 0 auto;
+    padding: 0 15px;
 }
 footer .top{
-    display: flex;
-    justify-content: start;
-    align-items: center;
-    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 40px;
 }
 footer .top .logo{
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 0 15px 30px;
+    gap: 15px;
+}
+footer .top .logo img{
+    width: 60px;
+    height: auto;
 }
 footer .top .logo h1{
-    font-size: 25px;
+    font-size: 28px;
     color: #FF7200;
-    margin-left: 10px;
-}
-footer .top img{
-    width: 30%;
-}footer .top .information{
-    padding: 0 15px 30px;
+    font-weight: 600;
 }
 footer .top .information p{
-    padding: 0 0 20.8px;
-    font-family: Barlow, sans-serif;
-    font-size: 16px;
-    letter-spacing: 1px;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 footer .bottom{
-    width: 100%;
-    height: 45%;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
 }
 footer .rowss{
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+footer .rowss .rows h2{
+    color: #fff;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    position: relative;
+    padding-bottom: 10px;
+}
+footer .rowss .rows h2::after{
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px;
+    height: 2px;
+    background: #FF7200;
 }
 footer .rowss i{
     color: #FF7200;
     font-size: 14px;
-    margin-right: 5px;
+    margin-right: 10px;
 }
-footer .rowss .rows span{
-    font-size: 16px;
-    font-family: Barlow, sans-serif;
-    letter-spacing: 0.5px;
+footer .rowss .items{
+    color: #fff;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
 }
-footer h2{
-    font-size: 18px;
-    padding-bottom: 20px;
+footer .rowss .items:hover{
+    color: #FF7200;
+    transform: translateX(5px);
 }
-footer .items{
-    margin-bottom: 10px;
-    font-size: 16px;
+footer .rowss span{
+    color: #fff;
+    font-size: 15px;
 }
 footer .bottomm{
-    width: 100%;
-    height: 15%;
+    margin-bottom: 40px;
 }
 footer .bottomm .icon{
     display: flex;
-    width: 100%;
-    height: 100%;
-    margin-bottom: 70px;
+    gap: 15px;
 }
 footer .bottomm .icon a{
-    text-decoration: none;
     width: 40px;
     height: 40px;
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 50%;
-    border: 1px solid #fff;
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin: 0 1%;
+    justify-content: center;
+    transition: all 0.3s ease;
 }
 footer .bottomm .icon a i{
-    font-size: 30px;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
+    color: #fff;
+    font-size: 20px;
+    transition: all 0.3s ease;
 }
-footer .bottomm .icon a #icon1:hover{
+footer .bottomm .icon a:hover{
+    background: #fff;
+    border-color: #fff;
+}
+footer .bottomm .icon a:hover #icon1{
     color: #3B5998;
-    background-color: #fff;
 }
-footer .bottomm .icon a #icon2:hover{
+footer .bottomm .icon a:hover #icon2{
     color: #ff0000;
-    background-color: #fff;
 }
 footer .bottom3{
-    width: 100%;
-    height: 40px;
+    padding: 20px 0;
     text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.5);
     font-size: 14px;
-    color: #FFFFFF80;
-    font-family: Barlow, sans-serif;
-    letter-spacing: 0.5px;
-    border-top: 1px solid #FFFFFF80;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+}
+@media (max-width: 1300px){
+    .footer-container{
+        width: 95%;
+    }
+}
+@media (max-width: 992px){
+    footer .rowss{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+@media (max-width: 768px){
+    footer .top{
+        grid-template-columns: 1fr;
+    }
+    footer .rowss{
+        grid-template-columns: 1fr;
+    }
+    footer .top .logo{
+        justify-content: center;
+    }
+    footer .top .information{
+        text-align: center;
+    }
+    footer .bottomm .icon{
+        justify-content: center;
+    }
 }

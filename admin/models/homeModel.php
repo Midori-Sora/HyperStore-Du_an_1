@@ -126,5 +126,34 @@ class HomeModel extends MainModel
             return [];
         }
     }
+
+    public function countOrders()
+    {
+        try {
+            $sql = "SELECT 
+                    COUNT(*) as total,
+                    COUNT(CASE WHEN status = 2 THEN 1 END) as completed,
+                    COUNT(CASE WHEN status = 1 THEN 1 END) as processing,
+                    COUNT(CASE WHEN status = 3 THEN 1 END) as pending
+                    FROM orders";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return [
+                'total' => (int)($result['total'] ?? 0),
+                'completed' => (int)($result['completed'] ?? 0),
+                'processing' => (int)($result['processing'] ?? 0),
+                'pending' => (int)($result['pending'] ?? 0)
+            ];
+        } catch (PDOException $e) {
+            error_log("Count orders error: " . $e->getMessage());
+            return [
+                'total' => 0,
+                'completed' => 0,
+                'processing' => 0,
+                'pending' => 0
+            ];
+        }
+    }
 }
 ?>
