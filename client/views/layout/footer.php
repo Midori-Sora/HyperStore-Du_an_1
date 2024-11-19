@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../assets/css/client/footer.css">
+    <link rel="stylesheet" href="assets/css/client/footer.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -12,7 +12,7 @@
         <div class="footer-container">
             <div class="top">
                 <div class="logo">
-                    <img src="../../Uploads/Logo/logo.png" alt="">
+                    <img src="Uploads/Logo/logo.png" alt="">
                     <h1>Hyper<span>Store</span></h1>
                 </div>
                 <div class="information">

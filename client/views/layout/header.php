@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../assets/css/client/header.css">
+    <link rel="stylesheet" href="assets/css/client/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <header>
         <div class="header-container">
             <a href="index.php" class="logo">
-                <img src="../../Uploads/Logo/logo.png" alt="Hyper Store">
+                <img src="Uploads/Logo/logo.png" alt="Hyper Store">
                 <h1>Hyper<span>Store</span></h1>
             </a>
 
@@ -24,9 +24,9 @@
 
             <nav class="main-nav">
                 <ul>
-                    <li><a href="index.php" class="active">Trang chủ</a></li>
+                    <li><a href="index.php?action=home" class="active">Trang chủ</a></li>
                     <li class="has-child">
-                        <a href="#">Sản phẩm <i class="fas fa-chevron-down"></i></a>
+                        <a href="index.php?action=product">Sản phẩm <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
                             <li><a href="#">Cấu hình HyperPC</a></li>
                             <li><a href="#">CPU</a></li>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="../../assets/css/client/home.css">
+    <link rel="stylesheet" href="assets/css/client/home.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
@@ -46,91 +46,29 @@
                 <a href="#" class="all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="product-list">
-                <a href="product-detail.php" class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                <?php foreach ($featuredProducts as $product): ?>
+                    <a href="product-detail.php?id=<?php echo $product['pro_id']; ?>" class="product-box">
+                        <div class="product-image">
+                            <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
+                        <div class="product-infor">
+                            <h3 class="product-name"><?php echo $product['pro_name']; ?></h3>
+                            <div class="product-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</div>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>(45)</span>
+                            </div>
                         </div>
-                    </div>
-                </a>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- Thêm các product-box khác tương tự -->
+                    </a>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -142,91 +80,29 @@
                 <a href="#" class="all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="product-list">
-                <!-- Sản phẩm điện thoại mới -->
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                <?php foreach ($newestPhones as $phone): ?>
+                    <div class="product-box">
+                        <div class="product-image">
+                            <img src="Uploads/Product/<?php echo $phone['img']; ?>" alt="<?php echo $phone['pro_name']; ?>">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="product-infor">
+                            <h3 class="product-name"><?php echo $phone['pro_name']; ?></h3>
+                            <div class="product-price"><?php echo number_format($phone['price'], 0, ',', '.'); ?>₫</div>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>(45)</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-11-do.png" alt="">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">iPhone 11</h3>
-                        <div class="product-price">13.990.000₫</div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
@@ -239,7 +115,7 @@
         <div class="offers-grid">
             <div class="offer-item">
                 <div class="offer-image">
-                    <img src="../../Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
+                    <img src="Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
                     <div class="offer-tag">Giảm 20%</div>
                 </div>
                 <div class="offer-info">
@@ -250,7 +126,7 @@
             </div>
             <div class="offer-item">
                 <div class="offer-image">
-                    <img src="../../Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
+                    <img src="Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
                     <div class="offer-tag">Quà tặng</div>
                 </div>
                 <div class="offer-info">
@@ -264,10 +140,10 @@
 
     <div class="section_banner">
         <div class="item">
-            <img src="../../Uploads/Banner/Frame 2012 (2).png" alt="">
+            <img src="Uploads/Banner/Frame 2012 (2).png" alt="">
         </div>
         <div class="item">
-            <img src="../../Uploads/Banner/Frame 2013 (2).png" alt="">
+            <img src="Uploads/Banner/Frame 2013 (2).png" alt="">
         </div>
     </div>
 
@@ -279,11 +155,41 @@
         <div class="blog-list">
             <div class="blog-item">
                 <div class="blog-image">
-                    <img src="../../Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
+                    <img src="Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
                 </div>
                 <div class="blog-infor">
                     <h3 class="blog-title">Có nên mua TECNO Spark 30C thời điểm hiện tại?</h3>
-                    <p class="blog-describe">Mẫu điện thoại giá rẻ TECNO Spark 30C mới của nhà TECNO được nhiều người dùng ưa chuộng...</p>
+                    <p class="blog-describe">OPPO vừa ra mắt 2 flagship mới nhất mang tên Find X8 và Find X8 Pro với hàng loạt cải tiến vượt trội so với các thế hệ trước. Bên cạnh đó, thông tin OPPO Find X8 Mini cũng đang thu hút sự chú ý. Theo các rò rỉ, phiên bản nhỏ gọn này có thể sẽ được ra...</p>
+                    <a href="#">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-image">
+                    <img src="Uploads/News/mau-sac-TECNO-Spark-30C-1.jpg" alt="">
+                </div>
+                <div class="blog-infor">
+                    <h3 class="blog-title">Thông tin về màu sắc TECNO Spark 30C kèm những ưu điểm nổi bật</h3>
+                    <p class="blog-describe">TECNO Spark 30C vừa ra mắt đã nhanh chóng thu hút sự chú ý của các tín đồ công nghệ nhờ mức giá hợp lý và nhiều tính năng nổi bật. Tuy nhiên, điều khiến người dùng tò mò nhất lúc này chính là màu sắc TECNO Spark 30C. Vậy sau đây là những thông tin về...</p>
+                    <a href="#">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-image">
+                    <img src="Uploads/News/mau-sac-TECNO-Spark-30C-2.jpg" alt="">
+                </div>
+                <div class="blog-infor">
+                    <h3 class="blog-title">HONOR X7c có gì nổi bật để thu hút khách hàng chọn mua?</h3>
+                    <p class="blog-describe">Ngay khi ra mắt, mẫu smartphone tầm trung mới HONOR X7c đã nhận được sự quan tâm của đông đảo người dùng yêu thích thương hiệu này. Vậy HONOR X7c có gì nổi bật để thu hút khách hng? Hãy cùng chúng mình tìm lời giải đáp ngay trong bài viết bên dưới nhé...</p>
+                    <a href="#">Đọc thêm</a>
+                </div>
+            </div>
+            <div class="blog-item">
+                <div class="blog-image">
+                    <img src="Uploads/News/thong-tin-OPPO-Find-X8-Mini-4.jpg" alt="">
+                </div>
+                <div class="blog-infor">
+                    <h3 class="blog-title">Thông tin OPPO Find X8 Mini dần được tiết lộ, khả năng ra mắt cùng Find X8 Ultra</h3>
+                    <p class="blog-describe">OPPO vừa ra mắt 2 flagship mới nhất mang tên Find X8 và Find X8 Pro với hàng loạt cải tiến vượt trội so với các thế hệ trước. Bên cạnh đó, thông tin OPPO Find X8 Mini cũng đang thu hút sự chú ý. Theo các rò rỉ, phiên bản nhỏ gọn này có thể sẽ được ra...</p>
                     <a href="#">Đọc thêm</a>
                 </div>
             </div>
