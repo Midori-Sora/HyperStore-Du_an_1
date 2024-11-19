@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,23 +14,13 @@
         left: 0;
         right: 0;
         z-index: 1000;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
     .nav {
         display: flex;
         justify-content: space-between;
         align-items: center;
-    }
-
-    .nav-left {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .nav-left img {
-        width: 10%;
     }
 
     .nav-left h3 {
@@ -96,12 +85,10 @@
         font-size: 16px;
     }
 </style>
-
 <body>
     <header class="header">
         <nav class="nav">
             <div class="nav-left">
-                <img src="../Uploads/Logo/logo.png" alt="Logo">
                 <h3>Admin Dashboard</h3>
             </div>
             <div class="nav-right">
@@ -109,7 +96,7 @@
                     <img src="../Uploads/User/nam.jpg" alt="User avatar">
                     <span class="user-name">Admin</span>
                 </div>
-                <a href="index.php?action=logout" class="logout-btn">
+                <a href="#" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Đăng xuất</span>
                 </a>
@@ -117,5 +104,4 @@
         </nav>
     </header>
 </body>
-
 </html>

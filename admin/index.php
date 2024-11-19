@@ -3,9 +3,9 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-define('PATH_ROOT', dirname(__DIR__));
-
 session_start();
+
+
 
 require_once 'controllers/homeController.php';
 require_once 'controllers/productController.php';
@@ -14,6 +14,7 @@ require_once 'controllers/categoryController.php';
 require_once 'controllers/userController.php';
 require_once 'controllers/bannerController.php';
 require_once 'controllers/orderController.php';
+require_once 'controllers/dealController.php';
 
 require_once "./commons/env.php";
 require_once "./commons/function.php";
@@ -141,5 +142,28 @@ switch ($action) {
         break;
     case 'sendSMS':
         OrderController::sendSMSController();
+        break;
+        // ... cc case khác ...
+    case 'searchUsers':
+        UserController::searchUsersController();
+        break;
+    case 'viewUser':
+        UserController::viewUserController();
+        break;
+        // ... các case khác ...
+    case 'printInvoice':
+        OrderController::printInvoiceController();
+        break;
+    case 'deal':
+        DealController::dealController();
+        break;
+    case 'addDeal':
+        DealController::addDealController();
+        break;
+    case 'deleteDeal':
+        DealController::deleteDealController();
+        break;
+    case 'editDeal':
+        DealController::editDealController();
         break;
 }

@@ -36,7 +36,9 @@ class OrderModel
                     WHERE orders.order_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$orderId]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+            error_log(print_r($order, true));
+            return $order;
         } catch (PDOException $e) {
             error_log("Error getting order by ID: " . $e->getMessage());
             return false;
@@ -44,16 +46,27 @@ class OrderModel
     }
 
     // Lấy chi tiết sản phẩm trong đơn hàng
-    public function getOrderDetails($orderId)
+    public function getOrderDetails($order_id)
     {
         try {
-            $sql = "SELECT order_details.*, products.pro_name, products.img 
-                    FROM order_details 
-                    LEFT JOIN products ON order_details.product_id = products.pro_id 
-                    WHERE order_details.order_id = ?";
+            // Debug query
+            error_log("Getting details for order ID: " . $order_id);
+
+            $sql = "SELECT od.*, p.pro_name, p.img, pr.ram_type, pc.color_type
+                    FROM order_details od
+                    LEFT JOIN products p ON od.product_id = p.pro_id
+                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    WHERE od.order_id = :order_id";
+
             $stmt = $this->db->prepare($sql);
-            $stmt->execute([$orderId]);
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt->execute([':order_id' => $order_id]);
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Debug result
+            error_log("Query result: " . print_r($result, true));
+
+            return $result;
         } catch (PDOException $e) {
             error_log("Error getting order details: " . $e->getMessage());
             return false;

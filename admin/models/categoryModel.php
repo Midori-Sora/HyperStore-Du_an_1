@@ -51,7 +51,7 @@ class CategoryModel
         $stmt = $MainModel->SUNNY->prepare("UPDATE categories SET cate_name = ?, img = ?, description = ?, cate_status = ? WHERE cate_id = ?");
 
 
-        if (!$stmt->execute([   
+        if (!$stmt->execute([
             $data['cate_name'],
             $data['img'],
             $data['description'],

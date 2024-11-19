@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/client/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -58,9 +60,10 @@
                         <span class="count">0</span>
                     </a>
                     <div class="cart-dropdown">
-                        <a href="#" class="cart-icon">
+                        <a href="index.php?action=cart">
                             <i class="fas fa-shopping-cart"></i>
-                            <span class="count">0</span>
+                            <span
+                                class="count"><?php echo isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0; ?></span>
                         </a>
                         <div class="cart-popup">
                             <div class="cart-header">
@@ -85,5 +88,24 @@
             </div>
         </div>
     </header>
+
+    <?php if (isset($_SESSION['success'])): ?>
+        <div class="alert alert-success">
+            <?php
+            echo $_SESSION['success'];
+            unset($_SESSION['success']);
+            ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error'])): ?>
+        <div class="alert alert-error">
+            <?php
+            echo $_SESSION['error'];
+            unset($_SESSION['error']);
+            ?>
+        </div>
+    <?php endif; ?>
 </body>
+
 </html>

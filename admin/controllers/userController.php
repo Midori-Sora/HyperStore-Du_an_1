@@ -31,7 +31,15 @@ class UserController
             echo "ID người dùng không xác định.";
         }
     }
+    public static function searchUsersController()
+    {
+        $keyword = $_GET['keyword'] ?? '';
+        $role = $_GET['role'] ?? '';
 
+        $userModel = new UserModel();
+        $users = $userModel->searchUsers($keyword, $role);
+        require_once 'views/user/user.php';
+    }
 
     public static function storeUserController()
     {
@@ -69,6 +77,11 @@ class UserController
                     throw new Exception("Email đã tồn tại. Vui lòng chọn email khác.");
                 }
 
+                // Define PATH_ROOT if not already defined
+                if (!defined('PATH_ROOT')) {
+                    define('PATH_ROOT', dirname(dirname(__DIR__))); // Goes up two levels from the controller
+                }
+
                 // Verify that the selected image exists
                 $imagePath = PATH_ROOT . '/' . $data['avatar'];
                 if (!file_exists($imagePath)) {
@@ -82,7 +95,6 @@ class UserController
                 } else {
                     throw new Exception("Lỗi khi thêm người dùng vào cơ sở dữ liệu");
                 }
-
             } catch (Exception $e) {
                 $_SESSION['error'] = $e->getMessage();
                 header("Location: index.php?action=addUser");
@@ -94,7 +106,19 @@ class UserController
         include 'views/user/add-user.php';
     }
 
-
+    public static function viewUserController()
+    {
+        if (isset($_GET['id'])) {
+            $user = UserModel::getUserById($_GET['id']);
+            if ($user) {
+                require_once 'views/user/user-detail.php';
+            } else {
+                echo "Không tìm thấy người dùng.";
+            }
+        } else {
+            echo "ID người dùng không xác định.";
+        }
+    }
 
     public static function updateUserController()
     {
@@ -137,5 +161,26 @@ class UserController
         UserModel::deleteUser($_GET['id']);
         header("Location: index.php?action=user");
         exit();
+    }
+
+    public static function userDetailController()
+    {
+        try {
+            if (!isset($_GET['id'])) {
+                throw new Exception('ID không hợp lệ');
+            }
+
+            $id = $_GET['id'];
+            $user = UserModel::getUserById($id);
+            if (!$user) {
+                throw new Exception('Không tìm thấy tài khoản');
+            }
+
+            require_once './views/user/user-detail.php';
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
+            header('Location: index.php?action=user');
+            exit();
+        }
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <link rel="stylesheet" href="assets/css/client/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="header">
         <?php include 'client/views/layout/header.php'; ?>
@@ -16,7 +18,7 @@
         <div class="sidebar">
             <?php include 'client/views/layout/sidebar.php' ?>
         </div>
-        
+
         <div class="product-container">
             <div class="category-title">
                 <h2>Sản Phẩm Mới Nhất</h2>
@@ -36,10 +38,17 @@
                     <?php foreach ($products as $product) : ?>
                         <div class="product-box">
                             <div class="product-image">
-                                <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
+                                <img src="Uploads/Product/<?php echo $product['img']; ?>"
+                                    alt="<?php echo $product['pro_name']; ?>">
                                 <div class="product-actions">
                                     <button class="action-btn"><i class="fas fa-heart"></i></button>
-                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="product-infor">
@@ -95,4 +104,5 @@
         <?php include 'client/views/layout/footer.php'; ?>
     </div>
 </body>
+
 </html>

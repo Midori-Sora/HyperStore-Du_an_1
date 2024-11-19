@@ -10,91 +10,129 @@
 </head>
 
 <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-    body {
-        background: #f5f5f5;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        padding-top: 80px;
-    }
-    .main {
-        display: flex;
-        max-width: 1400px;
-        margin: 0 auto;
-        padding: 20px;
-    }
-    .main main {
-        width: calc(100% - 270px);
-        margin-left: 270px;
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-    }
-    .form-control {
-        margin: 10px 0;
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: 1px solid #dce0e4;
-    }
-    .form-select {
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: 1px solid #dce0e4;
-        margin: 10px 0;
-    }
-    .current-avatar {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        margin: 10px 0;
-        border-radius: 50%;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        border: 3px solid #fff;
-    }
-    .current-image, .select-new-image {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 10px;
-    }
-    .preview-container {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-    }
-    .btn-primary {
-        background: #1976D2;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
-    .btn-primary:hover {
-        background: #1565C0;
-        transform: translateY(-2px);
-    }
-    .btn-secondary {
-        background: #f5f5f5;
-        color: #666;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        margin-right: 10px;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
-    .form-check {
-        margin: 20px 0;
-    }
-    .form-check-input:checked {
-        background-color: #1976D2;
-        border-color: #1976D2;
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #f5f5f5;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 80px;
+    min-height: 100vh;
+    overflow-y: auto;
+}
+
+.main {
+    display: flex;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: calc(100vh - 80px);
+}
+
+.main main {
+    width: calc(100% - 270px);
+    margin-left: 270px;
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow-y: visible;
+}
+
+.form-control {
+    margin: 10px 0;
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #dce0e4;
+}
+
+.form-select {
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #dce0e4;
+    margin: 10px 0;
+}
+
+.current-avatar {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    margin: 10px 0;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 3px solid #fff;
+}
+
+.current-image,
+.select-new-image {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.preview-container {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.btn-primary {
+    background: #1976D2;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary:hover {
+    background: #1565C0;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: #f5f5f5;
+    color: #666;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    margin-right: 10px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.form-check {
+    margin: 20px 0;
+}
+
+.form-check-input:checked {
+    background-color: #1976D2;
+    border-color: #1976D2;
+}
+
+.container {
+    padding-bottom: 50px;
+    height: auto;
+    overflow: visible;
+}
+
+form {
+    margin-bottom: 50px;
+    height: auto;
+    overflow: visible;
+}
+
+.actions-container {
+    margin-top: 20px;
+    padding: 20px 0;
+    border-top: 1px solid #eee;
+    position: relative;
+    z-index: 1000;
+}
 </style>
 
 <body>
@@ -110,38 +148,38 @@
                 <h2 class="mb-4">Chỉnh sửa người dùng</h2>
 
                 <?php if (isset($_SESSION['error'])): ?>
-                    <div class="alert alert-danger">
-                        <?php 
-                            echo $_SESSION['error'];
-                            unset($_SESSION['error']);
+                <div class="alert alert-danger">
+                    <?php
+                        echo $_SESSION['error'];
+                        unset($_SESSION['error']);
                         ?>
-                    </div>
+                </div>
                 <?php endif; ?>
 
-                <form method="post" action="index.php?action=updateUser&id=<?= htmlspecialchars($user['user_id']) ?>" 
-                      enctype="multipart/form-data">
+                <form method="post" action="index.php?action=updateUser&id=<?= htmlspecialchars($user['user_id']) ?>"
+                    enctype="multipart/form-data">
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="fas fa-user me-2"></i>Tên người dùng
                         </label>
-                        <input type="text" name="username" class="form-control" 
-                               value="<?= htmlspecialchars($user['username']) ?>" required>
+                        <input type="text" name="username" class="form-control"
+                            value="<?= htmlspecialchars($user['username']) ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="fas fa-envelope me-2"></i>Email
                         </label>
-                        <input type="email" name="email" class="form-control" 
-                               value="<?= htmlspecialchars($user['email']) ?>" required>
+                        <input type="email" name="email" class="form-control"
+                            value="<?= htmlspecialchars($user['email']) ?>" required>
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="fas fa-key me-2"></i>Mật khẩu mới
                         </label>
-                        <input type="password" name="password" class="form-control" 
-                               placeholder="Để trống nếu không muốn thay đổi mật khẩu">
+                        <input type="password" name="password" class="form-control"
+                            placeholder="Để trống nếu không muốn thay đổi mật khẩu">
                     </div>
 
                     <div class="mb-3">
@@ -151,27 +189,29 @@
                         <div class="current-image mb-3">
                             <p class="mb-2">Ảnh hiện tại:</p>
                             <?php if (!empty($user['avatar'])): ?>
-                                <img src="<?= htmlspecialchars($user['avatar']) ?>" 
-                                     class="current-avatar" alt="Avatar">
+                            <img src="<?= htmlspecialchars($user['avatar']) ?>" class="current-avatar" alt="Avatar">
                             <?php else: ?>
-                                <div class="text-muted">Không có ảnh đại diện</div>
+                            <div class="text-muted">Không có ảnh đại diện</div>
                             <?php endif; ?>
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
                             <select class="form-select" name="avatar" id="imageSelect">
-                                <option value="<?=$user['avatar']?>">Giữ ảnh hiện tại (<?=basename($user['avatar'])?>)</option>
-                                <?php 
+                                <option value="<?= $user['avatar'] ?>">Giữ ảnh hiện tại
+                                    (<?= basename($user['avatar']) ?>)
+                                </option>
+                                <?php
                                 $imageDir = PATH_ROOT . '/Uploads/User/';
                                 $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-                                foreach($images as $image): 
+                                foreach ($images as $image):
                                     $imageName = basename($image);
-                                    if($imageName != basename($user['avatar'])):
+                                    if ($imageName != basename($user['avatar'])):
                                 ?>
-                                    <option value="Uploads/User/<?php echo $imageName; ?>"><?php echo $imageName; ?></option>
-                                <?php 
+                                <option value="Uploads/User/<?php echo $imageName; ?>"><?php echo $imageName; ?>
+                                </option>
+                                <?php
                                     endif;
-                                endforeach; 
+                                endforeach;
                                 ?>
                             </select>
                             <div class="preview-container mt-3" style="display: none;">
@@ -185,23 +225,24 @@
                         <label class="form-label">
                             <i class="fas fa-id-card me-2"></i>Họ và tên
                         </label>
-                        <input type="text" name="fullname" class="form-control" 
-                               value="<?= htmlspecialchars($user['fullname']) ?>">
+                        <input type="text" name="fullname" class="form-control"
+                            value="<?= htmlspecialchars($user['fullname']) ?>">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="fas fa-phone me-2"></i>Số điện thoại
                         </label>
-                        <input type="text" name="phone" class="form-control" 
-                               value="<?= htmlspecialchars($user['phone']) ?>">
+                        <input type="text" name="phone" class="form-control"
+                            value="<?= htmlspecialchars($user['phone']) ?>">
                     </div>
 
                     <div class="mb-3">
                         <label class="form-label">
                             <i class="fas fa-map-marker-alt me-2"></i>Địa chỉ
                         </label>
-                        <textarea name="address" class="form-control" rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
+                        <textarea name="address" class="form-control"
+                            rows="3"><?= htmlspecialchars($user['address']) ?></textarea>
                     </div>
 
                     <div class="mb-3">
@@ -214,15 +255,15 @@
                         </select>
                     </div>
 
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" name="status" value="1" 
-                               <?= $user['status'] ? 'checked' : '' ?>>
+                    <div class="form-check mb-3">
+                        <input type="checkbox" class="form-check-input" name="status" value="1"
+                            <?= $user['status'] ? 'checked' : '' ?>>
                         <label class="form-check-label">
                             <i class="fas fa-toggle-on me-2"></i>Hoạt động
                         </label>
                     </div>
 
-                    <div class="mt-4">
+                    <div class="actions-container">
                         <a href="?action=user" class="btn btn-secondary">
                             <i class="fas fa-arrow-left me-2"></i>Quay lại
                         </a>
@@ -237,20 +278,20 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('imageSelect').onchange = function() {
-            const preview = document.getElementById('preview');
-            const previewContainer = document.querySelector('.preview-container');
-            const selectedImage = this.value;
-            
-            if(selectedImage && selectedImage !== '<?=$user['avatar']?>') {
-                preview.src = selectedImage;
-                preview.style.display = 'block';
-                previewContainer.style.display = 'block';
-            } else {
-                preview.style.display = 'none';
-                previewContainer.style.display = 'none';
-            }
+    document.getElementById('imageSelect').onchange = function() {
+        const preview = document.getElementById('preview');
+        const previewContainer = document.querySelector('.preview-container');
+        const selectedImage = this.value;
+
+        if (selectedImage && selectedImage !== '<?= $user['avatar'] ?>') {
+            preview.src = selectedImage;
+            preview.style.display = 'block';
+            previewContainer.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+            previewContainer.style.display = 'none';
         }
+    }
     </script>
 </body>
 

@@ -106,13 +106,13 @@ class ProductModel extends MainModel
     {
         try {
             $this->SUNNY->beginTransaction();
-            
+
             // Xóa sản phẩm (các bảng liên quan sẽ tự động xóa do ON DELETE CASCADE)
             $sql = "DELETE FROM products WHERE pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $result = $stmt->execute();
-            
+
             if ($result) {
                 $this->SUNNY->commit();
                 return true;
@@ -164,7 +164,7 @@ class ProductModel extends MainModel
         }
     }
 
-    public function addRam($ram_type, $ram_price) 
+    public function addRam($ram_type, $ram_price)
     {
         try {
             $sql = "INSERT INTO product_ram (ram_type, ram_price) VALUES (:type, :price)";
@@ -250,7 +250,7 @@ class ProductModel extends MainModel
         }
     }
 
-    public function updateQuantity($pro_id, $quantity) 
+    public function updateQuantity($pro_id, $quantity)
     {
         try {
             $sql = "UPDATE products SET quantity = :quantity WHERE pro_id = :id";
@@ -284,4 +284,3 @@ class ProductModel extends MainModel
         }
     }
 }
-?>

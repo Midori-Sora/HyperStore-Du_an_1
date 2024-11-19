@@ -88,6 +88,19 @@
             border-radius: 8px;
             border: 1px solid #ced4da;
         }
+
+        .product-thumbnail {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+
+        .table {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
     </style>
 </head>
 
@@ -173,6 +186,51 @@
                             <i class="fas fa-paper-plane"></i> Gửi SMS
                         </button>
                     </form>
+                </div>
+
+                <div class="order-products mt-4">
+                    <h4>Sản phẩm đã đặt</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Hình ảnh</th>
+                                    <th>Tên sản phẩm</th>
+                                    <th>RAM</th>
+                                    <th>Màu sắc</th>
+                                    <th>Đơn giá</th>
+                                    <th>Số lượng</th>
+                                    <th>Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if ($orderDetails): ?>
+                                    <?php foreach ($orderDetails as $item): ?>
+                                        <tr>
+                                            <td>
+                                                <img src="../Uploads/Product/<?= $item['img'] ?>" alt="<?= $item['pro_name'] ?>"
+                                                    class="product-thumbnail">
+                                            </td>
+                                            <td><?= $item['pro_name'] ?></td>
+                                            <td><?= $item['ram_type'] ?></td>
+                                            <td><?= $item['color_type'] ?></td>
+                                            <td><?= number_format($item['price'], 0, ',', '.') ?>đ</td>
+                                            <td><?= $item['quantity'] ?></td>
+                                            <td><?= number_format($item['price'] * $item['quantity'], 0, ',', '.') ?>đ</td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="7" class="text-center">Không có sản phẩm nào</td>
+                                    </tr>
+                                <?php endif; ?>
+                                <tr>
+                                    <td colspan="6" class="text-end"><strong>Tổng cộng:</strong></td>
+                                    <td><strong><?= number_format($order['total_amount'], 0, ',', '.') ?>đ</strong></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
