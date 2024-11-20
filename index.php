@@ -25,5 +25,8 @@ switch ($action) {
     case 'product-category':
         ProductController::productCategoryController();
         break;
+    case 'product-detail':
+        ProductController::productDetailController();
+        break;
 }
 ?>

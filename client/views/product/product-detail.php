@@ -4,30 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chi tiết sản phẩm</title>
-    <link rel="stylesheet" href="../../assets/css/client/product-detail.css">
+    <link rel="stylesheet" href="assets/css/client/product-detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="header">
-        <?php include 'layout/header.php' ?>
+        <?php include 'client/views/layout/header.php' ?>
     </div>
 
     <div class="container">
         <div class="product-detail">
             <div class="product-gallery">
                 <div class="main-image">
-                    <img src="../../Uploads/Product/iphone-11-do.png" alt="iPhone 13" id="mainImage">
+                    <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>" id="mainImage">
                 </div>
                 <div class="thumbnail-list">
-                    <img src="../../Uploads/Product/iphone-11-do.png" alt="" class="thumbnail active">
-                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
-                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
-                    <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="" class="thumbnail">
+                    <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="" class="thumbnail active">
+                    <?php foreach ($productImages as $image): ?>
+                        <img src="Uploads/Product/<?php echo $image['img']; ?>" alt="" class="thumbnail">
+                    <?php endforeach; ?>
                 </div>
             </div>
 
             <div class="product-info">
-                <h1 class="product-name">iPhone 13 Pro Max 256GB</h1>
+                <h1 class="product-name"><?php echo $product['pro_name']; ?></h1>
                 <div class="product-meta">
                     <div class="rating">
                         <i class="fas fa-star"></i>
@@ -37,34 +37,33 @@
                         <i class="far fa-star"></i>
                         <span>(120 đánh giá)</span>
                     </div>
-                    <div class="stock-status in-stock">
-                        <i class="fas fa-check-circle"></i> Còn hàng
+                    <div class="stock-status <?php echo $product['quantity'] > 0 ? 'in-stock' : 'out-of-stock'; ?>">
+                        <i class="fas <?php echo $product['quantity'] > 0 ? 'fa-check-circle' : 'fa-times-circle'; ?>"></i>
+                        <?php echo $product['quantity'] > 0 ? 'Còn hàng' : 'Hết hàng'; ?>
                     </div>
                 </div>
 
                 <div class="product-price">
-                    <div class="current-price">13.990.000₫</div>
-                    <div class="original-price">15.990.000₫</div>
-                    <div class="discount">-12%</div>
+                    <div class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</div>
                 </div>
 
+                <?php if ($product['ram_type']): ?>
                 <div class="product-variants">
-                    <h3>Lựa chọn phiên bản</h3>
+                    <h3>Phiên bản</h3>
                     <div class="variant-options">
-                        <button class="variant-btn active">128GB</button>
-                        <button class="variant-btn">256GB</button>
-                        <button class="variant-btn">512GB</button>
+                        <button class="variant-btn active"><?php echo $product['ram_type']; ?></button>
                     </div>
                 </div>
+                <?php endif; ?>
 
+                <?php if ($product['color_type']): ?>
                 <div class="product-colors">
                     <h3>Màu sắc</h3>
                     <div class="color-options">
-                        <button class="color-btn active" style="background-color: #000"></button>
-                        <button class="color-btn" style="background-color: #c0c0c0"></button>
-                        <button class="color-btn" style="background-color: #ffd700"></button>
+                        <button class="color-btn active"><?php echo $product['color_type']; ?></button>
                     </div>
                 </div>
+                <?php endif; ?>
 
                 <div class="quantity-selector">
                     <h3>Số lượng</h3>
@@ -95,106 +94,35 @@
         <div class="related-products">
             <h2>Sản phẩm liên quan</h2>
             <div class="product-list">
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 12">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                <?php foreach ($relatedProducts as $relatedProduct): ?>
+                    <div class="product-box">
+                        <div class="product-image">
+                            <img src="Uploads/Product/<?php echo $relatedProduct['thumbnail']; ?>" alt="<?php echo $relatedProduct['name']; ?>">
+                            <div class="product-actions">
+                                <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                            <div class="product-tag">Mới</div>
                         </div>
-                        <div class="product-tag">Mới</div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">iPhone 16</h3>
-                        <div class="product-price">
-                            <span class="current-price">15.990.000₫</span>
-                            <span class="original-price">17.990.000₫</span>
-                        </div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(38)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 13">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                        <div class="product-tag sale">-15%</div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">iPhone 16</h3>
-                        <div class="product-price">
-                            <span class="current-price">18.990.000₫</span>
-                            <span class="original-price">21.990.000₫</span>
-                        </div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star-half-alt"></i>
-                            <span>(52)</span>
+                        <div class="product-info">
+                            <h3 class="product-name"><?php echo $relatedProduct['name']; ?></h3>
+                            <div class="product-price">
+                                <span class="current-price"><?php echo number_format($relatedProduct['price'], 0, ',', '.'); ?>₫</span>
+                                <?php if ($relatedProduct['original_price'] > $relatedProduct['price']): ?>
+                                    <span class="original-price"><?php echo number_format($relatedProduct['original_price'], 0, ',', '.'); ?>₫</span>
+                                <?php endif; ?>
+                            </div>
+                            <div class="product-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>(38)</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 14">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">iPhone 16</h3>
-                        <div class="product-price">
-                            <span class="current-price">21.990.000₫</span>
-                        </div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>(67)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="../../Uploads/Product/iphone-16-xanhluuly.png" alt="iPhone 15">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
-                        </div>
-                        <div class="product-tag hot">Hot</div>
-                    </div>
-                    <div class="product-info">
-                        <h3 class="product-name">iPhone 16</h3>
-                        <div class="product-price">
-                            <span class="current-price">24.990.000₫</span>
-                        </div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <span>(89)</span>
-                        </div>
-                    </div>
-                </div>
+                <?php endforeach; ?>
             </div>
         </div>
 
@@ -314,7 +242,7 @@
     </div>
 
     <div class="footer">
-        <?php include 'layout/footer.php' ?>
+        <?php include 'client/views/layout/footer.php' ?>
     </div>
 
     <script>

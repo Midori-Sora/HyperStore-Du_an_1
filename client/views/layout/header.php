@@ -28,11 +28,12 @@
                     <li class="has-child">
                         <a href="index.php?action=product">Sản phẩm <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
-                            <li><a href="#">Cấu hình HyperPC</a></li>
-                            <li><a href="#">CPU</a></li>
-                            <li><a href="#">Gear</a></li>
-                            <li><a href="#">Màn hình</a></li>
-                            <li><a href="#">Thiết bị văn phòng</a></li>
+                            <li><a href="#">iPhone 11</a></li>
+                            <li><a href="#">iPhone 12</a></li>
+                            <li><a href="#">iPhone 13</a></li>
+                            <li><a href="#">iPhone 14</a></li>
+                            <li><a href="#">iPhone 15</a></li>
+                            <li><a href="#">iPhone 16</a></li>
                         </ul>
                     </li>
                     <li class="has-child">
