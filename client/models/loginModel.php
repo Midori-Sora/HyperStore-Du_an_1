@@ -15,7 +15,8 @@ class LoginModel {
             $sql = "SELECT u.*, r.role_name 
                     FROM users u 
                     LEFT JOIN roles r ON u.role_id = r.role_id 
-                    WHERE u.email = ? LIMIT 1";
+                    WHERE u.email = ? 
+                    LIMIT 1";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("s", $email);
             $stmt->execute();

@@ -14,7 +14,7 @@ require_once 'controllers/categoryController.php';
 require_once 'controllers/userController.php';
 require_once 'controllers/bannerController.php';
 require_once 'controllers/orderController.php';
-
+require_once 'controllers/logoutController.php';
 require_once "./commons/env.php";
 require_once "./commons/function.php";
 
@@ -23,6 +23,9 @@ $action = $_GET['action'] ?? 'home';
 switch ($action) {
     case 'home':
         HomeController::homeController();
+        break;
+    case 'logout':
+        LogoutController::logoutController();
         break;
     case 'product':
         ProductController::productController();

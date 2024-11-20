@@ -361,14 +361,18 @@ header {
 }
 
 .admin-link {
-    color: #e94560 !important;
-    font-weight: 500;
+    color: #ff4444;
+    font-weight: 600;
 }
 
 .admin-link:hover {
-    background-color: #fff3f5;
+    background-color: #ff4444;
+    color: white;
 }
 
-.admin-link i {
-    color: #e94560;
+.dropdown-divider {
+    height: 1px;
+    background-color: #e5e5e5;
+    border: none;
+    margin: 8px 0;
 }
