@@ -170,15 +170,21 @@
 
                             <!-- Thông tin biến thể -->
                             <div class="variant-info">
-                                <h5><i class="fas fa-memory me-2"></i>RAM</h5>
-                                <p><?php echo $product['ram_type']; ?> 
-                                   (+<?php echo number_format($product['ram_price'], 0, ',', '.'); ?> đ)</p>
+                                <h5><i class="fas fa-memory me-2"></i>Bộ nhớ</h5>
+                                <p><?php echo htmlspecialchars($product['storage_type'] ?? 'Không có'); ?> 
+                                   <?php if (isset($product['storage_price']) && $product['storage_price'] > 0): ?>
+                                       (+<?php echo number_format($product['storage_price'], 0, ',', '.'); ?> đ)
+                                   <?php endif; ?>
+                                </p>
                             </div>
 
                             <div class="variant-info">
                                 <h5><i class="fas fa-palette me-2"></i>Màu sắc</h5>
-                                <p><?php echo $product['color_type']; ?> 
-                                   (+<?php echo number_format($product['color_price'], 0, ',', '.'); ?> đ)</p>
+                                <p><?php echo htmlspecialchars($product['color_type'] ?? 'Không có'); ?> 
+                                   <?php if (isset($product['color_price']) && $product['color_price'] > 0): ?>
+                                       (+<?php echo number_format($product['color_price'], 0, ',', '.'); ?> đ)
+                                   <?php endif; ?>
+                                </p>
                             </div>
 
                             <!-- Mô tả sản phẩm -->

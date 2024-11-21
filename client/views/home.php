@@ -47,7 +47,7 @@
             </div>
             <div class="product-list">
                 <?php foreach ($featuredProducts as $product): ?>
-                    <a href="product-detail.php?id=<?php echo $product['pro_id']; ?>" class="product-box">
+                    <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>" class="product-box">
                         <div class="product-image">
                             <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
                             <div class="product-actions">
@@ -81,7 +81,7 @@
             </div>
             <div class="product-list">
                 <?php foreach ($newestPhones as $phone): ?>
-                    <div class="product-box">
+                    <a href="?action=product-detail&id=<?php echo $phone['pro_id']; ?>" class="product-box">
                         <div class="product-image">
                             <img src="Uploads/Product/<?php echo $phone['img']; ?>" alt="<?php echo $phone['pro_name']; ?>">
                             <div class="product-actions">
@@ -101,7 +101,7 @@
                                 <span>(45)</span>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 <?php endforeach; ?>
             </div>
         </div>

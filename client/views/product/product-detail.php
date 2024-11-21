@@ -47,11 +47,11 @@
                     <div class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</div>
                 </div>
 
-                <?php if ($product['ram_type']): ?>
+                <?php if ($product['storage_type']): ?>
                 <div class="product-variants">
                     <h3>Phiên bản</h3>
                     <div class="variant-options">
-                        <button class="variant-btn active"><?php echo $product['ram_type']; ?></button>
+                        <button class="variant-btn active"><?php echo $product['storage_type']; ?></button>
                     </div>
                 </div>
                 <?php endif; ?>

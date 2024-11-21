@@ -35,6 +35,7 @@
                 <div class="product-list">
                     <?php foreach ($products as $product) : ?>
                         <div class="product-box">
+                            <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
                             <div class="product-image">
                                 <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
                                 <div class="product-actions">
@@ -44,14 +45,12 @@
                             </div>
                             <div class="product-infor">
                                 <h3 class="product-name">
-                                    <a href="index.php?action=product-detail&id=<?php echo $product['pro_id']; ?>">
-                                        <?php echo $product['pro_name']; ?>
-                                    </a>
+                                    <?php echo $product['pro_name']; ?>
                                 </h3>
                                 <div class="product-meta">
-                                    <?php if (!empty($product['ram_type'])) : ?>
+                                    <?php if (!empty($product['storage_type'])) : ?>
                                         <span class="product-specs">
-                                            <i class="fas fa-microchip"></i> <?php echo $product['ram_type']; ?>
+                                            <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
                                         </span>
                                     <?php endif; ?>
                                     <?php if (!empty($product['color_type'])) : ?>
@@ -70,6 +69,7 @@
                                     <span>(45)</span>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 </div>

@@ -182,12 +182,12 @@
                                         </select>
                                     </div>
                                     <div class="mb-3">
-                                        <label class="form-label">RAM</label>
-                                        <select class="form-select" name="ram_id" required>
-                                            <option value="">Chọn RAM</option>
-                                            <?php foreach($ramOptions as $ram): ?>
-                                                <option value="<?php echo $ram['ram_id']; ?>">
-                                                    <?php echo $ram['ram_type'] . ' (+' . number_format($ram['ram_price'], 0, ',', '.') . 'đ)'; ?>
+                                        <label class="form-label">Bộ nhớ</label>
+                                        <select class="form-select" name="storage_id" required>
+                                            <option value="">Chọn bộ nhớ</option>
+                                            <?php foreach($storageOptions as $storage): ?>
+                                                <option value="<?php echo $storage['storage_id']; ?>">
+                                                    <?php echo $storage['storage_type'] . ' (+' . number_format($storage['storage_price'], 0, ',', '.') . 'đ)'; ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>

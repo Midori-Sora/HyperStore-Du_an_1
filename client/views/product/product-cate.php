@@ -26,6 +26,7 @@
                 <div class="product-list">
                     <?php foreach ($products as $product) : ?>
                         <div class="product-box">
+                            <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
                             <div class="product-image">
                                 <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
                                 <div class="product-actions">
@@ -63,6 +64,7 @@
                                     <span>(45)</span>
                                 </div>
                             </div>
+                            </a>
                         </div>
                     <?php endforeach; ?>
                 </div>

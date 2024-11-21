@@ -21,11 +21,13 @@
     list-style: none;
 }
 .sidebar-container ul li{
-    padding: 12px 0;
     border-bottom: 1px solid #eee;
     display: flex;
     align-items: center;
     transition: all 0.3s ease;
+}
+.sidebar-container ul li a{
+    padding: 12px 0;
 }
 .sidebar-container ul li:last-child{
     border-bottom: none;

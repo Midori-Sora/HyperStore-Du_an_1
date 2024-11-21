@@ -157,47 +157,53 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <?php foreach($products as $product): ?>
+                                <?php if (!empty($products) && is_array($products)): ?>
+                                    <?php foreach($products as $product): ?>
+                                        <tr>
+                                            <td><?php echo $product['pro_id']; ?></td>
+                                            <td><?php echo $product['pro_name']; ?></td>
+                                            <td>
+                                                <img src="../Uploads/Product/<?php echo $product['img']; ?>" 
+                                                     class="product-image"
+                                                     alt="Product">
+                                            </td>
+                                            <td>
+                                                <strong><?php echo number_format($product['price'], 0, ',', '.'); ?> đ</strong>
+                                            </td>
+                                            <td>
+                                                <?php echo $product['quantity']; ?>
+                                            </td>
+                                            <td><?php echo $product['cate_name']; ?></td>
+                                            <td>
+                                                <span class="status-badge <?php echo $product['pro_status'] == 1 ? 'status-active' : 'status-inactive'; ?>">
+                                                    <?php echo $product['pro_status'] == 1 ? 'Hoạt động' : 'Không hoạt động'; ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <a href="?action=productDetail&id=<?php echo $product['pro_id']; ?>" 
+                                                    class="btn btn-info btn-action me-2">
+                                                    <i class="fas fa-eye me-1"></i>
+                                                    Chi tiết
+                                                </a>
+                                                <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
+                                                   class="btn btn-success btn-action me-2">
+                                                    <i class="fas fa-edit me-1"></i>
+                                                    Sửa
+                                                </a>
+                                                <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
+                                                   class="btn btn-danger btn-action"
+                                                   onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
+                                                    <i class="fas fa-trash me-1"></i>
+                                                    Xóa
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
                                     <tr>
-                                        <td><?php echo $product['pro_id']; ?></td>
-                                        <td><?php echo $product['pro_name']; ?></td>
-                                        <td>
-                                            <img src="../Uploads/Product/<?php echo $product['img']; ?>" 
-                                                 class="product-image"
-                                                 alt="Product">
-                                        </td>
-                                        <td>
-                                            <strong><?php echo number_format($product['price'], 0, ',', '.'); ?> đ</strong>
-                                        </td>
-                                        <td>
-                                            <?php echo $product['quantity']; ?>
-                                        </td>
-                                        <td><?php echo $product['cate_name']; ?></td>
-                                        <td>
-                                            <span class="status-badge <?php echo $product['pro_status'] == 1 ? 'status-active' : 'status-inactive'; ?>">
-                                                <?php echo $product['pro_status'] == 1 ? 'Hoạt động' : 'Không hoạt động'; ?>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <a href="?action=productDetail&id=<?php echo $product['pro_id']; ?>" 
-                                                class="btn btn-info btn-action me-2">
-                                                <i class="fas fa-eye me-1"></i>
-                                                Chi tiết
-                                            </a>
-                                            <a href="?action=editProduct&id=<?php echo $product['pro_id']; ?>" 
-                                               class="btn btn-success btn-action me-2">
-                                                <i class="fas fa-edit me-1"></i>
-                                                Sửa
-                                            </a>
-                                            <a href="?action=deleteProduct&id=<?php echo $product['pro_id']; ?>" 
-                                               class="btn btn-danger btn-action"
-                                               onclick="return confirm('Bạn có chắc muốn xóa sản phẩm này?')">
-                                                <i class="fas fa-trash me-1"></i>
-                                                Xóa
-                                            </a>
-                                        </td>
+                                        <td colspan="8" class="text-center">Không có sản phẩm nào.</td>
                                     </tr>
-                                <?php endforeach; ?>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>

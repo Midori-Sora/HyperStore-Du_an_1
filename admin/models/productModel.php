@@ -15,16 +15,19 @@ class ProductModel extends MainModel
     public function getProductList()
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pr.ram_type, pr.ram_price, pc.color_type, pc.color_price,
-                    (p.price + COALESCE(pr.ram_price, 0) + COALESCE(pc.color_price, 0)) as total_price
+            $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, pc.color_type, pc.color_price,
+                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     ORDER BY p.pro_id DESC";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            error_log("Products fetched: " . count($result));
+            return $result;
         } catch (PDOException $e) {
             error_log("Get product list error: " . $e->getMessage());
             return false;
@@ -34,22 +37,26 @@ class ProductModel extends MainModel
     public function getProductById($id)
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pr.ram_type, pr.ram_price, pc.color_type, pc.color_price
+            $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, pc.color_type, pc.color_price,
+                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     WHERE p.pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute([':id' => $id]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            error_log("Product detail fetched for ID $id: " . ($result ? 'success' : 'not found'));
+            return $result;
         } catch (PDOException $e) {
             error_log("Get product by id error: " . $e->getMessage());
             return false;
         }
     }
 
-    public function editProduct($id, $name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)
+    public function editProduct($id, $name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)
     {
         try {
             $sql = "UPDATE products 
@@ -59,7 +66,7 @@ class ProductModel extends MainModel
                         description = :description,
                         pro_status = :status,
                         cate_id = :cate_id,
-                        ram_id = :ram_id,
+                        storage_id = :storage_id,
                         color_id = :color_id
                     WHERE pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
@@ -70,7 +77,7 @@ class ProductModel extends MainModel
                 ':description' => $description,
                 ':status' => $status,
                 ':cate_id' => $cate_id,
-                ':ram_id' => $ram_id,
+                ':storage_id' => $storage_id,
                 ':color_id' => $color_id,
                 ':id' => $id
             ]);
@@ -80,11 +87,11 @@ class ProductModel extends MainModel
         }
     }
 
-    public function addProduct($name, $img, $price, $description, $status, $cate_id, $ram_id, $color_id)
+    public function addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)
     {
         try {
-            $sql = "INSERT INTO products (pro_name, img, price, description, pro_status, cate_id, ram_id, color_id, import_date) 
-                    VALUES (:name, :img, :price, :description, :status, :cate_id, :ram_id, :color_id, NOW())";
+            $sql = "INSERT INTO products (pro_name, img, price, description, pro_status, cate_id, storage_id, color_id, import_date) 
+                    VALUES (:name, :img, :price, :description, :status, :cate_id, :storage_id, :color_id, NOW())";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
                 ':name' => $name,
@@ -93,7 +100,7 @@ class ProductModel extends MainModel
                 ':description' => $description,
                 ':status' => $status,
                 ':cate_id' => $cate_id,
-                ':ram_id' => $ram_id,
+                ':storage_id' => $storage_id,
                 ':color_id' => $color_id
             ]);
         } catch (PDOException $e) {
@@ -135,18 +142,15 @@ class ProductModel extends MainModel
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getRamOptions()
+    public function getStorageOptions()
     {
         try {
-            $sql = "SELECT * FROM product_ram 
-                    ORDER BY 
-                    ram_price ASC,
-                    CAST(REGEXP_REPLACE(ram_type, '[^0-9]', '') AS UNSIGNED)";
+            $sql = "SELECT * FROM product_storage ORDER BY storage_price ASC";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            error_log("Get RAM options error: " . $e->getMessage());
+            error_log("Get storage options error: " . $e->getMessage());
             return [];
         }
     }
@@ -164,14 +168,14 @@ class ProductModel extends MainModel
         }
     }
 
-    public function addRam($ram_type, $ram_price) 
+    public function addRam($storage_type, $storage_price) 
     {
         try {
             $sql = "INSERT INTO product_ram (ram_type, ram_price) VALUES (:type, :price)";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
-                ':type' => $ram_type,
-                ':price' => $ram_price
+                ':type' => $storage_type,
+                ':price' => $storage_price
             ]);
         } catch (PDOException $e) {
             error_log("Add RAM error: " . $e->getMessage());
@@ -179,15 +183,15 @@ class ProductModel extends MainModel
         }
     }
 
-    public function editRam($ram_id, $ram_type, $ram_price)
+    public function editRam($storage_id, $storage_type, $storage_price)
     {
         try {
             $sql = "UPDATE product_ram SET ram_type = :type, ram_price = :price WHERE ram_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
-                ':type' => $ram_type,
-                ':price' => $ram_price,
-                ':id' => $ram_id
+                ':type' => $storage_type,
+                ':price' => $storage_price,
+                ':id' => $storage_id
             ]);
         } catch (PDOException $e) {
             error_log("Edit RAM error: " . $e->getMessage());
@@ -195,12 +199,12 @@ class ProductModel extends MainModel
         }
     }
 
-    public function deleteRam($ram_id)
+    public function deleteRam($storage_id)
     {
         try {
             $sql = "DELETE FROM product_ram WHERE ram_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
-            return $stmt->execute([':id' => $ram_id]);
+            return $stmt->execute([':id' => $storage_id]);
         } catch (PDOException $e) {
             error_log("Delete RAM error: " . $e->getMessage());
             return false;

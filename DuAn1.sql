@@ -60,7 +60,7 @@ CREATE TABLE `cart` (
   `pro_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `import_date` date DEFAULT NULL,
-  `ram_id` int(11) DEFAULT NULL,
+  `storage_id` int(11) DEFAULT NULL,
   `color_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -223,7 +223,7 @@ CREATE TABLE `products` (
   `pro_view` int(11) DEFAULT 0,
   `pro_status` tinyint(1) DEFAULT 1,
   `cate_id` int(11) NOT NULL,
-  `ram_id` int(11) DEFAULT NULL,
+  `storage_id` int(11) DEFAULT NULL,
   `color_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -231,7 +231,7 @@ CREATE TABLE `products` (
 -- Đang đổ dữ liệu cho bảng `products`
 --
 
-INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `ram_id`, `color_id`) VALUES
+INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `storage_id`, `color_id`) VALUES
 (1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 50, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
 (2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
 (3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 50, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
@@ -298,18 +298,18 @@ CREATE TABLE `product_deals` (
 -- Cấu trúc bảng cho bảng `product_ram`
 --
 
-CREATE TABLE `product_ram` (
-  `ram_id` int(11) NOT NULL,
-  `ram_type` varchar(50) NOT NULL,
-  `ram_price` decimal(10,2) DEFAULT 0.00,
+CREATE TABLE `product_storage` (
+  `storage_id` int(11) NOT NULL,
+  `storage_type` varchar(50) NOT NULL,
+  `storage_price` decimal(10,2) DEFAULT 0.00,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_ram`
+-- Đang đổ dữ liệu cho bảng `product_storage`
 --
 
-INSERT INTO `product_ram` (`ram_id`, `ram_type`, `ram_price`, `created_at`) VALUES
+INSERT INTO `product_storage` (`storage_id`, `storage_type`, `storage_price`, `created_at`) VALUES
 (1, '128GB', 0.00, '2024-11-12 20:16:16'),
 (2, '256GB', 200000.00, '2024-11-12 20:16:16'),
 (3, '512GB', 500000.00, '2024-11-12 20:16:16'),
@@ -404,7 +404,7 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `pro_id` (`pro_id`),
-  ADD KEY `ram_id` (`ram_id`),
+  ADD KEY `storage_id` (`storage_id`),
   ADD KEY `color_id` (`color_id`);
 
 --
@@ -449,7 +449,7 @@ ALTER TABLE `payments`
 ALTER TABLE `products`
   ADD PRIMARY KEY (`pro_id`),
   ADD KEY `cate_id` (`cate_id`),
-  ADD KEY `ram_id` (`ram_id`),
+  ADD KEY `storage_id` (`storage_id`),
   ADD KEY `color_id` (`color_id`);
 
 --
@@ -466,10 +466,10 @@ ALTER TABLE `product_deals`
   ADD KEY `pro_id` (`pro_id`);
 
 --
--- Chỉ mục cho bảng `product_ram`
+-- Chỉ mục cho bảng `product_storage`
 --
-ALTER TABLE `product_ram`
-  ADD PRIMARY KEY (`ram_id`);
+ALTER TABLE `product_storage`
+  ADD PRIMARY KEY (`storage_id`);
 
 --
 -- Chỉ mục cho bảng `roles`
@@ -558,10 +558,10 @@ ALTER TABLE `product_deals`
   MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `product_ram`
+-- AUTO_INCREMENT cho bảng `product_storage`
 --
-ALTER TABLE `product_ram`
-  MODIFY `ram_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+ALTER TABLE `product_storage`
+  MODIFY `storage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -591,7 +591,7 @@ ALTER TABLE `users`
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`),
-  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`ram_id`) REFERENCES `product_ram` (`ram_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`storage_id`) REFERENCES `product_storage` (`storage_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL;
 
 --
@@ -625,7 +625,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `categories` (`cate_id`),
-  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`ram_id`) REFERENCES `product_ram` (`ram_id`) ON DELETE SET NULL,
+  ADD CONSTRAINT `products_ibfk_2` FOREIGN KEY (`storage_id`) REFERENCES `product_storage` (`storage_id`) ON DELETE SET NULL,
   ADD CONSTRAINT `products_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL;
 
 --

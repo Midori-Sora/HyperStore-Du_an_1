@@ -12,11 +12,11 @@ class ProductModel
     public function getProductList()
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pc.color_type, pr.ram_type 
+            $sql = "SELECT p.*, c.cate_name, pc.color_type, ps.storage_type 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     WHERE p.pro_status = 1 
                     ORDER BY p.import_date DESC";
             
@@ -35,11 +35,11 @@ class ProductModel
     public function getProductsByCategory($cateId) 
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pc.color_type, pr.ram_type 
+            $sql = "SELECT p.*, c.cate_name, pc.color_type, ps.storage_type 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id 
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     WHERE p.pro_status = 1 AND p.cate_id = ? 
                     ORDER BY p.import_date DESC";
                     
@@ -74,11 +74,11 @@ class ProductModel
     public function getProductById($id)
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pc.color_type, pr.ram_type 
+            $sql = "SELECT p.*, c.cate_name, pc.color_type, ps.storage_type 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     WHERE p.pro_id = ? AND p.pro_status = 1";
                     
             $stmt = $this->conn->prepare($sql);
@@ -115,11 +115,11 @@ class ProductModel
     public function getRelatedProducts($cateId, $currentProductId, $limit = 4)
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pc.color_type, pr.ram_type 
+            $sql = "SELECT p.*, c.cate_name, pc.color_type, ps.storage_type 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     WHERE p.cate_id = ? 
                     AND p.pro_id != ? 
                     AND p.pro_status = 1 
