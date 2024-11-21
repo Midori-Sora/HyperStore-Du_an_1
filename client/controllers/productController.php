@@ -35,15 +35,34 @@ class ProductController
     {
         $productModel = new ProductModel();
 
-        // Lấy id sản phẩm từ URL
+        // Lấy các tham số từ URL
         $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+        $colorId = isset($_GET['color']) ? (int)$_GET['color'] : null;
+        $storageId = isset($_GET['storage']) ? (int)$_GET['storage'] : null;
 
-        // Lấy thông tin sản phẩm
+        // Lấy thông tin sản phẩm cơ bản
         $product = $productModel->getProductById($productId);
 
         if (!$product) {
             header('Location: index.php');
             exit;
+        }
+
+        // Lấy tất cả các màu và phiên bản có sẵn cho category này
+        $availableColors = $productModel->getAllColorsByCategory($product['cate_id']);
+        $availableStorages = $productModel->getAllStoragesByCategory($product['cate_id']);
+
+        // Nếu có yêu cầu đổi màu hoặc phiên bản
+        if ($colorId || $storageId) {
+            $variant = $productModel->getProductVariant(
+                $productId,
+                $colorId ?? $product['color_id'],
+                $storageId ?? $product['storage_id']
+            );
+            
+            if ($variant) {
+                $product = $variant;
+            }
         }
 
         require_once "client/views/product/product-detail.php";

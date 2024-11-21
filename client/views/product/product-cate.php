@@ -35,7 +35,13 @@
                                     alt="<?php echo $product['pro_name']; ?>">
                                 <div class="product-actions">
                                     <button class="action-btn"><i class="fas fa-heart"></i></button>
-                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                             <div class="product-infor">

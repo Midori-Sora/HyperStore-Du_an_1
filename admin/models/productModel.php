@@ -21,7 +21,7 @@ class ProductModel extends MainModel
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    ORDER BY p.pro_id DESC";
+                    ORDER BY p.pro_name ASC";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute();
             

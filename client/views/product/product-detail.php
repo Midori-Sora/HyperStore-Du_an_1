@@ -68,20 +68,59 @@
                     <div class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</div>
                 </div>
 
-                <?php if ($product['storage_type']): ?>
+                <?php if (!empty($availableStorages)): ?>
                 <div class="product-variants">
                     <h3>Phiên bản</h3>
                     <div class="variant-options">
-                        <button class="variant-btn active"><?php echo $product['storage_type']; ?></button>
+                        <?php foreach ($availableStorages as $storage): ?>
+                            <?php 
+                            // Kiểm tra xem có variant cho storage này không
+                            $variantExists = $productModel->checkVariantExists(
+                                $product['pro_id'], 
+                                $product['color_id'], 
+                                $storage['storage_id']
+                            );
+                            if ($variantExists):
+                            ?>
+                                <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&storage=<?php echo $storage['storage_id']; ?>&color=<?php echo $product['color_id']; ?>" 
+                                   class="variant-btn <?php echo ($storage['storage_id'] == $product['storage_id']) ? 'active' : ''; ?>">
+                                    <?php echo $storage['storage_type']; ?>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <?php endif; ?>
 
-                <?php if ($product['color_type']): ?>
+                <?php if (!empty($availableColors)): ?>
                 <div class="product-colors">
                     <h3>Màu sắc</h3>
                     <div class="color-options">
-                        <button class="color-btn active"><?php echo $product['color_type']; ?></button>
+                        <?php foreach ($availableColors as $color): ?>
+                            <?php 
+                            // Kiểm tra xem có variant cho màu này không
+                            $variantExists = $productModel->checkVariantExists(
+                                $product['pro_id'], 
+                                $color['color_id'], 
+                                $product['storage_id']
+                            );
+                            if ($variantExists):
+                            ?>
+                                <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>" 
+                                   class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>"
+                                   data-color="<?php echo $color['color_type']; ?>">
+                                    <div class="color-wrapper">
+                                        <span class="color-circle" style="background-color: <?php echo $productModel->getColorCode($color['color_type']); ?>"></span>
+                                        <?php if ($color['color_id'] == $product['color_id']): ?>
+                                            <span class="check-icon">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                        <?php endif; ?>
+                                    </div>
+                                    <span class="color-name"><?php echo $color['color_type']; ?></span>
+                                </a>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -227,6 +266,18 @@
                 });
             }
         });
+    });
+
+    // Cập nhật ảnh sản phẩm khi đổi màu
+    document.addEventListener('DOMContentLoaded', function() {
+        const mainImage = document.getElementById('mainImage');
+        const thumbnail = document.querySelector('.thumbnail');
+        
+        // Cập nhật ảnh khi URL thay đổi
+        if (mainImage && thumbnail) {
+            const newImageUrl = mainImage.src;
+            thumbnail.src = newImageUrl;
+        }
     });
     </script>
 </body>

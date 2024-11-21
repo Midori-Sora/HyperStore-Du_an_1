@@ -15,6 +15,7 @@ require_once "client/controllers/productController.php";
 require_once "client/controllers/loginController.php";
 require_once "client/controllers/cartController.php";
 require_once "client/controllers/commentController.php";
+require_once "client/controllers/searchController.php";
 
 $action = $_GET['action'] ?? 'home';
 
@@ -48,5 +49,8 @@ switch ($action) {
         break;
     case 'add-comment':
         CommentController::addComment();
+        break;
+    case 'search':
+        SearchController::searchController();
         break;
 }

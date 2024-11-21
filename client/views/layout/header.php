@@ -17,8 +17,14 @@
             </a>
 
             <div class="search-bar">
-                <form action="" method="GET">
-                    <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                <form action="index.php" method="GET">
+                    <input type="hidden" name="action" value="search">
+                    <input type="text" 
+                           name="keyword" 
+                           placeholder="Tìm kiếm sản phẩm..."
+                           value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>"
+                           required
+                           minlength="2">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
