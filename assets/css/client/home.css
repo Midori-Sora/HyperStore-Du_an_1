@@ -609,9 +609,9 @@ a{
         grid-template-columns: 1fr;
     }
     
-    /* .sidebar {
+    .sidebar {
         display: none; /* Hoặc tạo menu mobile */
-    } */
+    }
     
     .features-section {
         grid-template-columns: repeat(2, 1fr);
