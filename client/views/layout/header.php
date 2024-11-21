@@ -1,3 +1,17 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Thêm đoạn code này để lấy số lượng sản phẩm từ database
+require_once "client/models/cartModel.php";
+$cartModel = new CartModel();
+$cartItemCount = 0;
+
+if (isset($_SESSION['user_id'])) {
+    $cartItemCount = $cartModel->getCartItemCount($_SESSION['user_id']);
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -30,16 +44,15 @@
                     <li class="has-child">
                         <a href="index.php?action=product">Sản phẩm <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
-                            <li><a href="#">Cấu hình HyperPC</a></li>
-                            <li><a href="#">CPU</a></li>
-                            <li><a href="#">Gear</a></li>
-                            <li><a href="#">Màn hình</a></li>
-                            <li><a href="#">Thiết bị văn phòng</a></li>
+                            <li><a href="#">iPhone 11</a></li>
+                            <li><a href="#">iPhone 12</a></li>
+                            <li><a href="#">iPhone 13</a></li>
+                            <li><a href="#">iPhone 14</a></li>
+                            <li><a href="#">iPhone 15</a></li>
+                            <li><a href="#">iPhone 16</a></li>
                         </ul>
                     </li>
-                    <li class="has-child">
-                        <a href="#">Giới thiệu</a>
-                    </li>
+                    <li><a href="#">Giới thiệu</a></li>
                     <li class="has-child">
                         <a href="#">Tin tức <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
@@ -55,29 +68,10 @@
 
             <div class="header-actions">
                 <div class="user-actions">
-                    <div class="cart-dropdown">
-                        <a href="index.php?action=cart">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span class="count">0</span>
-                        </a>
-                        <div class="cart-popup">
-                            <div class="cart-header">
-                                <h3>Giỏ hàng</h3>
-                            </div>
-                            <div class="cart-items">
-                                <div class="empty-cart">
-                                    <p>Giỏ hàng trống</p>
-                                </div>
-                            </div>
-                            <div class="cart-footer">
-                                <div class="cart-total">
-                                    <span>Tổng cộng:</span>
-                                    <span class="total-amount">0₫</span>
-                                </div>
-                                <button class="checkout-btn">Thanh toán</button>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="index.php?action=cart" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="count"><?php echo isset($cartItemCount) ? $cartItemCount : '0'; ?></span>
+                    </a>
 
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <div class="user-dropdown">
@@ -121,23 +115,9 @@
         </div>
     </header>
 
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success">
-            <?php
-            echo $_SESSION['success'];
-            unset($_SESSION['success']);
-            ?>
-        </div>
-    <?php endif; ?>
 
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-error">
-            <?php
-            echo $_SESSION['error'];
-            unset($_SESSION['error']);
-            ?>
-        </div>
-    <?php endif; ?>
+
+
 </body>
 
 </html>

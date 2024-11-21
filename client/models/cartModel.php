@@ -1,54 +1,69 @@
 <?php
-class CartModel
+class CartModel extends MainModel
 {
-    private $conn;
-
     public function __construct()
     {
-        $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
+        parent::__construct();
     }
 
     public function addToCart($userId, $productId, $quantity = 1)
     {
         $sql = "INSERT INTO cart (user_id, pro_id, quantity) 
-                VALUES (?, ?, ?) 
-                ON DUPLICATE KEY UPDATE quantity = quantity + ?";
+                VALUES (:userId, :productId, :quantity) 
+                ON DUPLICATE KEY UPDATE quantity = quantity + :newQuantity";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iiii", $userId, $productId, $quantity, $quantity);
-        return $stmt->execute();
+        $stmt = $this->SUNNY->prepare($sql);
+        return $stmt->execute([
+            ':userId' => $userId,
+            ':productId' => $productId,
+            ':quantity' => $quantity,
+            ':newQuantity' => $quantity
+        ]);
     }
 
     public function getCartItems($userId)
     {
-        $sql = "SELECT c.*, p.pro_name, p.price, p.img 
-                FROM cart c 
-                JOIN products p ON c.pro_id = p.pro_id 
-                WHERE c.user_id = ?";
+        try {
+            $sql = "SELECT c.*, p.pro_name, p.price, p.img 
+                    FROM cart c 
+                    JOIN products p ON c.pro_id = p.pro_id 
+                    WHERE c.user_id = :userId";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([':userId' => $userId]);
+            $items = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Debug
+            error_log("SQL Query: " . $sql);
+            error_log("User ID: " . $userId);
+            error_log("Items found: " . count($items));
+
+            return $items;
+        } catch (PDOException $e) {
+            error_log("Error getting cart items: " . $e->getMessage());
+            return [];
+        }
     }
 
     public function updateQuantity($userId, $productId, $quantity)
     {
-        $sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND pro_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iii", $quantity, $userId, $productId);
-        return $stmt->execute();
+        $sql = "UPDATE cart SET quantity = :quantity WHERE user_id = :userId AND pro_id = :productId";
+        $stmt = $this->SUNNY->prepare($sql);
+        return $stmt->execute([
+            ':quantity' => $quantity,
+            ':userId' => $userId,
+            ':productId' => $productId
+        ]);
     }
 
     public function removeFromCart($userId, $productId)
     {
-        $sql = "DELETE FROM cart WHERE user_id = ? AND product_id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("ii", $userId, $productId);
-        return $stmt->execute();
+        $sql = "DELETE FROM cart WHERE user_id = :userId AND pro_id = :productId";
+        $stmt = $this->SUNNY->prepare($sql);
+        return $stmt->execute([
+            ':userId' => $userId,
+            ':productId' => $productId
+        ]);
     }
 
     public function getCartTotal($userId)
@@ -56,12 +71,37 @@ class CartModel
         $sql = "SELECT SUM(c.quantity * p.price) as total 
                 FROM cart c
                 INNER JOIN products p ON c.pro_id = p.pro_id 
-                WHERE c.user_id = ?";
+                WHERE c.user_id = :userId";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $userId);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        return $result->fetch_assoc()['total'] ?? 0;
+        $stmt = $this->SUNNY->prepare($sql);
+        $stmt->execute([':userId' => $userId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ?? 0;
+    }
+
+    public function getCartCount($userId)
+    {
+        try {
+            $sql = "SELECT COUNT(*) FROM cart WHERE user_id = :userId";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([':userId' => $userId]);
+            return $stmt->fetchColumn();
+        } catch (PDOException $e) {
+            return 0;
+        }
+    }
+
+    public function getCartItemCount($userId)
+    {
+        try {
+            $sql = "SELECT SUM(quantity) as total FROM cart WHERE user_id = :userId";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([':userId' => $userId]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'] ?? 0;
+        } catch (PDOException $e) {
+            error_log("Error getting cart count: " . $e->getMessage());
+            return 0;
+        }
     }
 }

@@ -13,9 +13,9 @@ class CartController
     public function addToCart()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $productId = $_POST['product_id'] ?? 0;
-            $quantity = $_POST['quantity'] ?? 1;
-            $userId = $_SESSION['user_id'] ?? 0;
+            $productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
+            $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+            $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
             if (!$userId) {
                 $_SESSION['error'] = "Vui lòng đăng nhập để thêm vào giỏ hàng";
@@ -24,13 +24,20 @@ class CartController
             }
 
             if ($userId && $productId) {
-                $result = $this->cartModel->addToCart($userId, $productId, $quantity);
-                if ($result) {
-                    $_SESSION['success'] = "Đã thêm sản phẩm vào giỏ hàng";
-                } else {
+                try {
+                    $result = $this->cartModel->addToCart($userId, $productId, $quantity);
+                    if ($result) {
+                        $_SESSION['success'] = "Đã thêm sản phẩm vào giỏ hàng";
+                        $_SESSION['cart_updated'] = true;
+                    } else {
+                        $_SESSION['error'] = "Có lỗi xảy ra, vui lòng thử lại";
+                    }
+                } catch (Exception $e) {
+                    error_log("Error adding to cart: " . $e->getMessage());
                     $_SESSION['error'] = "Có lỗi xảy ra, vui lòng thử lại";
                 }
             }
+
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit;
         }
@@ -39,14 +46,18 @@ class CartController
     public function updateCart()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $productId = $_POST['product_id'] ?? 0;
-            $quantity = $_POST['quantity'] ?? 1;
-            $userId = $_SESSION['user_id'] ?? 0;
+            $productId = isset($_POST['product_id']) ? (int)$_POST['product_id'] : 0;
+            $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+            $userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 0;
 
             if ($userId && $productId) {
-                $result = $this->cartModel->updateQuantity($userId, $productId, $quantity);
-                echo json_encode(['success' => $result]);
-                exit;
+                try {
+                    $result = $this->cartModel->updateQuantity($userId, $productId, $quantity);
+                    echo json_encode(['success' => $result]);
+                    exit;
+                } catch (Exception $e) {
+                    error_log("Error updating cart: " . $e->getMessage());
+                }
             }
         }
         echo json_encode(['success' => false]);
@@ -73,13 +84,16 @@ class CartController
         if ($userId) {
             $items = $this->cartModel->getCartItems($userId);
             $total = $this->cartModel->getCartTotal($userId);
+            $count = $this->cartModel->getCartItemCount($userId);
+
             echo json_encode([
                 'items' => $items,
-                'total' => $total
+                'total' => $total,
+                'count' => $count
             ]);
             exit;
         }
-        echo json_encode(['items' => [], 'total' => 0]);
+        echo json_encode(['items' => [], 'total' => 0, 'count' => 0]);
     }
 
     public function viewCart()
@@ -91,10 +105,14 @@ class CartController
             exit;
         }
 
-        $items = $this->cartModel->getCartItems($userId);
+        // Lấy dữ liệu giỏ hàng từ cùng một nguồn
+        $cart_items = $this->cartModel->getCartItems($userId);
         $total = $this->cartModel->getCartTotal($userId);
 
-        // Load view giỏ hàng
+        // Debug
+        error_log("Cart Items: " . print_r($cart_items, true));
+        error_log("Total: " . $total);
+
         require_once "client/views/cart/cart.php";
     }
 

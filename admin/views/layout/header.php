@@ -1,3 +1,14 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Kiểm tra đăng nhập
+if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
+    header('Location: ../index.php?action=login');
+    exit;
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -95,6 +106,30 @@
     .logout-btn i {
         font-size: 16px;
     }
+
+    .view-website-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border: none;
+        border-radius: 8px;
+        background: #1976D2;
+        color: white;
+        font-size: 15px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s;
+    }
+
+    .view-website-btn:hover {
+        background: #1565C0;
+        color: white;
+    }
+
+    .view-website-btn i {
+        font-size: 16px;
+    }
 </style>
 
 <body>
@@ -105,11 +140,20 @@
                 <h3>Admin Dashboard</h3>
             </div>
             <div class="nav-right">
+                <a href="../index.php" class="view-website-btn">
+                    <i class="fas fa-globe"></i>
+                    <span>Xem Website</span>
+                </a>
                 <div class="user-info">
                     <img src="../Uploads/User/nam.jpg" alt="User avatar">
-                    <span class="user-name">Admin</span>
+                    <span class="user-name">
+                        <?php
+                        // Kiểm tra và hiển thị tên người dùng
+                        echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Admin';
+                        ?>
+                    </span>
                 </div>
-                <a href="index.php?action=logout" class="logout-btn">
+                <a href="#" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Đăng xuất</span>
                 </a>

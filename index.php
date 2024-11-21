@@ -1,15 +1,15 @@
 <?php
-define('PATH_ROOT', dirname(__DIR__));
 session_start();
+define('PATH_ROOT', dirname(__DIR__));
 require_once "client/commons/env.php";
 require_once "client/commons/function.php";
+
 require_once "client/controllers/homeController.php";
 require_once "client/controllers/productController.php";
 require_once "client/controllers/loginController.php";
 require_once "client/controllers/cartController.php";
 
 $action = $_GET['action'] ?? 'home';
-$cartController = new CartController();
 
 switch ($action) {
     case 'home':
@@ -30,22 +30,24 @@ switch ($action) {
     case 'product-detail':
         ProductController::productDetailController();
         break;
+    case 'cart':
+        $cartController = new CartController();
+        $cartController->viewCart();
+        break;
     case 'add-to-cart':
+        $cartController = new CartController();
         $cartController->addToCart();
         break;
     case 'update-cart':
+        $cartController = new CartController();
         $cartController->updateCart();
         break;
     case 'remove-from-cart':
+        $cartController = new CartController();
         $cartController->removeFromCart();
         break;
-    case 'get-cart':
+    case 'get-cart-items':
+        $cartController = new CartController();
         $cartController->getCartItems();
-        break;
-    case 'cart':
-        $cartController->viewCart();
-        break;
-    default:
-        HomeController::homeController();
         break;
 }

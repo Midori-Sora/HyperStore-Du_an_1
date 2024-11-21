@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -25,43 +26,43 @@
             </div>
 
             <?php if (!empty($products)) : ?>
-            <div class="product-list">
-                <?php foreach ($products as $product) : ?>
-                <div class="product-box">
-                    <div class="product-image">
-                        <img src="Uploads/Product/<?php echo $product['img']; ?>"
-                            alt="<?php echo $product['pro_name']; ?>">
-                        <div class="product-actions">
-                            <button class="action-btn"><i class="fas fa-heart"></i></button>
-                            <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                <div class="product-list">
+                    <?php foreach ($products as $product) : ?>
+                        <div class="product-box">
+                            <div class="product-image">
+                                <img src="Uploads/Product/<?php echo $product['img']; ?>"
+                                    alt="<?php echo $product['pro_name']; ?>">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
+                                </div>
+                            </div>
+                            <div class="product-infor">
+                                <h3 class="product-name">
+                                    <a href="?route=product-detail&id=<?php echo $product['pro_id']; ?>">
+                                        <?php echo $product['pro_name']; ?>
+                                    </a>
+                                </h3>
+                                <div class="product-price">
+                                    <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
+                                </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>(45)</span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="product-infor">
-                        <h3 class="product-name">
-                            <a href="index.php?action=product-detail&id=<?php echo $product['pro_id']; ?>">
-                                <?php echo $product['pro_name']; ?>
-                            </a>
-                        </h3>
-                        <div class="product-price">
-                            <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
-                        </div>
-                        <div class="product-rating">
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="far fa-star"></i>
-                            <span>(45)</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
-                <?php endforeach; ?>
-            </div>
             <?php else : ?>
-            <div class="no-products">
-                <i class="fas fa-box-open"></i>
-                <p>Không có sản phẩm nào trong danh mục này.</p>
-            </div>
+                <div class="no-products">
+                    <i class="fas fa-box-open"></i>
+                    <p>Không có sản phẩm nào trong danh mục này.</p>
+                </div>
             <?php endif; ?>
         </div>
     </div>

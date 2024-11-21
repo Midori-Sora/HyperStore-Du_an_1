@@ -25,6 +25,9 @@ switch ($action) {
     case 'home':
         HomeController::homeController();
         break;
+    case 'logout':
+        LogoutController::logoutController();
+        break;
     case 'product':
         ProductController::productController();
         break;
