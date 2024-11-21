@@ -53,7 +53,7 @@
                             </div>
                             <div class="product-infor">
                                 <h3 class="product-name">
-                                    <a href="?route=product-detail&id=<?php echo $product['pro_id']; ?>">
+                                    <a href="index.php?action=product-detail&id=<?php echo $product['pro_id']; ?>">
                                         <?php echo $product['pro_name']; ?>
                                     </a>
                                 </h3>

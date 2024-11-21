@@ -37,7 +37,7 @@ class CartModel
 
     public function updateQuantity($userId, $productId, $quantity)
     {
-        $sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND product_id = ?";
+        $sql = "UPDATE cart SET quantity = ? WHERE user_id = ? AND pro_id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("iii", $quantity, $userId, $productId);
         return $stmt->execute();
@@ -54,13 +54,14 @@ class CartModel
     public function getCartTotal($userId)
     {
         $sql = "SELECT SUM(c.quantity * p.price) as total 
-                FROM cart c 
-                JOIN products p ON c.product_id = p.pro_id 
+                FROM cart c
+                INNER JOIN products p ON c.pro_id = p.pro_id 
                 WHERE c.user_id = ?";
 
         $stmt = $this->conn->prepare($sql);
         $stmt->bind_param("i", $userId);
         $stmt->execute();
-        return $stmt->get_result()->fetch_assoc()['total'] ?? 0;
+        $result = $stmt->get_result();
+        return $result->fetch_assoc()['total'] ?? 0;
     }
 }

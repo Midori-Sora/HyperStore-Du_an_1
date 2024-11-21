@@ -13,43 +13,39 @@
         <?php include 'client/views/layout/header.php'; ?>
     </div>
 
-    <div class="cart-container">
-        <h1>Giỏ hàng của bạn</h1>
-
-        <?php if (!empty($items)) : ?>
-        <div class="cart-items">
-            <?php foreach ($items as $item) : ?>
-            <div class="cart-item">
-                <img src="Uploads/Product/<?php echo $item['img']; ?>" alt="<?php echo $item['pro_name']; ?>">
-                <div class="item-details">
-                    <h3><?php echo $item['pro_name']; ?></h3>
-                    <p class="price"><?php echo number_format($item['price'], 0, ',', '.'); ?>₫</p>
-                    <div class="quantity">
-                        <form action="index.php?action=update-cart" method="POST">
-                            <input type="hidden" name="product_id" value="<?php echo $item['pro_id']; ?>">
-                            <input type="number" name="quantity" value="<?php echo $item['quantity']; ?>" min="1">
-                            <button type="submit">Cập nhật</button>
-                        </form>
-                        <form action="index.php?action=remove-from-cart" method="POST">
-                            <input type="hidden" name="product_id" value="<?php echo $item['pro_id']; ?>">
-                            <button type="submit">Xóa</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-        <div class="cart-summary">
-            <h3>Tổng tiền: <?php echo number_format($total, 0, ',', '.'); ?>₫</h3>
-            <a href="index.php?action=checkout" class="checkout-btn">Thanh toán</a>
-        </div>
-        <?php else : ?>
+    <?php if (empty($cart_items)): ?>
         <div class="empty-cart">
-            <p>Giỏ hàng trống</p>
-            <a href="index.php?action=product" class="continue-shopping">Tiếp tục mua sắm</a>
+            <h2>Giỏ hàng trống</h2>
         </div>
-        <?php endif; ?>
-    </div>
+    <?php else: ?>
+        <div class="cart-container">
+            <h2>Giỏ hàng của bạn</h2>
+            <div class="cart-items">
+                <?php foreach ($cart_items as $item): ?>
+                    <div class="cart-item">
+                        <img src="Uploads/Product/<?= $item['img'] ?>" alt="<?= $item['pro_name'] ?>">
+                        <div class="item-details">
+                            <h3><?= $item['pro_name'] ?></h3>
+                            <p class="price"><?= number_format($item['price']) ?>đ</p>
+                            <div class="quantity">
+                                <select name="quantity">
+                                    <?php for ($i = 1; $i <= 10; $i++): ?>
+                                        <option value="<?= $i ?>" <?= ($i == $item['quantity']) ? 'selected' : '' ?>><?= $i ?>
+                                        </option>
+                                    <?php endfor; ?>
+                                </select>
+                                <button class="update">Cập nhật</button>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+            <div class="cart-total">
+                <p>Tổng cộng: <?= number_format($total) ?>đ</p>
+                <button class="checkout">Thanh toán</button>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <div class="footer">
         <?php include 'client/views/layout/footer.php'; ?>

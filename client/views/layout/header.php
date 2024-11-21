@@ -55,22 +55,16 @@
 
             <div class="header-actions">
                 <div class="user-actions">
-                    <a href="#" class="wishlist">
-                        <i class="fas fa-heart"></i>
-                        <span class="count">0</span>
-                    </a>
                     <div class="cart-dropdown">
                         <a href="index.php?action=cart">
                             <i class="fas fa-shopping-cart"></i>
-                            <span
-                                class="count"><?php echo isset($_SESSION['cart_count']) ? $_SESSION['cart_count'] : 0; ?></span>
+                            <span class="count">0</span>
                         </a>
                         <div class="cart-popup">
                             <div class="cart-header">
                                 <h3>Giỏ hàng</h3>
                             </div>
                             <div class="cart-items">
-                                <!-- Cart items will be dynamically added here -->
                                 <div class="empty-cart">
                                     <p>Giỏ hàng trống</p>
                                 </div>
@@ -84,6 +78,44 @@
                             </div>
                         </div>
                     </div>
+
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <div class="user-dropdown">
+                            <a href="#" class="user-menu">
+                                <i class="fas fa-user"></i>
+                                <span><?php echo $_SESSION['user_name']; ?></span>
+                            </a>
+                            <div class="user-popup">
+                                <ul>
+                                    <?php if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
+                                        <li>
+                                            <a href="admin/index.php" class="admin-link">
+                                                <i class="fas fa-cog"></i> Quản trị website
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                    <?php endif; ?>
+                                    <li>
+                                        <a href="index.php?action=profile">
+                                            <i class="fas fa-user-circle"></i> Tài khoản của tôi
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="index.php?action=logout">
+                                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    <?php else: ?>
+                        <a href="index.php?action=login" class="login-btn">
+                            <i class="fas fa-user"></i>
+                            <span>Đăng nhập</span>
+                        </a>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

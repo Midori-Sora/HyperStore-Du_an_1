@@ -97,4 +97,19 @@ class CartController
         // Load view giỏ hàng
         require_once "client/views/cart/cart.php";
     }
+
+    public function index()
+    {
+        $cart_items = $this->cartModel->getCartItems($_SESSION['user_id']);
+
+        // Đảm bảo $cart_items là array
+        if (!is_array($cart_items)) {
+            $cart_items = [];
+        }
+
+        $total = $this->cartModel->getCartTotal($_SESSION['user_id']);
+
+        // Truyền dữ liệu sang view
+        require_once 'client/views/cart/cart.php';
+    }
 }

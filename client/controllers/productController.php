@@ -13,13 +13,13 @@ class ProductController
     public static function productCategoryController()
     {
         $productModel = new ProductModel();
-        
+
         // Lấy category_id từ URL
         $cateId = isset($_GET['cate_id']) ? (int)$_GET['cate_id'] : 0;
-        
+
         // Lấy thông tin danh mục
         $category = $productModel->getCategoryById($cateId);
-        
+
         if (!$category) {
             header('Location: index.php');
             exit;
@@ -27,7 +27,25 @@ class ProductController
 
         // Lấy sản phẩm theo danh mục
         $products = $productModel->getProductsByCategory($cateId);
-        
+
         require_once "client/views/product/product-cate.php";
+    }
+
+    public static function productDetailController()
+    {
+        $productModel = new ProductModel();
+
+        // Lấy id sản phẩm từ URL
+        $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+        // Lấy thông tin sản phẩm
+        $product = $productModel->getProductById($productId);
+
+        if (!$product) {
+            header('Location: index.php');
+            exit;
+        }
+
+        require_once "client/views/product/product-detail.php";
     }
 }

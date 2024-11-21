@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +8,10 @@
     <link rel="stylesheet" href="../../assets/css/client/product-detail.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
     <div class="header">
-        <?php include 'layout/header.php' ?>
+        <?php include 'client/views/layout/header.php' ?>
     </div>
 
     <div class="container">
@@ -76,10 +78,14 @@
                 </div>
 
                 <div class="action-buttons">
-                    <button class="btn-add-cart">
-                        <i class="fas fa-shopping-cart"></i>
-                        Thêm vào giỏ hàng
-                    </button>
+                    <form action="index.php?action=add-to-cart" method="POST">
+                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                        <input type="hidden" name="quantity" id="quantity" value="1">
+                        <button type="submit" class="btn-add-cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            Thêm vào giỏ hàng
+                        </button>
+                    </form>
                     <button class="btn-buy-now">Mua ngay</button>
                 </div>
             </div>
@@ -329,11 +335,11 @@
                 // Add active class to clicked thumbnail
                 this.classList.add('active');
                 // Update main image
-                mainImage.src = this.src;   
+                mainImage.src = this.src;
             });
         });
 
-        // Xử lý tăng giảm số lượng
+        // Xử lý tăng giảm s lượng
         const minusBtn = document.querySelector('.minus');
         const plusBtn = document.querySelector('.plus');
         const qtyInput = document.querySelector('.qty-input');
@@ -351,4 +357,5 @@
         });
     </script>
 </body>
+
 </html>
