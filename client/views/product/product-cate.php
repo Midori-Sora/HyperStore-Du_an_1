@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/client/product-cate.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <div class="header">
         <?php include 'client/views/layout/header.php'; ?>
@@ -16,7 +19,7 @@
         <div class="sidebar">
             <?php include 'client/views/layout/sidebar.php' ?>
         </div>
-        
+
         <div class="product-container">
             <div class="category-title">
                 <h2><?php echo $category['cate_name']; ?></h2>
@@ -28,30 +31,19 @@
                         <div class="product-box">
                             <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
                             <div class="product-image">
-                                <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
+                                <img src="Uploads/Product/<?php echo $product['img']; ?>"
+                                    alt="<?php echo $product['pro_name']; ?>">
                                 <div class="product-actions">
-                                    <button class="action-btn">
-                                        <i class="fas fa-heart"></i>
-                                    </button>
-                                    <button class="action-btn">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
+                                    <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    <button class="action-btn"><i class="fas fa-shopping-cart"></i></button>
                                 </div>
                             </div>
                             <div class="product-infor">
-                                <h3 class="product-name"><?php echo $product['pro_name']; ?></h3>
-                                <div class="product-meta">
-                                    <?php if (!empty($product['ram_type'])) : ?>
-                                        <span class="product-specs">
-                                            <i class="fas fa-microchip"></i> <?php echo $product['ram_type']; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                    <?php if (!empty($product['color_type'])) : ?>
-                                        <span class="product-color">
-                                            <i class="fas fa-palette"></i> <?php echo $product['color_type']; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
+                                <h3 class="product-name">
+                                    <a href="?route=product-detail&id=<?php echo $product['pro_id']; ?>">
+                                        <?php echo $product['pro_name']; ?>
+                                    </a>
+                                </h3>
                                 <div class="product-price">
                                     <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
                                 </div>
@@ -81,4 +73,5 @@
         <?php include 'client/views/layout/footer.php'; ?>
     </div>
 </body>
+
 </html>

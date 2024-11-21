@@ -104,14 +104,12 @@
                             <select class="form-select" name="img" id="imageSelect">
                                 <option value="<?=$product['img']?>">Giữ ảnh hiện tại (<?=$product['img']?>)</option>
                                 <?php 
-                                $imageDir = PATH_ROOT . '/Uploads/Product/';
+                                $imageDir = '../Uploads/Product/';
                                 $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
                                 foreach($images as $image): 
                                     $imageName = basename($image);
                                     if($imageName != $product['img']):
-                                ?>
-                                    <option value="<?php echo $imageName; ?>"><?php echo $imageName; ?></option>
-                                <?php 
+                                        echo "<option value=\"" . htmlspecialchars($imageName) . "\">" . htmlspecialchars($imageName) . "</option>";
                                     endif;
                                 endforeach; 
                                 ?>
@@ -131,6 +129,11 @@
                     <div class="mb-3">
                         <label class="form-label">Mô tả</label>
                         <textarea class="form-control" name="description" rows="4"><?=$product['description']?></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Số lượng</label>
+                        <input class="form-control" type="number" name="quantity" value="<?=$product['quantity']?>" min="0" required>
                     </div>
 
                     <div class="mb-3">

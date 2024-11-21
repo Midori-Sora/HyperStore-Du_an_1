@@ -137,7 +137,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <form action="index.php?action=addCategory" method="POST" enctype="multipart/form-data">
+                        <form action="index.php?action=addCategory" method="POST">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -162,10 +162,23 @@
                                 <div class="col-md-6">
                                     <div class="mb-3">
                                         <label class="form-label">Hình ảnh danh mục</label>
-                                        <input type="file" class="form-control" name="img" id="imageInput" accept="image/*" required>
-                                        <div class="image-preview">
+                                        <select class="form-select" name="img" id="imageSelect" required>
+                                            <option value="">Chọn ảnh</option>
+                                            <?php 
+                                            if (!empty($images)):
+                                                foreach($images as $image): 
+                                            ?>
+                                                <option value="<?= htmlspecialchars($image) ?>">
+                                                    <?= htmlspecialchars($image) ?>
+                                                </option>
+                                            <?php 
+                                                endforeach;
+                                            endif;
+                                            ?>
+                                        </select>
+                                        <div class="preview-container mt-3" style="display: none;">
                                             <p class="mb-2">Xem trước ảnh:</p>
-                                            <img id="preview" class="preview-image" alt="Preview image">
+                                            <img id="preview" class="preview-image" alt="Preview">
                                         </div>
                                     </div>
                                 </div>
@@ -187,18 +200,18 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('imageInput').onchange = function(e) {
+        document.getElementById('imageSelect').onchange = function() {
             const preview = document.getElementById('preview');
-            const file = e.target.files[0];
-            if(file) {
+            const previewContainer = document.querySelector('.preview-container');
+            const selectedImage = this.value;
+            
+            if(selectedImage) {
+                preview.src = '../../Uploads/Category/' + selectedImage;
                 preview.style.display = 'block';
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                }
-                reader.readAsDataURL(file);
+                previewContainer.style.display = 'block';
             } else {
                 preview.style.display = 'none';
+                previewContainer.style.display = 'none';
             }
         }
     </script>

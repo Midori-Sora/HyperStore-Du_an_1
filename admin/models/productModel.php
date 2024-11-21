@@ -56,7 +56,7 @@ class ProductModel extends MainModel
         }
     }
 
-    public function editProduct($id, $name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)
+    public function editProduct($id, $name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id, $quantity)
     {
         try {
             $sql = "UPDATE products 
@@ -67,7 +67,8 @@ class ProductModel extends MainModel
                         pro_status = :status,
                         cate_id = :cate_id,
                         storage_id = :storage_id,
-                        color_id = :color_id
+                        color_id = :color_id,
+                        quantity = :quantity
                     WHERE pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
@@ -79,6 +80,7 @@ class ProductModel extends MainModel
                 ':cate_id' => $cate_id,
                 ':storage_id' => $storage_id,
                 ':color_id' => $color_id,
+                ':quantity' => $quantity,
                 ':id' => $id
             ]);
         } catch (PDOException $e) {
@@ -87,11 +89,11 @@ class ProductModel extends MainModel
         }
     }
 
-    public function addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)
+    public function addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id, $quantity)
     {
         try {
-            $sql = "INSERT INTO products (pro_name, img, price, description, pro_status, cate_id, storage_id, color_id, import_date) 
-                    VALUES (:name, :img, :price, :description, :status, :cate_id, :storage_id, :color_id, NOW())";
+            $sql = "INSERT INTO products (pro_name, img, price, description, pro_status, cate_id, storage_id, color_id, quantity, import_date) 
+                    VALUES (:name, :img, :price, :description, :status, :cate_id, :storage_id, :color_id, :quantity, NOW())";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
                 ':name' => $name,
@@ -101,7 +103,8 @@ class ProductModel extends MainModel
                 ':status' => $status,
                 ':cate_id' => $cate_id,
                 ':storage_id' => $storage_id,
-                ':color_id' => $color_id
+                ':color_id' => $color_id,
+                ':quantity' => $quantity
             ]);
         } catch (PDOException $e) {
             error_log("Add product error: " . $e->getMessage());
@@ -113,13 +116,13 @@ class ProductModel extends MainModel
     {
         try {
             $this->SUNNY->beginTransaction();
-            
+
             // Xóa sản phẩm (các bảng liên quan sẽ tự động xóa do ON DELETE CASCADE)
             $sql = "DELETE FROM products WHERE pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $result = $stmt->execute();
-            
+
             if ($result) {
                 $this->SUNNY->commit();
                 return true;
@@ -168,25 +171,25 @@ class ProductModel extends MainModel
         }
     }
 
-    public function addRam($storage_type, $storage_price) 
+    public function addStorage($storage_type, $storage_price) 
     {
         try {
-            $sql = "INSERT INTO product_ram (ram_type, ram_price) VALUES (:type, :price)";
+            $sql = "INSERT INTO product_storage (storage_type, storage_price) VALUES (:type, :price)";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
                 ':type' => $storage_type,
                 ':price' => $storage_price
             ]);
         } catch (PDOException $e) {
-            error_log("Add RAM error: " . $e->getMessage());
+            error_log("Add storage error: " . $e->getMessage());
             return false;
         }
     }
 
-    public function editRam($storage_id, $storage_type, $storage_price)
+    public function editStorage($storage_id, $storage_type, $storage_price)
     {
         try {
-            $sql = "UPDATE product_ram SET ram_type = :type, ram_price = :price WHERE ram_id = :id";
+            $sql = "UPDATE product_storage SET storage_type = :type, storage_price = :price WHERE storage_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([
                 ':type' => $storage_type,
@@ -194,19 +197,19 @@ class ProductModel extends MainModel
                 ':id' => $storage_id
             ]);
         } catch (PDOException $e) {
-            error_log("Edit RAM error: " . $e->getMessage());
+            error_log("Edit storage error: " . $e->getMessage());
             return false;
         }
     }
 
-    public function deleteRam($storage_id)
+    public function deleteStorage($storage_id)
     {
         try {
-            $sql = "DELETE FROM product_ram WHERE ram_id = :id";
+            $sql = "DELETE FROM product_storage WHERE storage_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             return $stmt->execute([':id' => $storage_id]);
         } catch (PDOException $e) {
-            error_log("Delete RAM error: " . $e->getMessage());
+            error_log("Delete storage error: " . $e->getMessage());
             return false;
         }
     }
@@ -254,7 +257,7 @@ class ProductModel extends MainModel
         }
     }
 
-    public function updateQuantity($pro_id, $quantity) 
+    public function updateQuantity($pro_id, $quantity)
     {
         try {
             $sql = "UPDATE products SET quantity = :quantity WHERE pro_id = :id";
@@ -288,4 +291,3 @@ class ProductModel extends MainModel
         }
     }
 }
-?>

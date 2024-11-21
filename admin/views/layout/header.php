@@ -11,6 +11,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,7 +26,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
         left: 0;
         right: 0;
         z-index: 1000;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .nav {
@@ -130,6 +131,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
         font-size: 16px;
     }
 </style>
+
 <body>
     <header class="header">
         <nav class="nav">
@@ -145,13 +147,13 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
                 <div class="user-info">
                     <img src="../Uploads/User/nam.jpg" alt="User avatar">
                     <span class="user-name">
-                        <?php 
+                        <?php
                         // Kiểm tra và hiển thị tên người dùng
                         echo isset($_SESSION['user_name']) ? htmlspecialchars($_SESSION['user_name']) : 'Admin';
                         ?>
                     </span>
                 </div>
-                <a href="?action=logout" class="logout-btn">
+                <a href="#" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Đăng xuất</span>
                 </a>
@@ -159,4 +161,5 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
         </nav>
     </header>
 </body>
+
 </html>

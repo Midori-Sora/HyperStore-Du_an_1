@@ -111,16 +111,32 @@
                 <h2 class="mb-4">Chỉnh sửa danh mục</h2>
 
                 <?php if (isset($_SESSION['error'])): ?>
-                    <div class="alert alert-danger">
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <i class="fas fa-exclamation-circle me-2"></i>
                         <?php 
-                            echo $_SESSION['error'];
+                            echo htmlspecialchars($_SESSION['error']);
                             unset($_SESSION['error']);
                         ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['success'])): ?>
+                    <div class="alert alert-success alert-dismissible fade show">
+                        <i class="fas fa-check-circle me-2"></i>
+                        <?php 
+                            echo htmlspecialchars($_SESSION['success']);
+                            unset($_SESSION['success']);
+                        ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 <?php endif; ?>
 
                 <form action="index.php?action=updateCategory&id=<?= htmlspecialchars($category['cate_id']) ?>"
-                      method="post" enctype="multipart/form-data">
+                      method="post" 
+                      enctype="multipart/form-data"
+                      class="needs-validation" 
+                      novalidate>
                     <div class="mb-3">
                         <label class="form-label">Tên danh mục</label>
                         <input type="text" class="form-control" name="cate_name"
@@ -131,16 +147,28 @@
                         <label class="form-label">Hình ảnh danh mục</label>
                         <div class="current-image mb-3">
                             <p class="mb-2">Ảnh hiện tại:</p>
-                            <img src="<?= htmlspecialchars($category['img']) ?>" 
+                            <img src="../<?= htmlspecialchars($category['img']) ?>" 
                                  class="category-image" 
-                                 alt="Current category image">
+                                 alt="<?= htmlspecialchars($category['cate_name']) ?>"">
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
-                            <input type="file" class="form-control" name="img" id="imageInput" accept="image/*">
+                            <select class="form-select" name="img" id="imageSelect">
+                                <option value="<?= htmlspecialchars($category['img']) ?>">Giữ ảnh hiện tại</option>
+                                <?php foreach($images as $image): 
+                                    $imagePath = 'Uploads/Category/' . $image;
+                                    if($imagePath != $category['img']):
+                                ?>
+                                    <option value="<?= htmlspecialchars($image) ?>">
+                                        <?= htmlspecialchars($image) ?>
+                                    </option>
+                                <?php 
+                                    endif;
+                                endforeach; ?>
+                            </select>
                             <div class="preview-container mt-3" style="display: none;">
                                 <p class="mb-2">Xem trước ảnh mới:</p>
-                                <img id="preview" class="preview-image" alt="Preview image">
+                                <img id="preview" class="preview-image" alt="Preview">
                             </div>
                         </div>
                     </div>
@@ -171,24 +199,51 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('imageInput').onchange = function(e) {
+        document.addEventListener('DOMContentLoaded', function() {
+            const imageSelect = document.getElementById('imageSelect');
             const preview = document.getElementById('preview');
             const previewContainer = document.querySelector('.preview-container');
-            const file = e.target.files[0];
-            
-            if(file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
+
+            // Xử lý khi thay đổi ảnh
+            imageSelect.onchange = function() {
+                const selectedValue = this.value;
+                
+                if(selectedValue) {
+                    if(selectedValue.includes('Uploads/')) {
+                        preview.src = '../../' + selectedValue;
+                    } else {
+                        preview.src = '../../Uploads/Category/' + selectedValue;
+                    }
                     preview.style.display = 'block';
                     previewContainer.style.display = 'block';
+                } else {
+                    preview.style.display = 'none';
+                    previewContainer.style.display = 'none';
                 }
-                reader.readAsDataURL(file);
-            } else {
-                preview.style.display = 'none';
-                previewContainer.style.display = 'none';
+            };
+
+            // Kiểm tra và hiển thị ảnh preview khi tải trang
+            const initialValue = imageSelect.value;
+            if(initialValue && initialValue.includes('/Uploads/')) {
+                preview.src = '../../' + initialValue;
+                preview.style.display = 'block';
+                previewContainer.style.display = 'block';
             }
-        }
+        });
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.needs-validation');
+        
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            
+            form.classList.add('was-validated');
+        });
+    });
     </script>
 </body>
 </html>

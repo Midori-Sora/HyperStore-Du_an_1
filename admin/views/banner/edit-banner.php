@@ -113,14 +113,29 @@
                             <div class="alert alert-danger alert-dismissible fade show">
                                 <i class="fas fa-exclamation-circle me-2"></i>
                                 <?php 
-                                    echo $_SESSION['error'];
+                                    echo htmlspecialchars($_SESSION['error']);
                                     unset($_SESSION['error']);
                                 ?>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                             </div>
                         <?php endif; ?>
 
-                        <form action="?action=editBanner&id=<?= $banner['id'] ?>" method="POST" enctype="multipart/form-data">
+                        <?php if (isset($_SESSION['success'])): ?>
+                            <div class="alert alert-success alert-dismissible fade show">
+                                <i class="fas fa-check-circle me-2"></i>
+                                <?php 
+                                    echo htmlspecialchars($_SESSION['success']);
+                                    unset($_SESSION['success']);
+                                ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="?action=editBanner&id=<?= htmlspecialchars($banner['id']) ?>" 
+                              method="POST" 
+                              enctype="multipart/form-data"
+                              class="needs-validation" 
+                              novalidate>
                             <div class="row">
                                 <div class="col-md-8">
                                     <div class="mb-3">
@@ -134,20 +149,20 @@
                                         <select class="form-select" name="image_url" id="imageSelect" required>
                                             <option value="">Chọn hình ảnh</option>
                                             <?php 
-                                            $imageDir = PATH_ROOT . '/Uploads/Slides/';
+                                            $imageDir = '../Uploads/Slides/';
                                             $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
                                             foreach($images as $image): 
                                                 $imageName = basename($image);
                                                 $selected = ($imageName == $banner['image_url']) ? 'selected' : '';
                                             ?>
-                                                <option value="<?= $imageName ?>" <?= $selected ?>>
-                                                    <?= $imageName ?>
+                                                <option value="<?= htmlspecialchars($imageName) ?>" <?= $selected ?>>
+                                                    <?= htmlspecialchars($imageName) ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
                                         <div class="image-preview mt-3">
                                             <img id="preview" class="preview-image" 
-                                                 src="../Uploads/Slides/<?= $banner['image_url'] ?>" 
+                                                 src="../Uploads/Slides/<?= htmlspecialchars($banner['image_url']) ?>" 
                                                  alt="Preview" style="display: block;">
                                         </div>
                                     </div>
@@ -193,6 +208,18 @@
                 preview.style.display = 'none';
             }
         }
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('.needs-validation');
+        form.addEventListener('submit', function(event) {
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+        });
+    });
     </script>
 </body>
 </html>

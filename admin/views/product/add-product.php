@@ -203,6 +203,10 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Số lượng</label>
+                                        <input class="form-control" type="number" name="quantity" min="0" value="0" required>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="mb-3">
@@ -211,13 +215,13 @@
                                             <select class="form-select" name="img" id="imageSelect" required>
                                                 <option value="">Chọn ảnh sản phẩm</option>
                                                 <?php 
-                                                $imageDir = PATH_ROOT . '/Uploads/Product/';
+                                                $imageDir = '../Uploads/Product/';
                                                 $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
                                                 foreach($images as $image): 
                                                     $imageName = basename($image);
                                                 ?>
-                                                    <option value="<?php echo $imageName; ?>">
-                                                        <?php echo $imageName; ?>
+                                                    <option value="<?php echo htmlspecialchars($imageName); ?>">
+                                                        <?php echo htmlspecialchars($imageName); ?>
                                                     </option>
                                                 <?php endforeach; ?>
                                             </select>

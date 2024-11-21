@@ -164,6 +164,12 @@
                     <span>Đơn hàng</span>
                 </a>
             </li>
+            <li class="<?php echo $currentAction === 'deal' ? 'active' : ''; ?>">
+                <a href="index.php?action=deal">
+                    <i class="fas fa-tags"></i>
+                    <span>Khuyến mãi</span>
+                </a>
+            </li>
         </ul>
     </div>
 </body>

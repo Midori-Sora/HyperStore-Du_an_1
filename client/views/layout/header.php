@@ -1,8 +1,3 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,6 +7,7 @@ if (session_status() === PHP_SESSION_NONE) {
     <link rel="stylesheet" href="assets/css/client/header.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
@@ -41,9 +37,7 @@ if (session_status() === PHP_SESSION_NONE) {
                             <li><a href="#">iPhone 16</a></li>
                         </ul>
                     </li>
-                    <li class="has-child">
-                        <a href="#">Giới thiệu</a>
-                    </li>
+                    <li><a href="#">Giới thiệu</a></li>
                     <li class="has-child">
                         <a href="#">Tin tức <i class="fas fa-chevron-down"></i></a>
                         <ul class="sub-menu">
@@ -59,32 +53,12 @@ if (session_status() === PHP_SESSION_NONE) {
 
             <div class="header-actions">
                 <div class="user-actions">
-                    <div class="cart-dropdown">
-                        <a href="#" class="cart-icon">
-                            <i class="fas fa-shopping-cart"></i>
-                            <span>Giỏ hàng</span>
-                            <span class="count">0</span>
-                        </a>
-                        <div class="cart-popup">
-                            <div class="cart-header">
-                                <h3>Giỏ hàng</h3>
-                            </div>
-                            <div class="cart-items">
-                                <div class="empty-cart">
-                                    <p>Giỏ hàng trống</p>
-                                </div>
-                            </div>
-                            <div class="cart-footer">
-                                <div class="cart-total">
-                                    <span>Tổng cộng:</span>
-                                    <span class="total-amount">0₫</span>
-                                </div>
-                                <button class="checkout-btn">Thanh toán</button>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="index.php?action=view-cart" class="cart-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="count"><?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0; ?></span>
+                    </a>
 
-                    <?php if(isset($_SESSION['user_id'])): ?>
+                    <?php if (isset($_SESSION['user_id'])): ?>
                         <div class="user-dropdown">
                             <a href="#" class="user-menu">
                                 <i class="fas fa-user"></i>
@@ -92,13 +66,15 @@ if (session_status() === PHP_SESSION_NONE) {
                             </a>
                             <div class="user-popup">
                                 <ul>
-                                    <?php if(isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
+                                    <?php if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
                                         <li>
                                             <a href="admin/index.php" class="admin-link">
                                                 <i class="fas fa-cog"></i> Quản trị website
                                             </a>
                                         </li>
-                                        <li><hr class="dropdown-divider"></li>
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
                                     <?php endif; ?>
                                     <li>
                                         <a href="index.php?action=profile">
@@ -123,5 +99,10 @@ if (session_status() === PHP_SESSION_NONE) {
             </div>
         </div>
     </header>
+
+
+
+
 </body>
+
 </html>

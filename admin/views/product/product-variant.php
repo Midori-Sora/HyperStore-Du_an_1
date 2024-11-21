@@ -112,12 +112,12 @@
         <?php include "./views/layout/sidebar.php" ?>
         
         <main>
-            <!-- RAM Variants Section -->
+            <!-- Storage Variants Section -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h2><i class="fas fa-memory me-2"></i>Quản lý RAM</h2>
-                    <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addRamModal">
-                        <i class="fas fa-plus me-2"></i>Thêm RAM
+                    <h2><i class="fas fa-memory me-2"></i>Quản lý Bộ nhớ</h2>
+                    <button class="btn btn-add" data-bs-toggle="modal" data-bs-target="#addStorageModal">
+                        <i class="fas fa-plus me-2"></i>Thêm Bộ nhớ
                     </button>
                 </div>
                 <div class="table-responsive variant-table">
@@ -132,25 +132,25 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach($ramOptions as $ram): ?>
+                            <?php foreach($storageOptions as $storage): ?>
                             <tr>
-                                <td><?= $ram['ram_id'] ?></td>
-                                <td><?= $ram['ram_type'] ?></td>
-                                <td><?= number_format($ram['ram_price'], 0, ',', '.') ?>đ</td>
-                                <td><?= date('d/m/Y', strtotime($ram['created_at'])) ?></td>
+                                <td><?= $storage['storage_id'] ?></td>
+                                <td><?= $storage['storage_type'] ?></td>
+                                <td><?= number_format($storage['storage_price'], 0, ',', '.') ?>đ</td>
+                                <td><?= date('d/m/Y', strtotime($storage['created_at'])) ?></td>
                                 <td>
                                     <button class="btn btn-sm btn-primary me-1" 
                                             data-bs-toggle="modal" 
-                                            data-bs-target="#editRamModal"
-                                            data-id="<?= $ram['ram_id'] ?>"
-                                            data-type="<?= $ram['ram_type'] ?>"
-                                            data-price="<?= $ram['ram_price'] ?>"
+                                            data-bs-target="#editStorageModal"
+                                            data-id="<?= $storage['storage_id'] ?>"
+                                            data-type="<?= $storage['storage_type'] ?>"
+                                            data-price="<?= $storage['storage_price'] ?>"
                                             title="Sửa">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <form action="index.php?action=deleteRam" method="POST" class="d-inline" 
-                                          onsubmit="return confirm('Bạn có chắc muốn xóa RAM này?');">
-                                        <input type="hidden" name="ram_id" value="<?= $ram['ram_id'] ?>">
+                                    <form action="index.php?action=deleteStorage" method="POST" class="d-inline" 
+                                          onsubmit="return confirm('Bạn có chắc muốn xóa bộ nhớ này?');">
+                                        <input type="hidden" name="storage_id" value="<?= $storage['storage_id'] ?>">
                                         <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
                                             <i class="fas fa-trash"></i>
                                         </button>
@@ -206,50 +206,6 @@
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </form>
-                                </td>
-                            </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Thêm section quản lý số lượng -->
-            <div class="card mt-4">
-                <div class="card-header">
-                    <h2><i class="fas fa-boxes me-2"></i>Quản lý Số lượng Sản phẩm</h2>
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Tên sản phẩm</th>
-                                <th>RAM</th>
-                                <th>Màu sắc</th>
-                                <th>Giá</th>
-                                <th>Số lượng</th>
-                                <th>Thao tác</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach($products as $product): ?>
-                            <tr>
-                                <td><?= $product['pro_id'] ?></td>
-                                <td><?= $product['pro_name'] ?></td>
-                                <td><?= $product['ram_type'] ?></td>
-                                <td><?= $product['color_type'] ?></td>
-                                <td><?= number_format($product['price'], 0, ',', '.') ?>đ</td>
-                                <td><?= $product['quantity'] ?></td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" 
-                                            data-bs-toggle="modal" 
-                                            data-bs-target="#editQuantityModal"
-                                            data-id="<?= $product['pro_id'] ?>"
-                                            data-quantity="<?= $product['quantity'] ?>"
-                                            title="Cập nhật số lượng">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
                                 </td>
                             </tr>
                             <?php endforeach; ?>
@@ -316,32 +272,6 @@
         </div>
     </div>
 
-    <!-- Edit Quantity Modal -->
-    <div class="modal fade" id="editQuantityModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Cập nhật số lượng</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="index.php?action=updateQuantity" method="POST">
-                    <input type="hidden" name="pro_id" id="editProId">
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Số lượng</label>
-                            <input type="number" class="form-control" name="quantity" 
-                                   id="editQuantity" required min="0">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <!-- Edit RAM Modal -->
     <div class="modal fade" id="editRamModal" tabindex="-1">
         <div class="modal-dialog">
@@ -389,6 +319,63 @@
                         <div class="mb-3">
                             <label class="form-label">Giá thêm</label>
                             <input type="number" class="form-control" name="color_price" id="editColorPrice" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Storage Modal -->
+    <div class="modal fade" id="addStorageModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Thêm bộ nhớ mới</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="index.php?action=addStorage" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Dung lượng bộ nhớ</label>
+                            <input type="text" class="form-control" name="storage_type" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá thêm</label>
+                            <input type="number" class="form-control" name="storage_price" required min="0">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                        <button type="submit" class="btn btn-primary">Thêm</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Storage Modal -->
+    <div class="modal fade" id="editStorageModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Sửa bộ nhớ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form action="index.php?action=editStorage" method="POST">
+                    <input type="hidden" name="storage_id" id="editStorageId">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Dung lượng bộ nhớ</label>
+                            <input type="text" class="form-control" name="storage_type" id="editStorageType" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Giá thêm</label>
+                            <input type="number" class="form-control" name="storage_price" id="editStoragePrice" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -489,6 +476,20 @@
             document.getElementById('editColorId').value = colorId;
             document.getElementById('editColorType').value = colorType;
             document.getElementById('editColorPrice').value = colorPrice;
+        });
+    }
+
+    const editStorageModal = document.getElementById('editStorageModal');
+    if (editStorageModal) {
+        editStorageModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const storageId = button.getAttribute('data-id');
+            const storageType = button.getAttribute('data-type');
+            const storagePrice = button.getAttribute('data-price');
+            
+            document.getElementById('editStorageId').value = storageId;
+            document.getElementById('editStorageType').value = storageType;
+            document.getElementById('editStoragePrice').value = storagePrice;
         });
     }
     </script>

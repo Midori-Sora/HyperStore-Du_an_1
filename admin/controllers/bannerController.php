@@ -20,22 +20,33 @@ class BannerController {
         self::init();
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Sanitize inputs
-                $title = trim(htmlspecialchars($_POST['title']));
-                $image = trim(htmlspecialchars($_POST['image_url']));
-                $status = (int)$_POST['status'];
+                // Sanitize and validate inputs
+                $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_STRING));
+                $image = trim(filter_var($_POST['image_url'], FILTER_SANITIZE_STRING));
+                $status = filter_var($_POST['status'], FILTER_VALIDATE_INT);
                 $created_at = date('Y-m-d H:i:s');
 
-                // Validate inputs
-                if (empty($title) || empty($image)) {
-                    throw new Exception('Vui lòng điền đầy đủ thông tin');
+                // Validate title length
+                if (strlen($title) < 3 || strlen($title) > 255) {
+                    throw new Exception('Tiêu đề phải từ 3 đến 255 ký tự');
                 }
-                
+
+                // Validate status
+                if ($status !== 0 && $status !== 1) {
+                    throw new Exception('Trạng thái không hợp lệ');
+                }
 
                 // Validate image exists
-                $target = PATH_ROOT . '/Uploads/Slides/' . $image;
+                $target = '../Uploads/Slides/' . $image;
                 if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Slides');
+                }
+
+                // Validate image extension
+                $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
+                $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
+                if (!in_array($extension, $allowedExtensions)) {
+                    throw new Exception('Định dạng ảnh không hợp lệ');
                 }
 
                 if (self::$bannerModel->addBanner($title, $image, $status, $created_at)) {
@@ -88,26 +99,33 @@ class BannerController {
                 throw new Exception('ID banner không hợp lệ');
             }
 
-            $id = (int)$_GET['id'];
+            $id = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+            if ($id === false) {
+                throw new Exception('ID banner phải là số nguyên');
+            }
+
             $banner = self::$bannerModel->getBannerById($id);
-            
             if (!$banner) {
                 throw new Exception('Banner không tồn tại');
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Sanitize inputs
-                $title = trim(htmlspecialchars($_POST['title']));
-                $image_url = trim(htmlspecialchars($_POST['image_url']));
-                $status = (int)$_POST['status'];
+                // Sanitize and validate inputs
+                $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_STRING));
+                $image_url = trim(filter_var($_POST['image_url'], FILTER_SANITIZE_STRING));
+                $status = filter_var($_POST['status'], FILTER_VALIDATE_INT);
 
-                // Validate inputs
-                if (empty($title) || empty($image_url)) {
-                    throw new Exception('Vui lòng điền đầy đủ thông tin');
+                // Additional validation
+                if (strlen($title) < 3 || strlen($title) > 255) {
+                    throw new Exception('Tiêu đề phải từ 3 đến 255 ký tự');
+                }
+
+                if ($status !== 0 && $status !== 1) {
+                    throw new Exception('Trạng thái không hợp lệ');
                 }
 
                 // Validate image exists
-                $target = PATH_ROOT . '/Uploads/Slides/' . $image_url;
+                $target = '../Uploads/Slides/' . $image_url;
                 if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Slides');
                 }

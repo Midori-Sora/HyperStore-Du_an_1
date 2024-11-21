@@ -1,13 +1,13 @@
 <?php
-require_once './models/orderModel.php';
+require_once 'models/orderModel.php';
 
 class OrderController
 {
-    private static $orderModel;
+    private static $orderModel = null;
 
     public static function init()
     {
-        if (!self::$orderModel) {
+        if (self::$orderModel === null) {
             self::$orderModel = new OrderModel();
         }
     }
@@ -16,18 +16,19 @@ class OrderController
     {
         try {
             self::init();
-            error_log("Debug: OrderController initialized");
+            error_log("[DEBUG] Accessing orderController");
+
+            if (!self::$orderModel) {
+                error_log("[ERROR] orderModel is null");
+                throw new Exception("OrderModel not initialized");
+            }
 
             $orders = self::$orderModel->getAllOrders();
-            error_log("Debug: Orders fetched: " . print_r($orders, true));
-
-            if (empty($orders)) {
-                error_log("Debug: No orders found");
-            }
+            error_log("[DEBUG] Orders count: " . count($orders));
 
             require_once './views/order/order.php';
         } catch (Exception $e) {
-            error_log("Error in orderController: " . $e->getMessage());
+            error_log("[ERROR] " . $e->getMessage());
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php');
             exit();
@@ -38,16 +39,34 @@ class OrderController
     {
         try {
             if (isset($_GET['id'])) {
-                self::init();
-                $order = self::$orderModel->getOrderById($_GET['id']);
+                $orderId = (int)$_GET['id'];
+
+                // Khởi tạo model
+                if (!isset(self::$orderModel)) {
+                    self::$orderModel = new OrderModel();
+                }
+
+                // Debug
+                error_log("Processing order ID: " . $orderId);
+
+                // Lấy thông tin đơn hàng
+                $order = self::$orderModel->getOrderById($orderId);
+                error_log("Order info: " . print_r($order, true));
+
+                // Lấy chi tiết đơn hàng
+                $orderDetails = self::$orderModel->getOrderDetails($orderId);
+                error_log("Order details: " . print_r($orderDetails, true));
+
                 if ($order) {
                     require_once './views/order/order-detail.php';
                 } else {
                     $_SESSION['error'] = "Không tìm thấy đơn hàng";
                     header("Location: index.php?action=order");
+                    exit();
                 }
             }
         } catch (Exception $e) {
+            error_log("Error in orderDetailController: " . $e->getMessage());
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php?action=order');
             exit();
@@ -111,6 +130,26 @@ class OrderController
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+    }
+
+    public static function printInvoiceController()
+    {
+        try {
+            if (isset($_GET['id'])) {
+                self::init();
+                $order = self::$orderModel->getOrderById($_GET['id']);
+                if ($order) {
+                    require_once './views/order/print-invoice.php';
+                } else {
+                    $_SESSION['error'] = "Không tìm thấy đơn hàng";
+                    header("Location: index.php?action=order");
+                }
+            }
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
+            header('Location: index.php?action=order');
             exit();
         }
     }

@@ -1,6 +1,14 @@
     <?php
     class UserModel
     {
+        private $db;
+
+        public function __construct()
+        {
+            global $MainModel;
+            $this->db = $MainModel->SUNNY;
+        }
+
         public static function getAllUsersWithRoles()
         {
             global $MainModel;
@@ -140,21 +148,39 @@
             return $stmt->fetchColumn() > 0;
         }
 
-        public static function validateImage($imagePath)
+        public function searchUsers($keyword, $role)
         {
-            // Kiểm tra xem file có tồn tại không
+            $sql = "SELECT u.*, r.role_name 
+                    FROM users u 
+                    LEFT JOIN roles r ON u.role_id = r.role_id 
+                    WHERE (u.username LIKE :keyword 
+                        OR u.email LIKE :keyword 
+                        OR u.fullname LIKE :keyword)";
+
+            if (!empty($role)) {
+                $sql .= " AND u.role_id = :role";
+            }
+
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':keyword', "%$keyword%");
+            if (!empty($role)) {
+                $stmt->bindValue(':role', $role);
+            }
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        private static function validateImage($imagePath)
+        {
             if (!file_exists($imagePath)) {
                 return false;
             }
 
-            // Kiểm tra phần mở rộng của file
-            $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
-            $extension = strtolower(pathinfo($imagePath, PATHINFO_EXTENSION));
-            
-            if (!in_array($extension, $allowedExtensions)) {
-                return false;
-            }
+            $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+            $fileInfo = finfo_open(FILEINFO_MIME_TYPE);
+            $mimeType = finfo_file($fileInfo, $imagePath);
+            finfo_close($fileInfo);
 
-            return true;
+            return in_array($mimeType, $allowedTypes);
         }
     }

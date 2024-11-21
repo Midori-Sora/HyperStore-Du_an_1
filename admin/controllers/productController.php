@@ -59,8 +59,9 @@ class ProductController
                 $storage_id = $_POST['storage_id'];
                 $color_id = $_POST['color_id'];
                 $img = $_POST['img'];
+                $quantity = $_POST['quantity'];
 
-                if (self::$productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)) {
+                if (self::$productModel->editProduct($id, $name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id, $quantity)) {
                     $_SESSION['success'] = 'Cập nhật sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
@@ -121,13 +122,20 @@ class ProductController
                 $storage_id = $_POST['storage_id'];
                 $color_id = $_POST['color_id'];
                 $img = $_POST['img'];
+                $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;
 
-                $target = PATH_ROOT . '/Uploads/Product/' . $img;
+                // Validate quantity
+                if ($quantity < 0) {
+                    throw new Exception('Số lượng không được âm');
+                }
+
+                // Check if image exists using relative path
+                $target = '../Uploads/Product/' . $img;
                 if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Product');
                 }
 
-                if (self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id)) {
+                if (self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id, $quantity)) {
                     $_SESSION['success'] = 'Thêm sản phẩm thành công';
                     header('location: index.php?action=product');
                     exit();
@@ -147,7 +155,7 @@ class ProductController
     {
         try {
             self::init();
-            $ramOptions = self::$productModel->getRamOptions();
+            $storageOptions = self::$productModel->getStorageOptions();
             $colorOptions = self::$productModel->getColorOptions();
             $products = self::$productModel->getProductList();
             require_once './views/product/product-variant.php';
@@ -158,7 +166,7 @@ class ProductController
         }
     }
 
-    public static function addRamController()
+    public static function addStorageController()
     {
         try {
             self::init();
@@ -167,9 +175,9 @@ class ProductController
                 $storage_price = $_POST['storage_price'];
                 
                 if (self::$productModel->addStorage($storage_type, $storage_price)) {
-                    $_SESSION['success'] = 'Thêm RAM thành công';
+                    $_SESSION['success'] = 'Thêm bộ nhớ thành công';
                 } else {
-                    throw new Exception('Thêm RAM thất bại');
+                    throw new Exception('Thêm bộ nhớ thất bại');
                 }
             }
         } catch (Exception $e) {
@@ -179,7 +187,7 @@ class ProductController
         exit();
     }
 
-    public static function editRamController()
+    public static function editStorageController()
     {
         try {
             self::init();
@@ -188,10 +196,10 @@ class ProductController
                 $storage_type = $_POST['storage_type'];
                 $storage_price = $_POST['storage_price'];
                 
-                if (self::$productModel->editRam($storage_id, $storage_type, $storage_price)) {
-                    $_SESSION['success'] = 'Cập nhật RAM thành công';
+                if (self::$productModel->editStorage($storage_id, $storage_type, $storage_price)) {
+                    $_SESSION['success'] = 'Cập nhật bộ nhớ thành công';
                 } else {
-                    throw new Exception('Cập nhật RAM thất bại');
+                    throw new Exception('Cập nhật bộ nhớ thất bại');
                 }
             }
         } catch (Exception $e) {
@@ -201,16 +209,16 @@ class ProductController
         exit();
     }
 
-    public static function deleteRamController()
+    public static function deleteStorageController()
     {
         try {
             self::init();
             if (isset($_POST['storage_id'])) {
                 $storage_id = $_POST['storage_id'];
-                if (self::$productModel->deleteRam($storage_id)) {
-                    $_SESSION['success'] = 'Xóa RAM thành công';
+                if (self::$productModel->deleteStorage($storage_id)) {
+                        $_SESSION['success'] = 'Xóa bộ nhớ thành công';
                 } else {
-                    throw new Exception('Xóa RAM thất bại');
+                    throw new Exception('Xóa bộ nhớ thất bại');
                 }
             }
         } catch (Exception $e) {

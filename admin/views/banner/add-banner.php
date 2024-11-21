@@ -134,13 +134,13 @@
                                         <select class="form-select" name="image_url" id="imageSelect" required>
                                             <option value="">Chọn hình ảnh</option>
                                             <?php 
-                                            $imageDir = PATH_ROOT . '/Uploads/Slides/';
+                                            $imageDir = '../Uploads/Slides/';
                                             $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
                                             foreach($images as $image): 
                                                 $imageName = basename($image);
                                             ?>
-                                                <option value="<?php echo $imageName; ?>">
-                                                    <?php echo $imageName; ?>
+                                                <option value="<?= htmlspecialchars($imageName) ?>">
+                                                    <?= htmlspecialchars($imageName) ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>
@@ -186,6 +186,27 @@
                 preview.style.display = 'none';
             }
         }
+    </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(event) {
+            const title = form.querySelector('input[name="title"]').value.trim();
+            const imageUrl = form.querySelector('select[name="image_url"]').value;
+            
+            if (title.length < 3 || title.length > 255) {
+                event.preventDefault();
+                alert('Tiêu đề phải từ 3 đến 255 ký tự');
+                return;
+            }
+            
+            if (!imageUrl) {
+                event.preventDefault();
+                alert('Vui lòng chọn hình ảnh');
+                return;
+            }
+        });
+    });
     </script>
 </body>
 </html>
