@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
     <meta charset="UTF-8">
     <title>Quản lý khuyến mãi</title>
@@ -76,7 +75,8 @@
         .status-badge {
             padding: 6px 12px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 500;
         }
 
         .status-active {
@@ -88,17 +88,38 @@
             background: #ffebee;
             color: #c62828;
         }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .price-tag {
+            color: #28a745;
+            font-weight: 500;
+            margin-left: 4px;
+        }
     </style>
 </head>
 
 <body>
+    <header>
+        <?php include './views/layout/header.php' ?>
+    </header>
     <div class="main">
-        <?php require_once './views/layout/sidebar.php'; ?>
+        <div class="sidebar">
+            <?php include './views/layout/sidebar.php'; ?>
+        </div>
         <main>
-            <div class="container-fluid">
+            <div class="container">
                 <div class="card">
                     <div class="card-header">
-                        <h2 class="mb-0">Danh sách khuyến mãi</h2>
+                        <h2>
+                            <i class="fas fa-percent me-2"></i>
+                            Quản lý khuyến mãi
+                        </h2>
                         <a href="?action=addDeal" class="btn-add">
                             <i class="fas fa-plus"></i>
                             Thêm khuyến mãi
@@ -106,12 +127,15 @@
                     </div>
 
                     <?php if (isset($_SESSION['success'])): ?>
-                        <div class="alert alert-success alert-dismissible fade show" role="alert">
-                            <?= $_SESSION['success'] ?>
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <?php 
+                                echo $_SESSION['success'];
+                                unset($_SESSION['success']);
+                            ?>
                             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                         </div>
-                    <?php unset($_SESSION['success']);
-                    endif; ?>
+                    <?php endif; ?>
 
                     <div class="table-responsive">
                         <table class="table">

@@ -212,7 +212,7 @@
                                                     class="product-thumbnail">
                                             </td>
                                             <td><?= $item['pro_name'] ?></td>
-                                            <td><?= $item['ram_type'] ?></td>
+                                            <td><?= $item['storage_type'] ?></td>
                                             <td><?= $item['color_type'] ?></td>
                                             <td><?= number_format($item['price'], 0, ',', '.') ?>đ</td>
                                             <td><?= $item['quantity'] ?></td>
