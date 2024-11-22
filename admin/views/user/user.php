@@ -257,7 +257,7 @@
                                     <td><?= htmlspecialchars($user['phone']) ?></td>
                                     <td class="text-center">
                                         <?php if (!empty($user['avatar'])): ?>
-                                        <img src="<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar"
+                                        <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar"
                                             alt="Avatar" width="100%">
                                         <?php else: ?>
                                         <i class="fas fa-user-circle fa-2x text-secondary"></i>

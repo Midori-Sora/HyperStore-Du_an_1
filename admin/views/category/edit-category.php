@@ -149,14 +149,14 @@
                             <p class="mb-2">Ảnh hiện tại:</p>
                             <img src="../<?= htmlspecialchars($category['img']) ?>" 
                                  class="category-image" 
-                                 alt="<?= htmlspecialchars($category['cate_name']) ?>"">
+                                 alt="<?= htmlspecialchars($category['cate_name']) ?>">
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
                             <select class="form-select" name="img" id="imageSelect">
                                 <option value="<?= htmlspecialchars($category['img']) ?>">Giữ ảnh hiện tại</option>
                                 <?php foreach($images as $image): 
-                                    $imagePath = 'Uploads/Category/' . $image;
+                                    $imagePath = '../Uploads/Category/' . $image;
                                     if($imagePath != $category['img']):
                                 ?>
                                     <option value="<?= htmlspecialchars($image) ?>">
@@ -204,16 +204,11 @@
             const preview = document.getElementById('preview');
             const previewContainer = document.querySelector('.preview-container');
 
-            // Xử lý khi thay đổi ảnh
             imageSelect.onchange = function() {
                 const selectedValue = this.value;
                 
                 if(selectedValue) {
-                    if(selectedValue.includes('Uploads/')) {
-                        preview.src = '../../' + selectedValue;
-                    } else {
-                        preview.src = '../../Uploads/Category/' + selectedValue;
-                    }
+                    preview.src = '../Uploads/Category/' + selectedValue;
                     preview.style.display = 'block';
                     previewContainer.style.display = 'block';
                 } else {
@@ -221,14 +216,6 @@
                     previewContainer.style.display = 'none';
                 }
             };
-
-            // Kiểm tra và hiển thị ảnh preview khi tải trang
-            const initialValue = imageSelect.value;
-            if(initialValue && initialValue.includes('/Uploads/')) {
-                preview.src = '../../' + initialValue;
-                preview.style.display = 'block';
-                previewContainer.style.display = 'block';
-            }
         });
     </script>
     <script>

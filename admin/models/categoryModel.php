@@ -66,7 +66,8 @@ class CategoryModel
             
             // Chuẩn hóa đường dẫn ảnh
             if (!empty($result['img'])) {
-                if (strpos($result['img'], 'Uploads/') !== 0) {
+                // Đảm bảo đường dẫn bắt đầu từ Uploads/Category/
+                if (strpos($result['img'], 'Uploads/Category/') !== 0) {
                     $result['img'] = 'Uploads/Category/' . basename($result['img']);
                 }
             }
