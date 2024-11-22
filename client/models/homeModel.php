@@ -15,7 +15,7 @@ class HomeModel
 
     public function getFeaturedProducts()
     {
-        $sql = "SELECT * FROM products ORDER BY price DESC LIMIT 4";
+        $sql = "SELECT * FROM products ORDER BY price DESC LIMIT 5";
         $result = $this->conn->query($sql);
         $products = [];
 
@@ -30,7 +30,7 @@ class HomeModel
 
     public function getNewestPhones()
     {
-        $sql = "SELECT * FROM products ORDER BY import_date DESC LIMIT 4";
+        $sql = "SELECT * FROM products ORDER BY import_date DESC LIMIT 5";
         $result = $this->conn->query($sql);
         $products = [];
 
