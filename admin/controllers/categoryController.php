@@ -7,7 +7,7 @@ class CategoryController
     {
         try {
             $categories = CategoryModel::getAllCategories();
-            
+
             // Tạo mảng mới để lưu các danh mục unique dựa trên cate_id
             $uniqueCategories = [];
             foreach ($categories as $category) {
@@ -24,10 +24,10 @@ class CategoryController
                     $uniqueCategories[$cate_id] = $category;
                 }
             }
-            
+
             // Chuyển mảng associative thành indexed array
             $categories = array_values($uniqueCategories);
-            
+
             include 'views/category/category.php';
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
@@ -42,10 +42,10 @@ class CategoryController
             if (!is_dir($imageDir)) {
                 mkdir($imageDir, 0777, true);
             }
-            
+
             // Lấy danh sách ảnh và sắp xếp theo thời gian mới nhất
             $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-            usort($images, function($a, $b) {
+            usort($images, function ($a, $b) {
                 return filemtime($b) - filemtime($a);
             });
             $images = array_map('basename', $images);
@@ -60,11 +60,11 @@ class CategoryController
                 if (!empty($_POST['img'])) {
                     $imageName = basename($_POST['img']);
                     $target = dirname(dirname(__DIR__)) . '/Uploads/Category/' . $imageName;
-                    
+
                     if (!file_exists($target)) {
                         throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Category');
                     }
-                    
+
                     $data['img'] = 'Uploads/Category/' . $imageName;
                 } else {
                     throw new Exception('Vui lòng chọn ảnh cho danh mục');
@@ -76,7 +76,7 @@ class CategoryController
                     exit();
                 }
             }
-            
+
             include 'views/category/add-category.php';
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
@@ -97,20 +97,20 @@ class CategoryController
             if (!$category) {
                 throw new Exception('Không tìm thấy danh mục');
             }
-            
+
             // Sửa đường dẫn imageDir
             $imageDir = dirname(dirname(__DIR__)) . '/Uploads/Category/';
             if (!is_dir($imageDir)) {
                 mkdir($imageDir, 0777, true);
             }
-            
+
             // Lấy và sắp xếp ảnh theo thời gian mới nhất
             $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-            usort($images, function($a, $b) {
+            usort($images, function ($a, $b) {
                 return filemtime($b) - filemtime($a);
             });
             $images = array_map('basename', $images);
-            
+
             include 'views/category/edit-category.php';
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
@@ -142,13 +142,13 @@ class CategoryController
                 // Xử lý ảnh
                 if (!empty($_POST['img'])) {
                     $imageName = basename($_POST['img']);
-                    $target = dirname(dirname(__DIR__)) . '/Uploads/Category/' . $imageName;
+                    $target = '../Uploads/Category/' . $imageName;
                     
                     if (!file_exists($target)) {
                         throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Category');
                     }
                     
-                    $data['img'] = 'Uploads/Category/' . $imageName;
+                    $data['img'] = '../Uploads/Category/' . $imageName;
                 } else {
                     throw new Exception('Vui lòng chọn ảnh cho danh mục');
                 }
@@ -199,7 +199,6 @@ class CategoryController
             } else {
                 throw new Exception("Không thể xóa danh mục vì danh mục đang chứa sản phẩm");
             }
-
         } catch (Exception $e) {
             $_SESSION['error'] = $e->getMessage();
         }

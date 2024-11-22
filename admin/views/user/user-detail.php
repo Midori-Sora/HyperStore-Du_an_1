@@ -140,9 +140,10 @@
                 <div class="user-info">
                     <div class="text-center">
                         <?php if (!empty($user['avatar'])): ?>
-                        <img src="<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar" alt="Avatar">
+                        <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar" alt="Avatar"
+                            onerror="this.src='../Uploads/User/default-avatar.jpg'">
                         <?php else: ?>
-                        <i class="fas fa-user-circle fa-6x mb-3 text-secondary"></i>
+                        <img src="../Uploads/User/default-avatar.jpg" class="user-avatar" alt="Default Avatar">
                         <?php endif; ?>
                     </div>
 

@@ -104,7 +104,7 @@
         height: 100px;
         border-radius: 10px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
     .category-image {
@@ -131,7 +131,7 @@
         cursor: pointer;
     }
 
-    .table > :not(caption) > * > * {
+    .table> :not(caption)>*>* {
         padding: 1rem 0.75rem;
         vertical-align: middle;
     }
@@ -184,7 +184,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0,0,0,0.8);
+        background: rgba(0, 0, 0, 0.8);
         z-index: 1050;
         justify-content: center;
         align-items: center;
@@ -204,7 +204,7 @@
         height: 100px;
         border-radius: 8px;
         overflow: hidden;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         cursor: pointer;
     }
 
@@ -227,7 +227,7 @@
         background: white;
         padding: 20px;
         border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         z-index: 1000;
     }
 
@@ -263,7 +263,8 @@
                         <?= htmlspecialchars($_SESSION['success']) ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <?php unset($_SESSION['success']); endif; ?>
+                    <?php unset($_SESSION['success']);
+                    endif; ?>
 
                     <?php if (isset($_SESSION['error'])): ?>
                     <div class="alert alert-danger alert-dismissible fade show">
@@ -271,7 +272,8 @@
                         <?= htmlspecialchars($_SESSION['error']) ?>
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
-                    <?php unset($_SESSION['error']); endif; ?>
+                    <?php unset($_SESSION['error']);
+                    endif; ?>
 
                     <div class="table-responsive">
                         <table class="table align-middle">
@@ -287,50 +289,52 @@
                             </thead>
                             <tbody>
                                 <?php if (!empty($categories)): ?>
-                                    <?php 
+                                <?php
                                     // Tạo mảng để kiểm tra ID đã hiển thị
                                     $displayed_ids = [];
                                     ?>
-                                    <?php foreach ($categories as $category): ?>
-                                        <?php 
+                                <?php foreach ($categories as $category): ?>
+                                <?php
                                         // Kiểm tra nếu ID đã hiển thị thì bỏ qua
                                         if (in_array($category['cate_id'], $displayed_ids)) continue;
                                         $displayed_ids[] = $category['cate_id'];
                                         ?>
-                                        <tr>
-                                            <td><?= htmlspecialchars($category['cate_id'] ?? '') ?></td>
-                                            <td><?= htmlspecialchars($category['cate_name'] ?? '') ?></td>
-                                            <td>
-                                                <div class="category-image-wrapper">
-                                                    <img src="<?= htmlspecialchars('../' . ($category['img'] ?? 'assets/images/default-category.jpg')) ?>"
-                                                         alt="<?= htmlspecialchars($category['cate_name'] ?? 'Category') ?>"
-                                                         class="category-image"
-                                                         onclick="showImagePreview(this.src)"
-                                                         onerror="this.src='../assets/images/default-category.jpg'">
-                                                </div>
-                                            </td>
-                                            <td class="description-cell" title="<?= htmlspecialchars($category['description'] ?? '') ?>">
-                                                <?= htmlspecialchars($category['description'] ?? '') ?>
-                                            </td>
-                                            <td>
-                                                <span class="status-badge <?= ($category['cate_status'] ?? 0) ? 'status-active' : 'status-inactive' ?>">
-                                                    <?= ($category['cate_status'] ?? 0) ? 'Hiển thị' : 'Ẩn' ?>
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <div class="d-flex gap-2">
-                                                    <a href="index.php?action=editCategory&id=<?= htmlspecialchars($category['cate_id'] ?? '') ?>"
-                                                       class="btn btn-success btn-action">
-                                                        <i class="fas fa-edit me-1"></i>Sửa
-                                                    </a>
-                                                    <button onclick="confirmDelete(<?= htmlspecialchars($category['cate_id'] ?? '') ?>)"
-                                                            class="btn btn-danger btn-action">
-                                                        <i class="fas fa-trash me-1"></i>Xóa
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
+                                <tr>
+                                    <td><?= htmlspecialchars($category['cate_id'] ?? '') ?></td>
+                                    <td><?= htmlspecialchars($category['cate_name'] ?? '') ?></td>
+                                    <td>
+                                        <div class="category-image-wrapper">
+                                            <img src="../<?= htmlspecialchars($category['img']) ?>"
+                                                alt="<?= htmlspecialchars($category['cate_name']) ?>"
+                                                class="category-image" onclick="showImagePreview(this.src)"
+                                                onerror="this.src='../assets/images/default-category.jpg'">
+                                        </div>
+                                    </td>
+                                    <td class="description-cell"
+                                        title="<?= htmlspecialchars($category['description'] ?? '') ?>">
+                                        <?= htmlspecialchars($category['description'] ?? '') ?>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="status-badge <?= ($category['cate_status'] ?? 0) ? 'status-active' : 'status-inactive' ?>">
+                                            <?= ($category['cate_status'] ?? 0) ? 'Hiển thị' : 'Ẩn' ?>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-2">
+                                            <a href="index.php?action=editCategory&id=<?= htmlspecialchars($category['cate_id'] ?? '') ?>"
+                                                class="btn btn-success btn-action">
+                                                <i class="fas fa-edit me-1"></i>Sửa
+                                            </a>
+                                            <button
+                                                onclick="confirmDelete(<?= htmlspecialchars($category['cate_id'] ?? '') ?>)"
+                                                class="btn btn-danger btn-action">
+                                                <i class="fas fa-trash me-1"></i>Xóa
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <?php endforeach; ?>
                                 <?php else: ?>
                                 <tr>
                                     <td colspan="6">
@@ -356,31 +360,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        function showImagePreview(src) {
-            const modal = document.getElementById('imagePreviewModal');
-            const img = document.getElementById('previewImage');
-            img.src = src;
-            modal.style.display = 'flex';
-        }
+    function showImagePreview(src) {
+        const modal = document.getElementById('imagePreviewModal');
+        const img = document.getElementById('previewImage');
+        img.src = src;
+        modal.style.display = 'flex';
+    }
 
-        function hideImagePreview() {
-            document.getElementById('imagePreviewModal').style.display = 'none';
-        }
+    function hideImagePreview() {
+        document.getElementById('imagePreviewModal').style.display = 'none';
+    }
 
-        function confirmDelete(id) {
-            if (!id) return;
-            
-            if (confirm('Bạn có chắc muốn xóa danh mục này?')) {
-                window.location.href = `index.php?action=deleteCategory&id=${id}`;
-            }
-        }
+    function confirmDelete(id) {
+        if (!id) return;
 
-        // Đóng modal khi nhấn ESC
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                hideImagePreview();
-            }
-        });
+        if (confirm('Bạn có chắc muốn xóa danh mục này?')) {
+            window.location.href = `index.php?action=deleteCategory&id=${id}`;
+        }
+    }
+
+    // Đóng modal khi nhấn ESC
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            hideImagePreview();
+        }
+    });
     </script>
 </body>
 
