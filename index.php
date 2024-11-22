@@ -16,7 +16,7 @@ require_once "client/controllers/loginController.php";
 require_once "client/controllers/cartController.php";
 require_once "client/controllers/commentController.php";
 require_once "client/controllers/searchController.php";
-
+require_once "client/controllers/registerController.php";
 $action = $_GET['action'] ?? 'home';
 
 switch ($action) {
@@ -25,6 +25,12 @@ switch ($action) {
         break;
     case 'login':
         LoginController::loginController();
+        break;
+    case 'register':
+        RegisterController::registerController();
+        break;
+    case 'register-process':
+        RegisterController::registerProcessController();
         break;
     case 'logout':
         LoginController::logoutController();

@@ -52,7 +52,7 @@
                             <li><a href="#">Đánh giá sản phẩm</a></li>
                             <li><a href="#">Deep Learning-AI</a></li>
                         </ul>
-                    </li>
+                    </li> 
                     <li><a href="#">Liên hệ</a></li>
                 </ul>
             </nav>
@@ -62,7 +62,7 @@
                     <a href="index.php?action=view-cart" class="cart-icon">
                         <i class="fas fa-shopping-cart"></i>
                         <span class="count"><?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0; ?></span>
-                    </a>
+                    </a>    
 
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <div class="user-dropdown">

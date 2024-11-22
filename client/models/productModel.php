@@ -160,7 +160,8 @@ class ProductModel
             $sql = "SELECT DISTINCT ps.* 
                     FROM product_storage ps 
                     JOIN products p ON ps.storage_id = p.storage_id 
-                    WHERE p.cate_id = ? AND p.pro_status = 1";
+                    WHERE p.cate_id = ? AND p.pro_status = 1
+                    ORDER BY CAST(REGEXP_REPLACE(storage_type, '[^0-9]', '') AS UNSIGNED)";
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("i", $cateId);
             $stmt->execute();
