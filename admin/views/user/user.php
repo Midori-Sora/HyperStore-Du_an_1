@@ -257,8 +257,8 @@
                                     <td><?= htmlspecialchars($user['phone']) ?></td>
                                     <td class="text-center">
                                         <?php if (!empty($user['avatar'])): ?>
-                                        <img src="<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar"
-                                            alt="Avatar" width="100%">
+                                        <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar"
+                                            alt="Avatar" onerror="this.src='../Uploads/User/default-avatar.jpg'">
                                         <?php else: ?>
                                         <img src="../Uploads/User/default-avatar.jpg" class="user-avatar"
                                             alt="Default Avatar">

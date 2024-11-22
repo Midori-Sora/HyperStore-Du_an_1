@@ -169,14 +169,14 @@
                             <thead>
                                 <tr>
                                     <th width="5%">ID</th>
-                                    <th width="15%">Sản phẩm</th>
-                                    <th width="10%">Giảm giá</th>
+                                    <th width="20%">Sản phẩm</th>
+                                    <th width="8%">Giảm giá</th>
                                     <th width="12%">Giá gốc</th>
-                                    <th width="12%">Giá sau giảm</th>
-                                    <th width="12%">Ngày bắt đầu</th>
-                                    <th width="12%">Ngày kết thúc</th>
-                                    <th width="10%">Trạng thái</th>
-                                    <th width="12%">Thao tác</th>
+                                    <th width="10%">Giá sau giảm</th>
+                                    <th width="10%">Ngày bắt đầu</th>
+                                    <th width="10%">Ngày kết thúc</th>
+                                    <th width="12%">Trạng thái</th>
+                                    <th width="10%">Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>

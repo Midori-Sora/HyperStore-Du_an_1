@@ -142,13 +142,18 @@ class CategoryController
                 // Xử lý ảnh
                 if (!empty($_POST['img'])) {
                     $imageName = basename($_POST['img']);
-                    $target = '../Uploads/Category/' . $imageName;
-                    
-                    if (!file_exists($target)) {
-                        throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Category');
+
+                    // Nếu là ảnh mới (không chứa đường dẫn Uploads/)
+                    if (!strpos($_POST['img'], 'Uploads/')) {
+                        $target = dirname(dirname(__DIR__)) . '/Uploads/Category/' . $imageName;
+                        if (!file_exists($target)) {
+                            throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Category');
+                        }
+                        $data['img'] = 'Uploads/Category/' . $imageName;
+                    } else {
+                        // Giữ nguyên đường dẫn cũ
+                        $data['img'] = $_POST['img'];
                     }
-                    
-                    $data['img'] = '../Uploads/Category/' . $imageName;
                 } else {
                     throw new Exception('Vui lòng chọn ảnh cho danh mục');
                 }

@@ -175,19 +175,23 @@ body {
 
                     <div class="mb-3">
                         <label class="form-label">Hình ảnh danh mục</label>
-                        <div class="current-image mb-3">
-                            <p class="mb-2">Ảnh hiện tại:</p>
-                            <img src="../<?= htmlspecialchars($category['img']) ?>" 
-                                 class="category-image" 
-                                 alt="<?= htmlspecialchars($category['cate_name']) ?>"">
-                        </div>
-                        <div class="select-new-image">
-                            <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
+                        <div class="select-image">
+                            <div class="current-image mb-3">
+                                <p class="mb-2">Ảnh hiện tại:</p>
+                                <img src="../<?= htmlspecialchars($category['img']) ?>" class="category-image"
+                                    alt="<?= htmlspecialchars($category['cate_name']) ?>"
+                                    style="max-width: 200px; height: 200px; object-fit: cover; border-radius: 8px;">
+                            </div>
+
                             <select class="form-select" name="img" id="imageSelect">
-                                <option value="<?= htmlspecialchars($category['img']) ?>">Giữ ảnh hiện tại</option>
-                                <?php foreach($images as $image): 
-                                    $imagePath = 'Uploads/Category/' . $image;
-                                    if($imagePath != $category['img']):
+                                <option value="<?= $category['img'] ?>">Giữ ảnh hiện tại
+                                    (<?= basename($category['img']) ?>)</option>
+                                <?php
+                                $imageDir = '../Uploads/Category/';
+                                $images = glob($imageDir . "*.{jpg,jpeg,png,gif,webp}", GLOB_BRACE);
+                                foreach ($images as $image):
+                                    $imageName = basename($image);
+                                    if ($imageName != basename($category['img'])):
                                 ?>
                                 <option value="<?= htmlspecialchars($imageName) ?>">
                                     <?= htmlspecialchars($imageName) ?>
@@ -232,39 +236,6 @@ body {
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const imageSelect = document.getElementById('imageSelect');
-            const preview = document.getElementById('preview');
-            const previewContainer = document.querySelector('.preview-container');
-
-            // Xử lý khi thay đổi ảnh
-            imageSelect.onchange = function() {
-                const selectedValue = this.value;
-                
-                if(selectedValue) {
-                    if(selectedValue.includes('Uploads/')) {
-                        preview.src = '../../' + selectedValue;
-                    } else {
-                        preview.src = '../../Uploads/Category/' + selectedValue;
-                    }
-                    preview.style.display = 'block';
-                    previewContainer.style.display = 'block';
-                } else {
-                    preview.style.display = 'none';
-                    previewContainer.style.display = 'none';
-                }
-            };
-
-            // Kiểm tra và hiển thị ảnh preview khi tải trang
-            const initialValue = imageSelect.value;
-            if(initialValue && initialValue.includes('/Uploads/')) {
-                preview.src = '../../' + initialValue;
-                preview.style.display = 'block';
-                previewContainer.style.display = 'block';
-            }
-        });
-    </script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('.needs-validation');
