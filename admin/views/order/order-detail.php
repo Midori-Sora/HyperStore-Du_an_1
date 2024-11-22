@@ -185,7 +185,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-paper-plane"></i> Gửi SMS
                         </button>
-                    </form>
+                    </form> 
                 </div>
 
                 <div class="order-products mt-4">

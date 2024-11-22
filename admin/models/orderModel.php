@@ -55,7 +55,7 @@ class OrderModel
             $sql = "SELECT od.*, p.pro_name, p.img, pr.storage_type, pc.color_type
                     FROM order_details od
                     LEFT JOIN products p ON od.product_id = p.pro_id
-                    LEFT JOIN product_ram pr ON p.storage_id = pr.storage_id
+                    LEFT JOIN product_storage pr ON p.storage_id = pr.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     WHERE od.order_id = :order_id";
 
