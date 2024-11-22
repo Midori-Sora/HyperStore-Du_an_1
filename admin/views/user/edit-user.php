@@ -188,26 +188,22 @@ form {
                         </label>
                         <div class="current-image mb-3">
                             <p class="mb-2">Ảnh hiện tại:</p>
-                            <?php if (!empty($user['avatar'])): ?>
-                            <img src="<?= htmlspecialchars($user['avatar']) ?>" class="current-avatar" alt="Avatar">
-                            <?php else: ?>
-                            <div class="text-muted">Không có ảnh đại diện</div>
-                            <?php endif; ?>
+                            <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="current-avatar"
+                                alt="Current Avatar" onerror="this.src='../Uploads/User/default-avatar.jpg'">
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
                             <select class="form-select" name="avatar" id="imageSelect">
                                 <option value="<?= $user['avatar'] ?>">Giữ ảnh hiện tại
-                                    (<?= basename($user['avatar']) ?>)
-                                </option>
+                                    (<?= basename($user['avatar']) ?>)</option>
                                 <?php
-                                $imageDir = PATH_ROOT . '/Uploads/User/';
+                                $imageDir = '../Uploads/User/';
                                 $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
                                 foreach ($images as $image):
                                     $imageName = basename($image);
                                     if ($imageName != basename($user['avatar'])):
                                 ?>
-                                <option value="Uploads/User/<?php echo $imageName; ?>"><?php echo $imageName; ?>
+                                <option value="<?= htmlspecialchars($imageName) ?>"><?= htmlspecialchars($imageName) ?>
                                 </option>
                                 <?php
                                     endif;
@@ -283,8 +279,8 @@ form {
         const previewContainer = document.querySelector('.preview-container');
         const selectedImage = this.value;
 
-        if (selectedImage && selectedImage !== '<?= $user['avatar'] ?>') {
-            preview.src = selectedImage;
+        if (selectedImage && !selectedImage.includes('Uploads/')) {
+            preview.src = '../Uploads/User/' + selectedImage;
             preview.style.display = 'block';
             previewContainer.style.display = 'block';
         } else {

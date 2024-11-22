@@ -64,7 +64,7 @@ class UserController
                     'address' => $_POST['address'],
                     'role_id' => $_POST['role_id'],
                     'status' => isset($_POST['status']) ? 1 : 0,
-                    'avatar' => $_POST['avatar']
+                    'avatar' => 'Uploads/User/' . basename($_POST['avatar'])
                 ];
 
                 // Check if username exists
@@ -123,27 +123,41 @@ class UserController
     public static function updateUserController()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = [
-                'user_id' => $_GET['id'],
-                'username' => $_POST['username'],
-                'email' => $_POST['email'],
-                'fullname' => $_POST['fullname'],
-                'phone' => $_POST['phone'],
-                'address' => $_POST['address'],
-                'role_id' => $_POST['role_id'],
-                'status' => isset($_POST['status']) ? 1 : 0,
-                'avatar' => $_POST['avatar']
-            ];
+            try {
+                $data = [
+                    'user_id' => $_GET['id'],
+                    'username' => $_POST['username'],
+                    'email' => $_POST['email'],
+                    'fullname' => $_POST['fullname'],
+                    'phone' => $_POST['phone'],
+                    'address' => $_POST['address'],
+                    'role_id' => $_POST['role_id'],
+                    'status' => isset($_POST['status']) ? 1 : 0,
+                ];
 
-            if (!empty($_POST['password'])) {
-                $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
-            }
+                // Xử lý avatar
+                if (!empty($_POST['avatar'])) {
+                    if (strpos($_POST['avatar'], 'Uploads/') === 0) {
+                        $data['avatar'] = $_POST['avatar'];
+                    } else {
+                        $data['avatar'] = 'Uploads/User/' . basename($_POST['avatar']);
+                    }
+                }
 
-            if (UserModel::updateUser($data)) {
-                header("Location: index.php?action=user");
-                exit();
-            } else {
-                $_SESSION['error'] = "Lỗi: Không thể cập nhật người dùng.";
+                if (!empty($_POST['password'])) {
+                    $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                }
+
+                if (UserModel::updateUser($data)) {
+                    header("Location: index.php?action=user");
+                    exit();
+                } else {
+                    $_SESSION['error'] = "Lỗi: Không thể cập nhật người dùng.";
+                    header("Location: index.php?action=editUser&id=" . $data['user_id']);
+                    exit();
+                }
+            } catch (Exception $e) {
+                $_SESSION['error'] = $e->getMessage();
                 header("Location: index.php?action=editUser&id=" . $data['user_id']);
                 exit();
             }

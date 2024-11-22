@@ -8,7 +8,7 @@ class DealModel extends MainModel
 
     public function getDealList()
     {
-        $sql = "SELECT d.*, p.pro_name FROM product_deals d
+        $sql = "SELECT d.*, p.pro_name, p.price as pro_price FROM product_deals d
                 LEFT JOIN products p ON d.pro_id = p.pro_id
                 ORDER BY d.deal_id DESC";
         $stmt = $this->SUNNY->prepare($sql);

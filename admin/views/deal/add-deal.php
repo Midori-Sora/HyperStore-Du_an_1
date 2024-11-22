@@ -7,57 +7,57 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        body {
-            background: #f8f9fa;
-            padding-top: 80px;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+    body {
+        background: #f8f9fa;
+        padding-top: 80px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-        .main {
-            display: flex;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
+    .main {
+        display: flex;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+    }
 
-        main {
-            width: calc(100% - 270px);
-            margin-left: 270px;
-        }
+    main {
+        width: calc(100% - 270px);
+        margin-left: 270px;
+    }
 
-        .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-            padding: 30px;
-            border: none;
-        }
+    .card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        padding: 30px;
+        border: none;
+    }
 
-        .form-label {
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
+    .form-label {
+        font-weight: 500;
+        margin-bottom: 8px;
+    }
 
-        .form-control,
-        .form-select {
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ddd;
-        }
+    .form-control,
+    .form-select {
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
 
-        .btn-primary {
-            background: #1976D2;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
+    .btn-primary {
+        background: #1976D2;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
 
-        .btn-primary:hover {
-            background: #1565C0;
-            transform: translateY(-2px);
-        }
+    .btn-primary:hover {
+        background: #1565C0;
+        transform: translateY(-2px);
+    }
     </style>
 </head>
 
@@ -74,9 +74,9 @@
                             <select class="form-select" id="pro_id" name="pro_id" required>
                                 <option value="">Chọn sản phẩm</option>
                                 <?php foreach ($products as $product): ?>
-                                    <option value="<?= $product['pro_id'] ?>" data-price="<?= $product['price'] ?>">
-                                        <?= $product['pro_name'] ?> - <?= number_format($product['price'], 0, ',', '.') ?>đ
-                                    </option>
+                                <option value="<?= $product['pro_id'] ?>" data-price="<?= $product['price'] ?>">
+                                    <?= $product['pro_name'] ?> - <?= number_format($product['price'], 0, ',', '.') ?>đ
+                                </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -118,27 +118,34 @@
         </main>
     </div>
     <script>
-        function calculateDiscountedPrice(discount) {
-            const productSelect = document.getElementById('pro_id');
-            const selectedOption = productSelect.options[productSelect.selectedIndex];
-            const originalPrice = parseFloat(selectedOption.getAttribute('data-price'));
+    function calculateDiscountedPrice(discount) {
+        const productSelect = document.getElementById('pro_id');
+        const selectedOption = productSelect.options[productSelect.selectedIndex];
+        const originalPrice = parseFloat(selectedOption.getAttribute('data-price'));
 
-            if (!isNaN(originalPrice) && !isNaN(discount)) {
-                const discountAmount = originalPrice * (discount / 100);
-                const finalPrice = originalPrice - discountAmount;
+        if (!isNaN(originalPrice) && !isNaN(discount)) {
+            const discountAmount = originalPrice * (discount / 100);
+            const finalPrice = originalPrice - discountAmount;
 
-                document.getElementById('discountedPrice').innerHTML =
-                    `Giá sau giảm: <strong>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(finalPrice)}</strong>`;
-            }
+            document.getElementById('discountedPrice').innerHTML =
+                `Giá gốc: <strong>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(originalPrice)}</strong><br>
+                     Giảm: <strong>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(discountAmount)}</strong><br>
+                     Giá sau giảm: <strong>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(finalPrice)}</strong>`;
         }
+    }
 
-        // Thêm sự kiện onchange cho select sản phẩm
-        document.getElementById('pro_id').onchange = function() {
-            const discount = document.getElementById('discount').value;
-            if (discount) {
-                calculateDiscountedPrice(discount);
-            }
+    // Tính toán giá khi thay đổi sản phẩm
+    document.getElementById('pro_id').addEventListener('change', function() {
+        const discount = document.getElementById('discount').value;
+        if (discount) {
+            calculateDiscountedPrice(discount);
         }
+    });
+
+    // Tính toán giá khi thay đổi % giảm giá
+    document.getElementById('discount').addEventListener('input', function() {
+        calculateDiscountedPrice(this.value);
+    });
     </script>
 </body>
 
