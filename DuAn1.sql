@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 19, 2024 lúc 09:06 AM
+-- Thời gian đã tạo: Th10 22, 2024 lúc 06:35 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -46,7 +46,7 @@ INSERT INTO `banners` (`id`, `title`, `image_url`, `status`, `created_at`) VALUE
 (4, 'Banner 4', 'b4.png', 1, '2024-11-16 16:37:22'),
 (5, 'Banner 5', 'b5.png', 1, '2024-11-16 16:37:54'),
 (6, 'Banner 6', 'b6.png', 1, '2024-11-16 16:38:11'),
-(7, 'Banner 7', 'b7.png', 1, '2024-11-16 16:38:23');
+(7, 'Banner 7', 'b7.png', 1, '2024-11-21 16:03:38');
 
 -- --------------------------------------------------------
 
@@ -83,12 +83,12 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`cate_id`, `cate_name`, `img`, `description`, `cate_status`) VALUES
-(1, 'iPhone 11', '../uploads/Category/apple.webp', '', 1),
-(3, 'iPhone 13', '../uploads/Category/apple.webp', '', 1),
-(4, 'iPhone 14', '../uploads/Category/apple.webp', '', 1),
-(5, 'iPhone 15', '../uploads/Category/apple.webp', '', 1),
-(6, 'iPhone 16', '../uploads/Category/apple.webp', '', 1),
-(7, 'iPhone 12', 'uploads/Category/apple.webp', '', 1);
+(1, 'iPhone 11', 'Uploads/Category/apple.webp', '', 1),
+(3, 'iPhone 13', 'Uploads/Category/apple.webp', '', 1),
+(4, 'iPhone 14', 'Uploads/Category/apple.webp', '', 1),
+(5, 'iPhone 15', 'Uploads/Category/apple.webp', '', 1),
+(6, 'iPhone 16', 'Uploads/Category/apple.webp', '', 1),
+(7, 'iPhone 12', 'Uploads/Category/apple.webp', '', 1);
 
 -- --------------------------------------------------------
 
@@ -132,11 +132,13 @@ CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `order_code` varchar(50) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
+  `receiver_name` varchar(255) DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `shipping_address` text DEFAULT NULL,
   `shipping_phone` varchar(20) DEFAULT NULL,
   `shipping_email` varchar(255) DEFAULT NULL,
-  `payment_method` tinyint(1) DEFAULT NULL,
+  `payment_method` varchar(50) DEFAULT NULL,
+  `bank_code` varchar(50) DEFAULT NULL,
   `status` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -145,17 +147,17 @@ CREATE TABLE `orders` (
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `payment_method`, `status`, `created_at`) VALUES
-(1, 'DH001', 1, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', 1, 1, '2024-03-18 01:30:00'),
-(2, 'DH002', 2, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', 2, 2, '2024-03-17 07:20:00'),
-(3, 'DH003', 3, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', 1, 3, '2024-03-16 09:45:00'),
-(4, 'DH004', 1, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', 2, 1, '2024-03-15 02:15:00'),
-(5, 'DH005', 2, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', 1, 2, '2024-03-14 04:30:00'),
-(6, 'DH006', 3, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', 2, 3, '2024-03-13 06:45:00'),
-(7, 'DH007', 1, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', 1, 1, '2024-03-12 08:20:00'),
-(8, 'DH008', 2, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', 2, 2, '2024-03-11 03:10:00'),
-(9, 'DH009', 3, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', 1, 3, '2024-03-10 05:30:00'),
-(10, 'DH010', 1, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', 2, 1, '2024-03-09 10:00:00');
+INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `payment_method`, `bank_code`, `status`, `created_at`) VALUES
+(1, 'DH001', 1, NULL, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', '1', NULL, 3, '2024-03-18 01:30:00'),
+(2, 'DH002', 2, NULL, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', '2', NULL, 2, '2024-03-17 07:20:00'),
+(3, 'DH003', 3, NULL, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', '1', NULL, 3, '2024-03-16 09:45:00'),
+(4, 'DH004', 1, NULL, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', '2', NULL, 1, '2024-03-15 02:15:00'),
+(5, 'DH005', 2, NULL, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', '1', NULL, 2, '2024-03-14 04:30:00'),
+(6, 'DH006', 3, NULL, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', '2', NULL, 3, '2024-03-13 06:45:00'),
+(7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', '1', NULL, 2, '2024-03-12 08:20:00'),
+(8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', '2', NULL, 2, '2024-03-11 03:10:00'),
+(9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', '1', NULL, 3, '2024-03-10 05:30:00'),
+(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', '2', NULL, 1, '2024-03-09 10:00:00');
 
 -- --------------------------------------------------------
 
@@ -249,7 +251,16 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 (16, 'iPhone 11 64GB | Chính hãng VN/A', 8990000, 50, 'iphone-11-trang.png', '2024-11-17', '', 0, 1, 1, 1, 2),
 (17, 'iPhone 14 128GB | Chính hãng VN/A', 17390000, 50, 'iphone-14-vang.png', '2024-11-17', '', 0, 1, 4, 1, 3),
 (19, 'iPhone 13 256GB | Chính hãng VN/A', 17290000, 50, 'iphone-13-xanhmongket.png', '2024-11-17', '', 0, 1, 3, 2, 5),
-(20, 'iPhone 11 128GB | Chính hãng VN/A', 10090000, 50, 'iphone-11-do.png', '2024-11-17', '', 0, 1, 1, 1, 7);
+(20, 'iPhone 11 128GB | Chính hãng VN/A', 10090000, 50, 'iphone-11-do.png', '2024-11-17', '', 0, 1, 1, 1, 7),
+(21, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-21', '', 0, 1, 7, 1, 3),
+(23, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-21', '', 0, 1, 7, 1, 1),
+(24, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 2, 1),
+(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
+(26, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 2, 3),
+(27, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 3, 3),
+(28, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 1, 5),
+(29, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 2, 5),
+(30, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 3, 5);
 
 -- --------------------------------------------------------
 
@@ -292,10 +303,17 @@ CREATE TABLE `product_deals` (
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Đang đổ dữ liệu cho bảng `product_deals`
+--
+
+INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
+(2, 20, 21.00, '2024-11-06', '2024-11-30', 1);
+
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_ram`
+-- Cấu trúc bảng cho bảng `product_storage`
 --
 
 CREATE TABLE `product_storage` (
@@ -367,25 +385,26 @@ CREATE TABLE `users` (
   `avatar` varchar(255) DEFAULT NULL,
   `role_id` int(11) DEFAULT NULL,
   `status` tinyint(4) DEFAULT 1,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `birthday` date DEFAULT NULL,
+  `gender` tinyint(1) DEFAULT NULL COMMENT '0: Nữ, 1: Nam'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `users`
 --
 
-INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`) VALUES
-(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 1, 1, '2024-11-13 07:46:27'),
-(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:00:12'),
-(3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(6, 'phamthihoa', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hoapham@gmail.com', 'Phạm Thị Hoa', '0945678901', 'Ninh Kiều, Cần Thơ', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(7, 'hoangvantuan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tuanhoang@gmail.com', 'Hoàng Văn Tuấn', '0956789012', 'Ngô Quyền, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55'),
-(11, 'admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@example.com', 'Kiendeptrai', NULL, NULL, NULL, 1, 1, '2024-11-19 08:04:50');
+INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`, `birthday`, `gender`) VALUES
+(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/Sora.jpg', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
+(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/user.png', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
+(3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(6, 'phamthihoa', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hoapham@gmail.com', 'Phạm Thị Hoa', '0945678901', 'Ninh Kiều, Cần Thơ', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(7, 'hoangvantuan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tuanhoang@gmail.com', 'Hoàng Văn Tuấn', '0956789012', 'Ngô Quyền, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -507,19 +526,19 @@ ALTER TABLE `banners`
 -- AUTO_INCREMENT cho bảng `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT cho bảng `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
@@ -543,7 +562,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT cho bảng `products`
 --
 ALTER TABLE `products`
-  MODIFY `pro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `pro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT cho bảng `product_color`
@@ -555,7 +574,7 @@ ALTER TABLE `product_color`
 -- AUTO_INCREMENT cho bảng `product_deals`
 --
 ALTER TABLE `product_deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `product_storage`

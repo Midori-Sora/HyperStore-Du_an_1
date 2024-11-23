@@ -17,7 +17,11 @@ require_once "client/controllers/cartController.php";
 require_once "client/controllers/commentController.php";
 require_once "client/controllers/searchController.php";
 require_once "client/controllers/registerController.php";
+
 $action = $_GET['action'] ?? 'home';
+
+// Debug session
+error_log('Session data: ' . print_r($_SESSION, true));
 
 switch ($action) {
     case 'home':
@@ -58,5 +62,8 @@ switch ($action) {
         break;
     case 'search':
         SearchController::searchController();
+        break;
+    case 'update-quantity':
+        CartController::updateQuantity();
         break;
 }
