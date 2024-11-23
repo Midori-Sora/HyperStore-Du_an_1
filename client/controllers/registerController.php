@@ -3,7 +3,7 @@ require_once "client/models/registerModel.php";
 
 class RegisterController {
     public static function registerController() {
-        require_once "client/views/register.php";
+        require_once "client/views/authentication/register.php";
     }
 
     public static function registerProcessController() {

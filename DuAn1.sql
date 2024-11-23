@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 22, 2024 lúc 06:35 PM
+-- Thời gian đã tạo: Th10 19, 2024 lúc 09:06 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -297,18 +297,11 @@ INSERT INTO `product_color` (`color_id`, `color_type`, `color_price`, `created_a
 CREATE TABLE `product_deals` (
   `deal_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
-  `discount` decimal(5,2) NOT NULL,
+  `discount` decimal(10,2) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `status` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Đang đổ dữ liệu cho bảng `product_deals`
---
-
-INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
-(2, 20, 21.00, '2024-11-06', '2024-11-30', 1);
 
 -- --------------------------------------------------------
 
@@ -482,7 +475,7 @@ ALTER TABLE `product_color`
 --
 ALTER TABLE `product_deals`
   ADD PRIMARY KEY (`deal_id`),
-  ADD KEY `pro_id` (`pro_id`);
+  ADD UNIQUE KEY `unique_product` (`pro_id`);
 
 --
 -- Chỉ mục cho bảng `product_storage`
@@ -651,7 +644,7 @@ ALTER TABLE `products`
 -- Các ràng buộc cho bảng `product_deals`
 --
 ALTER TABLE `product_deals`
-  ADD CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
+  ADD CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `thumbnails`

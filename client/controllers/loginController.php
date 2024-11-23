@@ -49,14 +49,14 @@ class LoginController {
             }
         }
 
-        require_once "client/views/login.php";
+        require_once "client/views/authentication/login.php";
     }
 
     public static function authController() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        require_once "client/views/login.php";
+        require_once "client/views/authentication/login.php";
     }
 
     public static function logoutController() {

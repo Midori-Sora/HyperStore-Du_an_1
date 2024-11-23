@@ -38,7 +38,7 @@
 /* Product Grid */
 .product-list {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
 }
 
@@ -161,7 +161,38 @@
     color: #666;
     margin-left: 5px;
 }
+.product-price {
+    margin: 20px 0;
+}
 
+.original-price {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.original-price del {
+    margin-right: 10px;
+}
+
+.discount-badge {
+    background: #ff4d4f;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.sale-price {
+    color: #ff4d4f;
+    font-weight: bold;
+}
+
+.current-price {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
 /* No Products Message */
 .no-products {
     text-align: center;

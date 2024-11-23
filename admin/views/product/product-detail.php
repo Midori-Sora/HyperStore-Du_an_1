@@ -54,10 +54,31 @@
         margin-bottom: 15px;
     }
     .product-price {
+        margin: 20px 0;
+    }
+    .original-price {
+        color: #666;
+        font-size: 0.9em;
+        margin-bottom: 5px;
+    }
+    .original-price del {
+        margin-right: 10px;
+    }
+    .discount-badge {
+        background: #ff4d4f;
+        color: white;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 0.9em;
+    }
+    .current-price {
         font-size: 28px;
         color: #1976D2;
         font-weight: 600;
-        margin-bottom: 20px;
+    }
+    .sale-price {
+        color: #ff4d4f;
+        font-weight: 600;
     }
     .product-meta {
         margin-bottom: 15px;
@@ -146,7 +167,9 @@
                             <h1 class="product-title"><?php echo $product['pro_name']; ?></h1>
                             
                             <div class="product-price">
-                                <?php echo number_format($product['price'], 0, ',', '.'); ?> đ
+                                <div class="current-price">
+                                    <?php echo number_format($product['price'], 0, ',', '.'); ?> đ
+                                </div>
                             </div>
 
                             <div class="product-meta">
