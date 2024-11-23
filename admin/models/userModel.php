@@ -146,26 +146,37 @@
             return $stmt->fetchColumn() > 0;
         }
 
-        public function searchUsers($keyword, $role)
+        public function searchUsers($keyword = '', $role = '')
         {
-            $sql = "SELECT u.*, r.role_name 
-                    FROM users u 
-                    LEFT JOIN roles r ON u.role_id = r.role_id 
-                    WHERE (u.username LIKE :keyword 
-                        OR u.email LIKE :keyword 
-                        OR u.fullname LIKE :keyword)";
+            try {
+                $sql = "SELECT u.*, r.role_name 
+                        FROM users u 
+                        LEFT JOIN roles r ON u.role_id = r.role_id 
+                        WHERE 1=1";
 
-            if (!empty($role)) {
-                $sql .= " AND u.role_id = :role";
-            }
+                $params = [];
 
-            $stmt = $this->db->prepare($sql);
-            $stmt->bindValue(':keyword', "%$keyword%");
-            if (!empty($role)) {
-                $stmt->bindValue(':role', $role);
+                // Thêm điều kiện tìm kiếm nếu có keyword
+                if (!empty($keyword)) {
+                    $sql .= " AND (u.username LIKE :keyword 
+                            OR u.email LIKE :keyword 
+                            OR u.fullname LIKE :keyword)";
+                    $params[':keyword'] = "%$keyword%";
+                }
+
+                // Thêm điều kiện lọc theo role nếu có
+                if (!empty($role)) {
+                    $sql .= " AND u.role_id = :role";
+                    $params[':role'] = $role;
+                }
+
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute($params);
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch (PDOException $e) {
+                error_log("Lỗi tìm kiếm người dùng: " . $e->getMessage());
+                return [];
             }
-            $stmt->execute();
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
 
         private static function validateImage($imagePath)

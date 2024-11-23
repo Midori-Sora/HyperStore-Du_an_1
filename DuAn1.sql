@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 22, 2024 lúc 08:34 PM
+-- Thời gian đã tạo: Th10 19, 2024 lúc 09:06 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -300,17 +300,8 @@ CREATE TABLE `product_deals` (
   `discount` decimal(10,2) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` tinyint(1) DEFAULT 1
-) ;
-
---
--- Đang đổ dữ liệu cho bảng `product_deals`
---
-
-INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
-(1, 1, 20.00, '2024-03-20', '2024-04-20', 1),
-(2, 2, 20.00, '2024-03-20', '2024-04-20', 1),
-(3, 3, 10.00, '2024-03-20', '2024-04-20', 1);
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -576,7 +567,7 @@ ALTER TABLE `product_color`
 -- AUTO_INCREMENT cho bảng `product_deals`
 --
 ALTER TABLE `product_deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `product_storage`
