@@ -69,6 +69,27 @@
                 opacity: 0;
             }
         }
+
+        .avatar-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .btn-change-avatar {
+            position: absolute;
+            bottom: 15px;
+            right: 15px;
+            background-color: #FFCC33;
+            border: none;
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        .btn-change-avatar:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
     </style>
 </head>
 
@@ -81,8 +102,14 @@
                 <!-- Sidebar -->
                 <div class="profile-sidebar">
                     <div class="user-info">
-                        <img src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/default-avatar.jpg' ?>" 
-                             alt="Avatar" class="avatar">
+                        <div class="avatar-wrapper">
+                            <img src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>" 
+                                 alt="Avatar" class="avatar">
+                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data" class="avatar-form">
+                                <input type="file" name="avatar" accept="image/*" id="avatarInput" style="display: none;">
+                                <button type="button" class="btn-change-avatar" onclick="document.getElementById('avatarInput').click();"><i class="fa-solid fa-pen"></i></button>
+                            </form>
+                        </div>
                         <h3><?= htmlspecialchars($user['fullname'] ?? $user['username']) ?></h3>
                         <p class="email"><?= htmlspecialchars($user['email']) ?></p>
                     </div>
@@ -122,7 +149,7 @@
                             </div>
                         <?php endif; ?>
 
-                        <form class="profile-form" action="?action=update-profile" method="POST">
+                        <form class="profile-form" action="?action=update-profile" method="POST" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>Họ và tên</label>
                                 <input type="text" name="fullname" 

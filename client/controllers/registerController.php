@@ -57,11 +57,8 @@ class RegisterController {
                 exit;
             }
 
-            // Hash password
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-            // Thực hiện đăng ký
-            if ($registerModel->register($username, $email, $hashedPassword, $fullname, $phone, $address)) {
+            // Thực hiện đăng ký (store password as plain text)
+            if ($registerModel->register($username, $email, $password, $fullname, $phone, $address)) {
                 $_SESSION['success'] = "Đăng ký thành công! Vui lòng đăng nhập.";
                 header("Location: index.php?action=login");
                 exit;

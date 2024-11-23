@@ -33,16 +33,18 @@ class ProfileModel extends MainModel
                     phone = ?, 
                     birthday = ?, 
                     gender = ?, 
-                    address = ? 
+                    address = ?,
+                    avatar = ? 
                     WHERE user_id = ?";
                     
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("sssssi", 
+            $stmt->bind_param("ssssssi", 
                 $data['fullname'],
                 $data['phone'],
                 $data['birthday'],
                 $data['gender'],
                 $data['address'],
+                $data['avatar'],
                 $data['user_id']
             );
             
