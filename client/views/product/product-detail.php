@@ -65,7 +65,9 @@
                 </div>
 
                 <div class="product-price">
-                    <div class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</div>
+                    <div class="current-price">
+                        <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
+                    </div>
                 </div>
 
                 <?php if (!empty($availableStorages)): ?>

@@ -152,7 +152,8 @@
                                     <th width="10%">Giá gốc</th>
                                     <th width="10%">Số lượng</th>
                                     <th width="10%">Danh mục</th>
-                                    <th width="10%">Trạng thái</th>
+                                    <th width="12%">Trạng thái</th>
+                                    <th width="10%">Giảm giá</th>
                                     <th width="20%">Thao tác</th>
                                 </tr>
                             </thead>
@@ -178,6 +179,13 @@
                                                 <span class="status-badge <?php echo $product['pro_status'] == 1 ? 'status-active' : 'status-inactive'; ?>">
                                                     <?php echo $product['pro_status'] == 1 ? 'Hoạt động' : 'Không hoạt động'; ?>
                                                 </span>
+                                            </td>
+                                            <td>
+                                                <?php if (!empty($product['discount'])): ?>
+                                                    <strong><?php echo $product['discount']; ?>%</strong>
+                                                <?php else: ?>
+                                                    <span>Không có</span>
+                                                <?php endif; ?>
                                             </td>
                                             <td>
                                                 <a href="?action=productDetail&id=<?php echo $product['pro_id']; ?>" 

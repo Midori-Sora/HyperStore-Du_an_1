@@ -35,7 +35,6 @@
         background: none;
         border-bottom: 2px solid #f0f0f0;
         padding-bottom: 15px;
-        margin-bottom: 25px;
     }
     .card-header h2 {
         margin: 0;

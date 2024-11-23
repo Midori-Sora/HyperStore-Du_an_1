@@ -17,6 +17,7 @@ require_once "client/controllers/cartController.php";
 require_once "client/controllers/commentController.php";
 require_once "client/controllers/searchController.php";
 require_once "client/controllers/registerController.php";
+require_once "client/controllers/profileController.php";
 $action = $_GET['action'] ?? 'home';
 
 switch ($action) {
@@ -58,5 +59,11 @@ switch ($action) {
         break;
     case 'search':
         SearchController::searchController();
+        break;
+    case 'profile':
+        ProfileController::profileController();
+        break;
+    case 'update-profile':
+        ProfileController::updateProfileController();
         break;
 }

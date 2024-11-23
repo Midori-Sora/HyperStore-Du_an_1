@@ -35,7 +35,6 @@
         background: none;
         border-bottom: 2px solid #f0f0f0;
         padding-bottom: 20px;
-        margin-bottom: 30px;
     }
     .card-header h2 {
         margin: 0;
@@ -50,7 +49,6 @@
         color: #4a90e2;
     }
     .table {
-        margin-top: 20px;
         border-collapse: separate;
         border-spacing: 0 12px;
     }

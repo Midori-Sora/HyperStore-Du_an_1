@@ -16,11 +16,13 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, pc.color_type, pc.color_price,
-                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price
+                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price,
+                    pd.discount
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     ORDER BY p.pro_name ASC";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute();
@@ -38,11 +40,13 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, pc.color_type, pc.color_price,
-                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price
+                    (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price,
+                    pd.discount
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     WHERE p.pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute([':id' => $id]);
@@ -276,11 +280,13 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "SELECT p.*, c.cate_name, pr.ram_type, pr.ram_price, pc.color_type, pc.color_price,
-                    (p.price + COALESCE(pr.ram_price, 0) + COALESCE(pc.color_price, 0)) as total_price
+                    (p.price + COALESCE(pr.ram_price, 0) + COALESCE(pc.color_price, 0)) as total_price,
+                    pd.discount
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_ram pr ON p.ram_id = pr.ram_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     WHERE p.pro_id = :id";
             $stmt = $this->SUNNY->prepare($sql);
             $stmt->execute([':id' => $id]);

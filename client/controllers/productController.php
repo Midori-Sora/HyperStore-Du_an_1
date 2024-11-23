@@ -34,25 +34,20 @@ class ProductController
     public static function productDetailController()
     {
         $productModel = new ProductModel();
-
-        // Lấy các tham số từ URL
+        
         $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
         $colorId = isset($_GET['color']) ? (int)$_GET['color'] : null;
         $storageId = isset($_GET['storage']) ? (int)$_GET['storage'] : null;
-
-        // Lấy thông tin sản phẩm cơ bản
+        
         $product = $productModel->getProductById($productId);
-
         if (!$product) {
             header('Location: index.php');
             exit;
         }
-
-        // Lấy tất cả các màu và phiên bản có sẵn cho category này
+        
         $availableColors = $productModel->getAllColorsByCategory($product['cate_id']);
         $availableStorages = $productModel->getAllStoragesByCategory($product['cate_id']);
-
-        // Nếu có yêu cầu đổi màu hoặc phiên bản
+        
         if ($colorId || $storageId) {
             $variant = $productModel->getProductVariant(
                 $productId,
