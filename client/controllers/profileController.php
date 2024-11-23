@@ -54,12 +54,23 @@ class ProfileController
             ];
 
             // Kiểm tra dữ liệu
-            if (empty($data['fullname'])) {
-                throw new Exception("Vui lòng nhập họ tên");
+            if (empty($data['fullname']) && empty($_FILES['avatar']['name'])) {
+                throw new Exception("Vui lòng nhập họ tên hoặc chọn ảnh đại diện");
             }
 
+            // Kiểm tra số điện thoại
             if (!empty($data['phone']) && !preg_match('/^[0-9]{10}$/', $data['phone'])) {
                 throw new Exception("Số điện thoại không hợp lệ");
+            }
+
+            // Kiểm tra giới tính
+            if (!is_null($data['gender']) && !in_array($data['gender'], [0, 1])) {
+                throw new Exception("Giới tính không hợp lệ");
+            }
+
+            // Kiểm tra ngày sinh
+            if (!empty($data['birthday']) && !DateTime::createFromFormat('Y-m-d', $data['birthday'])) {
+                throw new Exception("Ngày sinh không hợp lệ");
             }
 
             // Handle avatar upload

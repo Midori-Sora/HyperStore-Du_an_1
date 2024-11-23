@@ -103,10 +103,10 @@
                 <div class="profile-sidebar">
                     <div class="user-info">
                         <div class="avatar-wrapper">
-                            <img src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>" 
+                            <img id="avatarImage" src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>" 
                                  alt="Avatar" class="avatar">
-                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data" class="avatar-form">
-                                <input type="file" name="avatar" accept="image/*" id="avatarInput" style="display: none;">
+                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data" class="avatar-form" id="avatarForm">
+                                <input type="file" name="avatar" accept="image/*" id="avatarInput" style="display: none;" onchange="previewAvatar(event)">
                                 <button type="button" class="btn-change-avatar" onclick="document.getElementById('avatarInput').click();"><i class="fa-solid fa-pen"></i></button>
                             </form>
                         </div>
@@ -217,6 +217,19 @@
             setTimeout(() => {
                 alert.remove();
             }, 500);
+        }
+
+        function previewAvatar(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('avatarImage').src = e.target.result; // Cập nhật ảnh đại diện
+                }
+                reader.readAsDataURL(file);
+                // Gửi form ngay sau khi chọn ảnh
+                document.getElementById('avatarForm').submit();
+            }
         }
     </script>
 </body>
