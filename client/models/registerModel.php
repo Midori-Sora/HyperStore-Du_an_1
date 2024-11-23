@@ -1,11 +1,15 @@
 <?php
 require_once "client/controllers/registerController.php";
 
-class RegisterModel {
+class RegisterModel 
+{
     private $conn;
 
     public function __construct() {
-        $this->conn = Database::getInstance()->getConnection();
+        $this->conn = new mysqli("localhost", "root", "", "duan1");
+        if ($this->conn->connect_error) {
+            die("Connection failed: " . $this->conn->connect_error);
+        }
     }
 
     public function checkEmailExists($email) {

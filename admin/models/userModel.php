@@ -81,12 +81,10 @@
                 $data['status']
             ];
 
-
             if (!empty($data['password'])) {
                 $sql .= ", password = ?";
-                $params[] = password_hash($data['password'], PASSWORD_BCRYPT);
+                $params[] = $data['password'];
             }
-
 
             if (!empty($data['avatar'])) {
                 $sql .= ", avatar = ?";

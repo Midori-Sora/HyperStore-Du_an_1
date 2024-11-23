@@ -5,14 +5,12 @@ class UserController
 {
     public static function userController()
     {
-
         $users = UserModel::getAllUsersWithRoles();
         require_once 'views/user/user.php';
     }
 
     public static function addUserController()
     {
-
         $roles = UserModel::getRoles();
         require_once 'views/user/add-user.php';
     }
@@ -31,6 +29,7 @@ class UserController
             echo "ID người dùng không xác định.";
         }
     }
+
     public static function searchUsersController()
     {
         $keyword = $_GET['keyword'] ?? '';
@@ -58,7 +57,7 @@ class UserController
                 $data = [
                     'username' => $_POST['username'],
                     'email' => $_POST['email'],
-                    'password' => password_hash($_POST['password'], PASSWORD_BCRYPT),
+                    'password' => $_POST['password'], // Store password as plain text
                     'fullname' => $_POST['fullname'],
                     'phone' => $_POST['phone'],
                     'address' => $_POST['address'],
@@ -145,7 +144,7 @@ class UserController
                 }
 
                 if (!empty($_POST['password'])) {
-                    $data['password'] = password_hash($_POST['password'], PASSWORD_BCRYPT);
+                    $data['password'] = $_POST['password']; // Store password as plain text
                 }
 
                 if (UserModel::updateUser($data)) {

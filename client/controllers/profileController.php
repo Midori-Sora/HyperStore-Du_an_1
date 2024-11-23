@@ -49,7 +49,8 @@ class ProfileController
                 'phone' => trim($_POST['phone'] ?? ''),
                 'birthday' => $_POST['birthday'] ?? null,
                 'gender' => $_POST['gender'] ?? null,
-                'address' => trim($_POST['address'] ?? '')
+                'address' => trim($_POST['address'] ?? ''),
+                'avatar' => null // Initialize avatar
             ];
 
             // Kiểm tra dữ liệu
@@ -59,6 +60,24 @@ class ProfileController
 
             if (!empty($data['phone']) && !preg_match('/^[0-9]{10}$/', $data['phone'])) {
                 throw new Exception("Số điện thoại không hợp lệ");
+            }
+
+            // Handle avatar upload
+            if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) {
+                $avatarPath = 'Uploads/User/' . basename($_FILES['avatar']['name']);
+                // Kiểm tra xem thư mục có tồn tại không, nếu không thì tạo nó
+                if (!is_dir(PATH_ROOT . '/Uploads/User/')) {
+                    mkdir(PATH_ROOT . '/Uploads/User/', 0777, true);
+                }
+                if (move_uploaded_file($_FILES['avatar']['tmp_name'], PATH_ROOT . '/' . $avatarPath)) {
+                    $data['avatar'] = $avatarPath; // Set the avatar path
+                } else {
+                    throw new Exception("Lỗi khi tải lên ảnh đại diện");
+                }
+            } else {
+                // Nếu không có ảnh mới, giữ nguyên ảnh cũ
+                $user = (new ProfileModel())->getUserInfo($data['user_id']);
+                $data['avatar'] = $user['avatar'] ?? null; // Giữ nguyên ảnh cũ, kiểm tra null
             }
 
             // Thực hiện cập nhật
