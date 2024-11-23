@@ -14,7 +14,7 @@ require_once "client/controllers/homeController.php";
 require_once "client/controllers/productController.php";
 require_once "client/controllers/loginController.php";
 require_once "client/controllers/cartController.php";
-require_once "client/controllers/commentController.php";
+require_once "client/controllers/commentController.php";    
 require_once "client/controllers/searchController.php";
 require_once "client/controllers/registerController.php";
 require_once "client/controllers/profileController.php";

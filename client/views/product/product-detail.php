@@ -65,9 +65,21 @@
                 </div>
 
                 <div class="product-price">
-                    <div class="current-price">
-                        <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
-                    </div>
+                    <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                        <div class="discount-info">
+                            <div class="current-price">
+                                <?php echo number_format($product['price'] * (1 - $product['current_discount'] / 100), 0, ',', '.'); ?>₫
+                            </div>
+                            <div class="original-price">
+                                <span><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</span>
+                            </div>
+                            <span class="discount-percentage">-<?php echo $product['current_discount']; ?>%</span>
+                        </div>
+                    <?php else: ?>
+                        <div class="current-price">
+                            <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
+                        </div>
+                    <?php endif; ?>
                 </div>
 
                 <?php if (!empty($availableStorages)): ?>
@@ -108,7 +120,7 @@
                             );
                             if ($variantExists):
                             ?>
-                                <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>" 
+                                <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>&discount=<?php echo isset($product['current_discount']) ? $product['current_discount'] : 0; ?>" 
                                    class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>"
                                    data-color="<?php echo $color['color_type']; ?>">
                                     <div class="color-wrapper">

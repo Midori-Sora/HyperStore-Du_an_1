@@ -41,6 +41,11 @@
                             <div class="product-image">
                                 <img src="Uploads/Product/<?php echo $product['img']; ?>"
                                     alt="<?php echo $product['pro_name']; ?>">
+                                    <?php if ($product['current_discount'] > 0) : ?>
+                                        <div class="discount">
+                                            -<?php echo $product['current_discount']; ?>%
+                                        </div>
+                                    <?php endif; ?>
                                 <div class="product-actions">
                                     <button class="action-btn"><i class="fas fa-heart"></i></button>
                                     <form action="index.php?action=add-to-cart" method="POST" class="cart-form">

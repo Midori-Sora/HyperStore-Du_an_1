@@ -31,12 +31,17 @@ class DealController
             $end_date = $_POST['end_date'];
             $status = $_POST['status'];
 
-            if (self::$dealModel->addDeal($pro_id, $discount, $start_date, $end_date, $status)) {
-                $_SESSION['success'] = 'Thêm khuyến mãi thành công';
-                header('Location: index.php?action=deal');
-                exit();
+            // New validation check for date order
+            if (strtotime($start_date) >= strtotime($end_date)) {
+                $_SESSION['error'] = 'Ngày bắt đầu phải trước ngày kết thúc';
             } else {
-                $_SESSION['error'] = 'Thêm khuyến mãi thất bại';
+                if (self::$dealModel->addDeal($pro_id, $discount, $start_date, $end_date, $status)) {
+                    $_SESSION['success'] = 'Thêm khuyến mãi thành công';
+                    header('Location: index.php?action=deal');
+                    exit();
+                } else {
+                    $_SESSION['error'] = 'Thêm khuyến mãi thất bại';
+                }
             }
         }
         require_once './views/deal/add-deal.php';

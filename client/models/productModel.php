@@ -9,6 +9,7 @@ class ProductModel
             die("Connection failed: " . $this->conn->connect_error);
         }
     }
+    
     public function getProductList()
     {
         try {
@@ -240,6 +241,32 @@ class ProductModel
             return $result['count'] > 0;
         } catch (Exception $e) {
             error_log("Error in checkVariantExists: " . $e->getMessage());
+            return false;
+        }
+    }
+    public static function productController()
+    {
+        $productModel = new ProductModel();
+        $products = $productModel->getProductList();
+
+        // Lấy mã giảm giá cho từng sản phẩm
+        foreach ($products as &$product) {
+            $currentDeal = $productModel->getCurrentDeal($product['pro_id']);
+            $product['discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+        }
+
+        require_once "client/views/product/product.php";
+    }
+    public function getCurrentDeal($productId)
+    {
+        try {
+            $sql = "SELECT discount FROM product_deals WHERE pro_id = ? AND status = 1 ORDER BY start_date DESC LIMIT 1"; // Changed from :pro_id to ?
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $productId); // Bind the parameter
+            $stmt->execute();
+            return $stmt->get_result()->fetch_assoc(); // Fetch the result
+        } catch (mysqli_sql_exception $e) { // Changed to mysqli_sql_exception
+            error_log("Get current deal error: " . $e->getMessage());
             return false;
         }
     }
