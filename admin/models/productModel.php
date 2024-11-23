@@ -41,7 +41,8 @@ class ProductModel extends MainModel
         try {
             $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, pc.color_type, pc.color_price,
                     (p.price + COALESCE(ps.storage_price, 0) + COALESCE(pc.color_price, 0)) as total_price,
-                    pd.discount
+                    pd.discount,
+                    (p.price * (1 - COALESCE(pd.discount, 0) / 100)) as discounted_price
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
@@ -293,6 +294,19 @@ class ProductModel extends MainModel
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Get product detail error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function getCurrentDeal($productId)
+    {
+        try {
+            $sql = "SELECT discount FROM product_deals WHERE pro_id = :pro_id AND status = 1 ORDER BY start_date DESC LIMIT 1";
+            $stmt = $this->SUNNY->prepare($sql);
+            $stmt->execute([':pro_id' => $productId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Get current deal error: " . $e->getMessage());
             return false;
         }
     }

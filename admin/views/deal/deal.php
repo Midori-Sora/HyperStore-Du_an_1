@@ -15,11 +15,13 @@
 
     .main {
         display: flex;
-        max-width: 1400px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
     }
-
+    .container{
+        --bs-gutter-x: 0;
+    }
     main {
         width: calc(100% - 270px);
         margin-left: 270px;
@@ -169,12 +171,12 @@
                             <thead>
                                 <tr>
                                     <th width="5%">ID</th>
-                                    <th width="20%">Sản phẩm</th>
+                                    <th width="19%">Sản phẩm</th>
                                     <th width="8%">Giảm giá</th>
                                     <th width="12%">Giá gốc</th>
                                     <th width="10%">Giá sau giảm</th>
                                     <th width="10%">Ngày bắt đầu</th>
-                                    <th width="10%">Ngày kết thúc</th>
+                                    <th width="11%">Ngày kết thúc</th>
                                     <th width="12%">Trạng thái</th>
                                     <th width="10%">Thao tác</th>
                                 </tr>

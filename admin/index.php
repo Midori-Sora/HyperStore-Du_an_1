@@ -14,6 +14,7 @@ require_once 'controllers/userController.php';
 require_once 'controllers/bannerController.php';
 require_once 'controllers/orderController.php';
 require_once 'controllers/dealController.php';
+require_once 'controllers/logoutController.php';
 
 require_once "./commons/env.php";
 require_once "./commons/function.php";
@@ -161,4 +162,6 @@ switch ($action) {
     case 'editDeal':
         DealController::editDealController();
         break;
+    case 'logout':
+        LogoutController::logoutController();
 }

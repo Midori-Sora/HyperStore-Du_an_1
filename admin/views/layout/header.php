@@ -153,7 +153,7 @@ if (!isset($_SESSION['user_id']) || $_SESSION['role_id'] != 1) {
                         ?>
                     </span>
                 </div>
-                <a href="#" class="logout-btn">
+                <a href="?action=logout" class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Đăng xuất</span>
                 </a>

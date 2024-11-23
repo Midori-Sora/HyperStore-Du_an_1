@@ -330,6 +330,10 @@ class ProductController
                 throw new Exception('Không tìm thấy sản phẩm');
             }
 
+            // Fetch current deal for the product
+            $currentDeal = self::$productModel->getCurrentDeal($id);
+            $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+
             // Debug log
             error_log("Product detail controller - ID: $id, Data: " . json_encode($product));
 
