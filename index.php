@@ -17,6 +17,7 @@ require_once "client/controllers/cartController.php";
 require_once "client/controllers/commentController.php";
 require_once "client/controllers/searchController.php";
 require_once "client/controllers/registerController.php";
+require_once "client/controllers/checkoutController.php";
 $action = $_GET['action'] ?? 'home';
 
 // Debug session
@@ -61,5 +62,12 @@ switch ($action) {
         break;
     case 'search':
         SearchController::searchController();
+        break;
+    case 'update-quantity':
+        CartController::updateQuantity();
+        break;
+    case 'checkout':
+        $checkoutController = new CheckoutController();
+        $checkoutController->checkout();
         break;
 }

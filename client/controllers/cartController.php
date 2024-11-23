@@ -5,6 +5,12 @@ class CartController
 {
     public static function addToCart()
     {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng';
+            header('Location: index.php?action=login');
+            exit();
+        }
+
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
@@ -25,6 +31,12 @@ class CartController
 
     public static function viewCart()
     {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để xem giỏ hàng';
+            header('Location: index.php?action=login');
+            exit();
+        }
+
         $cart_items = [];
         $total = 0;
 
@@ -44,6 +56,12 @@ class CartController
      */
     public static function removeFromCart()
     {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để thực hiện thao tác này';
+            header('Location: index.php?action=login');
+            exit();
+        }
+
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT);
 
         if (!$product_id) {
@@ -63,14 +81,22 @@ class CartController
 
     public static function updateQuantity()
     {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để thực hiện thao tác này';
+            header('Location: index.php?action=login');
+            exit();
+        }
+
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT);
-        $action = $_POST['quantity_action']; // 'increase' hoặc 'decrease'
+        $action = $_POST['quantity_action'];
 
         if (isset($_SESSION['cart'][$product_id])) {
+            $current_quantity = $_SESSION['cart'][$product_id];
+
             if ($action === 'increase') {
-                $_SESSION['cart'][$product_id] = min(99, $_SESSION['cart'][$product_id] + 1);
-            } else if ($action === 'decrease') {
-                $_SESSION['cart'][$product_id] = max(1, $_SESSION['cart'][$product_id] - 1);
+                $_SESSION['cart'][$product_id] = min(99, $current_quantity + 1);
+            } else if ($action === 'decrease' && $current_quantity > 1) {
+                $_SESSION['cart'][$product_id] = max(1, $current_quantity - 1);
             }
         }
 
