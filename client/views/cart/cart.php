@@ -89,7 +89,7 @@
 
                     <div class="summary-details">
                         <div class="summary-row">
-                            <span>Tạm tính (<span id="selected-count">0</span> sản phẩm):</span>
+                            <span>Tạm tính (<span id="selected-count">0</span> đơn hàng):</span>
                             <span class="subtotal">0đ</span>
                         </div>
                         <div class="summary-row">
@@ -103,13 +103,8 @@
                     </div>
 
                     <form action="index.php?action=checkout" method="POST" id="checkout-form">
-                        <?php foreach ($cart_items as $item): ?>
-                            <input type="hidden" name="selected_products[]" value="<?= $item['pro_id'] ?>">
-                            <input type="hidden" name="quantities[<?= $item['pro_id'] ?>]" value="<?= $item['quantity'] ?>">
-                        <?php endforeach; ?>
-
                         <button type="submit" class="checkout-btn" id="checkout-selected" disabled>
-                            Thanh toán (<span id="checkout-count">0</span> sản phẩm)
+                            Thanh toán (<span id="checkout-count">0</span> đơn hàng)
                         </button>
                     </form>
                 </div>
@@ -473,14 +468,21 @@
             });
         });
 
-        document.getElementById('checkout-selected').addEventListener('click', function() {
-            // Lấy tất cả các checkbox đã chọn
+        document.getElementById('checkout-selected').addEventListener('click', function(e) {
+            e.preventDefault();
+
+            // Lấy tất cả checkbox đã được chọn
             const selectedCheckboxes = document.querySelectorAll('.item-checkbox:checked');
 
-            // Tạo form ẩn để submit
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'index.php?action=checkout';
+            if (selectedCheckboxes.length === 0) {
+                alert('Vui lòng chọn ít nhất một sản phẩm');
+                return;
+            }
+
+            // Tạo form mới
+            const form = document.getElementById('checkout-form');
+            // Xóa tất cả input cũ (nếu có)
+            form.querySelectorAll('input[type="hidden"]').forEach(input => input.remove());
 
             // Thêm các sản phẩm đã chọn vào form
             selectedCheckboxes.forEach(checkbox => {
@@ -497,52 +499,30 @@
                 // Input cho quantity
                 const quantityInput = document.createElement('input');
                 quantityInput.type = 'hidden';
-                quantityInput.name = 'quantities[' + productId + ']';
+                quantityInput.name = `quantities[${productId}]`;
                 quantityInput.value = quantity;
                 form.appendChild(quantityInput);
             });
 
             // Submit form
-            document.body.appendChild(form);
             form.submit();
         });
 
-        // Xử lý nút Mua hàng
-        document.getElementById('checkout-selected').addEventListener('click', function() {
-            // Tạo form mới
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'index.php?action=checkout';
-
-            // Lấy tất cả checkbox đã chọn
-            const selectedItems = document.querySelectorAll('.item-checkbox:checked');
-
-            selectedItems.forEach(function(item) {
-                // Tạo input cho product_id
-                const productInput = document.createElement('input');
-                productInput.type = 'hidden';
-                productInput.name = 'selected_products[]';
-                productInput.value = item.getAttribute('data-product-id');
-                form.appendChild(productInput);
-
-                // Tạo input cho quantity
-                const quantityInput = document.createElement('input');
-                quantityInput.type = 'hidden';
-                quantityInput.name = 'quantities[' + item.getAttribute('data-product-id') + ']';
-                quantityInput.value = item.getAttribute('data-quantity');
-                form.appendChild(quantityInput);
-            });
-
-            // Thêm form vào document và submit
-            document.body.appendChild(form);
-            form.submit();
-        });
-
-        // Cập nhật trạng thái nút khi chọn sản phẩm
+        // Cập nhật các event listeners khác
         document.querySelectorAll('.item-checkbox').forEach(function(checkbox) {
             checkbox.addEventListener('change', function() {
                 const selectedCount = document.querySelectorAll('.item-checkbox:checked').length;
-                document.getElementById('checkout-selected').disabled = selectedCount === 0;
+                const checkoutBtn = document.getElementById('checkout-selected');
+
+                // Cập nhật số lượng sản phẩm đã chọn
+                document.getElementById('checkout-count').textContent = selectedCount;
+                document.getElementById('selected-count').textContent = selectedCount;
+
+                // Enable/disable nút thanh toán
+                checkoutBtn.disabled = selectedCount === 0;
+
+                // Cập nhật tổng tiền
+                updateSummary();
             });
         });
 

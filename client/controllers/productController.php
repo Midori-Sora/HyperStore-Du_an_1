@@ -7,6 +7,13 @@ class ProductController
     {
         $productModel = new ProductModel();
         $products = $productModel->getProductList();
+
+        // Lấy mã giảm giá cho từng sản phẩm
+        foreach ($products as &$product) {
+            $currentDeal = $productModel->getCurrentDeal($product['pro_id']);
+            $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+        }
+
         require_once "client/views/product/product.php";
     }
 
@@ -44,7 +51,11 @@ class ProductController
             header('Location: index.php');
             exit;
         }
-        
+
+        // Fetch current discount for the product
+        $currentDeal = $productModel->getCurrentDeal($productId);
+        $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+
         $availableColors = $productModel->getAllColorsByCategory($product['cate_id']);
         $availableStorages = $productModel->getAllStoragesByCategory($product['cate_id']);
         

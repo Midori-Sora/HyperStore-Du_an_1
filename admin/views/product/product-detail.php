@@ -15,9 +15,12 @@
     }
     .main {
         display: flex;
-        max-width: 1400px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
+    }
+    .container{
+        --bs-gutter-x: 0;
     }
     main {
         width: calc(100% - 270px);
@@ -170,7 +173,20 @@
                                 <div class="current-price">
                                     <?php echo number_format($product['price'], 0, ',', '.'); ?> đ
                                 </div>
+                                <?php if ($product['current_discount'] > 0): ?>
+                                    <div class="sale-price">
+                                        Giá sau giảm: <?php echo number_format($product['discounted_price'], 0, ',', '.'); ?> đ
+                                    </div>
+                                <?php endif; ?>
                             </div>
+
+                            <?php if ($product['current_discount'] > 0): ?>
+                                <div class="product-price">
+                                    <div class="current-price">
+                                        Giảm giá: <?php echo $product['current_discount']; ?>%
+                                    </div>
+                                </div>
+                            <?php endif; ?>
 
                             <div class="product-meta">
                                 <div class="meta-item">

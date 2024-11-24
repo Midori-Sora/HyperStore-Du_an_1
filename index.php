@@ -18,6 +18,10 @@ require_once "client/controllers/commentController.php";
 require_once "client/controllers/searchController.php";
 require_once "client/controllers/registerController.php";
 require_once "client/controllers/checkoutController.php";
+require_once "client/controllers/profileController.php";
+require_once "client/controllers/orderController.php";
+
+
 $action = $_GET['action'] ?? 'home';
 
 // Debug session
@@ -63,11 +67,47 @@ switch ($action) {
     case 'search':
         SearchController::searchController();
         break;
-    case 'update-quantity':
-        CartController::updateQuantity();
+    case 'profile':
+        ProfileController::profileController();
+        break;
+    case 'update-profile':
+        ProfileController::updateProfileController();
         break;
     case 'checkout':
         $checkoutController = new CheckoutController();
         $checkoutController->checkout();
+        break;
+    case 'update-quantity':
+        CartController::updateQuantity();
+        break;
+    case 'process-payment':
+        $controller = new CheckoutController();
+        $controller->processPayment();
+        break;
+    case 'bank-transfer-info':
+        if (!isset($_SESSION['bank_transfer_info'])) {
+            header('Location: index.php?action=checkout');
+            exit();
+        }
+        require_once 'client/views/checkout/bank-transfer-info.php';
+        break;
+    case 'order-success':
+        require_once 'client/views/checkout/order-success.php';
+        break;
+    case 'payment-callback':
+        $controller = new CheckoutController();
+        $controller->handlePaymentCallback();
+        break;
+    case 'confirm-payment':
+        $controller = new CheckoutController();
+        $controller->confirmPayment();
+        break;
+    case 'orders':
+        $controller = new OrderController();
+        $controller->orderList();
+        break;
+    case 'order-detail':
+        $controller = new OrderController();
+        $controller->orderDetail();
         break;
 }

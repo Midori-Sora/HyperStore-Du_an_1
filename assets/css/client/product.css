@@ -75,7 +75,7 @@
 /* Product Actions */
 .product-actions {
     position: absolute;
-    top: 10px;
+    top: 40px;
     right: 10px;
     display: flex;
     flex-direction: column;
@@ -150,7 +150,19 @@
     color: #e94560;
     margin: 10px 0;
 }
-
+/* client/assets/css/client/product.css */
+.discount {
+    position: absolute; /* Đặt vị trí tuyệt đối */
+    top: 0px; /* Khoảng cách từ trên */
+    right: 0px; /* Khoảng cách từ bên phải */
+    background-color: red; /* Màu nền đỏ */
+    color: white; /* Màu chữ trắng */
+    padding: 5px 10px; /* Khoảng cách bên trong */
+    border-radius: 5px; /* Bo góc */
+    font-weight: bold; /* Chữ đậm */
+    font-size: 1.2em; /* Kích thước chữ */
+    z-index: 10; /* Đảm bảo nó nằm trên các phần tử khác */
+}
 /* Product Rating */
 .product-rating {
     color: #ffc107;
@@ -173,25 +185,6 @@
 
 .original-price del {
     margin-right: 10px;
-}
-
-.discount-badge {
-    background: #ff4d4f;
-    color: white;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-size: 14px;
-}
-
-.sale-price {
-    color: #ff4d4f;
-    font-weight: bold;
-}
-
-.current-price {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
 }
 /* No Products Message */
 .no-products {

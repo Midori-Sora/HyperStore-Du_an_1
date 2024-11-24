@@ -3,7 +3,8 @@ class ProfileModel extends MainModel
 {
     private $conn;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->conn = new mysqli("localhost", "root", "", "duan1");
         if ($this->conn->connect_error) {
             die("Connection failed: " . $this->conn->connect_error);
@@ -36,9 +37,10 @@ class ProfileModel extends MainModel
                     address = ?,
                     avatar = ? 
                     WHERE user_id = ?";
-                    
+
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("ssssssi", 
+            $stmt->bind_param(
+                "ssssssi",
                 $data['fullname'],
                 $data['phone'],
                 $data['birthday'],
@@ -47,7 +49,7 @@ class ProfileModel extends MainModel
                 $data['avatar'],
                 $data['user_id']
             );
-            
+
             return $stmt->execute();
         } catch (Exception $e) {
             error_log("Update profile failed: " . $e->getMessage());

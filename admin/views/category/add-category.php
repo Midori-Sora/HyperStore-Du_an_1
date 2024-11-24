@@ -9,125 +9,127 @@
 </head>
 
 <style>
-body {
-    background: #f5f5f5;
-    padding-top: 80px;
-}
+    body {
+        background: #f5f5f5;
+        padding-top: 80px;
+    }
 
-.main {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    .main {
+        display: flex;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    .container{
+        --bs-gutter-x: 0;
+    }
+    main {
+        width: calc(100% - 270px);
+        margin-left: 270px;
+    }
 
-main {
-    width: calc(100% - 270px);
-    margin-left: 270px;
-}
+    .card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        padding: 30px;
+        margin-bottom: 20px;
+    }
 
-.card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-    padding: 30px;
-    margin-bottom: 20px;
-}
+    .card-header {
+        background: none;
+        border-bottom: 2px solid #f0f0f0;
+        padding-bottom: 15px;
+        margin-bottom: 25px;
+    }
 
-.card-header {
-    background: none;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 15px;
-    margin-bottom: 25px;
-}
+    .card-header h2 {
+        margin: 0;
+        color: #2c3345;
+        font-size: 24px;
+        font-weight: 600;
+    }
 
-.card-header h2 {
-    margin: 0;
-    color: #2c3345;
-    font-size: 24px;
-    font-weight: 600;
-}
+    .form-label {
+        font-weight: 500;
+        color: #2c3345;
+        margin-bottom: 8px;
+    }
 
-.form-label {
-    font-weight: 500;
-    color: #2c3345;
-    margin-bottom: 8px;
-}
+    .form-control {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #dce0e4;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+    }
 
-.form-control {
-    border-radius: 8px;
-    padding: 12px 15px;
-    border: 1px solid #dce0e4;
-    margin-bottom: 20px;
-    transition: all 0.3s ease;
-}
+    .form-control:focus {
+        border-color: #1976D2;
+        box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
+    }
 
-.form-control:focus {
-    border-color: #1976D2;
-    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
-}
+    textarea.form-control {
+        min-height: 120px;
+    }
 
-textarea.form-control {
-    min-height: 120px;
-}
+    .form-select {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #dce0e4;
+        margin-bottom: 20px;
+        height: auto;
+    }
 
-.form-select {
-    border-radius: 8px;
-    padding: 12px 15px;
-    border: 1px solid #dce0e4;
-    margin-bottom: 20px;
-    height: auto;
-}
+    .form-select:focus {
+        border-color: #1976D2;
+        box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
+    }
 
-.form-select:focus {
-    border-color: #1976D2;
-    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.1);
-}
+    .btn-submit {
+        background: #1976D2;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
 
-.btn-submit {
-    background: #1976D2;
-    color: white;
-    padding: 12px 30px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 500;
-    transition: all 0.3s ease;
-}
+    .btn-submit:hover {
+        background: #1565C0;
+        transform: translateY(-2px);
+    }
 
-.btn-submit:hover {
-    background: #1565C0;
-    transform: translateY(-2px);
-}
+    .btn-cancel {
+        background: #f5f5f5;
+        color: #666;
+        padding: 12px 30px;
+        border-radius: 8px;
+        border: none;
+        font-weight: 500;
+        margin-right: 10px;
+        transition: all 0.3s ease;
+    }
 
-.btn-cancel {
-    background: #f5f5f5;
-    color: #666;
-    padding: 12px 30px;
-    border-radius: 8px;
-    border: none;
-    font-weight: 500;
-    margin-right: 10px;
-    transition: all 0.3s ease;
-}
+    .btn-cancel:hover {
+        background: #e0e0e0;
+    }
 
-.btn-cancel:hover {
-    background: #e0e0e0;
-}
+    .image-preview {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 10px;
+    }
 
-.image-preview {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-top: 10px;
-}
-
-.preview-image {
-    max-width: 200px;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 8px;
-    display: none;
-}
+    .preview-image {
+        max-width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        display: none;
+    }
 </style>
 
 <body>

@@ -25,7 +25,7 @@
 
                     <!-- Form địa chỉ mới -->
                     <div class="new-address-form" id="address-form" style="display: none;">
-                        <form id="shipping-form">
+                        <form id="shipping-form" onsubmit="updateAddress(event)">
                             <div class="form-group">
                                 <input type="text" name="receiver_name" placeholder="Họ tên người nhận" required>
                             </div>
@@ -45,29 +45,24 @@
             </div>
         </div>
 
-        <!-- Sản phẩm đặt hàng -->
-        <div class="order-products">
-            <div class="shop-header">
-                <i class="fas fa-store"></i>
-                <span>HyperStore Official</span>
-            </div>
+        <!-- Form thanh toán chính -->
+        <form action="index.php?action=process-payment" method="POST" id="checkout-form"
+            onsubmit="return validateForm()">
+            <input type="hidden" name="total_amount" value="<?= $totalAmount ?>">
+            <input type="hidden" name="payment_method" id="payment_method" value="cod">
+            <input type="hidden" name="selected_bank_code" id="selected_bank_code" value="">
 
+            <!-- Thêm các trường ẩn cho thông tin người nhận -->
+            <input type="hidden" name="receiver_name" value="<?= htmlspecialchars($userAddress['receiver_name']) ?>">
+            <input type="hidden" name="shipping_phone" value="<?= htmlspecialchars($userAddress['phone']) ?>">
+
+            <!-- Thêm sản phẩm vào form -->
             <?php foreach ($selectedProducts as $product): ?>
-                <div class="product-item">
-                    <a href="index.php?action=product-detail&id=<?= $product['pro_id'] ?>" class="product-link">
-                        <img src="Uploads/Product/<?= $product['img'] ?>" alt="<?= $product['pro_name'] ?>">
-                        <div class="product-info">
-                            <h3><?= $product['pro_name'] ?></h3>
-                            <p class="variant">
-                                Phân loại: <?= $product['color_type'] ?>, <?= $product['storage_type'] ?>
-                            </p>
-                            <p class="quantity">x<?= $product['quantity'] ?></p>
-                        </div>
-                        <div class="product-price">
-                            <?= number_format($product['price'], 0, ',', '.') ?>đ
-                        </div>
-                    </a>
-                </div>
+                <input type="hidden" name="products[]" value='<?= json_encode([
+                                                                    "id" => $product["pro_id"],
+                                                                    "quantity" => $product["quantity"],
+                                                                    "price" => $product["price"]
+                                                                ]) ?>'>
             <?php endforeach; ?>
 
             <!-- Phương thức thanh toán -->
@@ -77,89 +72,71 @@
                     <label class="method-item">
                         <input type="radio" name="payment_method" value="cod" checked>
                         <div class="method-info">
-                            <img src="assets/images/payments/cod.png" alt="COD">
+                            <img src="Uploads/Payment/cod.png" alt="COD">
                             <span>Thanh toán khi nhận hàng</span>
                         </div>
                     </label>
-
                     <label class="method-item">
                         <input type="radio" name="payment_method" value="momo">
                         <div class="method-info">
-                            <img src="assets/images/payments/momo.png" alt="MoMo">
+                            <img src="Uploads/Payment/momo.png" alt="MoMo">
                             <span>Ví MoMo</span>
                         </div>
                     </label>
-
                     <label class="method-item">
                         <input type="radio" name="payment_method" value="zalopay">
                         <div class="method-info">
-                            <img src="assets/images/payments/zalopay.png" alt="ZaloPay">
+                            <img src="Uploads/Payment/zalopay.png" alt="ZaloPay">
                             <span>Ví ZaloPay</span>
                         </div>
                     </label>
-
                     <label class="method-item">
-                        <input type="radio" name="payment_method" value="bank" onchange="toggleBankList(this.checked)">
+                        <input type="radio" name="payment_method" value="bank_transfer">
                         <div class="method-info">
-                            <img src="assets/images/payments/bank.png" alt="Bank">
+                            <img src="Uploads/Payment/bank-transfer.png" alt="Bank Transfer">
                             <span>Chuyển khoản ngân hàng</span>
                         </div>
                     </label>
-
-                    <!-- Danh sách ngân hàng -->
-                    <div id="bank-list" class="bank-list" style="display: none;">
-                        <div class="bank-grid">
-                            <label class="bank-option">
-                                <input type="radio" name="bank_code" value="vcb">
-                                <img src="assets/images/payments/Banks/vcb.png" alt="Vietcombank">
-                                <span>Vietcombank</span>
-                            </label>
-
-                            <label class="bank-option">
-                                <input type="radio" name="bank_code" value="tcb">
-                                <img src="assets/images/payments/Banks/tcb.png" alt="Techcombank">
-                                <span>Techcombank</span>
-                            </label>
-
-                            <label class="bank-option">
-                                <input type="radio" name="bank_code" value="mb">
-                                <img src="assets/images/payments/Banks/mb.png" alt="MB Bank">
-                                <span>MB Bank</span>
-                            </label>
-
-                            <label class="bank-option">
-                                <input type="radio" name="bank_code" value="acb">
-                                <img src="assets/images/payments/Banks/acb.png" alt="ACB">
-                                <span>ACB</span>
-                            </label>
-                        </div>
-                    </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Tổng thanh toán -->
-        <div class="order-summary">
-            <div class="summary-row">
-                <span>Tổng tiền hàng:</span>
-                <span><?= number_format($totalAmount, 0, ',', '.') ?>đ</span>
-            </div>
-            <div class="summary-row">
-                <span>Phí vận chuyển:</span>
-                <span>Miễn phí</span>
-            </div>
-            <div class="summary-total">
-                <span>Tổng thanh toán:</span>
-                <span class="total-amount"><?= number_format($totalAmount, 0, ',', '.') ?>đ</span>
+            <!-- Danh sách ngân hàng -->
+            <div id="bank-list" style="display: none;" class="bank-options">
+                <h4>Chọn Ngân Hàng</h4>
+                <div class="bank-list">
+                    <label class="bank-item">
+                        <input type="radio" name="bank_code" value="vcb">
+                        <div class="bank-info">
+                            <img src="Uploads/Payment/Banks/vcb.png" alt="Vietcombank">
+                            <span>Vietcombank</span>
+                        </div>
+                    </label>
+                    <label class="bank-item">
+                        <input type="radio" name="bank_code" value="tcb">
+                        <div class="bank-info">
+                            <img src="Uploads/Payment/Banks/tcb.png" alt="Techcombank">
+                            <span>Techcombank</span>
+                        </div>
+                    </label>
+                    <label class="bank-item">
+                        <input type="radio" name="bank_code" value="mb">
+                        <div class="bank-info">
+                            <img src="Uploads/Payment/Banks/mb.png" alt="MB Bank">
+                            <span>MB Bank</span>
+                        </div>
+                    </label>
+                    <label class="bank-item">
+                        <input type="radio" name="bank_code" value="acb">
+                        <div class="bank-info">
+                            <img src="Uploads/Payment/Banks/acb.png" alt="ACB">
+                            <span>ACB</span>
+                        </div>
+                    </label>
+                </div>
             </div>
 
-            <form action="index.php?action=place-order" method="POST">
-                <input type="hidden" name="total_amount" value="<?= $totalAmount ?>">
-                <button type="submit" class="place-order-btn">
-                    Đặt hàng
-                </button>
-            </form>
-        </div>
+            <button type="submit" class="checkout-button">Đặt hàng</button>
+        </form>
     </div>
 
     <?php require_once "client/views/layout/footer.php"; ?>
@@ -226,11 +203,78 @@
         document.querySelectorAll('input[name="bank_code"]').forEach(radio => {
             radio.addEventListener('change', function() {
                 if (this.checked) {
-                    // Hiển th�� thông tin ngân hàng tương ứng
-                    showBankInfo(this.value);
+                    document.getElementById('selected_bank_code').value = this.value;
+                    document.querySelector('input[name="payment_method"][value="bank_transfer"]').checked =
+                        true;
                 }
             });
         });
+
+        function updateAddress(event) {
+            event.preventDefault();
+            const form = document.getElementById('shipping-form');
+            const formData = new FormData(form);
+
+            // Cập nhật thông tin địa chỉ hiển thị
+            const defaultAddress = document.getElementById('default-address');
+            defaultAddress.querySelector('.name').textContent =
+                `${formData.get('receiver_name')} | ${formData.get('phone')}`;
+            defaultAddress.querySelector('.address').textContent = formData.get('address');
+
+            toggleAddressForm();
+        }
+
+        // Thêm validation form
+        document.getElementById('checkout-form').addEventListener('submit', function(e) {
+            const bankTransfer = document.querySelector('input[name="payment_method"][value="bank_transfer"]');
+            if (bankTransfer.checked) {
+                const selectedBank = document.querySelector('input[name="bank_code"]:checked');
+                if (!selectedBank) {
+                    e.preventDefault();
+                    alert('Vui lòng chọn ngân hàng để thanh toán');
+                }
+            }
+        });
+
+        // Cập nhật đường dẫn ảnh ngân hàng
+
+        // Thêm event listener cho radio buttons
+        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('payment_method').value = this.value;
+                if (this.value === 'bank_transfer') {
+                    toggleBankList(true);
+                } else {
+                    toggleBankList(false);
+                    document.getElementById('bank-info').style.display = 'none';
+                }
+            });
+        });
+
+        function validateForm() {
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+            if (!paymentMethod) {
+                alert('Vui lòng chọn phương thức thanh toán');
+                return false;
+            }
+
+            if (paymentMethod.value === 'bank_transfer') {
+                const selectedBank = document.querySelector('input[name="bank_code"]:checked');
+                if (!selectedBank) {
+                    alert('Vui lòng chọn ngân hàng để thanh toán');
+                    return false;
+                }
+            }
+
+            // Validate products
+            const products = document.querySelectorAll('input[name="products[]"]');
+            if (products.length === 0) {
+                alert('Giỏ hàng trống');
+                return false;
+            }
+
+            return true;
+        }
     </script>
 </body>
 

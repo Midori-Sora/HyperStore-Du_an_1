@@ -16,11 +16,13 @@
 
     .main {
         display: flex;
-        max-width: 1400px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
     }
-
+    .container{
+        --bs-gutter-x: 0;
+    }
     main {
         width: calc(100% - 270px);
         margin-left: 270px;
@@ -137,13 +139,13 @@
                     </a>
                 </div>
 
-                <div class="user-info">
-                    <div class="text-center">
+                <div class="avata">
+                    <div>
                         <?php if (!empty($user['avatar'])): ?>
                         <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar" alt="Avatar"
-                            onerror="this.src='../Uploads/User/default-avatar.jpg'">
+                            onerror="this.src='../Uploads/User/nam.jpg'">
                         <?php else: ?>
-                        <img src="../Uploads/User/default-avatar.jpg" class="user-avatar" alt="Default Avatar">
+                        <img src="../Uploads/User/nam.jpg" class="user-avatar" alt="Default Avatar">
                         <?php endif; ?>
                     </div>
 

@@ -20,9 +20,12 @@
     }
     .main {
         display: flex;
-        max-width: 1400px;
+        max-width: 100%;
         margin: 0 auto;
         padding: 20px;
+    }
+    .container{
+        --bs-gutter-x: 0;
     }
     .main main {
         width: calc(100% - 270px);

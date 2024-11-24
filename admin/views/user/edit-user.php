@@ -10,129 +10,131 @@
 </head>
 
 <style>
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-body {
-    background: #f5f5f5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding-top: 80px;
-    min-height: 100vh;
-    overflow-y: auto;
-}
+    body {
+        background: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        padding-top: 80px;
+        min-height: 100vh;
+        overflow-y: auto;
+    }
 
-.main {
-    display: flex;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px;
-    min-height: calc(100vh - 80px);
-}
+    .main {
+        display: flex;
+        max-width: 100%;
+        margin: 0 auto;
+        padding: 20px;
+        min-height: calc(100vh - 80px);
+    }
+    .container{
+        --bs-gutter-x: 0;
+    }
+    .main main {
+        width: calc(100% - 270px);
+        margin-left: 270px;
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        overflow-y: visible;
+    }
 
-.main main {
-    width: calc(100% - 270px);
-    margin-left: 270px;
-    background: white;
-    border-radius: 15px;
-    padding: 25px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    overflow-y: visible;
-}
+    .form-control {
+        margin: 10px 0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #dce0e4;
+    }
 
-.form-control {
-    margin: 10px 0;
-    border-radius: 8px;
-    padding: 12px 15px;
-    border: 1px solid #dce0e4;
-}
+    .form-select {
+        border-radius: 8px;
+        padding: 12px 15px;
+        border: 1px solid #dce0e4;
+        margin: 10px 0;
+    }
 
-.form-select {
-    border-radius: 8px;
-    padding: 12px 15px;
-    border: 1px solid #dce0e4;
-    margin: 10px 0;
-}
+    .current-avatar {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        margin: 10px 0;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border: 3px solid #fff;
+    }
 
-.current-avatar {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin: 10px 0;
-    border-radius: 50%;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border: 3px solid #fff;
-}
+    .current-image,
+    .select-new-image {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+    }
 
-.current-image,
-.select-new-image {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-}
+    .preview-container {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+    }
 
-.preview-container {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-}
+    .btn-primary {
+        background: #1976D2;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
 
-.btn-primary {
-    background: #1976D2;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    font-weight: 500;
-    transition: all 0.3s;
-}
+    .btn-primary:hover {
+        background: #1565C0;
+        transform: translateY(-2px);
+    }
 
-.btn-primary:hover {
-    background: #1565C0;
-    transform: translateY(-2px);
-}
+    .btn-secondary {
+        background: #f5f5f5;
+        color: #666;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 8px;
+        margin-right: 10px;
+        font-weight: 500;
+        transition: all 0.3s;
+    }
 
-.btn-secondary {
-    background: #f5f5f5;
-    color: #666;
-    border: none;
-    padding: 12px 30px;
-    border-radius: 8px;
-    margin-right: 10px;
-    font-weight: 500;
-    transition: all 0.3s;
-}
+    .form-check {
+        margin: 20px 0;
+    }
 
-.form-check {
-    margin: 20px 0;
-}
+    .form-check-input:checked {
+        background-color: #1976D2;
+        border-color: #1976D2;
+    }
 
-.form-check-input:checked {
-    background-color: #1976D2;
-    border-color: #1976D2;
-}
+    .container {
+        padding-bottom: 50px;
+        height: auto;
+        overflow: visible;
+    }
 
-.container {
-    padding-bottom: 50px;
-    height: auto;
-    overflow: visible;
-}
+    form {
+        margin-bottom: 50px;
+        height: auto;
+        overflow: visible;
+    }
 
-form {
-    margin-bottom: 50px;
-    height: auto;
-    overflow: visible;
-}
-
-.actions-container {
-    margin-top: 20px;
-    padding: 20px 0;
-    border-top: 1px solid #eee;
-    position: relative;
-    z-index: 1000;
-}
+    .actions-container {
+        margin-top: 20px;
+        padding: 20px 0;
+        border-top: 1px solid #eee;
+        position: relative;
+        z-index: 1000;
+    }
 </style>
 
 <body>
