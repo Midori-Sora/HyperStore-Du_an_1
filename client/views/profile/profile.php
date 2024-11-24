@@ -55,6 +55,7 @@
                 transform: translateY(-100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateY(0);
                 opacity: 1;
@@ -65,6 +66,7 @@
             from {
                 opacity: 1;
             }
+
             to {
                 opacity: 0;
             }
@@ -103,11 +105,16 @@
                 <div class="profile-sidebar">
                     <div class="user-info">
                         <div class="avatar-wrapper">
-                            <img id="avatarImage" src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>" 
-                                 alt="Avatar" class="avatar">
-                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data" class="avatar-form" id="avatarForm">
-                                <input type="file" name="avatar" accept="image/*" id="avatarInput" style="display: none;" onchange="previewAvatar(event)">
-                                <button type="button" class="btn-change-avatar" onclick="document.getElementById('avatarInput').click();"><i class="fa-solid fa-pen"></i></button>
+                            <img id="avatarImage"
+                                src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>"
+                                alt="Avatar" class="avatar">
+                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data"
+                                class="avatar-form" id="avatarForm">
+                                <input type="file" name="avatar" accept="image/*" id="avatarInput"
+                                    style="display: none;" onchange="previewAvatar(event)">
+                                <button type="button" class="btn-change-avatar"
+                                    onclick="document.getElementById('avatarInput').click();"><i
+                                        class="fa-solid fa-pen"></i></button>
                             </form>
                         </div>
                         <h3><?= htmlspecialchars($user['fullname'] ?? $user['username']) ?></h3>
@@ -117,7 +124,7 @@
                         <a href="#profile" class="active">
                             <i class="fas fa-user"></i>Thông tin cá nhân
                         </a>
-                        <a href="#orders">
+                        <a href="index.php?action=orders">
                             <i class="fas fa-shopping-bag"></i>Đơn hàng của tôi
                         </a>
                         <a href="#address">
@@ -136,7 +143,8 @@
                         <?php if (isset($_SESSION['error'])): ?>
                             <div class="alert alert-danger" id="errorAlert">
                                 <i class="fas fa-exclamation-circle"></i>
-                                <span><?= $_SESSION['error']; unset($_SESSION['error']); ?></span>
+                                <span><?= $_SESSION['error'];
+                                        unset($_SESSION['error']); ?></span>
                                 <span class="alert-close" onclick="closeAlert(this.parentElement)">&times;</span>
                             </div>
                         <?php endif; ?>
@@ -144,17 +152,19 @@
                         <?php if (isset($_SESSION['success'])): ?>
                             <div class="alert alert-success" id="successAlert">
                                 <i class="fas fa-check-circle"></i>
-                                <span><?= $_SESSION['success']; unset($_SESSION['success']); ?></span>
+                                <span><?= $_SESSION['success'];
+                                        unset($_SESSION['success']); ?></span>
                                 <span class="alert-close" onclick="closeAlert(this.parentElement)">&times;</span>
                             </div>
                         <?php endif; ?>
 
-                        <form class="profile-form" action="?action=update-profile" method="POST" enctype="multipart/form-data">
+                        <form class="profile-form" action="?action=update-profile" method="POST"
+                            enctype="multipart/form-data">
                             <div class="form-group">
                                 <label>Họ và tên</label>
-                                <input type="text" name="fullname" 
-                                       value="<?= htmlspecialchars($user['fullname'] ?? '') ?>" 
-                                       placeholder="Nhập họ và tên">
+                                <input type="text" name="fullname"
+                                    value="<?= htmlspecialchars($user['fullname'] ?? '') ?>"
+                                    placeholder="Nhập họ và tên">
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
@@ -162,14 +172,13 @@
                             </div>
                             <div class="form-group">
                                 <label>Số điện thoại</label>
-                                <input type="tel" name="phone" 
-                                       value="<?= htmlspecialchars($user['phone'] ?? '') ?>" 
-                                       placeholder="Nhập số điện thoại">
+                                <input type="tel" name="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>"
+                                    placeholder="Nhập số điện thoại">
                             </div>
                             <div class="form-group">
                                 <label>Ngày sinh</label>
-                                <input type="date" name="birthday" 
-                                       value="<?= htmlspecialchars($user['birthday'] ?? '') ?>">
+                                <input type="date" name="birthday"
+                                    value="<?= htmlspecialchars($user['birthday'] ?? '') ?>">
                             </div>
                             <div class="form-group">
                                 <label>Giới tính</label>
@@ -181,8 +190,8 @@
                             </div>
                             <div class="form-group">
                                 <label>Địa chỉ</label>
-                                <textarea name="address" rows="3" 
-                                          placeholder="Nhập địa chỉ"><?= htmlspecialchars($user['address'] ?? '') ?></textarea>
+                                <textarea name="address" rows="3"
+                                    placeholder="Nhập địa chỉ"><?= htmlspecialchars($user['address'] ?? '') ?></textarea>
                             </div>
                             <button type="submit" class="btn-save">Lưu thay đổi</button>
                         </form>

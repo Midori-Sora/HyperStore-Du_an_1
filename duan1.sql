@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 19, 2024 lúc 09:06 AM
+-- Thời gian đã tạo: Th10 24, 2024 lúc 05:56 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -40,13 +40,10 @@ CREATE TABLE `banners` (
 --
 
 INSERT INTO `banners` (`id`, `title`, `image_url`, `status`, `created_at`) VALUES
-(1, 'Banner 1', 'b1.png', 1, '2024-11-16 14:19:01'),
-(2, 'Banner 2', 'b2.png', 1, '2024-11-16 16:36:32'),
-(3, 'Banner 3', 'b3.png', 1, '2024-11-16 16:36:53'),
-(4, 'Banner 4', 'b4.png', 1, '2024-11-16 16:37:22'),
-(5, 'Banner 5', 'b5.png', 1, '2024-11-16 16:37:54'),
-(6, 'Banner 6', 'b6.png', 1, '2024-11-16 16:38:11'),
-(7, 'Banner 7', 'b7.png', 1, '2024-11-21 16:03:38');
+(1, 'Banner 1', 'images (1).jpg', 1, '2024-11-23 18:40:58'),
+(2, 'Banner 2', 'images (2).jpg', 1, '2024-11-23 18:41:18'),
+(3, 'Banner 3', 'images.jpg', 1, '2024-11-23 18:42:05'),
+(4, 'Banner 4', 'tải xuống.jpg', 1, '2024-11-23 18:42:12');
 
 -- --------------------------------------------------------
 
@@ -300,8 +297,24 @@ CREATE TABLE `product_deals` (
   `discount` decimal(10,2) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` tinyint(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `status` tinyint(1) DEFAULT 1
+) ;
+
+--
+-- Đang đổ dữ liệu cho bảng `product_deals`
+--
+
+INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
+(1, 1, 50.00, '2024-11-01', '2024-11-30', 1),
+(2, 8, 30.00, '2024-11-01', '2024-11-30', 1),
+(3, 14, 20.00, '2024-11-01', '2024-11-30', 1),
+(4, 20, 15.00, '2024-11-01', '2024-11-30', 1),
+(5, 4, 10.00, '2024-11-01', '2024-11-30', 1),
+(6, 30, 50.00, '2024-11-01', '2024-11-30', 1),
+(7, 19, 25.00, '2024-11-01', '2024-11-30', 1),
+(8, 10, 35.00, '2024-11-01', '2024-11-30', 1),
+(9, 17, 45.00, '2024-11-01', '2024-11-30', 1),
+(10, 24, 55.00, '2024-11-01', '2024-11-30', 1);
 
 -- --------------------------------------------------------
 
@@ -397,7 +410,8 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `ph
 (7, 'hoangvantuan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tuanhoang@gmail.com', 'Hoàng Văn Tuấn', '0956789012', 'Ngô Quyền, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL);
+(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
+(14, 'nhatnguyen', 'nhat123', 'nhatnguyen@gmail.com', '', '', '', 'Uploads/User/nam.jpg', 2, 1, '2024-11-23 10:16:51', NULL, NULL);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -567,7 +581,7 @@ ALTER TABLE `product_color`
 -- AUTO_INCREMENT cho bảng `product_deals`
 --
 ALTER TABLE `product_deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `product_storage`
@@ -591,7 +605,7 @@ ALTER TABLE `thumbnails`
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
