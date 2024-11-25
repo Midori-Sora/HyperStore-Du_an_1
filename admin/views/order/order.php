@@ -164,14 +164,45 @@
                         <div class="col-md-3">
                             <select name="status" class="form-select">
                                 <option value="">-- Trạng thái --</option>
-                                <option value="1"
-                                    <?= isset($_GET['status']) && $_GET['status'] == 1 ? 'selected' : '' ?>>Chờ xử lý
+                                <option value="pending"
+                                    <?= empty($_GET['status']) || $_GET['status'] == 'pending' ? 'selected' : '' ?>>
+                                    Đang chờ xử lý
                                 </option>
-                                <option value="2"
-                                    <?= isset($_GET['status']) && $_GET['status'] == 2 ? 'selected' : '' ?>>Hoàn thành
+                                <option value="confirmed"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'confirmed' ? 'selected' : '' ?>>
+                                    Đã xác nhận
                                 </option>
-                                <option value="3"
-                                    <?= isset($_GET['status']) && $_GET['status'] == 3 ? 'selected' : '' ?>>Đang xử lý
+                                <option value="processing"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'processing' ? 'selected' : '' ?>>
+                                    Đang chuẩn bị hàng
+                                </option>
+                                <option value="shipping"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'shipping' ? 'selected' : '' ?>>
+                                    Đang giao hàng
+                                </option>
+                                <option value="delivered"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'delivered' ? 'selected' : '' ?>>
+                                    Đã giao thành công
+                                </option>
+                                <option value="cancelled"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'cancelled' ? 'selected' : '' ?>>
+                                    Đã hủy
+                                </option>
+                                <option value="returned"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'returned' ? 'selected' : '' ?>>
+                                    Đã trả hàng
+                                </option>
+                                <option value="refunded"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'refunded' ? 'selected' : '' ?>>
+                                    Đã hoàn tiền
+                                </option>
+                                <option value="failed"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'failed' ? 'selected' : '' ?>>
+                                    Thất bại
+                                </option>
+                                <option value="awaiting_payment"
+                                    <?= isset($_GET['status']) && $_GET['status'] == 'awaiting_payment' ? 'selected' : '' ?>>
+                                    Chờ thanh toán
                                 </option>
                             </select>
                         </div>
@@ -217,32 +248,18 @@
                                         <td><?= number_format($order['total_amount']) ?>đ</td>
                                         <td><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></td>
                                         <td>
-                                            <?php
-                                            $statusClass = '';
-                                            $statusText = '';
-                                            switch ($order['status']) {
-                                                case 1:
-                                                    $statusClass = 'pending';
-                                                    $statusText = 'Chờ xử lý';
-                                                    break;
-                                                case 2:
-                                                    $statusClass = 'completed';
-                                                    $statusText = 'Hoàn thành';
-                                                    break;
-                                                case 3:
-                                                    $statusClass = 'processing';
-                                                    $statusText = 'Đang xử lý';
-                                                    break;
-                                            }
-                                            ?>
-                                            <span class="status-badge <?= $statusClass ?>"><?= $statusText ?></span>
+                                            <span
+                                                class="status-badge <?= self::$orderModel->getOrderStatusClass($order['status']) ?>">
+                                                <?= self::$orderModel->getOrderStatusText($order['status']) ?>
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="?action=orderDetail&id=<?= $order['order_id'] ?>" class="btn-action">
                                                 <i class="fas fa-eye"></i>
                                             </a>
-                                            <?php if ($order['status'] == 2): ?>
-                                                <a href="?action=printInvoice&id=<?= $order['order_id'] ?>" class="btn-action">
+                                            <?php if (in_array($order['status'], ['confirmed', 'processing', 'shipping', 'delivered'])): ?>
+                                                <a href="?action=printInvoice&id=<?= $order['order_id'] ?>" class="btn-action"
+                                                    target="_blank">
                                                     <i class="fas fa-print"></i>
                                                 </a>
                                             <?php endif; ?>

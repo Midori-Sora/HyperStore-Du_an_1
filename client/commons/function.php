@@ -1,4 +1,6 @@
 <?php
+require_once 'orderHelper.php';
+
 class MainModel
 {
     public $SUNNY;
@@ -28,20 +30,4 @@ try {
 } catch (Exception $e) {
     error_log("MainModel initialization error: " . $e->getMessage());
     die("Không thể khởi tạo kết nối database");
-}
-
-function getOrderStatus($status)
-{
-    switch ($status) {
-        case '1':
-            return 'Chờ xác nhận';
-        case '3':
-            return 'Đang xử lý';
-        case '2':
-            return 'Đã hoàn thành';
-        case '4':
-            return 'Đã hủy';
-        default:
-            return 'Không xác định';
-    }
 }

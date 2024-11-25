@@ -101,6 +101,48 @@
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
+
+        .status-badge {
+            padding: 8px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        .status-badge.warning {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-badge.info {
+            background: #cce5ff;
+            color: #004085;
+        }
+
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-badge.danger {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .status-badge.secondary {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+
+        .status-badge.dark {
+            background: #d6d8d9;
+            color: #1b1e21;
+        }
+
+        .status-badge.primary {
+            background: #cce5ff;
+            color: #004085;
+        }
     </style>
 </head>
 
@@ -114,9 +156,17 @@
             <div class="container-fluid">
                 <div class="page-header">
                     <h2>Chi tiết đơn hàng #<?= $order['order_code'] ?></h2>
-                    <a href="?action=order" class="btn-back">
-                        <i class="fas fa-arrow-left"></i> Quay lại
-                    </a>
+                    <div>
+                        <?php if (in_array($order['status'], ['confirmed', 'processing', 'shipping', 'delivered'])): ?>
+                            <a href="?action=printInvoice&id=<?= $order['order_id'] ?>" class="btn btn-primary me-2"
+                                target="_blank">
+                                <i class="fas fa-print"></i> In hóa đơn
+                            </a>
+                        <?php endif; ?>
+                        <a href="?action=order" class="btn-back">
+                            <i class="fas fa-arrow-left"></i> Quay lại
+                        </a>
+                    </div>
                 </div>
 
                 <?php if (isset($_SESSION['success'])): ?>
@@ -167,9 +217,28 @@
                     <form action="?action=updateOrderStatus" method="POST">
                         <input type="hidden" name="order_id" value="<?= $order['order_id'] ?>">
                         <select name="status" class="form-select" onchange="this.form.submit()">
-                            <option value="1" <?= $order['status'] == 1 ? 'selected' : '' ?>>Chờ xử lý</option>
-                            <option value="2" <?= $order['status'] == 2 ? 'selected' : '' ?>>Hoàn thành</option>
-                            <option value="3" <?= $order['status'] == 3 ? 'selected' : '' ?>>Đang xử lý</option>
+                            <option value="pending"
+                                <?= empty($order['status']) || $order['status'] == 'pending' ? 'selected' : '' ?>>
+                                Đang chờ xử lý
+                            </option>
+                            <option value="confirmed" <?= $order['status'] == 'confirmed' ? 'selected' : '' ?>>Đã xác
+                                nhận</option>
+                            <option value="processing" <?= $order['status'] == 'processing' ? 'selected' : '' ?>>Đang
+                                chuẩn bị hàng</option>
+                            <option value="shipping" <?= $order['status'] == 'shipping' ? 'selected' : '' ?>>Đang giao
+                                hàng</option>
+                            <option value="delivered" <?= $order['status'] == 'delivered' ? 'selected' : '' ?>>Đã giao
+                                thành công</option>
+                            <option value="cancelled" <?= $order['status'] == 'cancelled' ? 'selected' : '' ?>>Đã hủy
+                            </option>
+                            <option value="returned" <?= $order['status'] == 'returned' ? 'selected' : '' ?>>Đã trả hàng
+                            </option>
+                            <option value="refunded" <?= $order['status'] == 'refunded' ? 'selected' : '' ?>>Đã hoàn
+                                tiền</option>
+                            <option value="failed" <?= $order['status'] == 'failed' ? 'selected' : '' ?>>Thất bại
+                            </option>
+                            <option value="awaiting_payment"
+                                <?= $order['status'] == 'awaiting_payment' ? 'selected' : '' ?>>Chờ thanh toán</option>
                         </select>
                     </form>
                 </div>
@@ -185,7 +254,7 @@
                         <button type="submit" class="btn btn-primary">
                             <i class="fas fa-paper-plane"></i> Gửi SMS
                         </button>
-                    </form> 
+                    </form>
                 </div>
 
                 <div class="order-products mt-4">

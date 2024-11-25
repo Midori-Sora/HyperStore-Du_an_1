@@ -140,10 +140,15 @@ class OrderController
             if (isset($_GET['id'])) {
                 self::init();
                 $order = self::$orderModel->getOrderById($_GET['id']);
-                if ($order) {
+
+                // Kiểm tra trạng thái đơn hàng
+                $allowedStatuses = ['confirmed', 'processing', 'shipping', 'delivered'];
+
+                if ($order && in_array($order['status'], $allowedStatuses)) {
+                    $orderDetails = self::$orderModel->getOrderDetails($order['order_id']);
                     require_once './views/order/print-invoice.php';
                 } else {
-                    $_SESSION['error'] = "Không tìm thấy đơn hàng";
+                    $_SESSION['error'] = "Không thể in hóa đơn cho đơn hàng này";
                     header("Location: index.php?action=order");
                 }
             }

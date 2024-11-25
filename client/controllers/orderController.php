@@ -40,7 +40,7 @@ class OrderController
         $order = $this->orderModel->getOrderById($orderId, $userId);
 
         if (!$order) {
-            $_SESSION['error'] = "Không tìm thấy đơn hàng hoặc bạn không có quyền xem đơn hàng này";
+            $_SESSION['error'] = "Không tìm thấy đơn hàng hoặc bn không có quyền xem đơn hàng này";
             header('Location: index.php?action=orders');
             exit();
         }
@@ -48,5 +48,37 @@ class OrderController
         $orderDetails = $this->orderModel->getOrderDetailById($orderId);
 
         require_once 'client/views/order/order-detail.php';
+    }
+
+    public function cancelOrder()
+    {
+        if (!isset($_SESSION['user_id']) || !isset($_POST['order_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            exit();
+        }
+
+        $orderId = $_POST['order_id'];
+        $userId = $_SESSION['user_id'];
+
+        // Kiểm tra trạng thái đơn hàng trước khi hủy
+        $order = $this->orderModel->getOrderById($orderId, $userId);
+        if (!$order) {
+            echo json_encode(['success' => false, 'message' => 'Không tìm thấy đơn hàng']);
+            exit();
+        }
+
+        if (!OrderHelper::canCancelOrder($order['status'])) {
+            echo json_encode(['success' => false, 'message' => 'Không thể hủy đơn hàng ở trạng thái này']);
+            exit();
+        }
+
+        $result = $this->orderModel->cancelOrder($orderId, $userId);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Hủy đơn hàng thành công']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không thể hủy đơn hàng. Vui lòng thử lại sau']);
+        }
+        exit();
     }
 }

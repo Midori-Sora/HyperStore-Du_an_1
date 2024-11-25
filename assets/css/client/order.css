@@ -275,3 +275,16 @@ h2:after {
     text-align: center;
   }
 }
+.btn-cancel {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: #c82333;
+}

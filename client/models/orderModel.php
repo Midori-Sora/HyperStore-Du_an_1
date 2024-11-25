@@ -1,4 +1,6 @@
 <?php
+require_once "client/commons/orderHelper.php";
+
 class OrderModel
 {
     private $conn;
@@ -72,5 +74,19 @@ class OrderModel
         $stmt->bind_param("i", $orderId);
         $stmt->execute();
         return $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+    }
+
+    public function cancelOrder($orderId, $userId)
+    {
+        $sql = "UPDATE orders 
+                SET status = 'cancelled' 
+                WHERE order_id = ? AND user_id = ? 
+                AND status IN ('pending', 'confirmed', 'processing')";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("ii", $orderId, $userId);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
     }
 }

@@ -14,11 +14,20 @@
         <h2>Chi tiết đơn hàng #<?= htmlspecialchars($order['order_code']) ?></h2>
 
         <div class="order-info">
-            <p>Ngày đặt: <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></p>
-            <p>Trạng thái: <?= getOrderStatus($order['status']) ?></p>
+            <p>Ngày đặt: <?= OrderHelper::formatOrderDate($order['created_at']) ?></p>
+            <p>Trạng thái:
+                <span class="order-status <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
+                    <?= OrderHelper::getOrderStatus($order['status']) ?>
+                </span>
+            </p>
             <p>Người nhận: <?= htmlspecialchars($order['receiver_name']) ?></p>
             <p>Địa chỉ: <?= htmlspecialchars($order['shipping_address']) ?></p>
             <p>Số điện thoại: <?= htmlspecialchars($order['shipping_phone']) ?></p>
+            <?php if (OrderHelper::canCancelOrder($order['status'])): ?>
+                <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
+                    Hủy đơn hàng
+                </button>
+            <?php endif; ?>
         </div>
 
         <div class="order-items">
@@ -29,7 +38,7 @@
                     <div class="item-info">
                         <h3><?= htmlspecialchars($item['pro_name']) ?></h3>
                         <p>Số lượng: <?= $item['quantity'] ?></p>
-                        <p>Đơn giá: <?= number_format($item['price']) ?>đ</p>
+                        <p>Đơn giá: <?= OrderHelper::formatCurrency($item['price']) ?></p>
                         <?php if (!empty($item['color_type'])): ?>
                             <p>Màu: <?= htmlspecialchars($item['color_type']) ?></p>
                         <?php endif; ?>
@@ -42,11 +51,38 @@
         </div>
 
         <div class="order-summary">
-            <p>Tổng tiền: <?= number_format($order['total_amount']) ?>đ</p>
+            <p>Tổng tiền: <?= OrderHelper::formatCurrency($order['total_amount']) ?></p>
         </div>
     </div>
 
     <?php require_once "client/views/layout/footer.php"; ?>
+
+    <script>
+        function cancelOrder(orderId) {
+            if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+                return;
+            }
+
+            fetch('index.php?action=cancel-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'order_id=' + orderId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    if (data.success) {
+                        window.location.href = 'index.php?action=orders';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã có lỗi xảy ra');
+                });
+        }
+    </script>
 </body>
 
 </html>
