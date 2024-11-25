@@ -19,9 +19,11 @@
             margin: 0 auto;
             padding: 20px;
         }
-        .container{
+
+        .container {
             --bs-gutter-x: 0;
         }
+
         main {
             width: calc(100% - 270px);
             margin-left: 270px;
@@ -184,41 +186,37 @@
                     </div>
 
                     <!-- Search Form -->
-                    <form action="index.php" method="GET" class="mb-4">
-                        <input type="hidden" name="action" value="searchUsers">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <input type="text" name="keyword" class="form-control"
-                                    value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>"
-                                    placeholder="Tìm kiếm theo tên, email hoặc họ tên">
-                            </div>
-                            <div class="col-md-4">
-                                <select name="role" class="form-control">
-                                    <option value="">Tất cả quyền</option>
-                                    <?php
-                                    if (isset($roles) && is_array($roles)):
-                                        foreach ($roles as $role):
-                                    ?>
-                                            <option value="<?= $role['role_id'] ?>"
-                                                <?= (isset($_GET['role']) && $_GET['role'] == $role['role_id']) ? 'selected' : '' ?>>
-                                                <?= htmlspecialchars($role['role_name']) ?>
-                                            </option>
-                                    <?php
-                                        endforeach;
-                                    endif;
-                                    ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-search"></i> Tìm kiếm
-                                </button>
-                                <a href="index.php?action=user" class="btn btn-secondary">
-                                    <i class="fas fa-sync"></i> Làm mới
-                                </a>
-                            </div>
+                    <div class="row mb-4">
+                        <div class="col-md-8">
+                            <form action="index.php" method="GET" class="d-flex gap-2">
+                                <input type="hidden" name="action" value="searchUsers">
+                                <div class="flex-grow-1">
+                                    <input type="text" name="keyword" class="form-control"
+                                        value="<?= htmlspecialchars($_GET['keyword'] ?? '') ?>"
+                                        placeholder="Tìm kiếm theo tên, email hoặc số điện thoại">
+                                </div>
+                                <div class="flex-grow-1">
+                                    <select name="role" class="form-select">
+                                        <option value="">Tất cả quyền</option>
+                                        <option value="1"
+                                            <?= (isset($_GET['role']) && $_GET['role'] == '1') ? 'selected' : '' ?>>
+                                            Admin</option>
+                                        <option value="2"
+                                            <?= (isset($_GET['role']) && $_GET['role'] == '2') ? 'selected' : '' ?>>User
+                                        </option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-search"></i> Tìm kiếm
+                                    </button>
+                                    <a href="index.php?action=user" class="btn btn-secondary">
+                                        <i class="fas fa-sync"></i> Làm mới
+                                    </a>
+                                </div>
+                            </form>
                         </div>
-                    </form>
+                    </div>
 
                     <?php if (isset($_SESSION['success'])): ?>
                         <div class="alert alert-success alert-dismissible fade show">

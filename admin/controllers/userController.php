@@ -33,19 +33,20 @@ class UserController
     public static function searchUsersController()
     {
         try {
+            $userModel = new UserModel();
+
+            // Lấy tham số tìm kiếm
             $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
             $role = isset($_GET['role']) ? trim($_GET['role']) : '';
 
-            $userModel = new UserModel();
+            // Thực hiện tìm kiếm
             $users = $userModel->searchUsers($keyword, $role);
 
-            // Lấy danh sách roles để hiển thị trong form tìm kiếm
-            $roles = UserModel::getRoles();
-
+            // Load view với kết quả tìm kiếm
             require_once 'views/user/user.php';
         } catch (Exception $e) {
-            $_SESSION['error'] = "Có lỗi xảy ra khi tìm kiếm: " . $e->getMessage();
-            header("Location: index.php?action=user");
+            $_SESSION['error'] = "Có lỗi xảy ra khi tìm kiếm người dùng: " . $e->getMessage();
+            header('Location: index.php?action=user');
             exit();
         }
     }
