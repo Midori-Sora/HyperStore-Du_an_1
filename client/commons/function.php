@@ -35,9 +35,9 @@ function getOrderStatus($status)
     switch ($status) {
         case '1':
             return 'Chờ xác nhận';
-        case '2':
-            return 'Đang xử lý';
         case '3':
+            return 'Đang xử lý';
+        case '2':
             return 'Đã hoàn thành';
         case '4':
             return 'Đã hủy';

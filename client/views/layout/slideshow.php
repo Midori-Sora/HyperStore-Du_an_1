@@ -9,6 +9,13 @@
 </head>
 <body>
     <div class="slideshow">
+        <img src="Uploads/Slides/b1.png" alt="">
+        <img src="Uploads/Slides/b2.png" alt="">
+        <img src="Uploads/Slides/b3.png" alt="">
+        <img src="Uploads/Slides/b4.png" alt="">
+        <img src="Uploads/Slides/b5.png" alt="">
+        <img src="Uploads/Slides/b6.png" alt="">
+        <img src="Uploads/Slides/b7.png" alt="">
         <img src="Uploads/Slides/b9.webp" alt="">
         <img src="Uploads/Slides/b8.webp" alt="">
         <img src="Uploads/Slides/b13.webp" alt="">
@@ -32,10 +39,19 @@
             showSlide(currentIndex);
         }
 
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Giảm chỉ số và quay lại nếu dưới 0
+            showSlide(currentIndex);
+        }
+
         let slideInterval = setInterval(nextSlide, 3000); // Tự động chuyển slide mỗi 3 giây
 
         // Hiển thị slide đầu tiên
         showSlide(currentIndex);
+
+        // Thêm sự kiện click cho nút "prev" và "next"
+        document.querySelector('.prev').addEventListener('click', prevSlide); // Xử lý nút "prev"
+        document.querySelector('.next').addEventListener('click', nextSlide); // Xử lý nút "next"
     </script>
 </body>
 </html>

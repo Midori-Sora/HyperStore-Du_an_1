@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 24, 2024 lúc 05:56 PM
--- Phiên bản máy phục vụ: 10.4.32-MariaDB
--- Phiên bản PHP: 8.2.12
+-- Host: 127.0.0.1
+-- Generation Time: Nov 24, 2024 at 05:52 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,13 +18,13 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Cơ sở dữ liệu: `duan1`
+-- Database: `duan1`
 --
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `banners`
+-- Table structure for table `banners`
 --
 
 CREATE TABLE `banners` (
@@ -36,19 +36,22 @@ CREATE TABLE `banners` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `banners`
+-- Dumping data for table `banners`
 --
 
 INSERT INTO `banners` (`id`, `title`, `image_url`, `status`, `created_at`) VALUES
-(1, 'Banner 1', 'images (1).jpg', 1, '2024-11-23 18:40:58'),
-(2, 'Banner 2', 'images (2).jpg', 1, '2024-11-23 18:41:18'),
-(3, 'Banner 3', 'images.jpg', 1, '2024-11-23 18:42:05'),
-(4, 'Banner 4', 'tải xuống.jpg', 1, '2024-11-23 18:42:12');
+(1, 'Banner 1', 'b1.png', 1, '2024-11-16 14:19:01'),
+(2, 'Banner 2', 'b2.png', 1, '2024-11-16 16:36:32'),
+(3, 'Banner 3', 'b3.png', 1, '2024-11-16 16:36:53'),
+(4, 'Banner 4', 'b4.png', 1, '2024-11-16 16:37:22'),
+(5, 'Banner 5', 'b5.png', 1, '2024-11-16 16:37:54'),
+(6, 'Banner 6', 'b6.png', 1, '2024-11-16 16:38:11'),
+(7, 'Banner 7', 'b7.png', 1, '2024-11-21 16:03:38');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `cart`
+-- Table structure for table `cart`
 --
 
 CREATE TABLE `cart` (
@@ -64,7 +67,7 @@ CREATE TABLE `cart` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `categories`
+-- Table structure for table `categories`
 --
 
 CREATE TABLE `categories` (
@@ -76,7 +79,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `categories`
+-- Dumping data for table `categories`
 --
 
 INSERT INTO `categories` (`cate_id`, `cate_name`, `img`, `description`, `cate_status`) VALUES
@@ -90,7 +93,7 @@ INSERT INTO `categories` (`cate_id`, `cate_name`, `img`, `description`, `cate_st
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `comments`
+-- Table structure for table `comments`
 --
 
 CREATE TABLE `comments` (
@@ -103,7 +106,7 @@ CREATE TABLE `comments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `comments`
+-- Dumping data for table `comments`
 --
 
 INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`, `cmt_status`) VALUES
@@ -122,44 +125,61 @@ INSERT INTO `comments` (`com_id`, `content`, `user_id`, `pro_id`, `import_date`,
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `orders`
+-- Table structure for table `orders`
 --
 
 CREATE TABLE `orders` (
   `order_id` int(11) NOT NULL,
   `order_code` varchar(50) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` int(11) NOT NULL,
   `receiver_name` varchar(255) DEFAULT NULL,
-  `total_amount` decimal(10,2) DEFAULT NULL,
-  `shipping_address` text DEFAULT NULL,
-  `shipping_phone` varchar(20) DEFAULT NULL,
+  `total_amount` decimal(10,2) NOT NULL,
+  `shipping_address` text NOT NULL,
+  `shipping_phone` varchar(20) NOT NULL,
   `shipping_email` varchar(255) DEFAULT NULL,
-  `payment_method` varchar(50) DEFAULT NULL,
   `bank_code` varchar(50) DEFAULT NULL,
-  `status` tinyint(1) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `status` varchar(20) NOT NULL DEFAULT '1' COMMENT '1: pending, 2: processing, 3: completed, 4: cancelled',
+  `payment_method` varchar(50) NOT NULL DEFAULT 'cod',
+  `payment_status` varchar(50) NOT NULL DEFAULT 'unpaid',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `orders`
+-- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `payment_method`, `bank_code`, `status`, `created_at`) VALUES
-(1, 'DH001', 1, NULL, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', '1', NULL, 3, '2024-03-18 01:30:00'),
-(2, 'DH002', 2, NULL, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', '2', NULL, 2, '2024-03-17 07:20:00'),
-(3, 'DH003', 3, NULL, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', '1', NULL, 3, '2024-03-16 09:45:00'),
-(4, 'DH004', 1, NULL, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', '2', NULL, 1, '2024-03-15 02:15:00'),
-(5, 'DH005', 2, NULL, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', '1', NULL, 2, '2024-03-14 04:30:00'),
-(6, 'DH006', 3, NULL, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', '2', NULL, 3, '2024-03-13 06:45:00'),
-(7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', '1', NULL, 2, '2024-03-12 08:20:00'),
-(8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', '2', NULL, 2, '2024-03-11 03:10:00'),
-(9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', '1', NULL, 3, '2024-03-10 05:30:00'),
-(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', '2', NULL, 1, '2024-03-09 10:00:00');
+INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `bank_code`, `status`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
+(1, 'DH001', 1, NULL, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:19:51'),
+(2, 'DH002', 2, NULL, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(3, 'DH003', 3, NULL, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(4, 'DH004', 1, NULL, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', NULL, '1', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(5, 'DH005', 2, NULL, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(6, 'DH006', 3, NULL, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', NULL, '1', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(30, 'ORD17324413551284', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(35, 'ORD17324428217003', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(38, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:20:18', '2024-11-24 11:12:00'),
+(50, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 11:11:28', '2024-11-24 11:11:43'),
+(52, 'ORD17324472918940', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 11:21:31', '2024-11-24 11:40:24'),
+(54, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 05:24:15', '2024-11-24 11:24:15'),
+(59, 'ORD1732448935', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:48:55', '2024-11-24 11:48:55'),
+(61, 'ORD1732448961', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:21', '2024-11-24 11:49:21'),
+(62, 'ORD1732448977', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:37', '2024-11-24 11:49:37'),
+(65, 'ORD1732449709', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 12:01:49', '2024-11-24 12:01:49'),
+(66, 'ORD1732459511', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:45:11', '2024-11-24 14:45:11'),
+(68, 'ORD1732460276', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:57:56', '2024-11-24 14:57:56'),
+(70, 'ORD1732461980', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:26:20', '2024-11-24 15:26:20'),
+(71, 'ORD1732463437', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:50:37', '2024-11-24 15:50:37'),
+(72, 'ORD1732466950', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:49:10', '2024-11-24 16:49:10');
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `order_details`
+-- Table structure for table `order_details`
 --
 
 CREATE TABLE `order_details` (
@@ -171,7 +191,7 @@ CREATE TABLE `order_details` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `order_details`
+-- Dumping data for table `order_details`
 --
 
 INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
@@ -184,12 +204,27 @@ INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, 
 (17, 7, 7, 1, 22990000.00),
 (18, 8, 8, 1, 41990000.00),
 (19, 9, 9, 1, 37990000.00),
-(20, 10, 10, 1, 29990000.00);
+(20, 10, 10, 1, 29990000.00),
+(25, 30, 25, 1, 23490000.00),
+(30, 35, 25, 1, 23490000.00),
+(33, 38, 25, 1, 23490000.00),
+(45, 50, 25, 1, 23490000.00),
+(47, 52, 25, 1, 23490000.00),
+(49, 54, 25, 1, 23490000.00),
+(54, 59, 25, 1, 23490000.00),
+(56, 61, 25, 1, 23490000.00),
+(57, 62, 25, 1, 23490000.00),
+(60, 65, 25, 1, 23490000.00),
+(61, 66, 25, 1, 23490000.00),
+(63, 68, 1, 1, 34290000.00),
+(65, 70, 1, 1, 34290000.00),
+(66, 71, 1, 1, 34290000.00),
+(67, 72, 25, 1, 23490000.00);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `payments`
+-- Table structure for table `payments`
 --
 
 CREATE TABLE `payments` (
@@ -208,7 +243,22 @@ CREATE TABLE `payments` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `products`
+-- Table structure for table `payment_logs`
+--
+
+CREATE TABLE `payment_logs` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `payment_type` varchar(50) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `message` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products`
 --
 
 CREATE TABLE `products` (
@@ -227,11 +277,11 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `products`
+-- Dumping data for table `products`
 --
 
 INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `storage_id`, `color_id`) VALUES
-(1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 50, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
+(1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 47, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
 (2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
 (3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 50, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
 (4, 'iPhone 16 128GB | Chính hãng VN/A', 22090000, 50, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
@@ -252,7 +302,7 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 (21, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-21', '', 0, 1, 7, 1, 3),
 (23, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-21', '', 0, 1, 7, 1, 1),
 (24, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 2, 1),
-(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
+(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 38, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
 (26, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 2, 3),
 (27, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 3, 3),
 (28, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 1, 5),
@@ -262,7 +312,7 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_color`
+-- Table structure for table `product_color`
 --
 
 CREATE TABLE `product_color` (
@@ -273,7 +323,7 @@ CREATE TABLE `product_color` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_color`
+-- Dumping data for table `product_color`
 --
 
 INSERT INTO `product_color` (`color_id`, `color_type`, `color_price`, `created_at`) VALUES
@@ -288,38 +338,29 @@ INSERT INTO `product_color` (`color_id`, `color_type`, `color_price`, `created_a
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_deals`
+-- Table structure for table `product_deals`
 --
 
 CREATE TABLE `product_deals` (
   `deal_id` int(11) NOT NULL,
   `pro_id` int(11) NOT NULL,
-  `discount` decimal(10,2) NOT NULL,
+  `discount` decimal(5,2) NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `status` tinyint(1) DEFAULT 1
-) ;
+  `status` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_deals`
+-- Dumping data for table `product_deals`
 --
 
 INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
-(1, 1, 50.00, '2024-11-01', '2024-11-30', 1),
-(2, 8, 30.00, '2024-11-01', '2024-11-30', 1),
-(3, 14, 20.00, '2024-11-01', '2024-11-30', 1),
-(4, 20, 15.00, '2024-11-01', '2024-11-30', 1),
-(5, 4, 10.00, '2024-11-01', '2024-11-30', 1),
-(6, 30, 50.00, '2024-11-01', '2024-11-30', 1),
-(7, 19, 25.00, '2024-11-01', '2024-11-30', 1),
-(8, 10, 35.00, '2024-11-01', '2024-11-30', 1),
-(9, 17, 45.00, '2024-11-01', '2024-11-30', 1),
-(10, 24, 55.00, '2024-11-01', '2024-11-30', 1);
+(2, 20, 21.00, '2024-11-06', '2024-11-30', 1);
 
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `product_storage`
+-- Table structure for table `product_storage`
 --
 
 CREATE TABLE `product_storage` (
@@ -330,7 +371,7 @@ CREATE TABLE `product_storage` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `product_storage`
+-- Dumping data for table `product_storage`
 --
 
 INSERT INTO `product_storage` (`storage_id`, `storage_type`, `storage_price`, `created_at`) VALUES
@@ -343,7 +384,7 @@ INSERT INTO `product_storage` (`storage_id`, `storage_type`, `storage_price`, `c
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `roles`
+-- Table structure for table `roles`
 --
 
 CREATE TABLE `roles` (
@@ -354,7 +395,7 @@ CREATE TABLE `roles` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `roles`
+-- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`role_id`, `role_name`, `description`, `created_at`) VALUES
@@ -364,7 +405,7 @@ INSERT INTO `roles` (`role_id`, `role_name`, `description`, `created_at`) VALUES
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `thumbnails`
+-- Table structure for table `thumbnails`
 --
 
 CREATE TABLE `thumbnails` (
@@ -377,7 +418,24 @@ CREATE TABLE `thumbnails` (
 -- --------------------------------------------------------
 
 --
--- Cấu trúc bảng cho bảng `users`
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `transaction_code` varchar(50) NOT NULL,
+  `amount` decimal(15,2) NOT NULL,
+  `payment_method` varchar(20) NOT NULL COMMENT 'momo, zalopay, bank_transfer',
+  `bank_code` varchar(20) DEFAULT NULL,
+  `status` varchar(20) NOT NULL DEFAULT 'pending' COMMENT 'pending, completed, failed, refunded',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
 --
 
 CREATE TABLE `users` (
@@ -397,12 +455,12 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Đang đổ dữ liệu cho bảng `users`
+-- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`, `birthday`, `gender`) VALUES
-(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/Sora.jpg', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
-(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/user.png', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
+(1, 'Sora', '$2y$10$LTZOLvpMpsrXS3juBbakX.f66BfT83bsWs8JVJm2xdPia869JF..S', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/user.png', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
+(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nu.jpg', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
 (3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
@@ -411,20 +469,20 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `ph
 (8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(14, 'nhatnguyen', 'nhat123', 'nhatnguyen@gmail.com', '', '', '', 'Uploads/User/nam.jpg', 2, 1, '2024-11-23 10:16:51', NULL, NULL);
+(12, 'admin_new', '482c811da5d5b4bc6d497ffa98491e38', 'admin_new@example.com', 'Admin User', '0123456789', '123 Admin Street', 'Uploads/User/admin.png', 1, 1, '2024-11-24 16:30:40', NULL, 1);
 
 --
--- Chỉ mục cho các bảng đã đổ
+-- Indexes for dumped tables
 --
 
 --
--- Chỉ mục cho bảng `banners`
+-- Indexes for table `banners`
 --
 ALTER TABLE `banners`
   ADD PRIMARY KEY (`id`);
 
 --
--- Chỉ mục cho bảng `cart`
+-- Indexes for table `cart`
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`cart_id`),
@@ -434,13 +492,13 @@ ALTER TABLE `cart`
   ADD KEY `color_id` (`color_id`);
 
 --
--- Chỉ mục cho bảng `categories`
+-- Indexes for table `categories`
 --
 ALTER TABLE `categories`
   ADD PRIMARY KEY (`cate_id`);
 
 --
--- Chỉ mục cho bảng `comments`
+-- Indexes for table `comments`
 --
 ALTER TABLE `comments`
   ADD PRIMARY KEY (`com_id`),
@@ -448,14 +506,14 @@ ALTER TABLE `comments`
   ADD KEY `pro_id` (`pro_id`);
 
 --
--- Chỉ mục cho bảng `orders`
+-- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `order_details`
+-- Indexes for table `order_details`
 --
 ALTER TABLE `order_details`
   ADD PRIMARY KEY (`detail_id`),
@@ -463,14 +521,21 @@ ALTER TABLE `order_details`
   ADD KEY `product_id` (`product_id`);
 
 --
--- Chỉ mục cho bảng `payments`
+-- Indexes for table `payments`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`pay_id`),
   ADD KEY `user_id` (`user_id`);
 
 --
--- Chỉ mục cho bảng `products`
+-- Indexes for table `payment_logs`
+--
+ALTER TABLE `payment_logs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`pro_id`),
@@ -479,39 +544,47 @@ ALTER TABLE `products`
   ADD KEY `color_id` (`color_id`);
 
 --
--- Chỉ mục cho bảng `product_color`
+-- Indexes for table `product_color`
 --
 ALTER TABLE `product_color`
   ADD PRIMARY KEY (`color_id`);
 
 --
--- Chỉ mục cho bảng `product_deals`
+-- Indexes for table `product_deals`
 --
 ALTER TABLE `product_deals`
   ADD PRIMARY KEY (`deal_id`),
-  ADD UNIQUE KEY `unique_product` (`pro_id`);
+  ADD KEY `pro_id` (`pro_id`);
 
 --
--- Chỉ mục cho bảng `product_storage`
+-- Indexes for table `product_storage`
 --
 ALTER TABLE `product_storage`
   ADD PRIMARY KEY (`storage_id`);
 
 --
--- Chỉ mục cho bảng `roles`
+-- Indexes for table `roles`
 --
 ALTER TABLE `roles`
   ADD PRIMARY KEY (`role_id`);
 
 --
--- Chỉ mục cho bảng `thumbnails`
+-- Indexes for table `thumbnails`
 --
 ALTER TABLE `thumbnails`
   ADD PRIMARY KEY (`thumb_id`),
   ADD KEY `pro_id` (`pro_id`);
 
 --
--- Chỉ mục cho bảng `users`
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `transaction_code_UNIQUE` (`transaction_code`),
+  ADD KEY `order_id` (`order_id`);
+
+--
+-- Indexes for table `users`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
@@ -520,99 +593,111 @@ ALTER TABLE `users`
   ADD KEY `role_id` (`role_id`);
 
 --
--- AUTO_INCREMENT cho các bảng đã đổ
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT cho bảng `banners`
+-- AUTO_INCREMENT for table `banners`
 --
 ALTER TABLE `banners`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT cho bảng `cart`
+-- AUTO_INCREMENT for table `cart`
 --
 ALTER TABLE `cart`
   MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT cho bảng `categories`
+-- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
   MODIFY `cate_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT cho bảng `comments`
+-- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
   MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT cho bảng `orders`
+-- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
 
 --
--- AUTO_INCREMENT cho bảng `order_details`
+-- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
 
 --
--- AUTO_INCREMENT cho bảng `payments`
+-- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
   MODIFY `pay_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `products`
+-- AUTO_INCREMENT for table `payment_logs`
+--
+ALTER TABLE `payment_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
   MODIFY `pro_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT cho bảng `product_color`
+-- AUTO_INCREMENT for table `product_color`
 --
 ALTER TABLE `product_color`
   MODIFY `color_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT cho bảng `product_deals`
+-- AUTO_INCREMENT for table `product_deals`
 --
 ALTER TABLE `product_deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `product_storage`
+-- AUTO_INCREMENT for table `product_storage`
 --
 ALTER TABLE `product_storage`
   MODIFY `storage_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT cho bảng `roles`
+-- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
   MODIFY `role_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT cho bảng `thumbnails`
+-- AUTO_INCREMENT for table `thumbnails`
 --
 ALTER TABLE `thumbnails`
   MODIFY `thumb_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT cho bảng `users`
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
--- Các ràng buộc cho các bảng đã đổ
+-- Constraints for dumped tables
 --
 
 --
--- Các ràng buộc cho bảng `cart`
+-- Constraints for table `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
@@ -621,33 +706,39 @@ ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `comments`
+-- Constraints for table `comments`
 --
 ALTER TABLE `comments`
   ADD CONSTRAINT `comments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
   ADD CONSTRAINT `comments_ibfk_2` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
 
 --
--- Các ràng buộc cho bảng `orders`
+-- Constraints for table `orders`
 --
 ALTER TABLE `orders`
   ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Các ràng buộc cho bảng `order_details`
+-- Constraints for table `order_details`
 --
 ALTER TABLE `order_details`
   ADD CONSTRAINT `order_details_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
   ADD CONSTRAINT `order_details_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `products` (`pro_id`);
 
 --
--- Các ràng buộc cho bảng `payments`
+-- Constraints for table `payments`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
 
 --
--- Các ràng buộc cho bảng `products`
+-- Constraints for table `payment_logs`
+--
+ALTER TABLE `payment_logs`
+  ADD CONSTRAINT `payment_logs_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_1` FOREIGN KEY (`cate_id`) REFERENCES `categories` (`cate_id`),
@@ -655,19 +746,25 @@ ALTER TABLE `products`
   ADD CONSTRAINT `products_ibfk_3` FOREIGN KEY (`color_id`) REFERENCES `product_color` (`color_id`) ON DELETE SET NULL;
 
 --
--- Các ràng buộc cho bảng `product_deals`
+-- Constraints for table `product_deals`
 --
 ALTER TABLE `product_deals`
-  ADD CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `product_deals_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
 
 --
--- Các ràng buộc cho bảng `thumbnails`
+-- Constraints for table `thumbnails`
 --
 ALTER TABLE `thumbnails`
   ADD CONSTRAINT `thumbnails_ibfk_1` FOREIGN KEY (`pro_id`) REFERENCES `products` (`pro_id`);
 
 --
--- Các ràng buộc cho bảng `users`
+-- Constraints for table `transactions`
+--
+ALTER TABLE `transactions`
+  ADD CONSTRAINT `transactions_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `users`
 --
 ALTER TABLE `users`
   ADD CONSTRAINT `users_ibfk_1` FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE SET NULL;
