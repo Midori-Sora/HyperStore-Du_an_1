@@ -1,14 +1,17 @@
 <?php
-class BannerModel {
+class BannerModel
+{
     private static $conn;
 
-    public static function init() {
+    public static function init()
+    {
         if (!self::$conn) {
             self::$conn = new MainModel();
         }
     }
 
-    public static function getBannerList() {
+    public static function getBannerList()
+    {
         self::init();
         try {
             $sql = "SELECT * FROM banners ORDER BY id DESC";
@@ -20,7 +23,8 @@ class BannerModel {
         }
     }
 
-    public static function getBannerById($id) {
+    public static function getBannerById($id)
+    {
         self::init();
         try {
             $sql = "SELECT * FROM banners WHERE id = :id";
@@ -33,7 +37,8 @@ class BannerModel {
         }
     }
 
-    public static function addBanner($title, $image, $status, $created_at) {
+    public static function addBanner($title, $image, $status, $created_at)
+    {
         self::init();
         try {
             // Validate inputs
@@ -51,7 +56,7 @@ class BannerModel {
 
             $sql = "INSERT INTO banners (title, image_url, status, created_at, updated_at) 
                     VALUES (:title, :image_url, :status, :created_at, :created_at)";
-            
+
             $stmt = self::$conn->SUNNY->prepare($sql);
             $params = [
                 ':title' => $title,
@@ -59,14 +64,14 @@ class BannerModel {
                 ':status' => $status,
                 ':created_at' => $created_at
             ];
-            
+
             $result = $stmt->execute($params);
-            
+
             if (!$result) {
                 error_log("Banner insertion failed: " . json_encode($stmt->errorInfo()));
                 throw new Exception("Không thể thêm banner");
             }
-            
+
             return true;
         } catch (PDOException $e) {
             error_log("Error adding banner: " . $e->getMessage());
@@ -74,7 +79,8 @@ class BannerModel {
         }
     }
 
-    public static function deleteBanner($id) {
+    public static function deleteBanner($id)
+    {
         self::init();
         try {
             $sql = "DELETE FROM banners WHERE id = :id";
@@ -86,7 +92,8 @@ class BannerModel {
         }
     }
 
-    public static function updateBanner($id, $title, $image_url, $status) {
+    public static function updateBanner($id, $title, $image_url, $status)
+    {
         self::init();
         try {
             // Validate banner exists before update
@@ -102,7 +109,7 @@ class BannerModel {
                         status = :status, 
                         created_at = NOW() 
                     WHERE id = :id";
-            
+
             $stmt = self::$conn->SUNNY->prepare($sql);
             $params = [
                 ':id' => $id,
@@ -110,9 +117,9 @@ class BannerModel {
                 ':image_url' => $image_url,
                 ':status' => $status
             ];
-            
+
             $result = $stmt->execute($params);
-            
+
             if (!$result) {
                 error_log("Banner update failed for ID: $id - " . json_encode($stmt->errorInfo()));
             }
@@ -123,5 +130,16 @@ class BannerModel {
         }
     }
 
+    public static function getActiveBanners()
+    {
+        self::init();
+        try {
+            $sql = "SELECT * FROM banners WHERE status = 1 ORDER BY id DESC";
+            $stmt = self::$conn->SUNNY->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Lỗi khi lấy danh sách banner: " . $e->getMessage());
+        }
+    }
 }
-?>

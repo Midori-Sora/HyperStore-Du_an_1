@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,51 +8,71 @@
     <link rel="stylesheet" href="assets/css/client/slideshow.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
+    <?php
+   
+    require_once './admin/models/bannerModel.php';
+
+    $bannerModel = new BannerModel();
+    $banners = $bannerModel->getActiveBanners();
+    ?>
+
     <div class="slideshow">
-        <img src="Uploads/Slides/b1.png" alt="">
-        <img src="Uploads/Slides/b2.png" alt="">
-        <img src="Uploads/Slides/b3.png" alt="">
-        <img src="Uploads/Slides/b4.png" alt="">
-        <img src="Uploads/Slides/b5.png" alt="">
-        <img src="Uploads/Slides/b6.png" alt="">
-        <img src="Uploads/Slides/b7.png" alt="">
-        <img src="Uploads/Slides/b9.webp" alt="">
-        <img src="Uploads/Slides/b8.webp" alt="">
-        <img src="Uploads/Slides/b13.webp" alt="">
+        <?php if (!empty($banners)): ?>
+        <?php foreach ($banners as $banner): ?>
+        <img src="Uploads/Slides/<?= htmlspecialchars($banner['image_url']) ?>"
+            alt="<?= htmlspecialchars($banner['title']) ?>" style="display: none;">
+        <?php endforeach; ?>
+
         <div class="action">
             <div class="prev"><i class="fa-solid fa-angle-left"></i></div>
             <div class="next"><i class="fa-solid fa-angle-right"></i></div>
         </div>
+        <?php else: ?>
+        <p>Không có banner nào được hiển thị</p>
+        <?php endif; ?>
     </div>
+
     <script>
-        let currentIndex = 0; // Chỉ số hình ảnh hiện tại
-        const slides = document.querySelectorAll('.slideshow img'); // Lấy tất cả hình ảnh trong slideshow
+    const slides = document.querySelectorAll('.slideshow img');
+    if (slides.length > 0) {
+        let currentIndex = 0;
 
         function showSlide(index) {
             slides.forEach((slide, i) => {
-                slide.style.display = (i === index) ? 'block' : 'none'; // Hiển thị hình ảnh hiện tại
+                slide.style.display = (i === index) ? 'block' : 'none';
             });
         }
 
         function nextSlide() {
-            currentIndex = (currentIndex + 1) % slides.length; // Tăng chỉ số và quay lại nếu vượt quá số hình ảnh
+            currentIndex = (currentIndex + 1) % slides.length;
             showSlide(currentIndex);
         }
 
         function prevSlide() {
-            currentIndex = (currentIndex - 1 + slides.length) % slides.length; // Giảm chỉ số và quay lại nếu dưới 0
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
             showSlide(currentIndex);
         }
 
-        let slideInterval = setInterval(nextSlide, 3000); // Tự động chuyển slide mỗi 3 giây
 
-        // Hiển thị slide đầu tiên
-        showSlide(currentIndex);
+        showSlide(0);
+        let slideInterval = setInterval(nextSlide, 3000);
 
-        // Thêm sự kiện click cho nút "prev" và "next"
-        document.querySelector('.prev').addEventListener('click', prevSlide); // Xử lý nút "prev"
-        document.querySelector('.next').addEventListener('click', nextSlide); // Xử lý nút "next"
+
+        document.querySelector('.prev').addEventListener('click', () => {
+            clearInterval(slideInterval);
+            prevSlide();
+            slideInterval = setInterval(nextSlide, 3000);
+        });
+
+        document.querySelector('.next').addEventListener('click', () => {
+            clearInterval(slideInterval);
+            nextSlide();
+            slideInterval = setInterval(nextSlide, 3000);
+        });
+    }
     </script>
 </body>
+
 </html>
