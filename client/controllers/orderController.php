@@ -81,4 +81,59 @@ class OrderController
         }
         exit();
     }
+
+    public function requestReturn()
+    {
+        try {
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Vui lòng đăng nhập để thực hiện chức năng này");
+            }
+
+            if (!isset($_POST['order_id']) || !isset($_POST['reason'])) {
+                throw new Exception("Thiếu thông tin cần thiết");
+            }
+
+            $orderId = (int)$_POST['order_id'];
+            $userId = (int)$_SESSION['user_id'];
+            $reason = htmlspecialchars($_POST['reason']);
+
+            // Gọi phương thức từ model thay vì truy vấn trực tiếp
+            $result = $this->orderModel->requestReturn($orderId, $userId, $reason);
+
+            if ($result) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Yêu cầu trả hàng đã được gửi thành công'
+                ]);
+            } else {
+                throw new Exception("Không thể xử lý yêu cầu trả hàng");
+            }
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+    public function requestRefund()
+    {
+        if (!isset($_SESSION['user_id']) || !isset($_POST['order_id']) || !isset($_POST['reason'])) {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            exit();
+        }
+
+        $orderId = $_POST['order_id'];
+        $userId = $_SESSION['user_id'];
+        $reason = $_POST['reason'];
+
+        $result = $this->orderModel->requestRefund($orderId, $userId, $reason);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Yêu cầu hoàn tiền đã được gửi']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không thể gửi yêu cầu hoàn tiền']);
+        }
+        exit();
+    }
 }

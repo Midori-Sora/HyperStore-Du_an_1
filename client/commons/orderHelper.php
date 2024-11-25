@@ -4,7 +4,7 @@ class OrderHelper
     public static function getOrderStatus($status)
     {
         $statusMap = [
-            'pending' => 'Đang chờ xử lý',
+            'pending' => 'Chờ xác nhận',
             'confirmed' => 'Đã xác nhận',
             'processing' => 'Đang chuẩn bị hàng',
             'shipping' => 'Đang giao hàng',
@@ -12,29 +12,27 @@ class OrderHelper
             'cancelled' => 'Đã hủy',
             'returned' => 'Đã trả hàng',
             'refunded' => 'Đã hoàn tiền',
-            'failed' => 'Thất bại',
-            'awaiting_payment' => 'Chờ thanh toán'
+            'failed' => 'Giao hàng thất bại'
         ];
 
-        return $statusMap[$status] ?? 'Đang chờ xử lý';
+        return $statusMap[$status] ?? 'Không xác định';
     }
 
     public static function getOrderStatusClass($status)
     {
         $classMap = [
-            'pending' => 'warning',
-            'confirmed' => 'info',
-            'processing' => 'primary',
-            'shipping' => 'info',
-            'delivered' => 'success',
-            'cancelled' => 'danger',
-            'returned' => 'secondary',
-            'refunded' => 'dark',
-            'failed' => 'danger',
-            'awaiting_payment' => 'warning'
+            'pending' => 'status-pending',
+            'confirmed' => 'status-confirmed',
+            'processing' => 'status-processing',
+            'shipping' => 'status-shipping',
+            'delivered' => 'status-delivered',
+            'cancelled' => 'status-cancelled',
+            'returned' => 'status-returned',
+            'refunded' => 'status-refunded',
+            'failed' => 'status-failed'
         ];
 
-        return $classMap[$status] ?? 'warning';
+        return $classMap[$status] ?? 'status-pending';
     }
 
     public static function canCancelOrder($status)

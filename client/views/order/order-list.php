@@ -19,10 +19,13 @@ require_once "client/commons/orderHelper.php";
         <!-- Thêm tabs -->
         <div class="order-tabs">
             <button class="order-tab active" data-status="all">Tất cả</button>
-            <button class="order-tab" data-status="pending">Chờ xử lý</button>
+            <button class="order-tab" data-status="pending">Chờ xác nhận</button>
+            <button class="order-tab" data-status="confirmed">Đã xác nhận</button>
             <button class="order-tab" data-status="processing">Đang xử lý</button>
             <button class="order-tab" data-status="shipping">Đang giao</button>
-            <button class="order-tab" data-status="completed">Đã giao</button>
+            <button class="order-tab" data-status="delivered">Đã giao</button>
+            <button class="order-tab" data-status="returned">Trả hàng</button>
+            <button class="order-tab" data-status="refunded">Hoàn tiền</button>
             <button class="order-tab" data-status="cancelled">Đã hủy</button>
         </div>
 
@@ -68,6 +71,15 @@ require_once "client/commons/orderHelper.php";
                     <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
                         Hủy đơn hàng
                     </button>
+                    <?php endif; ?>
+                    <?php if ($order['status'] === 'delivered'): ?>
+                    <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
+                        Yêu cầu trả hàng
+                    </button>
+                    <?php elseif ($order['status'] === 'returned'): ?>
+                    <div class="alert alert-info">
+                        Vui lòng đợi xác nhận từ người bán
+                    </div>
                     <?php endif; ?>
                 </div>
             </div>
@@ -128,7 +140,115 @@ require_once "client/commons/orderHelper.php";
             });
         });
     });
+
+    function confirmReturn(orderId) {
+        const reason = prompt('Vui lòng nhập lý do trả hàng:');
+        if (!reason) return;
+
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
+
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Yêu cầu trả hàng đã được gửi. Vui lòng đợi xác nhận từ người bán');
+                    location.reload();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('returnModal').style.display = 'none';
+    }
+
+    function submitReturn(orderId) {
+        const reason = document.getElementById('returnReason').value;
+        if (!reason) {
+            alert('Vui lòng nhập lý do trả hàng');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
+
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
     </script>
+
+    <!-- Thêm modal -->
+    <div id="returnModal" class="modal">
+        <div class="modal-content">
+            <h3>Yêu cầu trả hàng</h3>
+            <form id="returnForm">
+                <textarea id="returnReason" placeholder="Nhập lý do trả hàng..." required></textarea>
+                <div class="modal-buttons">
+                    <button type="submit" class="btn btn-primary">Gửi yêu cầu</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Hủy</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <style>
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        width: 50%;
+        border-radius: 8px;
+    }
+
+    #returnReason {
+        width: 100%;
+        min-height: 100px;
+        margin: 10px 0;
+        padding: 10px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    </style>
 </body>
 
 </html>

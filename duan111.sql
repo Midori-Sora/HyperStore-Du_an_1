@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2024 at 05:52 PM
+-- Generation Time: Nov 25, 2024 at 06:06 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -138,7 +138,7 @@ CREATE TABLE `orders` (
   `shipping_phone` varchar(20) NOT NULL,
   `shipping_email` varchar(255) DEFAULT NULL,
   `bank_code` varchar(50) DEFAULT NULL,
-  `status` varchar(20) NOT NULL DEFAULT '1' COMMENT '1: pending, 2: processing, 3: completed, 4: cancelled',
+  `status` varchar(20) NOT NULL DEFAULT 'pending' COMMENT 'pending, confirmed, processing, shipping, delivered, cancelled, returned, refunded, failed, awaiting_payment',
   `payment_method` varchar(50) NOT NULL DEFAULT 'cod',
   `payment_status` varchar(50) NOT NULL DEFAULT 'unpaid',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -159,7 +159,7 @@ INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `tot
 (7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
 (8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
 (9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', NULL, '1', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
+(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 15:52:51'),
 (30, 'ORD17324413551284', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
 (35, 'ORD17324428217003', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
 (38, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:20:18', '2024-11-24 11:12:00'),
@@ -174,7 +174,22 @@ INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `tot
 (68, 'ORD1732460276', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:57:56', '2024-11-24 14:57:56'),
 (70, 'ORD1732461980', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:26:20', '2024-11-24 15:26:20'),
 (71, 'ORD1732463437', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:50:37', '2024-11-24 15:50:37'),
-(72, 'ORD1732466950', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:49:10', '2024-11-24 16:49:10');
+(72, 'ORD1732466950', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:49:10', '2024-11-24 16:49:10'),
+(73, 'ORD1732467414', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:56:54', '2024-11-24 16:56:54'),
+(74, 'ORD1732468917', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 17:21:57', '2024-11-24 17:21:57'),
+(76, 'ORD1732514667', 2, 'Bùi Đức Dương', 28790000.00, 'Hà Nam', '0355032605', NULL, NULL, '3', 'cod', 'unpaid', '2024-11-25 06:04:27', '2024-11-25 08:02:31'),
+(78, 'ORD1732524854', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 08:54:14', '2024-11-25 08:54:14'),
+(79, 'ORD1732525380', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:00', '2024-11-25 09:03:00'),
+(80, 'ORD1732525421', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:41', '2024-11-25 09:03:41'),
+(81, 'ORD1732525668', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:07:48', '2024-11-25 09:07:48'),
+(82, 'ORD1732525897', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'refunded', 'cod', 'unpaid', '2024-11-25 09:11:37', '2024-11-25 16:36:01'),
+(83, 'ORD1732537512', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 12:25:12', '2024-11-25 12:25:12'),
+(84, 'ORD1732538170', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:36:10', '2024-11-25 16:39:01'),
+(85, 'ORD1732538223', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:03', '2024-11-25 15:47:50'),
+(86, 'ORD1732538275', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:55', '2024-11-25 15:52:13'),
+(87, 'ORD1732549009', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 15:36:49', '2024-11-25 16:11:57'),
+(88, 'ORD1732551269', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-11-25 16:14:29', '2024-11-25 16:25:15'),
+(89, 'ORD1732553568', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 16:52:48', '2024-11-25 16:52:54');
 
 -- --------------------------------------------------------
 
@@ -219,7 +234,22 @@ INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, 
 (63, 68, 1, 1, 34290000.00),
 (65, 70, 1, 1, 34290000.00),
 (66, 71, 1, 1, 34290000.00),
-(67, 72, 25, 1, 23490000.00);
+(67, 72, 25, 1, 23490000.00),
+(68, 73, 25, 1, 23490000.00),
+(69, 74, 25, 1, 23490000.00),
+(71, 76, 3, 1, 28790000.00),
+(73, 78, 25, 1, 23490000.00),
+(74, 79, 26, 1, 23490000.00),
+(75, 80, 26, 1, 23490000.00),
+(76, 81, 26, 1, 23490000.00),
+(77, 82, 25, 1, 23490000.00),
+(78, 83, 24, 1, 23490000.00),
+(79, 84, 24, 1, 23490000.00),
+(80, 85, 24, 1, 23490000.00),
+(81, 86, 26, 1, 23490000.00),
+(82, 87, 25, 1, 23490000.00),
+(83, 88, 27, 1, 23490000.00),
+(84, 89, 24, 1, 23490000.00);
 
 -- --------------------------------------------------------
 
@@ -283,7 +313,7 @@ CREATE TABLE `products` (
 INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `storage_id`, `color_id`) VALUES
 (1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 47, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
 (2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
-(3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 50, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
+(3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 49, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
 (4, 'iPhone 16 128GB | Chính hãng VN/A', 22090000, 50, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
 (5, 'iPhone 15 128GB | Chính hãng VN/A', 19690000, 50, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
 (6, 'iPhone 13 128GB | Chính hãng VN/A', 13450000, 50, 'iphone-13-hong.png', '2024-11-17', '', 0, 1, 3, 1, 6),
@@ -301,10 +331,10 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 (20, 'iPhone 11 128GB | Chính hãng VN/A', 10090000, 50, 'iphone-11-do.png', '2024-11-17', '', 0, 1, 1, 1, 7),
 (21, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-21', '', 0, 1, 7, 1, 3),
 (23, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-21', '', 0, 1, 7, 1, 1),
-(24, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 2, 1),
-(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 38, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
-(26, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 2, 3),
-(27, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 3, 3),
+(24, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 46, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 2, 1),
+(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 33, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
+(26, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 46, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 2, 3),
+(27, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 49, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 3, 3),
 (28, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 1, 5),
 (29, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 2, 5),
 (30, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 3, 5);
@@ -459,8 +489,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`, `birthday`, `gender`) VALUES
-(1, 'Sora', '$2y$10$LTZOLvpMpsrXS3juBbakX.f66BfT83bsWs8JVJm2xdPia869JF..S', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/user.png', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
-(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'Bùi Đức Dương', '0355032605', 'Hà Nam', 'Uploads/User/nu.jpg', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
+(1, 'Sora', '$2y$10$LTZOLvpMpsrXS3juBbakX.f66BfT83bsWs8JVJm2xdPia869JF..S', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/nu.jpg', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
+(2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', '', '', '', 'Uploads/User/user.png', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
 (3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
@@ -469,7 +499,7 @@ INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `ph
 (8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
 (10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(12, 'admin_new', '482c811da5d5b4bc6d497ffa98491e38', 'admin_new@example.com', 'Admin User', '0123456789', '123 Admin Street', 'Uploads/User/admin.png', 1, 1, '2024-11-24 16:30:40', NULL, 1);
+(20, 'kien', '1', 'kien49182@gmail.com', 'đỗ trung kiên ', '0998766765633', 'văn khúc ', 'Uploads/User/nam.jpg', 1, 1, '2024-11-25 09:10:43', NULL, NULL);
 
 --
 -- Indexes for dumped tables
@@ -624,13 +654,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -642,7 +672,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT for table `payment_logs`
 --
 ALTER TABLE `payment_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -690,7 +720,7 @@ ALTER TABLE `transactions`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- Constraints for dumped tables

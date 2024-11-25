@@ -117,4 +117,8 @@ switch ($action) {
         $controller = new OrderController();
         $controller->cancelOrder();
         break;
+    case 'request-return':
+        $controller = new OrderController();
+        $controller->requestReturn();
+        break;
 }

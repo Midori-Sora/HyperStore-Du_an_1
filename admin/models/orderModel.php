@@ -209,36 +209,60 @@ class OrderModel
     public function getOrderStatusText($status)
     {
         $statusMap = [
-            'pending' => 'Đang chờ xử lý',
+            'pending' => 'Chờ xác nhận',
             'confirmed' => 'Đã xác nhận',
-            'processing' => 'Đang chuẩn bị hàng',
-            'shipping' => 'Đang giao hàng',
-            'delivered' => 'Đã giao thành công',
-            'cancelled' => 'Đã hủy',
-            'returned' => 'Đã trả hàng',
-            'refunded' => 'Đã hoàn tiền',
-            'failed' => 'Thất bại',
-            'awaiting_payment' => 'Chờ thanh toán'
+            'processing' => 'Đang xử lý',
+            'shipping' => 'Đang giao',
+            'delivered' => 'Đã giao',
+            'returned' => 'Yêu cầu trả hàng',
+            'cancelled' => 'Đã hủy'
         ];
-
-        return $statusMap[$status] ?? 'Đang chờ xử lý';
+        return $statusMap[$status] ?? 'Không xác định';
     }
 
     public function getOrderStatusClass($status)
     {
         $classMap = [
-            'pending' => 'warning',
-            'confirmed' => 'info',
-            'processing' => 'primary',
-            'shipping' => 'info',
-            'delivered' => 'success',
-            'cancelled' => 'danger',
-            'returned' => 'secondary',
-            'refunded' => 'dark',
-            'failed' => 'danger',
-            'awaiting_payment' => 'warning'
+            'pending' => 'status-pending',
+            'confirmed' => 'status-confirmed',
+            'processing' => 'status-processing',
+            'shipping' => 'status-shipping',
+            'delivered' => 'status-success',
+            'returned' => 'status-warning',
+            'cancelled' => 'status-danger'
         ];
+        return $classMap[$status] ?? '';
+    }
 
-        return $classMap[$status] ?? 'warning';
+    public function requestReturn($orderId, $userId, $reason)
+    {
+        try {
+            // Kiểm tra đơn hàng
+            $sql = "SELECT status FROM orders WHERE order_id = ? AND user_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderId, $userId]);
+            $order = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (!$order) {
+                throw new Exception("Không tìm thấy đơn hàng");
+            }
+
+            if ($order['status'] !== 'delivered') {
+                throw new Exception("Chỉ có thể yêu cầu trả hàng với đơn hàng đã giao thành công");
+            }
+
+            // Cập nhật trạng thái
+            $sql = "UPDATE orders 
+                    SET status = 'returned', 
+                        return_reason = ?,
+                        updated_at = NOW() 
+                    WHERE order_id = ? AND user_id = ?";
+
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$reason, $orderId, $userId]);
+        } catch (Exception $e) {
+            error_log("Error in requestReturn: " . $e->getMessage());
+            return false;
+        }
     }
 }

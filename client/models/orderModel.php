@@ -89,4 +89,64 @@ class OrderModel
 
         return $stmt->affected_rows > 0;
     }
+
+    public function requestReturn($orderId, $userId, $reason)
+    {
+        try {
+            $this->conn->begin_transaction();
+
+            // Kiểm tra trạng thái và quyền sở hữu
+            $checkSql = "SELECT status FROM orders 
+                        WHERE order_id = ? AND user_id = ? 
+                        AND status = 'delivered'
+                        FOR UPDATE";
+
+            $checkStmt = $this->conn->prepare($checkSql);
+            $checkStmt->bind_param("ii", $orderId, $userId);
+            $checkStmt->execute();
+            $result = $checkStmt->get_result()->fetch_assoc();
+
+            if (!$result) {
+                throw new Exception("Đơn hàng không hợp lệ hoặc không thể trả hàng");
+            }
+
+            // Cập nhật trạng thái
+            $updateSql = "UPDATE orders 
+                         SET status = 'returned',
+                             return_reason = ?,
+                             updated_at = NOW()
+                         WHERE order_id = ? AND user_id = ?";
+
+            $updateStmt = $this->conn->prepare($updateSql);
+            $updateStmt->bind_param("sii", $reason, $orderId, $userId);
+
+            if (!$updateStmt->execute()) {
+                throw new Exception("Lỗi khi cập nhật trạng thái đơn hàng");
+            }
+
+            $this->conn->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conn->rollback();
+            error_log("Error in requestReturn: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function requestRefund($orderId, $userId, $reason)
+    {
+        $sql = "UPDATE orders 
+                SET status = 'refunded',
+                    refund_reason = ?,
+                    updated_at = NOW()
+                WHERE order_id = ? 
+                AND user_id = ? 
+                AND status = 'returned'";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sii", $reason, $orderId, $userId);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
+    }
 }
