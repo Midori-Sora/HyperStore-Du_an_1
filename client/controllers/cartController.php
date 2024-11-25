@@ -103,4 +103,24 @@ class CartController
         header('Location: index.php?action=view-cart');
         exit();
     }
+
+    public static function checkout()
+    {
+        if (!isset($_SESSION['user_id'])) {
+            $_SESSION['error'] = 'Vui lòng đăng nhập để thanh toán';
+            header('Location: index.php?action=login');
+            exit();
+        }
+
+        // Xử lý thanh toán ở đây
+        // ...
+
+        // Sau khi thanh toán thành công
+        $cart_model = new CartModel();
+        $cart_model->clearCart(); // Xóa giỏ hàng
+
+        $_SESSION['success'] = 'Đặt hàng thành công';
+        header('Location: index.php?action=order-success');
+        exit();
+    }
 }

@@ -64,6 +64,13 @@ class CartModel
         return $product ? $product['quantity'] : 0;
     }
 
+    public function clearCart()
+    {
+        if (isset($_SESSION['cart'])) {
+            unset($_SESSION['cart']);
+        }
+    }
+
     public function __destruct()
     {
         $this->conn->close();
