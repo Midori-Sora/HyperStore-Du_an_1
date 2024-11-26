@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 25, 2024 at 06:06 PM
+-- Generation Time: Nov 25, 2024 at 07:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -138,58 +138,63 @@ CREATE TABLE `orders` (
   `shipping_phone` varchar(20) NOT NULL,
   `shipping_email` varchar(255) DEFAULT NULL,
   `bank_code` varchar(50) DEFAULT NULL,
-  `status` varchar(20) NOT NULL DEFAULT 'pending' COMMENT 'pending, confirmed, processing, shipping, delivered, cancelled, returned, refunded, failed, awaiting_payment',
+  `status` enum('pending','confirmed','processing','shipping','delivered','cancelled','returned','refunded','failed','awaiting_payment') NOT NULL DEFAULT 'pending',
   `payment_method` varchar(50) NOT NULL DEFAULT 'cod',
   `payment_status` varchar(50) NOT NULL DEFAULT 'unpaid',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `return_reason` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `bank_code`, `status`, `payment_method`, `payment_status`, `created_at`, `updated_at`) VALUES
-(1, 'DH001', 1, NULL, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:19:51'),
-(2, 'DH002', 2, NULL, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(3, 'DH003', 3, NULL, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(4, 'DH004', 1, NULL, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', NULL, '1', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(5, 'DH005', 2, NULL, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(6, 'DH006', 3, NULL, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 15:52:51'),
-(30, 'ORD17324413551284', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(35, 'ORD17324428217003', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '3', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-24 10:16:53'),
-(38, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 10:20:18', '2024-11-24 11:12:00'),
-(50, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 11:11:28', '2024-11-24 11:11:43'),
-(52, 'ORD17324472918940', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, '2', 'cod', 'unpaid', '2024-11-24 11:21:31', '2024-11-24 11:40:24'),
-(54, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 05:24:15', '2024-11-24 11:24:15'),
-(59, 'ORD1732448935', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:48:55', '2024-11-24 11:48:55'),
-(61, 'ORD1732448961', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:21', '2024-11-24 11:49:21'),
-(62, 'ORD1732448977', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:37', '2024-11-24 11:49:37'),
-(65, 'ORD1732449709', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 12:01:49', '2024-11-24 12:01:49'),
-(66, 'ORD1732459511', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:45:11', '2024-11-24 14:45:11'),
-(68, 'ORD1732460276', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:57:56', '2024-11-24 14:57:56'),
-(70, 'ORD1732461980', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:26:20', '2024-11-24 15:26:20'),
-(71, 'ORD1732463437', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:50:37', '2024-11-24 15:50:37'),
-(72, 'ORD1732466950', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:49:10', '2024-11-24 16:49:10'),
-(73, 'ORD1732467414', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:56:54', '2024-11-24 16:56:54'),
-(74, 'ORD1732468917', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 17:21:57', '2024-11-24 17:21:57'),
-(76, 'ORD1732514667', 2, 'Bùi Đức Dương', 28790000.00, 'Hà Nam', '0355032605', NULL, NULL, '3', 'cod', 'unpaid', '2024-11-25 06:04:27', '2024-11-25 08:02:31'),
-(78, 'ORD1732524854', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 08:54:14', '2024-11-25 08:54:14'),
-(79, 'ORD1732525380', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:00', '2024-11-25 09:03:00'),
-(80, 'ORD1732525421', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:41', '2024-11-25 09:03:41'),
-(81, 'ORD1732525668', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:07:48', '2024-11-25 09:07:48'),
-(82, 'ORD1732525897', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'refunded', 'cod', 'unpaid', '2024-11-25 09:11:37', '2024-11-25 16:36:01'),
-(83, 'ORD1732537512', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 12:25:12', '2024-11-25 12:25:12'),
-(84, 'ORD1732538170', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:36:10', '2024-11-25 16:39:01'),
-(85, 'ORD1732538223', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:03', '2024-11-25 15:47:50'),
-(86, 'ORD1732538275', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:55', '2024-11-25 15:52:13'),
-(87, 'ORD1732549009', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 15:36:49', '2024-11-25 16:11:57'),
-(88, 'ORD1732551269', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-11-25 16:14:29', '2024-11-25 16:25:15'),
-(89, 'ORD1732553568', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 16:52:48', '2024-11-25 16:52:54');
+INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `bank_code`, `status`, `payment_method`, `payment_status`, `created_at`, `updated_at`, `return_reason`) VALUES
+(1, 'DH001', 1, NULL, 25990000.00, '123 Nguyễn Văn A, Q.1, TP.HCM', '0901234567', 'user1@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(2, 'DH002', 2, NULL, 31990000.00, '456 Lê Lợi, Q.5, TP.HCM', '0912345678', 'user2@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(3, 'DH003', 3, NULL, 19990000.00, '789 Trần Hưng Đạo, Q.3, TP.HCM', '0923456789', 'user3@gmail.com', NULL, 'processing', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(4, 'DH004', 1, NULL, 45990000.00, '321 Võ Văn Tần, Q.10, TP.HCM', '0934567890', 'user4@gmail.com', NULL, 'pending', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(5, 'DH005', 2, NULL, 28990000.00, '654 Nguyễn Thị Minh Khai, Q.3, TP.HCM', '0945678901', 'user5@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(6, 'DH006', 3, NULL, 33990000.00, '987 Điện Biên Phủ, Q.Bình Thạnh, TP.HCM', '0956789012', 'user6@gmail.com', NULL, 'processing', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(7, 'DH007', 1, NULL, 22990000.00, '147 Cách Mạng Tháng 8, Q.3, TP.HCM', '0967890123', 'user7@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(8, 'DH008', 2, NULL, 41990000.00, '258 Nam Kỳ Khởi Nghĩa, Q.3, TP.HCM', '0978901234', 'user8@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(9, 'DH009', 3, NULL, 37990000.00, '369 Hai Bà Trưng, Q.1, TP.HCM', '0989012345', 'user9@gmail.com', NULL, 'processing', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(10, 'DH010', 1, NULL, 29990000.00, '159 Lý Tự Trọng, Q.1, TP.HCM', '0990123456', 'user10@gmail.com', NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 15:52:51', NULL),
+(30, 'ORD17324413551284', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(35, 'ORD17324428217003', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-11-24 10:16:53', '2024-11-25 17:46:01', NULL),
+(38, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 10:20:18', '2024-11-25 17:46:01', NULL),
+(50, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 11:11:28', '2024-11-25 17:46:01', NULL),
+(52, 'ORD17324472918940', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-24 11:21:31', '2024-11-25 17:46:01', NULL),
+(54, '', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 05:24:15', '2024-11-24 11:24:15', NULL),
+(59, 'ORD1732448935', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:48:55', '2024-11-24 11:48:55', NULL),
+(61, 'ORD1732448961', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:21', '2024-11-24 11:49:21', NULL),
+(62, 'ORD1732448977', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 11:49:37', '2024-11-24 11:49:37', NULL),
+(65, 'ORD1732449709', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 12:01:49', '2024-11-24 12:01:49', NULL),
+(66, 'ORD1732459511', 1, 'Bùi Đức Dương', 23490000.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:45:11', '2024-11-24 14:45:11', NULL),
+(68, 'ORD1732460276', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 14:57:56', '2024-11-24 14:57:56', NULL),
+(70, 'ORD1732461980', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:26:20', '2024-11-24 15:26:20', NULL),
+(71, 'ORD1732463437', 2, 'Bùi Đức Dương', 34290000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 15:50:37', '2024-11-24 15:50:37', NULL),
+(72, 'ORD1732466950', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:49:10', '2024-11-24 16:49:10', NULL),
+(73, 'ORD1732467414', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 16:56:54', '2024-11-24 16:56:54', NULL),
+(74, 'ORD1732468917', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-24 17:21:57', '2024-11-24 17:21:57', NULL),
+(76, 'ORD1732514667', 2, 'Bùi Đức Dương', 28790000.00, 'Hà Nam', '0355032605', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-11-25 06:04:27', '2024-11-25 17:46:01', NULL),
+(78, 'ORD1732524854', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 08:54:14', '2024-11-25 08:54:14', NULL),
+(79, 'ORD1732525380', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:00', '2024-11-25 09:03:00', NULL),
+(80, 'ORD1732525421', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:03:41', '2024-11-25 09:03:41', NULL),
+(81, 'ORD1732525668', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 09:07:48', '2024-11-25 09:07:48', NULL),
+(82, 'ORD1732525897', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'refunded', 'cod', 'unpaid', '2024-11-25 09:11:37', '2024-11-25 16:36:01', NULL),
+(83, 'ORD1732537512', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-11-25 12:25:12', '2024-11-25 12:25:12', NULL),
+(84, 'ORD1732538170', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:36:10', '2024-11-25 16:39:01', NULL),
+(85, 'ORD1732538223', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:03', '2024-11-25 15:47:50', NULL),
+(86, 'ORD1732538275', 2, 'Bùi Đức Dương', 23490000.00, 'Hà Nam', '0355032605', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-11-25 12:37:55', '2024-11-25 15:52:13', NULL),
+(87, 'ORD1732549009', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 15:36:49', '2024-11-25 16:11:57', NULL),
+(88, 'ORD1732551269', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'returned', 'cod', 'unpaid', '2024-11-25 16:14:29', '2024-11-25 17:13:22', 'dfd'),
+(89, 'ORD1732553568', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 16:52:48', '2024-11-25 16:52:54', NULL),
+(90, 'ORD1732555223', 20, 'đỗ trung kiên ', 29490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'refunded', 'cod', 'unpaid', '2024-11-25 17:20:23', '2024-11-25 17:31:50', 'fdsasfsdf'),
+(99, 'ORD1732557809', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'returned', 'cod', 'unpaid', '2024-11-25 18:03:29', '2024-11-25 18:04:12', 'dfdfsf'),
+(100, 'ORD1732557887', 20, 'đỗ trung kiên ', 23490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 18:04:47', '2024-11-25 18:37:52', NULL),
+(101, 'ORD1732558429', 20, 'đỗ trung kiên ', 29490000.00, 'văn khúc ', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-11-25 18:13:49', '2024-11-25 18:13:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -249,7 +254,11 @@ INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, 
 (81, 86, 26, 1, 23490000.00),
 (82, 87, 25, 1, 23490000.00),
 (83, 88, 27, 1, 23490000.00),
-(84, 89, 24, 1, 23490000.00);
+(84, 89, 24, 1, 23490000.00),
+(85, 90, 2, 1, 29490000.00),
+(94, 99, 25, 1, 23490000.00),
+(95, 100, 25, 1, 23490000.00),
+(96, 101, 2, 1, 29490000.00);
 
 -- --------------------------------------------------------
 
@@ -312,7 +321,7 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `storage_id`, `color_id`) VALUES
 (1, 'iPhone 16 Pro Max 256GB | Chính hãng VN/A', 34290000, 47, 'iphone-16-den.png', '2024-11-13', '', 0, 1, 6, 2, 1),
-(2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 50, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
+(2, 'iPhone 15 Pro Max 256GB | Chính hãng VN/A', 29490000, 48, 'iphone-15-den.png', '2024-11-17', '', 0, 1, 5, 2, 1),
 (3, 'iPhone 16 Pro 128GB | Chính hãng VN/A', 28790000, 49, 'iphone-16-den.png', '2024-11-17', '', 0, 1, 6, 1, 1),
 (4, 'iPhone 16 128GB | Chính hãng VN/A', 22090000, 50, 'iphone-16-xanhluuly.png', '2024-11-17', '', 0, 1, 6, 1, 4),
 (5, 'iPhone 15 128GB | Chính hãng VN/A', 19690000, 50, 'iphone-15-hong.png', '2024-11-17', '', 0, 1, 5, 1, 6),
@@ -332,7 +341,7 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 (21, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-vangkim.png', '2024-11-21', '', 0, 1, 7, 1, 3),
 (23, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-den.png', '2024-11-21', '', 0, 1, 7, 1, 1),
 (24, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 46, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 2, 1),
-(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 33, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
+(25, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 31, 'iphone-12-den.png', '2024-11-22', '', 0, 1, 7, 3, 1),
 (26, 'iPhone 12 Pro Max 256GB I Chính hãng VN/A', 23490000, 46, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 2, 3),
 (27, 'iPhone 12 Pro Max 512GB I Chính hãng VN/A', 23490000, 49, 'iphone-12-vangkim.png', '2024-11-22', '', 0, 1, 7, 3, 3),
 (28, 'iPhone 12 Pro Max 128GB I Chính hãng VN/A', 23490000, 50, 'iphone-12-xanhmongket.png', '2024-11-22', '', 0, 1, 7, 1, 5),
@@ -654,13 +663,13 @@ ALTER TABLE `comments`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=90;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
 
 --
 -- AUTO_INCREMENT for table `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=85;
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
 
 --
 -- AUTO_INCREMENT for table `payments`
@@ -714,7 +723,7 @@ ALTER TABLE `thumbnails`
 -- AUTO_INCREMENT for table `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `users`
