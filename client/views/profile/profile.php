@@ -108,14 +108,9 @@
                             <img id="avatarImage"
                                 src="<?= !empty($user['avatar']) ? $user['avatar'] : 'Uploads/User/nam.jpg' ?>"
                                 alt="Avatar" class="avatar">
-                            <form action="?action=update-profile" method="POST" enctype="multipart/form-data"
-                                class="avatar-form" id="avatarForm">
-                                <input type="file" name="avatar" accept="image/*" id="avatarInput"
-                                    style="display: none;" onchange="previewAvatar(event)">
-                                <button type="button" class="btn-change-avatar"
-                                    onclick="document.getElementById('avatarInput').click();"><i
-                                        class="fa-solid fa-pen"></i></button>
-                            </form>
+                            <button type="button" class="btn-change-avatar"
+                                onclick="document.getElementById('avatarInput').click();"><i
+                                    class="fa-solid fa-pen"></i></button>
                         </div>
                         <h3><?= htmlspecialchars($user['fullname'] ?? $user['username']) ?></h3>
                         <p class="email"><?= htmlspecialchars($user['email']) ?></p>
@@ -158,13 +153,12 @@
                             </div>
                         <?php endif; ?>
 
-                        <form class="profile-form" action="?action=update-profile" method="POST"
-                            enctype="multipart/form-data">
+                        <form class="profile-form" action="?action=update-profile" method="POST" enctype="multipart/form-data">
+                            <input type="file" name="avatar" accept="image/*" id="avatarInput" 
+                                style="display: none;" onchange="previewAvatar(event)">
                             <div class="form-group">
                                 <label>Họ và tên</label>
-                                <input type="text" name="fullname"
-                                    value="<?= htmlspecialchars($user['fullname'] ?? '') ?>"
-                                    placeholder="Nhập họ và tên">
+                                <input type="text" name="fullname" value="<?= htmlspecialchars($user['fullname'] ?? '') ?>">
                             </div>
                             <div class="form-group">
                                 <label>Email</label>
@@ -233,11 +227,11 @@
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('avatarImage').src = e.target.result; // Cập nhật ảnh đại diện
+                    document.getElementById('avatarImage').src = e.target.result;
                 }
                 reader.readAsDataURL(file);
-                // Gửi form ngay sau khi chọn ảnh
-                document.getElementById('avatarForm').submit();
+                // Tự động submit form khi chọn ảnh
+                document.querySelector('.profile-form').submit();
             }
         }
     </script>

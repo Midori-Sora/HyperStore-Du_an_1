@@ -40,12 +40,33 @@ class RegisterModel
         }
     }
 
-    public function register($username, $email, $password, $fullname = null, $phone = null, $address = null) {
+    public function register($data) {
         try {
-            $sql = "INSERT INTO users (username, email, password, fullname, phone, address, role_id) 
-                    VALUES (?, ?, ?, ?, ?, ?, 2)";
+            $sql = "INSERT INTO users (
+                username, email, password, fullname, phone, 
+                address, birthday, gender, role_id, status, avatar
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            
             $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("ssssss", $username, $email, $password, $fullname, $phone, $address);
+            $roleId = 2; // User role
+            $status = 1; // Active status
+            $defaultAvatar = 'Uploads/User/nam.jpg';
+            
+            $stmt->bind_param(
+                "sssssssiiis",
+                $data['username'],
+                $data['email'],
+                $data['password'],
+                $data['fullname'],
+                $data['phone'],
+                $data['address'],
+                $data['birthday'],
+                $data['gender'],
+                $roleId,
+                $status,
+                $defaultAvatar
+            );
+            
             return $stmt->execute();
         } catch (Exception $e) {
             error_log("Error in register: " . $e->getMessage());
