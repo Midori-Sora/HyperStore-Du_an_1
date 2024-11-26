@@ -13,12 +13,13 @@ define('PDO_OPTIONS', [
     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
 ]);
 
-// Require core files first
-require_once "commons/function.php";
+// Require MainModel first
+require_once __DIR__ . "/function.php";
 
-// Then require models
-require_once "models/userModel.php";
-require_once "models/categoryModel.php";
-require_once "models/commentModel.php";
-require_once "models/productModel.php";
-require_once "models/orderModel.php";
+// Then require models in correct order
+require_once "./models/homeModel.php";
+require_once "./models/userModel.php";
+require_once "./models/categoryModel.php";
+require_once "./models/commentModel.php";
+require_once "./models/productModel.php";
+require_once "./models/orderModel.php";

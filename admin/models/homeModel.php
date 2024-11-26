@@ -1,20 +1,12 @@
 <?php
-require_once "./commons/env.php";
-require_once "./commons/function.php";
-
-class HomeModel extends MainModel
+class HomeModel
 {
-    public $SUNNY;
+    private $db;
 
     public function __construct()
     {
-        try {
-            parent::__construct();
-            error_log("Database connection established in HomeModel");
-        } catch (PDOException $e) {
-            error_log("Database connection failed in HomeModel: " . $e->getMessage());
-            throw new Exception("Không thể kết nối đến cơ sở dữ liệu");
-        }
+        global $MainModel;
+        $this->db = $MainModel->SUNNY;
     }
 
     public function countProducts()
@@ -25,7 +17,7 @@ class HomeModel extends MainModel
                     COUNT(CASE WHEN pro_status = 1 THEN 1 END) as active,
                     COUNT(CASE WHEN pro_status = 0 THEN 1 END) as inactive
                     FROM products";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -46,7 +38,7 @@ class HomeModel extends MainModel
                     SUM(CASE WHEN role_id = 1 THEN 1 ELSE 0 END) as admin,
                     SUM(CASE WHEN role_id = 2 THEN 1 ELSE 0 END) as customer
                     FROM users";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return [
@@ -72,11 +64,10 @@ class HomeModel extends MainModel
                     COUNT(CASE WHEN cmt_status = 1 THEN 1 END) as approved,
                     COUNT(CASE WHEN cmt_status = 0 THEN 1 END) as pending   
                     FROM comments";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Ép kiểu kết quả về số nguyên và xử lý null
             return [
                 'total' => (int)($result['total'] ?? 0),
                 'approved' => (int)($result['approved'] ?? 0), 
@@ -98,7 +89,7 @@ class HomeModel extends MainModel
             $sql = "SELECT SUM(price * quantity) as total_revenue 
                     FROM products 
                     WHERE pro_status = 1";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return $result['total_revenue'] ?? 0;
@@ -117,7 +108,7 @@ class HomeModel extends MainModel
                     WHERE p.pro_status = 1
                     ORDER BY p.quantity DESC
                     LIMIT :limit";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -136,7 +127,7 @@ class HomeModel extends MainModel
                     COUNT(CASE WHEN status = 1 THEN 1 END) as processing,
                     COUNT(CASE WHEN status = 3 THEN 1 END) as pending
                     FROM orders";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
             return [
