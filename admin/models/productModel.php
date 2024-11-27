@@ -1,15 +1,12 @@
 <?php
-class ProductModel extends MainModel
+class ProductModel
 {
+    private $db;
+
     public function __construct()
     {
-        try {
-            parent::__construct();
-            error_log("Database connection established");
-        } catch (Exception $e) {
-            error_log("Database connection failed: " . $e->getMessage());
-            throw $e;
-        }
+        global $MainModel;
+        $this->db = $MainModel->SUNNY;
     }
 
     public function getProductList()
@@ -24,7 +21,7 @@ class ProductModel extends MainModel
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     ORDER BY p.pro_name ASC";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -32,7 +29,7 @@ class ProductModel extends MainModel
             return $result;
         } catch (PDOException $e) {
             error_log("Get product list error: " . $e->getMessage());
-            return false;
+            throw new Exception("Không thể lấy danh sách sản phẩm");
         }
     }
 
@@ -49,7 +46,7 @@ class ProductModel extends MainModel
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     WHERE p.pro_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute([':id' => $id]);
             
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -75,7 +72,7 @@ class ProductModel extends MainModel
                         color_id = :color_id,
                         quantity = :quantity
                     WHERE pro_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':name' => $name,
                 ':img' => $img,
@@ -99,7 +96,7 @@ class ProductModel extends MainModel
         try {
             $sql = "INSERT INTO products (pro_name, img, price, description, pro_status, cate_id, storage_id, color_id, quantity, import_date) 
                     VALUES (:name, :img, :price, :description, :status, :cate_id, :storage_id, :color_id, :quantity, NOW())";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':name' => $name,
                 ':img' => $img,
@@ -120,23 +117,23 @@ class ProductModel extends MainModel
     public function deleteProduct($id)
     {
         try {
-            $this->SUNNY->beginTransaction();
+            $this->db->beginTransaction();
 
             // Xóa sản phẩm (các bảng liên quan sẽ tự động xóa do ON DELETE CASCADE)
             $sql = "DELETE FROM products WHERE pro_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
             $result = $stmt->execute();
 
             if ($result) {
-                $this->SUNNY->commit();
+                $this->db->commit();
                 return true;
             } else {
-                $this->SUNNY->rollBack();
+                $this->db->rollBack();
                 return false;
             }
         } catch (PDOException $e) {
-            $this->SUNNY->rollBack();
+            $this->db->rollBack();
             error_log("Delete error: " . $e->getMessage());
             return false;
         }
@@ -144,17 +141,22 @@ class ProductModel extends MainModel
 
     public function getCategories()
     {
-        $sql = "SELECT * FROM categories";
-        $stmt = $this->SUNNY->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $sql = "SELECT * FROM categories";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Get categories error: " . $e->getMessage());
+            throw new Exception("Không thể lấy danh sách danh mục");
+        }
     }
 
     public function getStorageOptions()
     {
         try {
             $sql = "SELECT * FROM product_storage ORDER BY storage_price ASC";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -167,7 +169,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "SELECT * FROM product_color ORDER BY color_price";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -180,7 +182,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "INSERT INTO product_storage (storage_type, storage_price) VALUES (:type, :price)";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':type' => $storage_type,
                 ':price' => $storage_price
@@ -195,7 +197,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "UPDATE product_storage SET storage_type = :type, storage_price = :price WHERE storage_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':type' => $storage_type,
                 ':price' => $storage_price,
@@ -211,7 +213,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "DELETE FROM product_storage WHERE storage_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([':id' => $storage_id]);
         } catch (PDOException $e) {
             error_log("Delete storage error: " . $e->getMessage());
@@ -223,7 +225,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "INSERT INTO product_color (color_type, color_price) VALUES (:type, :price)";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':type' => $color_type,
                 ':price' => $color_price
@@ -238,7 +240,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "UPDATE product_color SET color_type = :type, color_price = :price WHERE color_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':type' => $color_type,
                 ':price' => $color_price,
@@ -254,7 +256,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "DELETE FROM product_color WHERE color_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([':id' => $color_id]);
         } catch (PDOException $e) {
             error_log("Delete color error: " . $e->getMessage());
@@ -266,7 +268,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "UPDATE products SET quantity = :quantity WHERE pro_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':quantity' => $quantity,
                 ':id' => $pro_id
@@ -289,7 +291,7 @@ class ProductModel extends MainModel
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     WHERE p.pro_id = :id";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute([':id' => $id]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
@@ -302,7 +304,7 @@ class ProductModel extends MainModel
     {
         try {
             $sql = "SELECT discount FROM product_deals WHERE pro_id = :pro_id AND status = 1 ORDER BY start_date DESC LIMIT 1";
-            $stmt = $this->SUNNY->prepare($sql);
+            $stmt = $this->db->prepare($sql);
             $stmt->execute([':pro_id' => $productId]);
             return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
