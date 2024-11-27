@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,46 @@
 </head>
 
 <body>
+    <?php if (isset($_SESSION['global_success'])): ?>
+    <div class="global-alert alert-success">
+        <?php
+            echo $_SESSION['global_success'];
+            unset($_SESSION['global_success']);
+            ?>
+    </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['global_error'])): ?>
+    <div class="global-alert alert-error">
+        <?php
+            echo $_SESSION['global_error'];
+            unset($_SESSION['global_error']);
+            ?>
+    </div>
+    <?php endif; ?>
+
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alerts = document.querySelectorAll('.global-alert');
+        alerts.forEach(alert => {
+            alert.addEventListener('click', () => {
+                alert.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+                setTimeout(() => {
+                    alert.remove();
+                }, 500);
+            });
+
+            setTimeout(() => {
+                alert.style.animation = 'fadeOut 0.5s ease-in-out forwards';
+                setTimeout(() => {
+                    alert.remove();
+                }, 500);
+            }, 3000);
+        });
+    });
+    </script>
+
     <header>
         <div class="header-container">
             <a href="index.php" class="logo">
@@ -19,12 +60,9 @@
             <div class="search-bar">
                 <form action="index.php" method="GET">
                     <input type="hidden" name="action" value="search">
-                    <input type="text" 
-                           name="keyword" 
-                           placeholder="Tìm kiếm sản phẩm..."
-                           value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>"
-                           required
-                           minlength="2">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm sản phẩm..."
+                        value="<?php echo isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>"
+                        required minlength="2">
                     <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </form>
             </div>
@@ -52,7 +90,7 @@
                             <li><a href="#">Đánh giá sản phẩm</a></li>
                             <li><a href="#">Deep Learning-AI</a></li>
                         </ul>
-                    </li> 
+                    </li>
                     <li><a href="#">Liên hệ</a></li>
                 </ul>
             </nav>
@@ -61,45 +99,46 @@
                 <div class="user-actions">
                     <a href="index.php?action=view-cart" class="cart-icon">
                         <i class="fas fa-shopping-cart"></i>
-                        <span class="count"><?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0; ?></span>
-                    </a>    
+                        <span
+                            class="count"><?php echo isset($_SESSION['cart']) ? array_sum($_SESSION['cart']) : 0; ?></span>
+                    </a>
 
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <div class="user-dropdown">
-                            <a href="#" class="user-menu">
-                                <i class="fas fa-user"></i>
-                                <span><?php echo $_SESSION['user_name']; ?></span>
-                            </a>
-                            <div class="user-popup">
-                                <ul>
-                                    <?php if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
-                                        <li>
-                                            <a href="admin/index.php" class="admin-link">
-                                                <i class="fas fa-cog"></i> Quản trị website
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                    <?php endif; ?>
-                                    <li>
-                                        <a href="index.php?action=profile">
-                                            <i class="fas fa-user-circle"></i> Tài khoản của tôi
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="index.php?action=logout">
-                                            <i class="fas fa-sign-out-alt"></i> Đăng xuất
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    <?php else: ?>
-                        <a href="index.php?action=login" class="login-btn">
+                    <div class="user-dropdown">
+                        <a href="#" class="user-menu">
                             <i class="fas fa-user"></i>
-                            <span>Đăng nhập</span>
+                            <span><?php echo $_SESSION['user_name']; ?></span>
                         </a>
+                        <div class="user-popup">
+                            <ul>
+                                <?php if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
+                                <li>
+                                    <a href="admin/index.php" class="admin-link">
+                                        <i class="fas fa-cog"></i> Quản trị website
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <?php endif; ?>
+                                <li>
+                                    <a href="index.php?action=profile">
+                                        <i class="fas fa-user-circle"></i> Tài khoản của tôi
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="index.php?action=logout">
+                                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <?php else: ?>
+                    <a href="index.php?action=login" class="login-btn">
+                        <i class="fas fa-user"></i>
+                        <span>Đăng nhập</span>
+                    </a>
                     <?php endif; ?>
                 </div>
             </div>

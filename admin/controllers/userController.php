@@ -68,7 +68,7 @@ class UserController
                 $data = [
                     'username' => $_POST['username'],
                     'email' => $_POST['email'],
-                    'password' => $_POST['password'], // Store password as plain text
+                    'password' => $_POST['password'], // Lưu mật khẩu gốc
                     'fullname' => $_POST['fullname'],
                     'phone' => $_POST['phone'],
                     'address' => $_POST['address'],
@@ -85,11 +85,6 @@ class UserController
                 // Check if email exists
                 if (UserModel::isEmailExists($data['email'])) {
                     throw new Exception("Email đã tồn tại. Vui lòng chọn email khác.");
-                }
-
-                // Define PATH_ROOT if not already defined
-                if (!defined('PATH_ROOT')) {
-                    define('PATH_ROOT', dirname(dirname(__DIR__))); // Goes up two levels from the controller
                 }
 
                 // Verify that the selected image exists
@@ -154,8 +149,9 @@ class UserController
                     }
                 }
 
+                // Xử lý mật khẩu nếu có thay đổi
                 if (!empty($_POST['password'])) {
-                    $data['password'] = $_POST['password']; // Store password as plain text
+                    $data['password'] = $_POST['password']; // Lưu mật khẩu gốc
                 }
 
                 if (UserModel::updateUser($data)) {

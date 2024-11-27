@@ -29,6 +29,17 @@ class ProfileModel extends MainModel
     public function updateProfile($data)
     {
         try {
+            // Lấy thông tin người dùng hiện tại
+            $currentUser = $this->getUserInfo($data['user_id']);
+            
+            // Giữ lại thông tin cũ nếu không có thông tin mới
+            $data['fullname'] = !empty($data['fullname']) ? $data['fullname'] : $currentUser['fullname'];
+            $data['phone'] = !empty($data['phone']) ? $data['phone'] : $currentUser['phone'];
+            $data['birthday'] = !empty($data['birthday']) ? $data['birthday'] : $currentUser['birthday'];
+            $data['gender'] = isset($data['gender']) ? $data['gender'] : $currentUser['gender'];
+            $data['address'] = !empty($data['address']) ? $data['address'] : $currentUser['address'];
+            $data['avatar'] = !empty($data['avatar']) ? $data['avatar'] : $currentUser['avatar'];
+
             $sql = "UPDATE users SET 
                     fullname = ?, 
                     phone = ?, 

@@ -26,45 +26,69 @@
             <?php endif; ?>
 
             <form action="index.php?action=register-process" method="POST" class="register-form">
-                <div class="form-group">
-                    <label for="username">Tên đăng nhập <span class="required">*</span></label>
-                    <input type="text" id="username" name="username" required>
-                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="username">Tên đăng nhập <span class="required">*</span></label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
 
-                <div class="form-group">
-                    <label for="email">Email <span class="required">*</span></label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="password">Mật khẩu <span class="required">*</span></label>
-                    <div class="password-input">
-                        <input type="password" id="password" name="password" required>
-                        <i class="fas fa-eye-slash toggle-password"></i>
+                    <div class="form-group">
+                        <label for="email">Email <span class="required">*</span></label>
+                        <input type="email" id="email" name="email" required>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="confirm_password">Xác nhận mật khẩu <span class="required">*</span></label>
-                    <div class="password-input">
-                        <input type="password" id="confirm_password" name="confirm_password" required>
-                        <i class="fas fa-eye-slash toggle-password"></i>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="password">Mật khẩu <span class="required">*</span></label>
+                        <div class="password-input">
+                            <input type="password" id="password" name="password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Xác nhận mật khẩu <span class="required">*</span></label>
+                        <div class="password-input">
+                            <input type="password" id="confirm_password" name="confirm_password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="fullname">Họ và tên</label>
-                    <input type="text" id="fullname" name="fullname">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fullname">Họ và tên <span class="required">*</span></label>
+                        <input type="text" id="fullname" name="fullname" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Số điện thoại <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="phone">Số điện thoại</label>
-                    <input type="tel" id="phone" name="phone" pattern="[0-9]{10}">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="birthday">Ngày sinh <span class="required">*</span></label>
+                        <input type="date" id="birthday" name="birthday" required
+                               max="<?= date('Y-m-d', strtotime('-10 years')) ?>"
+                               min="<?= date('Y-m-d', strtotime('-100 years')) ?>">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="gender">Giới tính <span class="required">*</span></label>
+                        <select id="gender" name="gender" required>
+                            <option value="">Chọn giới tính</option>
+                            <option value="1">Nam</option>
+                            <option value="0">Nữ</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label for="address">Địa chỉ</label>
-                    <textarea id="address" name="address" rows="3"></textarea>
+                <div class="form-group full-width">
+                    <label for="address">Địa chỉ <span class="required">*</span></label>
+                    <textarea id="address" name="address" rows="3" required></textarea>
                 </div>
 
                 <button type="submit" class="register-btn">Đăng ký</button>

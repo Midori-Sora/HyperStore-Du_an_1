@@ -49,8 +49,10 @@ class CartModel
     {
         $sql = "SELECT * FROM products WHERE pro_id = ?";
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$pro_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->bind_param("i", $pro_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
     public function checkStockQuantity($product_id)
