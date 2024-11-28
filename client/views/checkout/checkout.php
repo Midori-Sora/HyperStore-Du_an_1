@@ -54,16 +54,45 @@
                         <div class="product-image">
                             <img src="<?= $product['img'] ? 'Uploads/Product/' . $product['img'] : 'assets/images/no-image.png' ?>"
                                 alt="<?= htmlspecialchars($product['pro_name']) ?>">
+                            <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                                <div class="discount-badge">-<?= $product['current_discount'] ?>%</div>
+                            <?php endif; ?>
                         </div>
                         <div class="product-details">
                             <h3><?= htmlspecialchars($product['pro_name']) ?></h3>
-                            <p class="product-variant">
-                                Phân loại: <?= htmlspecialchars($product['storage_type']) ?>
-                            </p>
+                            <div class="product-variants">
+                                <?php if ($product['storage_type']): ?>
+                                    <span class="variant storage">
+                                        <i class="fas fa-memory"></i>
+                                        <?= htmlspecialchars($product['storage_type']) ?>
+                                        <?php if ($product['storage_price'] > 0): ?>
+                                            <span
+                                                class="price-diff">+<?= number_format($product['storage_price'], 0, ',', '.') ?>₫</span>
+                                        <?php endif; ?>
+                                    </span>
+                                <?php endif; ?>
+
+                                <?php if ($product['color_type']): ?>
+                                    <span class="variant color">
+                                        <i class="fas fa-palette"></i>
+                                        <?= htmlspecialchars($product['color_type']) ?>
+                                        <?php if ($product['color_price'] > 0): ?>
+                                            <span
+                                                class="price-diff">+<?= number_format($product['color_price'], 0, ',', '.') ?>₫</span>
+                                        <?php endif; ?>
+                                    </span>
+                                <?php endif; ?>
+                            </div>
                             <p class="product-quantity">x<?= $product['quantity'] ?></p>
                         </div>
                         <div class="product-price">
-                            <?= number_format($product['price'], 0, ',', '.') ?>đ
+                            <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                                <span class="original-price"><?= number_format($product['final_price'], 0, ',', '.') ?>₫</span>
+                                <span
+                                    class="discounted-price"><?= number_format($product['discounted_price'], 0, ',', '.') ?>₫</span>
+                            <?php else: ?>
+                                <span class="final-price"><?= number_format($product['final_price'], 0, ',', '.') ?>₫</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 <?php endforeach; ?>
