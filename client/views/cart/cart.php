@@ -36,18 +36,55 @@
                         <div class="cart-item">
                             <label class="checkbox-wrapper">
                                 <input type="checkbox" class="item-checkbox" data-product-id="<?php echo $item['pro_id']; ?>"
-                                    data-price="<?php echo $item['price']; ?>" data-quantity="<?php echo $item['quantity']; ?>">
+                                    data-price="<?php echo isset($item['discounted_price']) ? $item['discounted_price'] : $item['final_price']; ?>"
+                                    data-quantity="<?php echo $item['quantity']; ?>">
                                 <span class="checkmark"></span>
                             </label>
 
                             <div class="item-image">
                                 <img src="Uploads/Product/<?php echo $item['img']; ?>" alt="<?php echo $item['pro_name']; ?>">
+                                <?php if (isset($item['current_discount']) && $item['current_discount'] > 0): ?>
+                                    <div class="discount-badge">-<?php echo $item['current_discount']; ?>%</div>
+                                <?php endif; ?>
                             </div>
 
                             <div class="item-info">
                                 <h3><?php echo $item['pro_name']; ?></h3>
+
+                                <div class="item-variants">
+                                    <?php if ($item['storage_type']): ?>
+                                        <span class="variant storage">
+                                            <i class="fas fa-memory"></i>
+                                            <?php echo $item['storage_type']; ?>
+                                            <?php if ($item['storage_price'] > 0): ?>
+                                                <span
+                                                    class="price-diff">+<?php echo number_format($item['storage_price'], 0, ',', '.'); ?>₫</span>
+                                            <?php endif; ?>
+                                        </span>
+                                    <?php endif; ?>
+
+                                    <?php if ($item['color_type']): ?>
+                                        <span class="variant color">
+                                            <i class="fas fa-palette"></i>
+                                            <?php echo $item['color_type']; ?>
+                                            <?php if ($item['color_price'] > 0): ?>
+                                                <span
+                                                    class="price-diff">+<?php echo number_format($item['color_price'], 0, ',', '.'); ?>₫</span>
+                                            <?php endif; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+
                                 <div class="price-section">
-                                    <span class="item-price"><?php echo number_format($item['price'], 0, ',', '.'); ?>đ</span>
+                                    <?php if (isset($item['current_discount']) && $item['current_discount'] > 0): ?>
+                                        <span
+                                            class="original-price"><?php echo number_format($item['final_price'], 0, ',', '.'); ?>₫</span>
+                                        <span
+                                            class="discounted-price"><?php echo number_format($item['discounted_price'], 0, ',', '.'); ?>₫</span>
+                                    <?php else: ?>
+                                        <span
+                                            class="final-price"><?php echo number_format($item['final_price'], 0, ',', '.'); ?>₫</span>
+                                    <?php endif; ?>
                                 </div>
 
                                 <div class="item-actions">
@@ -66,10 +103,12 @@
                                         Tổng: <span><?php echo number_format($item['subtotal'], 0, ',', '.'); ?>đ</span>
                                     </div>
 
-                                    <form action="index.php?action=remove-from-cart" method="POST" class="remove-form">
+                                    <form action="index.php?action=remove-from-cart" method="POST" class="remove-form"
+                                        onsubmit="return confirmDelete()">
                                         <input type="hidden" name="product_id" value="<?php echo $item['pro_id']; ?>">
                                         <button type="submit" class="remove-btn">
-                                            <i class="fas fa-trash"></i> Xóa
+                                            <i class="fas fa-trash"></i>
+                                            <span>Xóa</span>
                                         </button>
                                     </form>
                                 </div>
@@ -103,8 +142,14 @@
                     </div>
 
                     <form action="index.php?action=checkout" method="POST" id="checkout-form">
-                        <button type="submit" class="checkout-btn" id="checkout-selected" disabled>
-                            Thanh toán (<span id="checkout-count">0</span> đơn hàng)
+                        <?php foreach ($cart_items as $item): ?>
+                            <input type="hidden" name="quantities[<?php echo $item['pro_id']; ?>]"
+                                value="<?php echo $item['quantity']; ?>" class="product-quantity"
+                                data-product-id="<?php echo $item['pro_id']; ?>">
+                        <?php endforeach; ?>
+
+                        <button type="submit" id="checkout-selected" class="checkout-btn" disabled>
+                            Thanh toán (<span id="checkout-count">0</span> sản phẩm)
                         </button>
                     </form>
                 </div>
@@ -380,6 +425,32 @@
             background: #ccc;
             cursor: not-allowed;
         }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .remove-btn:hover {
+            background-color: #fff0f0;
+            color: #e94560;
+        }
+
+        .remove-btn i {
+            font-size: 14px;
+        }
+
+        .remove-btn span {
+            font-size: 14px;
+        }
     </style>
 
     <script>
@@ -556,6 +627,40 @@
                 form.submit();
             });
         });
+
+        function confirmDelete() {
+            return confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?');
+        }
+
+        document.querySelectorAll('.item-checkbox').forEach(function(checkbox) {
+            checkbox.addEventListener('change', function() {
+                const productId = this.dataset.productId;
+                const quantity = this.dataset.quantity;
+                const quantityInput = document.querySelector(
+                    `.product-quantity[data-product-id="${productId}"]`);
+
+                if (this.checked && quantityInput) {
+                    quantityInput.disabled = false;
+                } else if (quantityInput) {
+                    quantityInput.disabled = true;
+                }
+
+                updateCheckoutSummary();
+            });
+        });
+
+        function updateCheckoutSummary() {
+            const selectedCheckboxes = document.querySelectorAll('.item-checkbox:checked');
+            const checkoutCount = document.getElementById('checkout-count');
+            let totalQuantity = 0;
+
+            selectedCheckboxes.forEach(checkbox => {
+                totalQuantity += parseInt(checkbox.dataset.quantity);
+            });
+
+            checkoutCount.textContent = totalQuantity;
+            document.getElementById('checkout-selected').disabled = totalQuantity === 0;
+        }
     </script>
 </body>
 

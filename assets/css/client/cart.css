@@ -247,3 +247,93 @@
   text-align: center;
   font-size: 16px;
 }
+
+.item-variants {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.variant {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  background: #f8f9fa;
+  gap: 5px;
+}
+
+.variant.storage {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.variant.color {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.price-diff {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #e94560;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.price-section {
+  margin: 10px 0;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 10px;
+}
+
+.discounted-price {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.final-price {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #fff0f0;
+  color: #e94560;
+}
+
+.remove-btn i {
+  font-size: 14px;
+}
+
+.remove-btn span {
+  font-size: 14px;
+}

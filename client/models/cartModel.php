@@ -18,27 +18,37 @@ class CartModel
         $total = 0;
 
         foreach ($cart as $product_id => $quantity) {
-            $sql = "SELECT p.*, pc.color_type, ps.storage_type, 
-                    p.price as final_price 
-                    FROM products p 
-                    LEFT JOIN product_color pc ON p.color_id = pc.color_id 
-                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id 
-                    WHERE p.pro_id = ?";
+            $sql = "SELECT p.*, pc.color_type, pc.color_price, 
+                          ps.storage_type, ps.storage_price,
+                          pd.discount as current_discount,
+                          p.price as base_price,
+                          (p.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
+                   FROM products p 
+                   LEFT JOIN product_color pc ON p.color_id = pc.color_id 
+                   LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id 
+                   LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id 
+                   WHERE p.pro_id = ?";
 
             $stmt = $this->conn->prepare($sql);
             $stmt->bind_param("i", $product_id);
             $stmt->execute();
-
             $result = $stmt->get_result();
             $product = $result->fetch_assoc();
 
             if ($product) {
                 $product['quantity'] = $quantity;
-                $product['subtotal'] = $product['final_price'] * $quantity;
+
+                // Tính giá sau khuyến mãi nếu có
+                if (isset($product['current_discount']) && $product['current_discount'] > 0) {
+                    $product['discounted_price'] = $product['final_price'] * (1 - $product['current_discount'] / 100);
+                    $product['subtotal'] = $product['discounted_price'] * $quantity;
+                } else {
+                    $product['subtotal'] = $product['final_price'] * $quantity;
+                }
+
                 $total += $product['subtotal'];
                 $items[] = $product;
             }
-
             $stmt->close();
         }
 
