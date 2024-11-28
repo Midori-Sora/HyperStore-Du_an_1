@@ -491,6 +491,33 @@
             document.getElementById('editStoragePrice').value = storagePrice;
         });
     }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const colorButtons = document.querySelectorAll('.color-btn');
+        const mainImage = document.getElementById('mainImage');
+
+        colorButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = this.href;
+
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const newMainImage = doc.getElementById('mainImage');
+                        if (newMainImage) {
+                            mainImage.src = newMainImage.src;
+                        }
+                        history.pushState({}, '', url);
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            });
+        });
+    });
     </script>
 </body>
 </html>

@@ -6,6 +6,18 @@ error_reporting(E_ALL);
 session_start();
 define('PATH_ROOT', dirname(__DIR__));
 
+require_once 'models/commentModel.php';
+require_once 'models/homeModel.php';
+require_once 'models/logoutModel.php';
+require_once 'models/orderModel.php';
+require_once 'models/productModel.php';
+require_once 'models/dealModel.php';
+require_once 'models/bannerModel.php';
+require_once 'models/categoryModel.php';
+require_once 'models/userModel.php';
+require_once 'models/MainModel.php';
+require_once 'models/orderModel.php';
+
 require_once 'controllers/homeController.php';
 require_once 'controllers/productController.php';
 require_once 'controllers/commentController.php';
@@ -164,4 +176,10 @@ switch ($action) {
         break;
     case 'logout':
         LogoutController::logoutController();
+    case 'editColor':
+        ProductController::editColorController();
+        break;
+    case 'editStorage':
+        ProductController::editStorageController();
+        break;
 }

@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/commentModel.php";
-
 class CommentController {
     private static $commentModel;
 

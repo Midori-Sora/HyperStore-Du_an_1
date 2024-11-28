@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/loginModel.php";
-
 class LoginController {
     public static function loginController() {
         if (session_status() === PHP_SESSION_NONE) {

@@ -1,5 +1,4 @@
 <?php
-require_once "client/models/homeModel.php";
 class HomeController
 {
     public static function homeController()

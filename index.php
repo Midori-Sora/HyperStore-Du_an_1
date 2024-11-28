@@ -8,6 +8,15 @@ require_once "client/commons/function.php";
 
 // Then load models
 require_once "client/models/cartModel.php";
+require_once "client/models/commentModel.php";
+require_once "client/models/homeModel.php";
+require_once "client/models/loginModel.php";
+require_once "client/models/orderModel.php";
+require_once "client/models/productModel.php";
+require_once "client/models/registerModel.php";
+require_once "client/models/searchModel.php";
+require_once "client/models/profileModel.php";
+require_once "client/models/checkoutModel.php";
 
 // Finally load controllers
 require_once "client/controllers/homeController.php";

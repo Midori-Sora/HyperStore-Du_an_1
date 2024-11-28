@@ -1,7 +1,4 @@
 <?php
-require_once "client/models/checkoutModel.php";
-
-
 class CheckoutController
 {
     private $checkoutModel;

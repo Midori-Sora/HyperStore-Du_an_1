@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/profileModel.php";
-
 class ProfileController
 {
     public static function profileController()

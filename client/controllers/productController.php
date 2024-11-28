@@ -1,18 +1,30 @@
 <?php
-require_once "client/models/productModel.php";
-
 class ProductController
 {
     public static function productController()
     {
         $productModel = new ProductModel();
         $products = $productModel->getProductList();
-
-        // Lấy mã giảm giá cho từng sản phẩm
-        foreach ($products as &$product) {
-            $currentDeal = $productModel->getCurrentDeal($product['pro_id']);
-            $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+        
+        // Tạo mảng tạm để kiểm tra sản phẩm trùng
+        $uniqueProducts = [];
+        
+        foreach ($products as $product) {
+            $productName = $product['pro_name'];
+            
+            // Nếu sản phẩm chưa tồn tại trong mảng tạm
+            if (!isset($uniqueProducts[$productName])) {
+                // Lấy mã giảm giá
+                $currentDeal = $productModel->getCurrentDeal($product['pro_id']);
+                $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+                
+                // Thêm vào mảng tạm
+                $uniqueProducts[$productName] = $product;
+            }
         }
+        
+        // Chuyển mảng kết quả về dạng tuần tự
+        $products = array_values($uniqueProducts);
 
         require_once "client/views/product/product.php";
     }
@@ -52,24 +64,32 @@ class ProductController
             exit;
         }
 
-        // Fetch current discount for the product
-        $currentDeal = $productModel->getCurrentDeal($productId);
-        $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+        // Lấy variant của sản phẩm
+        $variant = $productModel->getProductVariant(
+            $productId,
+            $colorId ?? $product['color_id'],
+            $storageId ?? $product['storage_id']
+        );
+        
+        if ($variant) {
+            $product = array_merge($product, $variant);
+        }
+
+        // Lấy ảnh theo màu sắc
+        if ($colorId) {
+            $productImage = $productModel->getProductImageByColor($productId, $colorId);
+            if ($productImage) {
+                $product['img'] = $productImage;
+            }
+        }
+
+        // Đảm bảo variant_price luôn có giá trị
+        if (!isset($product['variant_price'])) {
+            $product['variant_price'] = $product['price'];
+        }
 
         $availableColors = $productModel->getAllColorsByCategory($product['cate_id']);
         $availableStorages = $productModel->getAllStoragesByCategory($product['cate_id']);
-        
-        if ($colorId || $storageId) {
-            $variant = $productModel->getProductVariant(
-                $productId,
-                $colorId ?? $product['color_id'],
-                $storageId ?? $product['storage_id']
-            );
-            
-            if ($variant) {
-                $product = $variant;
-            }
-        }
 
         require_once "client/views/product/product-detail.php";
     }

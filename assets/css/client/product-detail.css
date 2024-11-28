@@ -710,7 +710,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .rating-overview {
-    flex-direction: column;
+  flex-direction: column;
     gap: 30px;
   }
 
@@ -990,4 +990,10 @@
     right: 16px;
     min-width: unset;
   }
+}
+
+.variant-btn.disabled, .color-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
 }

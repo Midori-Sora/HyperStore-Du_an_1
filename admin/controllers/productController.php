@@ -252,23 +252,25 @@ class ProductController
     public static function editColorController()
     {
         try {
-            self::init();
-            if (isset($_POST['color_id']) && isset($_POST['color_type']) && isset($_POST['color_price'])) {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $color_id = $_POST['color_id'];
                 $color_type = $_POST['color_type'];
                 $color_price = $_POST['color_price'];
-                
-                if (self::$productModel->editColor($color_id, $color_type, $color_price)) {
-                    $_SESSION['success'] = 'Cập nhật màu thành công';
+
+                $productModel = new ProductModel();
+                if ($productModel->editColor($color_id, $color_type, $color_price)) {
+                    $_SESSION['success'] = "Cập nhật màu sắc thành công!";
                 } else {
-                    throw new Exception('Cập nhật màu thất bại');
+                    $_SESSION['error'] = "Có lỗi xảy ra khi cập nhật màu sắc!";
                 }
             }
+            header('Location: index.php?action=productVariant');
+            exit();
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
+            $_SESSION['error'] = $e->getMessage();
+            header('Location: index.php?action=productVariant');
+            exit();
         }
-        header('Location: index.php?action=productVariant');
-        exit();
     }
 
     public static function deleteColorController()
@@ -333,6 +335,9 @@ class ProductController
             // Fetch current deal for the product
             $currentDeal = self::$productModel->getCurrentDeal($id);
             $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+
+            // Fetch available colors
+            $availableColors = self::$productModel->getColorOptions();
 
             // Debug log
             error_log("Product detail controller - ID: $id, Data: " . json_encode($product));

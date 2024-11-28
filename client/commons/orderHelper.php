@@ -7,7 +7,7 @@ class OrderHelper
             'pending' => 'Chờ xác nhận',
             'confirmed' => 'Đã xác nhận',
             'processing' => 'Đang chuẩn bị hàng',
-            'shipping' => 'Đang giao hàng',
+            'shipping' => 'Đang giao hàng', 
             'delivered' => 'Đã giao thành công',
             'cancelled' => 'Đã hủy',
             'returned' => 'Đã trả hàng',

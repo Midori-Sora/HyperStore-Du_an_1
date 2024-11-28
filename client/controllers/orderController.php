@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/orderModel.php";
-
 class OrderController
 {
     private $orderModel;

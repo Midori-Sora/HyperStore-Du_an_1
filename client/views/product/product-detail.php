@@ -67,19 +67,24 @@
                 </div>
 
                 <div class="product-price">
-                    <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                    <?php 
+                    // Đảm bảo variant_price có giá trị
+                    $displayPrice = isset($product['variant_price']) ? $product['variant_price'] : $product['price'];
+                    
+                    if (isset($product['current_discount']) && $product['current_discount'] > 0): 
+                    ?>
                         <div class="discount-info">
                             <div class="current-price">
-                                <?php echo number_format($product['price'] * (1 - $product['current_discount'] / 100), 0, ',', '.'); ?>₫
+                                <?php echo number_format($displayPrice * (1 - $product['current_discount'] / 100), 0, ',', '.'); ?>₫
                             </div>
                             <div class="original-price">
-                                <span><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</span>
+                                <span><?php echo number_format($displayPrice, 0, ',', '.'); ?>₫</span>
                             </div>
                             <span class="discount-percentage">-<?php echo $product['current_discount']; ?>%</span>
                         </div>
                     <?php else: ?>
                         <div class="current-price">
-                            <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
+                            <?php echo number_format($displayPrice, 0, ',', '.'); ?>₫
                         </div>
                     <?php endif; ?>
                 </div>
@@ -90,7 +95,6 @@
                         <div class="variant-options">
                             <?php foreach ($availableStorages as $storage): ?>
                                 <?php
-                                // Kiểm tra xem có variant cho storage này không
                                 $variantExists = $productModel->checkVariantExists(
                                     $product['pro_id'],
                                     $product['color_id'],
@@ -101,6 +105,9 @@
                                     <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&storage=<?php echo $storage['storage_id']; ?>&color=<?php echo $product['color_id']; ?>"
                                         class="variant-btn <?php echo ($storage['storage_id'] == $product['storage_id']) ? 'active' : ''; ?>">
                                         <?php echo $storage['storage_type']; ?>
+                                        <?php if ($storage['storage_price'] > 0): ?>
+                                            <span class="price-diff">+<?php echo number_format($storage['storage_price'], 0, ',', '.'); ?>₫</span>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -114,7 +121,6 @@
                         <div class="color-options">
                             <?php foreach ($availableColors as $color): ?>
                                 <?php
-                                // Kiểm tra xem có variant cho màu này không
                                 $variantExists = $productModel->checkVariantExists(
                                     $product['pro_id'],
                                     $color['color_id'],
@@ -122,9 +128,8 @@
                                 );
                                 if ($variantExists):
                                 ?>
-                                    <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>&discount=<?php echo isset($product['current_discount']) ? $product['current_discount'] : 0; ?>"
-                                        class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>"
-                                        data-color="<?php echo $color['color_type']; ?>">
+                                    <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>"
+                                        class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>">
                                         <div class="color-wrapper">
                                             <span class="color-circle"
                                                 style="background-color: <?php echo $productModel->getColorCode($color['color_type']); ?>"></span>
@@ -135,6 +140,9 @@
                                             <?php endif; ?>
                                         </div>
                                         <span class="color-name"><?php echo $color['color_type']; ?></span>
+                                        <?php if ($color['color_price'] > 0): ?>
+                                            <span class="price-diff">+<?php echo number_format($color['color_price'], 0, ',', '.'); ?>₫</span>
+                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -231,51 +239,8 @@
     </div>
 
     <script>
-        // Xử lý chuyển đổi ảnh thumbnail
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        const mainImage = document.getElementById('mainImage');
-
-        thumbnails.forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                // Remove active class from all thumbnails
-                thumbnails.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked thumbnail
-                this.classList.add('active');
-                // Update main image
-                mainImage.src = this.src;
-            });
-        });
-
-        // Xử lý tăng giảm s lượng
-        const minusBtn = document.querySelector('.minus');
-        const plusBtn = document.querySelector('.plus');
-        const qtyInput = document.querySelector('.qty-input');
-        const hiddenQuantity = document.getElementById('hidden-quantity');
-        const buyNowQuantity = document.getElementById('buy-now-quantity');
-
-        // Cập nhật hidden input khi số lượng thay đổi
-        qtyInput.addEventListener('change', function() {
-            hiddenQuantity.value = this.value;
-            buyNowQuantity.value = this.value; // Cập nhật số lượng cho form mua ngay
-        });
-
-        minusBtn.addEventListener('click', () => {
-            const currentValue = parseInt(qtyInput.value);
-            if (currentValue > 1) {
-                qtyInput.value = currentValue - 1;
-                hiddenQuantity.value = currentValue - 1;
-                buyNowQuantity.value = currentValue - 1; // Cập nhật số lượng cho form mua ngay
-            }
-        });
-
-        plusBtn.addEventListener('click', () => {
-            const currentValue = parseInt(qtyInput.value);
-            qtyInput.value = currentValue + 1;
-            hiddenQuantity.value = currentValue + 1;
-            buyNowQuantity.value = currentValue + 1; // Cập nhật số lượng cho form mua ngay
-        });
-
         document.addEventListener('DOMContentLoaded', function() {
+            // Xử lý alerts
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 // Tự động ẩn sau 3 giây
@@ -293,17 +258,39 @@
                     });
                 }
             });
-        });
 
-        // Cập nhật ảnh sản phẩm khi đổi màu
-        document.addEventListener('DOMContentLoaded', function() {
-            const mainImage = document.getElementById('mainImage');
-            const thumbnail = document.querySelector('.thumbnail');
+            // Xử lý số lượng sản phẩm
+            const qtyInput = document.querySelector('.qty-input');
+            const hiddenQuantity = document.getElementById('hidden-quantity');
+            const buyNowQuantity = document.getElementById('buy-now-quantity');
+            const minusBtn = document.querySelector('.minus');
+            const plusBtn = document.querySelector('.plus');
 
-            // Cập nhật ảnh khi URL thay đổi
-            if (mainImage && thumbnail) {
-                const newImageUrl = mainImage.src;
-                thumbnail.src = newImageUrl;
+            if (qtyInput && hiddenQuantity && buyNowQuantity) {
+                qtyInput.addEventListener('change', function() {
+                    hiddenQuantity.value = this.value;
+                    buyNowQuantity.value = this.value;
+                });
+
+                if (minusBtn) {
+                    minusBtn.addEventListener('click', () => {
+                        const currentValue = parseInt(qtyInput.value);
+                        if (currentValue > 1) {
+                            qtyInput.value = currentValue - 1;
+                            hiddenQuantity.value = currentValue - 1;
+                            buyNowQuantity.value = currentValue - 1;
+                        }
+                    });
+                }
+
+                if (plusBtn) {
+                    plusBtn.addEventListener('click', () => {
+                        const currentValue = parseInt(qtyInput.value);
+                        qtyInput.value = currentValue + 1;
+                        hiddenQuantity.value = currentValue + 1;
+                        buyNowQuantity.value = currentValue + 1;
+                    });
+                }
             }
         });
     </script>

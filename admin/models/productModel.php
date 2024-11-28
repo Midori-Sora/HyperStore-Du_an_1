@@ -239,7 +239,10 @@ class ProductModel
     public function editColor($color_id, $color_type, $color_price)
     {
         try {
-            $sql = "UPDATE product_color SET color_type = :type, color_price = :price WHERE color_id = :id";
+            $sql = "UPDATE product_color 
+                    SET color_type = :type, 
+                        color_price = :price 
+                    WHERE color_id = :id";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([
                 ':type' => $color_type,

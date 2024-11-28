@@ -1,49 +1,43 @@
 <?php
 class CommentModel {
-    private $conn;
+    private $db;
 
     public function __construct() {
-        $this->conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
+        global $MainModel;
+        $this->db = $MainModel->SUNNY;
     }
 
     public function getCommentsByProduct($product_id) {
-        $sql = "SELECT c.*, u.username, u.avatar 
-                FROM comments c 
-                LEFT JOIN users u ON c.user_id = u.user_id 
-                WHERE c.pro_id = ? 
-                ORDER BY c.import_date DESC";
-        
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $product_id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        
-        $comments = [];
-        while ($row = $result->fetch_assoc()) {
-            $comments[] = $row;
+        try {
+            $sql = "SELECT c.*, u.username, u.avatar 
+                    FROM comments c 
+                    LEFT JOIN users u ON c.user_id = u.user_id 
+                    WHERE c.pro_id = :product_id 
+                    ORDER BY c.import_date DESC";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':product_id' => $product_id]);
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            error_log("Get comments error: " . $e->getMessage());
+            return [];
         }
-        
-        return $comments;
     }
 
     public function addComment($data) {
-        $sql = "INSERT INTO comments (pro_id, user_id, content, import_date) 
-                VALUES (?, ?, ?, NOW())";
-        
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("iis", 
-            $data['product_id'],
-            $data['user_id'],
-            $data['content']
-        );
-        
-        return $stmt->execute();
-    }
-
-    public function __destruct() {
-        $this->conn->close();
+        try {
+            $sql = "INSERT INTO comments (pro_id, user_id, content, import_date) 
+                    VALUES (:product_id, :user_id, :content, NOW())";
+            
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':product_id' => $data['product_id'],
+                ':user_id' => $data['user_id'],
+                ':content' => $data['content']
+            ]);
+        } catch (PDOException $e) {
+            error_log("Add comment error: " . $e->getMessage());
+            return false;
+        }
     }
 }

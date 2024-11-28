@@ -1,26 +1,22 @@
 <?php
 class ProfileModel extends MainModel
 {
-    private $conn;
+    private $db;
 
     public function __construct()
     {
-        $this->conn = new mysqli("localhost", "root", "", "duan1");
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
+        global $MainModel;
+        $this->db = $MainModel->SUNNY;
     }
 
     public function getUserInfo($userId)
     {
         try {
-            $sql = "SELECT * FROM users WHERE user_id = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("i", $userId);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_assoc();
-        } catch (Exception $e) {
+            $sql = "SELECT * FROM users WHERE user_id = :userId";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':userId' => $userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
             error_log("Error fetching user info: " . $e->getMessage());
             return false;
         }
@@ -41,28 +37,25 @@ class ProfileModel extends MainModel
             $data['avatar'] = !empty($data['avatar']) ? $data['avatar'] : $currentUser['avatar'];
 
             $sql = "UPDATE users SET 
-                    fullname = ?, 
-                    phone = ?, 
-                    birthday = ?, 
-                    gender = ?, 
-                    address = ?,
-                    avatar = ? 
-                    WHERE user_id = ?";
+                    fullname = :fullname, 
+                    phone = :phone, 
+                    birthday = :birthday, 
+                    gender = :gender, 
+                    address = :address,
+                    avatar = :avatar 
+                    WHERE user_id = :user_id";
 
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param(
-                "ssssssi",
-                $data['fullname'],
-                $data['phone'],
-                $data['birthday'],
-                $data['gender'],
-                $data['address'],
-                $data['avatar'],
-                $data['user_id']
-            );
-
-            return $stmt->execute();
-        } catch (Exception $e) {
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([
+                ':fullname' => $data['fullname'],
+                ':phone' => $data['phone'],
+                ':birthday' => $data['birthday'],
+                ':gender' => $data['gender'],
+                ':address' => $data['address'],
+                ':avatar' => $data['avatar'],
+                ':user_id' => $data['user_id']
+            ]);
+        } catch (PDOException $e) {
             error_log("Update profile failed: " . $e->getMessage());
             return false;
         }

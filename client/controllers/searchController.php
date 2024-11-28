@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/searchModel.php";
-
 class SearchController {
     public static function searchController() {
         $searchModel = new SearchModel();

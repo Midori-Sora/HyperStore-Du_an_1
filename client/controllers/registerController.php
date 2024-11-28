@@ -1,6 +1,4 @@
 <?php
-require_once "client/models/registerModel.php";
-
 class RegisterController {
     public static function registerController() {
         require_once "client/views/authentication/register.php";
