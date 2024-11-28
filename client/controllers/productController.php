@@ -4,28 +4,22 @@ class ProductController
     public static function productController()
     {
         $productModel = new ProductModel();
-        $products = $productModel->getProductList();
         
-        // Tạo mảng tạm để kiểm tra sản phẩm trùng
-        $uniqueProducts = [];
+        // Lấy trang hiện tại từ URL, mặc định là trang 1
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $itemsPerPage = 20; // Số sản phẩm mỗi trang
         
-        foreach ($products as $product) {
-            $productName = $product['pro_name'];
-            
-            // Nếu sản phẩm chưa tồn tại trong mảng tạm
-            if (!isset($uniqueProducts[$productName])) {
-                // Lấy mã giảm giá
-                $currentDeal = $productModel->getCurrentDeal($product['pro_id']);
-                $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
-                
-                // Thêm vào mảng tạm
-                $uniqueProducts[$productName] = $product;
-            }
-        }
+        // Lấy tổng số sản phẩm và số trang
+        $totalProducts = $productModel->getTotalProducts();
+        $totalPages = ceil($totalProducts / $itemsPerPage);
         
-        // Chuyển mảng kết quả về dạng tuần tự
-        $products = array_values($uniqueProducts);
-
+        // Đảm bảo trang hiện tại không vượt quá tổng số trang
+        $currentPage = max(1, min($currentPage, $totalPages));
+        
+        // Lấy danh sách sản phẩm cho trang hiện tại
+        $products = $productModel->getProductListPaginated($currentPage, $itemsPerPage);
+        
+        // Truyền dữ liệu sang view
         require_once "client/views/product/product.php";
     }
 

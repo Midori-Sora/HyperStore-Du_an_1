@@ -13,20 +13,34 @@ class ProductModel
     public function getProductList()
     {
         try {
-            $sql = "SELECT DISTINCT p.pro_id, p.*, c.cate_name, pc.color_type, ps.storage_type 
+            $sql = "SELECT DISTINCT p.*, c.cate_name, pc.color_type, pc.color_price, 
+                    ps.storage_type, ps.storage_price,
+                    (p.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     WHERE p.pro_status = 1 
-                    GROUP BY p.pro_name, p.cate_id
+                    GROUP BY p.pro_name, p.storage_id, p.color_id
                     ORDER BY p.import_date DESC";
             
             $stmt = $this->conn->prepare($sql);
             $stmt->execute();
             $result = $stmt->get_result();
             
-            return $result->fetch_all(MYSQLI_ASSOC);
+            $products = $result->fetch_all(MYSQLI_ASSOC);
+            
+            // Thêm thông tin giảm giá cho mỗi sản phẩm
+            foreach ($products as &$product) {
+                $currentDeal = $this->getCurrentDeal($product['pro_id']);
+                $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+                
+                if ($product['current_discount'] > 0) {
+                    $product['discounted_price'] = $product['final_price'] * (1 - $product['current_discount'] / 100);
+                }
+            }
+            
+            return $products;
             
         } catch (Exception $e) {
             error_log("Error in getProductList: " . $e->getMessage());
@@ -183,7 +197,11 @@ class ProductModel
             'Xanh Lưu Ly' => '#0066CC', // Màu xanh dương đậm
             'Xanh Mòng Két' => '#00A36C', // Màu xanh ngọc
             'Hồng' => '#FFC0CB',
-            'Đỏ' => '#FF0000'
+            'Đỏ' => '#FF0000',
+            'Tím' => '#800080',
+            'Xanh Biển' => '#87CEEB', // Cập nhật màu xanh biển nhạt hơn (Sky Blue)
+            'Xanh Lá' => '#90EE90', // Cập nhật màu xanh lá nhạt (Light Green)
+            'Vàng' => '#FFFF00'
         ];
         
         return $colorMap[$colorName] ?? '#CCCCCC'; // Màu mặc định nếu không tìm thấy
@@ -372,5 +390,62 @@ class ProductModel
         ];
         
         return isset($colorMap[$colorType]) ? $colorMap[$colorType] : 'default';
+    }
+
+    public function getTotalProducts()
+    {
+        try {
+            $sql = "SELECT COUNT(DISTINCT p.pro_id) as total 
+                    FROM products p 
+                    WHERE p.pro_status = 1";
+            $result = $this->conn->query($sql);
+            $row = $result->fetch_assoc();
+            return $row['total'];
+        } catch (Exception $e) {
+            error_log("Error in getTotalProducts: " . $e->getMessage());
+            return 0;
+        }
+    }
+
+    public function getProductListPaginated($page, $itemsPerPage)
+    {
+        try {
+            $offset = ($page - 1) * $itemsPerPage;
+            
+            $sql = "SELECT DISTINCT p.*, c.cate_name, pc.color_type, pc.color_price, 
+                    ps.storage_type, ps.storage_price,
+                    (p.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
+                    FROM products p 
+                    LEFT JOIN categories c ON p.cate_id = c.cate_id
+                    LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                    LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
+                    WHERE p.pro_status = 1 
+                    GROUP BY p.pro_name, p.storage_id, p.color_id
+                    ORDER BY p.import_date DESC
+                    LIMIT ? OFFSET ?";
+            
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("ii", $itemsPerPage, $offset);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            
+            $products = $result->fetch_all(MYSQLI_ASSOC);
+            
+            // Thêm thông tin giảm giá cho mỗi sản phẩm
+            foreach ($products as &$product) {
+                $currentDeal = $this->getCurrentDeal($product['pro_id']);
+                $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
+                
+                if ($product['current_discount'] > 0) {
+                    $product['discounted_price'] = $product['final_price'] * (1 - $product['current_discount'] / 100);
+                }
+            }
+            
+            return $products;
+            
+        } catch (Exception $e) {
+            error_log("Error in getProductListPaginated: " . $e->getMessage());
+            return [];
+        }
     }
 }
