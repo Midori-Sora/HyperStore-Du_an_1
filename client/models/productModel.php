@@ -90,11 +90,14 @@ class ProductModel
     public function getProductById($id)
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, pc.color_type, pc.color_id, ps.storage_type, ps.storage_id 
+            $sql = "SELECT p.*, c.cate_name, pc.color_type, pc.color_id, 
+                    ps.storage_type, ps.storage_id,
+                    pd.discount as current_discount 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id AND pd.status = 1
                     WHERE p.pro_id = ? AND p.pro_status = 1";
                     
             $stmt = $this->conn->prepare($sql);

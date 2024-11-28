@@ -71,16 +71,18 @@
                     // Đảm bảo variant_price có giá trị
                     $displayPrice = isset($product['variant_price']) ? $product['variant_price'] : $product['price'];
                     
+                    // Kiểm tra xem có khuyến mãi không
                     if (isset($product['current_discount']) && $product['current_discount'] > 0): 
+                        // Tính giá sau khuyến mãi
+                        $discountedPrice = $displayPrice * (1 - $product['current_discount'] / 100);
                     ?>
                         <div class="discount-info">
                             <div class="current-price">
-                                <?php echo number_format($displayPrice * (1 - $product['current_discount'] / 100), 0, ',', '.'); ?>₫
+                                <?php echo number_format($discountedPrice, 0, ',', '.'); ?>₫
                             </div>
                             <div class="original-price">
                                 <span><?php echo number_format($displayPrice, 0, ',', '.'); ?>₫</span>
                             </div>
-                            <span class="discount-percentage">-<?php echo $product['current_discount']; ?>%</span>
                         </div>
                     <?php else: ?>
                         <div class="current-price">
@@ -88,6 +90,16 @@
                         </div>
                     <?php endif; ?>
                 </div>
+
+                <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                <div class="promotion-info">
+                    <h3><i class="fas fa-gift"></i> Khuyến mãi đặc biệt</h3>
+                    <div class="promotion-details">
+                        <p>Giảm ngay <?php echo $product['current_discount']; ?>% khi mua sản phẩm</p>
+                        <p class="promotion-saving">Tiết kiệm: <?php echo number_format($displayPrice - $discountedPrice, 0, ',', '.'); ?>₫</p>
+                    </div>
+                </div>
+                <?php endif; ?>
 
                 <?php if (!empty($availableStorages)): ?>
                     <div class="product-variants">
