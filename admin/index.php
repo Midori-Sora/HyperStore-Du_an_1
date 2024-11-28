@@ -174,6 +174,12 @@ switch ($action) {
     case 'editDeal':
         DealController::editDealController();
         break;
+    case 'dealDetails':
+        DealController::dealDetailsController();
+        break;
+    case 'deleteManyDeals':
+        DealController::deleteManyDealsController();
+        break;
     case 'logout':
         LogoutController::logoutController();
     case 'editColor':

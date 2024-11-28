@@ -19,9 +19,11 @@
         margin: 0 auto;
         padding: 20px;
     }
-    .container{
+
+    .container {
         --bs-gutter-x: 0;
     }
+
     main {
         width: calc(100% - 270px);
         margin-left: 270px;
@@ -130,6 +132,28 @@
     .table> :not(caption)>*>* {
         padding: 1rem 0.5rem;
     }
+
+    .product-item {
+        margin-bottom: 8px;
+        padding: 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .prices {
+        display: flex;
+        gap: 10px;
+        margin-top: 4px;
+    }
+
+    .original-price {
+        text-decoration: line-through;
+        color: #999;
+    }
+
+    .discounted-price {
+        color: #dc3545;
+        font-weight: bold;
+    }
     </style>
 </head>
 
@@ -144,102 +168,125 @@
         <main>
             <div class="container">
                 <div class="card">
-                    <div class="card-header">
-                        <h2>
-                            <i class="fas fa-percent me-2"></i>
-                            Quản lý khuyến mãi
-                        </h2>
-                        <a href="?action=addDeal" class="btn-add">
-                            <i class="fas fa-plus"></i>
-                            Thêm khuyến mãi
-                        </a>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4>Quản lý khuyến mãi</h4>
+                        <div>
+                            <a href="?action=addDeal" class="btn btn-primary">
+                                <i class="fas fa-plus"></i> Thêm khuyến mãi
+                            </a>
+                        </div>
                     </div>
 
-                    <?php if (isset($_SESSION['success'])): ?>
-                    <div class="alert alert-success alert-dismissible fade show">
-                        <i class="fas fa-check-circle me-2"></i>
-                        <?php
-                            echo $_SESSION['success'];
-                            unset($_SESSION['success']);
-                            ?>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                    <?php endif; ?>
-
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th width="5%">ID</th>
-                                    <th width="19%">Sản phẩm</th>
-                                    <th width="8%">Giảm giá</th>
-                                    <th width="12%">Giá gốc</th>
-                                    <th width="10%">Giá sau giảm</th>
-                                    <th width="10%">Ngày bắt đầu</th>
-                                    <th width="11%">Ngày kết thúc</th>
-                                    <th width="12%">Trạng thái</th>
-                                    <th width="10%">Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php if (!empty($deals)): ?>
-                                <?php foreach ($deals as $deal): ?>
-                                <tr>
-                                    <td><?= $deal['deal_id'] ?></td>
-                                    <td><?= htmlspecialchars($deal['pro_name']) ?></td>
-                                    <td>
-                                        <span class="badge bg-danger">
-                                            -<?= $deal['discount'] ?>%
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="original-price">
-                                            <?= number_format($deal['pro_price'], 0, ',', '.') ?>đ
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="discounted-price text-success fw-bold">
-                                            <?= number_format($deal['pro_price'] * (1 - $deal['discount'] / 100), 0, ',', '.') ?>đ
-                                        </span>
-                                    </td>
-                                    <td><?= date('d/m/Y', strtotime($deal['start_date'])) ?></td>
-                                    <td><?= date('d/m/Y', strtotime($deal['end_date'])) ?></td>
-                                    <td>
-                                        <span
-                                            class="status-badge <?= $deal['status'] ? 'status-active' : 'status-inactive' ?>">
-                                            <?= $deal['status'] ? 'Hoạt động' : 'Không hoạt động' ?>
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="?action=editDeal&id=<?= $deal['deal_id'] ?>"
-                                            class="btn btn-success btn-action me-2">
-                                            <i class="fas fa-edit me-1"></i>
-                                            Sửa
-                                        </a>
-                                        <a href="?action=deleteDeal&id=<?= $deal['deal_id'] ?>"
-                                            class="btn btn-danger btn-action"
-                                            onclick="return confirm('Bạn có chắc muốn xóa khuyến mãi này?')">
-                                            <i class="fas fa-trash me-1"></i>
-                                            Xóa
-                                        </a>
-                                    </td>
-                                </tr>
-                                <?php endforeach; ?>
-                                <?php else: ?>
-                                <tr>
-                                    <td colspan="9" class="text-center py-4">
-                                        <i class="fas fa-percent me-2"></i>
-                                        Không có khuyến mãi nào
-                                    </td>
-                                </tr>
-                                <?php endif; ?>
-                            </tbody>
-                        </table>
+                    <div class="card-body">
+                        <form id="dealsForm" method="POST" action="?action=deleteManyDeals">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th width="5%">
+                                            <input type="checkbox" id="checkAll" class="form-check-input">
+                                        </th>
+                                        <th width="8%">Giảm giá</th>
+                                        <th width="35%">Sản phẩm áp dụng</th>
+                                        <th width="12%">Ngày bắt đầu</th>
+                                        <th width="12%">Ngày kết thúc</th>
+                                        <th width="12%">Trạng thái</th>
+                                        <th width="16%">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($deals as $deal): ?>
+                                    <tr>
+                                        <td>
+                                            <input type="checkbox" name="selected_deals[]"
+                                                value="<?= $deal['deal_id'] ?>" class="form-check-input deal-checkbox">
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-primary"><?= $deal['discount'] ?>%</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge bg-secondary me-2">
+                                                    <?= $deal['product_count'] ?> sản phẩm
+                                                </span>
+                                                <div class="text-truncate" style="max-width: 300px;">
+                                                    <?= $deal['products_text'] ?>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td><?= date('d/m/Y', strtotime($deal['start_date'])) ?></td>
+                                        <td><?= date('d/m/Y', strtotime($deal['end_date'])) ?></td>
+                                        <td>
+                                            <span class="badge <?= $deal['status'] ? 'bg-success' : 'bg-danger' ?>">
+                                                <?= $deal['status'] ? 'Hoạt động' : 'Tạm dừng' ?>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a href="index.php?action=dealDetails&id=<?= $deal['deal_id'] ?>"
+                                                class="btn btn-sm btn-info me-1">
+                                                <i class="fas fa-eye"></i> Chi tiết
+                                            </a>
+                                            <a href="?action=editDeal&id=<?= $deal['deal_id'] ?>"
+                                                class="btn btn-sm btn-success me-1">
+                                                <i class="fas fa-edit"></i> Sửa
+                                            </a>
+                                            <button type="submit" name="selected_deals[]"
+                                                value="<?= $deal['deal_id'] ?>" class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Bạn có chắc chắn muốn xóa khuyến mãi này?')">
+                                                <i class="fas fa-trash"></i> Xóa
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <!-- Modal chi tiết -->
+    <div class="modal fade" id="dealDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Chi tiết khuyến mãi</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="dealDetailsContent">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thêm jQuery và Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+    function viewDealDetails(dealId) {
+        $.ajax({
+            url: 'index.php?action=getDealDetails',
+            type: 'GET',
+            data: {
+                id: dealId
+            },
+            success: function(response) {
+                $('#dealDetailsContent').html(response);
+                $('#dealDetailsModal').modal('show');
+            },
+            error: function() {
+                alert('Đã có lỗi xảy ra khi tải chi tiết khuyến mãi');
+            }
+        });
+    }
+
+    // Xử lý checkbox
+    $('#checkAll').change(function() {
+        $('.deal-checkbox').prop('checked', $(this).prop('checked'));
+    });
+    </script>
 </body>
 
 </html>
