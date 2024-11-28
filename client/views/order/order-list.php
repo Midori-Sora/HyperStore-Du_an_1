@@ -30,175 +30,200 @@ require_once "client/commons/orderHelper.php";
         </div>
 
         <?php if (empty($orders)): ?>
-            <div class="empty-orders">
-                <img src="assets/images/empty-order.png" alt="Không có đơn hàng">
-                <p>Bạn chưa có đơn hàng nào</p>
-                <a href="index.php?action=product" class="btn btn-primary">Mua sắm ngay</a>
-            </div>
+        <div class="empty-orders">
+            <img src="assets/images/empty-order.png" alt="Không có đơn hàng">
+            <p>Bạn chưa có đơn hàng nào</p>
+            <a href="index.php?action=product" class="btn btn-primary">Mua sắm ngay</a>
+        </div>
         <?php else: ?>
-            <div class="order-list">
-                <?php foreach ($orders as $order): ?>
-                    <div class="order-item" data-status="<?= $order['status'] ?>">
-                        <div class="order-header">
-                            <div>
-                                <span class="order-code">#<?= $order['order_code'] ?></span>
-                                <span class="order-date">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <?= OrderHelper::formatOrderDate($order['created_at']) ?>
-                                </span>
-                            </div>
-                            <span class="order-status <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
-                                <?= OrderHelper::getOrderStatus($order['status']) ?>
-                            </span>
-                        </div>
-                        <div class="order-content">
-                            <?php if (!empty($order['product_image'])): ?>
-                                <img src="<?= htmlspecialchars($order['product_image']) ?>" alt="Sản phẩm">
-                            <?php else: ?>
-                                <img src="assets/images/default-product.png" alt="Sản phẩm mặc định">
-                            <?php endif; ?>
-                            <div class="order-info">
-                                <p>Mã đơn: <?= htmlspecialchars($order['order_code']) ?></p>
-                                <p><?= $order['total_items'] ?> sản phẩm</p>
-                                <p class="total">Tổng tiền: <?= OrderHelper::formatCurrency($order['total_amount']) ?></p>
-                            </div>
-                        </div>
-                        <div class="order-footer">
-                            <a href="index.php?action=order-detail&id=<?= htmlspecialchars($order['order_id']) ?>" class="btn">
-                                Xem chi tiết
-                            </a>
-                            <?php if (OrderHelper::canCancelOrder($order['status'])): ?>
-                                <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
-                                    Hủy đơn hàng
-                                </button>
-                            <?php endif; ?>
-                            <?php if ($order['status'] === 'delivered'): ?>
-                                <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
-                                    Yêu cầu trả hàng
-                                </button>
-                            <?php elseif ($order['status'] === 'returned'): ?>
-                                <div class="alert alert-info">
-                                    Vui lòng đợi xác nhận từ người bán
-                                </div>
-                            <?php endif; ?>
-                        </div>
+        <div class="order-list">
+            <?php foreach ($orders as $order): ?>
+            <div class="order-item" data-status="<?= $order['status'] ?>">
+                <div class="order-header">
+                    <div>
+                        <span class="order-code">#<?= $order['order_code'] ?></span>
+                        <span class="order-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <?= OrderHelper::formatOrderDate($order['created_at']) ?>
+                        </span>
                     </div>
-                <?php endforeach; ?>
+                    <span class="order-status <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
+                        <?= OrderHelper::getOrderStatus($order['status']) ?>
+                    </span>
+                </div>
+                <div class="order-content">
+                    <?php if (!empty($order['product_image'])): ?>
+                    <img src="<?= htmlspecialchars($order['product_image']) ?>" alt="Sản phẩm">
+                    <?php else: ?>
+                    <img src="assets/images/default-product.png" alt="Sản phẩm mặc định">
+                    <?php endif; ?>
+                    <div class="order-info">
+                        <h3><?= htmlspecialchars($order['pro_name']) ?></h3>
+                        <?php if ($order['color_type'] || $order['storage_type']): ?>
+                        <div class="product-variants">
+                            <?php if ($order['color_type']): ?>
+                            <span class="variant color">
+                                <i class="fas fa-palette"></i> <?= htmlspecialchars($order['color_type']) ?>
+                            </span>
+                            <?php endif; ?>
+                            <?php if ($order['storage_type']): ?>
+                            <span class="variant storage">
+                                <i class="fas fa-memory"></i> <?= htmlspecialchars($order['storage_type']) ?>
+                            </span>
+                            <?php endif; ?>
+                        </div>
+                        <?php endif; ?>
+                        <p><?= $order['total_items'] ?> sản phẩm</p>
+                        <p class="total">
+                            <?php if ($order['discount'] > 0): ?>
+                            <span
+                                class="original-price"><?= OrderHelper::formatCurrency($order['total_amount']) ?></span>
+                            <span class="discounted-price">
+                                <?= OrderHelper::formatCurrency($order['total_amount'] * (1 - $order['discount'] / 100)) ?>
+                            </span>
+                            <?php else: ?>
+                            <?= OrderHelper::formatCurrency($order['total_amount']) ?>
+                            <?php endif; ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <a href="index.php?action=order-detail&id=<?= htmlspecialchars($order['order_id']) ?>"
+                        class="btn btn-detail">
+                        Xem chi tiết
+                    </a>
+                    <?php if (OrderHelper::canCancelOrder($order['status'])): ?>
+                    <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
+                        Hủy đơn hàng
+                    </button>
+                    <?php endif; ?>
+                    <?php if ($order['status'] === 'delivered'): ?>
+                    <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
+                        Yêu cầu trả hàng
+                    </button>
+                    <?php elseif ($order['status'] === 'returned'): ?>
+                    <div class="alert alert-info">
+                        Vui lòng đợi xác nhận từ người bán
+                    </div>
+                    <?php endif; ?>
+                </div>
             </div>
+            <?php endforeach; ?>
+        </div>
         <?php endif; ?>
     </div>
 
     <?php require_once "client/views/layout/footer.php"; ?>
 
     <script>
-        function cancelOrder(orderId) {
-            if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
-                return;
-            }
-
-            fetch('index.php?action=cancel-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'order_id=' + orderId
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) {
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
+    function cancelOrder(orderId) {
+        if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+            return;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.order-tab');
-            const orders = document.querySelectorAll('.order-item');
+        fetch('index.php?action=cancel-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'order_id=' + orderId
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.order-tab');
+        const orders = document.querySelectorAll('.order-item');
 
-                    const status = tab.dataset.status;
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
 
-                    // Show/hide orders based on status
-                    orders.forEach(order => {
-                        if (status === 'all' || order.dataset.status === status) {
-                            order.style.display = 'block';
-                        } else {
-                            order.style.display = 'none';
-                        }
-                    });
+                const status = tab.dataset.status;
+
+                // Show/hide orders based on status
+                orders.forEach(order => {
+                    if (status === 'all' || order.dataset.status === status) {
+                        order.style.display = 'block';
+                    } else {
+                        order.style.display = 'none';
+                    }
                 });
             });
         });
+    });
 
-        function confirmReturn(orderId) {
-            const reason = prompt('Vui lòng nhập lý do trả hàng:');
-            if (!reason) return;
+    function confirmReturn(orderId) {
+        const reason = prompt('Vui lòng nhập lý do trả hàng:');
+        if (!reason) return;
 
-            const formData = new FormData();
-            formData.append('order_id', orderId);
-            formData.append('reason', reason);
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
 
-            fetch('index.php?action=request-return', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Yêu cầu trả hàng đã được gửi. Vui lòng đợi xác nhận từ người bán');
-                        location.reload();
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
-        }
-
-        function closeModal() {
-            document.getElementById('returnModal').style.display = 'none';
-        }
-
-        function submitReturn(orderId) {
-            const reason = document.getElementById('returnReason').value;
-            if (!reason) {
-                alert('Vui lòng nhập lý do trả hàng');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('order_id', orderId);
-            formData.append('reason', reason);
-
-            fetch('index.php?action=request-return', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Yêu cầu trả hàng đã được gửi. Vui lòng đợi xác nhận từ người bán');
+                    location.reload();
+                } else {
                     alert(data.message);
-                    if (data.success) {
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('returnModal').style.display = 'none';
+    }
+
+    function submitReturn(orderId) {
+        const reason = document.getElementById('returnReason').value;
+        if (!reason) {
+            alert('Vui lòng nhập lý do trả hàng');
+            return;
         }
+
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
+
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
     </script>
 
     <!-- Thêm modal -->
@@ -215,40 +240,7 @@ require_once "client/commons/orderHelper.php";
         </div>
     </div>
 
-    <style>
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
 
-        .modal-content {
-            background-color: white;
-            margin: 15% auto;
-            padding: 20px;
-            width: 50%;
-            border-radius: 8px;
-        }
-
-        #returnReason {
-            width: 100%;
-            min-height: 100px;
-            margin: 10px 0;
-            padding: 10px;
-        }
-
-        .modal-buttons {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 15px;
-        }
-    </style>
 </body>
 
 </html>

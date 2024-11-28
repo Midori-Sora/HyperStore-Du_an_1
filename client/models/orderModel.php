@@ -18,10 +18,16 @@ class OrderModel
         $sql = "SELECT o.*, 
                 SUM(od.quantity) as total_items,
                 MIN(p.pro_name) as pro_name,
-                MIN(CONCAT('Uploads/Product/', p.img)) as product_image
+                MIN(CONCAT('Uploads/Product/', p.img)) as product_image,
+                MIN(pc.color_type) as color_type,
+                MIN(ps.storage_type) as storage_type,
+                MIN(pd.discount) as discount
                 FROM orders o
                 LEFT JOIN order_details od ON o.order_id = od.order_id
                 LEFT JOIN products p ON od.product_id = p.pro_id
+                LEFT JOIN product_color pc ON p.color_id = pc.color_id
+                LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
+                LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id
                 WHERE o.user_id = ?
                 GROUP BY o.order_id
                 ORDER BY o.created_at DESC";
@@ -63,12 +69,20 @@ class OrderModel
 
     public function getOrderDetailById($orderId)
     {
-        $sql = "SELECT od.*, p.pro_name, p.img as product_image,
-                pc.color_type, ps.storage_type
+        $sql = "SELECT od.*, 
+                p.pro_name, 
+                p.img as product_image,
+                pc.color_type, 
+                pc.color_price,
+                ps.storage_type,
+                ps.storage_price,
+                pd.discount as current_discount,
+                (od.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
                 FROM order_details od
                 JOIN products p ON od.product_id = p.pro_id
                 LEFT JOIN product_color pc ON p.color_id = pc.color_id
                 LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
+                LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id
                 WHERE od.order_id = ?";
 
         $stmt = $this->conn->prepare($sql);
