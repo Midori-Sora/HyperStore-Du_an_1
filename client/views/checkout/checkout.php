@@ -18,8 +18,18 @@
             <div class="address-content">
                 <?php if (isset($userAddress)): ?>
                     <div class="address-info" id="default-address">
-                        <p class="name"><?= $userAddress['receiver_name'] ?> | <?= $userAddress['phone'] ?></p>
-                        <p class="address"><?= $userAddress['address'] ?></p>
+                        <div class="info-row">
+                            <i class="fas fa-user"></i>
+                            <span class="name"><?= $userAddress['receiver_name'] ?></span>
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-phone"></i>
+                            <span class="phone"><?= $userAddress['phone'] ?></span>
+                        </div>
+                        <div class="info-row">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span class="address"><?= $userAddress['address'] ?></span>
+                        </div>
                         <button type="button" class="change-address-btn" onclick="toggleAddressForm()">Thay đổi</button>
                     </div>
 
@@ -195,8 +205,18 @@
             <!-- Tổng tiền và nút thanh toán -->
             <div class="checkout-summary">
                 <div class="total-amount">
-                    <span>Tổng thanh toán:</span>
-                    <span class="amount"><?= number_format($totalAmount, 0, ',', '.') ?>đ</span>
+                    <div class="amount-row">
+                        <span class="label">Tổng tiền hàng:</span>
+                        <span class="value"><?= number_format($totalAmount, 0, ',', '.') ?>₫</span>
+                    </div>
+                    <div class="amount-row">
+                        <span class="label">Phí vận chuyển:</span>
+                        <span class="value">0₫</span>
+                    </div>
+                    <div class="amount-row total">
+                        <span class="label">Tổng thanh toán:</span>
+                        <span class="value"><?= number_format($totalAmount, 0, ',', '.') ?>₫</span>
+                    </div>
                 </div>
                 <button type="submit" class="checkout-button">Đặt hàng</button>
             </div>

@@ -31,23 +31,51 @@
 }
 
 .address-info {
-  background: #f8f9fa;
-  border-left: 4px solid #ff6b6b;
-  padding: 20px;
+  background: #fff;
+  padding: 15px;
   border-radius: 8px;
-  margin: 15px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.address-info .name {
-  font-size: 1.1rem;
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.info-row i {
+  width: 20px;
+  margin-right: 10px;
+  color: #ff424e;
+}
+
+.info-row .name {
   font-weight: 600;
-  color: #2c3e50;
-  margin-bottom: 8px;
 }
 
-.address-info .address {
+.info-row .phone {
   color: #666;
-  line-height: 1.6;
+}
+
+.info-row .address {
+  line-height: 1.4;
+}
+
+.change-address-btn {
+  margin-top: 10px;
+  padding: 8px 15px;
+  border: 1px solid #ff424e;
+  background: #fff;
+  color: #ff424e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.change-address-btn:hover {
+  background: #ff424e;
+  color: #fff;
 }
 
 .new-address-form {
@@ -518,25 +546,19 @@
 
 .checkout-button {
   width: 100%;
-  padding: 15px 30px;
-  background: #ff6b6b;
-  color: white;
+  padding: 15px;
+  background: #ff424e;
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  font-size: 1.1rem;
+  border-radius: 4px;
+  font-size: 16px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 20px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease;
 }
 
 .checkout-button:hover {
-  background: #ff5252;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.2);
+  background: #ff1f1f;
 }
 
 .checkout-button:active {
@@ -585,4 +607,44 @@
   height: 40px;
   object-fit: contain;
   margin-right: 10px;
+}
+
+.checkout-summary {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.total-amount {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 15px;
+  margin-bottom: 15px;
+}
+
+.amount-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  color: #666;
+}
+
+.amount-row.total {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px dashed #eee;
+}
+
+.amount-row.total .label {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.amount-row.total .value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ff424e;
 }

@@ -15,9 +15,10 @@ class OrderModel
 
     public function getOrdersByUserId($userId)
     {
-        $sql = "SELECT o.*, od.quantity, 
-                p.pro_name, CONCAT('Uploads/Product/', p.img) as product_image,
-                COUNT(od.product_id) as total_items
+        $sql = "SELECT o.*, 
+                SUM(od.quantity) as total_items,
+                MIN(p.pro_name) as pro_name,
+                MIN(CONCAT('Uploads/Product/', p.img)) as product_image
                 FROM orders o
                 LEFT JOIN order_details od ON o.order_id = od.order_id
                 LEFT JOIN products p ON od.product_id = p.pro_id
