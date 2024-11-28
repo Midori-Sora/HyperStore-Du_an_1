@@ -45,34 +45,32 @@
             </div>
         </div>
 
-        <!-- Thêm phần hiển thị sản phẩm -->
+        <!-- Danh sách sản phẩm -->
         <div class="order-products">
             <h2><i class="fas fa-shopping-cart"></i> HyperStore Official</h2>
             <div class="products-list">
                 <?php foreach ($selectedProducts as $product): ?>
                     <div class="product-item">
-                        <a href="index.php?action=product-detail&id=<?= $product['pro_id'] ?>" class="product-link">
-                            <div class="product-image">
-                                <img src="<?= $product['img'] ? 'Uploads/Product/' . $product['img'] : 'assets/images/no-image.png' ?>"
-                                    alt="<?= htmlspecialchars($product['pro_name']) ?>">
-                            </div>
-                            <div class="product-details">
-                                <h3><?= htmlspecialchars($product['pro_name']) ?></h3>
-                                <p class="product-variant">
-                                    Phân loại: <?= htmlspecialchars($product['storage_type']) ?>
-                                </p>
-                                <p class="product-quantity">x<?= $product['quantity'] ?></p>
-                            </div>
-                            <div class="product-price">
-                                <?= number_format($product['price'], 0, ',', '.') ?>đ
-                            </div>
-                        </a>
+                        <div class="product-image">
+                            <img src="<?= $product['img'] ? 'Uploads/Product/' . $product['img'] : 'assets/images/no-image.png' ?>"
+                                alt="<?= htmlspecialchars($product['pro_name']) ?>">
+                        </div>
+                        <div class="product-details">
+                            <h3><?= htmlspecialchars($product['pro_name']) ?></h3>
+                            <p class="product-variant">
+                                Phân loại: <?= htmlspecialchars($product['storage_type']) ?>
+                            </p>
+                            <p class="product-quantity">x<?= $product['quantity'] ?></p>
+                        </div>
+                        <div class="product-price">
+                            <?= number_format($product['price'], 0, ',', '.') ?>đ
+                        </div>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
 
-        <!-- Form thanh toán chính -->
+        <!-- Form thanh toán -->
         <form action="index.php?action=process-payment" method="POST" id="checkout-form"
             onsubmit="return validateForm()">
             <input type="hidden" name="total_amount" value="<?= $totalAmount ?>">
@@ -128,7 +126,7 @@
             </div>
 
             <!-- Danh sách ngân hàng -->
-            <div id="bank-list" style="display: none;" class="bank-options">
+            <div id="bank-list" style="display: none;">
                 <h4>Chọn Ngân Hàng</h4>
                 <div class="bank-list">
                     <label class="bank-item">
@@ -162,7 +160,17 @@
                 </div>
             </div>
 
-            <button type="submit" class="checkout-button">Đặt hàng</button>
+            <!-- Thông tin ngân hàng -->
+            <div id="bank-info" style="display: none;"></div>
+
+            <!-- Tổng tiền và nút thanh toán -->
+            <div class="checkout-summary">
+                <div class="total-amount">
+                    <span>Tổng thanh toán:</span>
+                    <span class="amount"><?= number_format($totalAmount, 0, ',', '.') ?>đ</span>
+                </div>
+                <button type="submit" class="checkout-button">Đặt hàng</button>
+            </div>
         </form>
     </div>
 

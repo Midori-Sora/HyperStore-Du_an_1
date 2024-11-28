@@ -253,14 +253,16 @@
   text-shadow: none;
 }
 
-.variant-options, .color-options {
+.variant-options,
+.color-options {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 10px;
 }
 
-.variant-btn, .color-btn {
+.variant-btn,
+.color-btn {
   text-decoration: none;
   padding: 8px 16px;
   border: 2px solid #ddd;
@@ -273,13 +275,15 @@
   background: white;
 }
 
-.variant-btn:hover, .color-btn:hover {
-  border-color: #1976D2;
+.variant-btn:hover,
+.color-btn:hover {
+  border-color: #1976d2;
   transform: translateY(-2px);
 }
 
-.variant-btn.active, .color-btn.active {
-  border-color: #1976D2;
+.variant-btn.active,
+.color-btn.active {
+  border-color: #1976d2;
   background-color: #f5f9ff;
 }
 
@@ -287,7 +291,7 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   display: inline-block;
 }
 
@@ -380,7 +384,7 @@
 
 /* Active state */
 .color-btn.active .color-wrapper {
-  border-color: #1976D2;
+  border-color: #1976d2;
 }
 
 .color-btn.active .check-icon {
@@ -405,12 +409,12 @@
 /* Animation cho check icon */
 @keyframes checkmark {
   0% {
-      transform: translate(-50%, -50%) scale(0);
-      opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+    opacity: 0;
   }
   100% {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
   }
 }
 
@@ -418,12 +422,14 @@
   animation: checkmark 0.3s ease forwards;
 }
 /* Thêm hiệu ứng ripple khi click */
-.variant-btn:active, .color-btn:active {
+.variant-btn:active,
+.color-btn:active {
   transform: translateY(0);
 }
 
 /* Đảm bảo nút không bị méo khi active */
-.variant-btn:focus, .color-btn:focus {
+.variant-btn:focus,
+.color-btn:focus {
   outline: none;
 }
 .quantity-selector {
@@ -466,38 +472,75 @@
 .action-buttons {
   display: flex;
   gap: 15px;
+  margin-top: 30px;
 }
 
-.btn-add-cart,
-.btn-buy-now {
+.cart-form,
+.buy-now-form {
   flex: 1;
-  padding: 15px;
-  border: none;
+}
+
+.add-to-cart-btn,
+.buy-now-btn {
+  width: 100%;
+  padding: 15px 25px;
   border-radius: 10px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
 }
 
-.btn-add-cart {
-  background: white;
+.add-to-cart-btn {
+  background-color: #fff;
   border: 2px solid #ff7200;
   color: #ff7200;
 }
 
-.btn-add-cart:hover {
-  background: #ff7200;
-  color: white;
+.add-to-cart-btn:hover {
+  background-color: #fff8f3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(255, 114, 0, 0.15);
 }
 
-.btn-buy-now {
-  background: #ff7200;
-  color: white;
+.add-to-cart-btn i {
+  font-size: 18px;
 }
 
-.btn-buy-now:hover {
-  background: #ff8500;
+.buy-now-btn {
+  background-color: #ff7200;
+  border: none;
+  color: #fff;
+}
+
+.buy-now-btn:hover {
+  background-color: #ff8500;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 114, 0, 0.3);
+}
+
+/* Animation khi click */
+.add-to-cart-btn:active,
+.buy-now-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+  }
+
+  .add-to-cart-btn,
+  .buy-now-btn {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
 }
 
 /* Product Comments Section */
@@ -713,7 +756,7 @@
 /* Responsive Design */
 @media (max-width: 768px) {
   .rating-overview {
-  flex-direction: column;
+    flex-direction: column;
     gap: 30px;
   }
 
@@ -995,10 +1038,11 @@
   }
 }
 
-.variant-btn.disabled, .color-btn.disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    pointer-events: none;
+.variant-btn.disabled,
+.color-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .promotion-info {

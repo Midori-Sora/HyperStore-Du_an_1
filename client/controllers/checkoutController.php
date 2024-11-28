@@ -10,7 +10,6 @@ class CheckoutController
 
     public function checkout()
     {
-        // Kiểm tra đăng nhập
         if (!isset($_SESSION['user_id'])) {
             $_SESSION['error'] = 'Vui lòng đăng nhập để tiếp tục thanh toán';
             header('Location: index.php?action=login');
@@ -20,34 +19,33 @@ class CheckoutController
         $selectedProducts = [];
         $totalAmount = 0;
 
-        // Xử lý khi mua ngay từ trang chi tiết sản phẩm
-        if (isset($_POST['buy_now']) && isset($_POST['product_id']) && isset($_POST['quantity'])) {
-            $productId = $_POST['product_id'];
-            $quantity = (int)$_POST['quantity'];
-
-            // Lấy thông tin sản phẩm
-            $product = $this->checkoutModel->getProductDetails($productId);
-            if ($product) {
-                $product['quantity'] = $quantity;
-                $selectedProducts[] = $product;
-
-                // Tính tổng tiền (có tính đến giảm giá nếu có)
-                if (isset($product['current_discount']) && $product['current_discount'] > 0) {
-                    $price = $product['price'] * (1 - $product['current_discount'] / 100);
-                } else {
-                    $price = $product['price'];
-                }
-                $totalAmount += $price * $quantity;
-            }
-        }
-        // Xử lý khi mua từ giỏ hàng
-        elseif (isset($_POST['selected_products']) && is_array($_POST['selected_products'])) {
+        // Xử lý khi mua ngay
+        if (isset($_POST['buy_now']) && isset($_POST['selected_products'])) {
             foreach ($_POST['selected_products'] as $productId) {
                 $product = $this->checkoutModel->getProductDetails($productId);
                 if ($product) {
-                    // Lấy số lượng từ form
+                    $quantity = isset($_POST['quantities'][$productId]) ? (int)$_POST['quantities'][$productId] : 1;
+                    $product['quantity'] = $quantity;
+                    $selectedProducts[] = $product;
+
+                    // Tính tổng tiền
+                    if (isset($product['current_discount']) && $product['current_discount'] > 0) {
+                        $price = $product['price'] * (1 - $product['current_discount'] / 100);
+                    } else {
+                        $price = $product['price'];
+                    }
+                    $totalAmount += $price * $quantity;
+                }
+            }
+        }
+        // Xử lý khi mua từ giỏ hàng (giữ nguyên code cũ)
+        else if (isset($_POST['selected_products']) && is_array($_POST['selected_products'])) {
+            foreach ($_POST['selected_products'] as $productId) {
+                $product = $this->checkoutModel->getProductDetails($productId);
+                if ($product) {
+                    // Lấy số lượng từ form POST
                     $quantity = isset($_POST['quantities'][$productId]) ?
-                        (int)$_POST['quantities'][$productId] : 1;
+                        (int)$_POST['quantities'][$productId] : (isset($_SESSION['cart'][$productId]) ? $_SESSION['cart'][$productId] : 1);
 
                     $product['quantity'] = $quantity;
                     $selectedProducts[] = $product;
@@ -63,17 +61,13 @@ class CheckoutController
             }
         }
 
-        // Nếu không có sản phẩm nào được chọn
         if (empty($selectedProducts)) {
             $_SESSION['error'] = 'Không có sản phẩm nào được chọn';
             header('Location: index.php?action=view-cart');
             exit();
         }
 
-        // Lấy địa chỉ người dùng
         $userAddress = $this->checkoutModel->getUserAddress($_SESSION['user_id']);
-
-        // Hiển thị trang thanh toán
         require_once 'client/views/checkout/checkout.php';
     }
 
