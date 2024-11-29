@@ -241,11 +241,15 @@ class ProductModel
         try {
             $sql = "SELECT p.*, c.cate_name, 
                     pc.color_type, pc.color_id, pc.color_price,
-                    ps.storage_type, ps.storage_id, ps.storage_price 
+                    ps.storage_type, ps.storage_id, ps.storage_price,
+                    pd.discount, pd.start_date, pd.end_date 
                     FROM products p 
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id 
+                        AND pd.status = 1 
+                        AND CURRENT_DATE BETWEEN pd.start_date AND pd.end_date
                     WHERE p.cate_id = (SELECT cate_id FROM products WHERE pro_id = ?)
                     AND p.pro_status = 1";
 
@@ -271,9 +275,13 @@ class ProductModel
             
             $product = $result->fetch_assoc();
             if ($product) {
-                $product['total_price'] = $product['price'] + 
-                                        floatval($product['color_price']) + 
-                                        floatval($product['storage_price']);
+                $total_price = $product['price'] + 
+                            floatval($product['color_price']) + 
+                            floatval($product['storage_price']);
+                $product['original_price'] = $total_price;
+                if (!empty($product['discount'])) {
+                    $product['discount_price'] = $total_price * (100 - $product['discount']) / 100;
+                }
             }
             return $product;
         } catch (Exception $e) {
