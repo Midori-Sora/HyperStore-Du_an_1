@@ -371,8 +371,9 @@ class CheckoutController
 
     public function updateShippingAddress()
     {
-        header('Content-Type: application/json');
-        
+        ob_clean();
+        header('Content-Type: application/json; charset=utf-8');
+
         try {
             if (!isset($_SESSION['user_id'])) {
                 throw new Exception("Vui lòng đăng nhập để cập nhật địa chỉ");
@@ -389,17 +390,27 @@ class CheckoutController
                 throw new Exception("Vui lòng điền đầy đủ thông tin");
             }
 
-            $result = $this->checkoutModel->updateShippingAddress($data);
-            
-            echo json_encode([
-                'success' => true,
-                'message' => 'Cập nhật địa chỉ thành công'
-            ]);
+            $success = $this->checkoutModel->updateShippingAddress($data);
+
+            if ($success) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Cập nhật địa chỉ thành công',
+                    'data' => [
+                        'receiver_name' => $data['receiver_name'],
+                        'phone' => $data['phone'],
+                        'address' => $data['address']
+                    ]
+                ], JSON_UNESCAPED_UNICODE);
+            } else {
+                throw new Exception("Cập nhật địa chỉ thất bại");
+            }
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage()
-            ]);
+            ], JSON_UNESCAPED_UNICODE);
         }
+        exit;
     }
 }

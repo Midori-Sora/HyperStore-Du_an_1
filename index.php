@@ -30,6 +30,10 @@ require_once "client/controllers/checkoutController.php";
 require_once "client/controllers/profileController.php";
 require_once "client/controllers/orderController.php";
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+ob_start();
+header_remove();
 
 $action = $_GET['action'] ?? 'home';
 
@@ -128,6 +132,7 @@ switch ($action) {
         $controller->requestReturn();
         break;
     case 'update-shipping-address':
-        $checkoutController->updateShippingAddress();
+        $controller = new CheckoutController();
+        $controller->updateShippingAddress();
         break;
 }

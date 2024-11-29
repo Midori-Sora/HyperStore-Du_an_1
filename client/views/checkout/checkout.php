@@ -299,42 +299,48 @@
 
         function updateAddress(event) {
             event.preventDefault();
+
             const form = document.getElementById('shipping-form');
             const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
 
-            // Disable nút submit
-            document.querySelector('.btn-submit').disabled = true;
+            submitBtn.disabled = true;
 
             fetch('index.php?action=update-shipping-address', {
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.success) {
-                        // Cập nhật thông tin hiển thị
+                        // Cập nhật UI với dữ liệu từ server
                         const defaultAddress = document.getElementById('default-address');
-                        defaultAddress.querySelector('.name').textContent = formData.get('receiver_name');
-                        defaultAddress.querySelector('.phone').textContent = formData.get('phone');
-                        defaultAddress.querySelector('.address').textContent = formData.get('address');
-
-                        // Cập nhật hidden inputs
-                        document.querySelector('input[name="receiver_name"]').value = formData.get('receiver_name');
-                        document.querySelector('input[name="shipping_phone"]').value = formData.get('phone');
-
-                        // Ẩn form
-                        toggleAddressForm();
+                        if (defaultAddress) {
+                            defaultAddress.querySelector('.name').textContent = data.data.receiver_name;
+                            defaultAddress.querySelector('.phone').textContent = data.data.phone;
+                            defaultAddress.querySelector('.address').textContent = data.data.address;
+                        }
                         alert('Cập nhật địa chỉ thành công');
+                        // Đóng form
+                        const addressForm = document.getElementById('address-form');
+                        if (addressForm) {
+                            addressForm.style.display = 'none';
+                        }
                     } else {
-                        alert(data.message || 'Có lỗi xảy ra khi cập nhật địa chỉ');
+                        throw new Error(data.message || 'Có lỗi xảy ra');
                     }
                 })
                 .catch(error => {
                     console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra khi cập nhật địa chỉ');
+                    alert(error.message || 'Đã có lỗi xảy ra khi cập nhật địa chỉ');
                 })
                 .finally(() => {
-                    document.querySelector('.btn-submit').disabled = false;
+                    submitBtn.disabled = false;
                 });
         }
 

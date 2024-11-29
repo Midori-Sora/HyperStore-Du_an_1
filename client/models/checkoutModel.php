@@ -392,10 +392,8 @@ class CheckoutModel
     {
         try {
             // Validate dữ liệu
-            foreach (['receiver_name', 'phone', 'address', 'user_id'] as $field) {
-                if (empty($data[$field])) {
-                    throw new Exception("Vui lòng điền đầy đủ thông tin");
-                }
+            if (empty($data['receiver_name']) || empty($data['phone']) || empty($data['address'])) {
+                throw new Exception("Vui lòng điền đầy đủ thông tin");
             }
 
             $sql = "UPDATE users 
@@ -406,7 +404,7 @@ class CheckoutModel
 
             $stmt = $this->conn->prepare($sql);
             if (!$stmt) {
-                throw new Exception("Lỗi hệ thống, vui lòng thử lại sau");
+                throw new Exception("Lỗi chuẩn bị câu lệnh: " . $this->conn->error);
             }
 
             $stmt->bind_param(
@@ -418,12 +416,16 @@ class CheckoutModel
             );
 
             if (!$stmt->execute()) {
-                throw new Exception("Không thể cập nhật địa chỉ, vui lòng thử lại");
+                throw new Exception("Lỗi cập nhật: " . $stmt->error);
+            }
+
+            if ($stmt->affected_rows === 0) {
+                throw new Exception("Không tìm thấy người dùng để cập nhật");
             }
 
             return true;
         } catch (Exception $e) {
-            error_log('Update shipping address error: ' . $e->getMessage());
+            error_log("Update shipping address error: " . $e->getMessage());
             throw $e;
         }
     }
