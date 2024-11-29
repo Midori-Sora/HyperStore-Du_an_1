@@ -37,17 +37,20 @@
                     <div class="new-address-form" id="address-form" style="display: none;">
                         <form id="shipping-form" onsubmit="updateAddress(event)">
                             <div class="form-group">
-                                <input type="text" name="receiver_name" placeholder="Họ tên người nhận" required>
+                                <input type="text" name="receiver_name" placeholder="Họ tên người nhận"
+                                    value="<?= htmlspecialchars($userAddress['receiver_name'] ?? '') ?>" required>
                             </div>
                             <div class="form-group">
-                                <input type="tel" name="phone" placeholder="Số điện thoại" required>
+                                <input type="tel" name="phone" placeholder="Số điện thoại"
+                                    value="<?= htmlspecialchars($userAddress['phone'] ?? '') ?>" required>
                             </div>
                             <div class="form-group">
-                                <textarea name="address" placeholder="Địa chỉ chi tiết" required></textarea>
+                                <textarea name="address" placeholder="Địa chỉ chi tiết"
+                                    required><?= htmlspecialchars($userAddress['address'] ?? '') ?></textarea>
                             </div>
                             <div class="form-buttons">
-                                <button type="button" onclick="toggleAddressForm()">Hủy</button>
-                                <button type="submit">Xác nhận</button>
+                                <button type="button" class="btn-cancel" onclick="toggleAddressForm()">Hủy</button>
+                                <button type="submit" class="btn-submit">Xác nhận</button>
                             </div>
                         </form>
                     </div>
@@ -299,13 +302,40 @@
             const form = document.getElementById('shipping-form');
             const formData = new FormData(form);
 
-            // Cập nhật thông tin địa chỉ hiển thị
-            const defaultAddress = document.getElementById('default-address');
-            defaultAddress.querySelector('.name').textContent =
-                `${formData.get('receiver_name')} | ${formData.get('phone')}`;
-            defaultAddress.querySelector('.address').textContent = formData.get('address');
+            // Disable nút submit
+            document.querySelector('.btn-submit').disabled = true;
 
-            toggleAddressForm();
+            fetch('index.php?action=update-shipping-address', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Cập nhật thông tin hiển thị
+                        const defaultAddress = document.getElementById('default-address');
+                        defaultAddress.querySelector('.name').textContent = formData.get('receiver_name');
+                        defaultAddress.querySelector('.phone').textContent = formData.get('phone');
+                        defaultAddress.querySelector('.address').textContent = formData.get('address');
+
+                        // Cập nhật hidden inputs
+                        document.querySelector('input[name="receiver_name"]').value = formData.get('receiver_name');
+                        document.querySelector('input[name="shipping_phone"]').value = formData.get('phone');
+
+                        // Ẩn form
+                        toggleAddressForm();
+                        alert('Cập nhật địa chỉ thành công');
+                    } else {
+                        alert(data.message || 'Có lỗi xảy ra khi cập nhật địa chỉ');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Đã có lỗi xảy ra khi cập nhật địa chỉ');
+                })
+                .finally(() => {
+                    document.querySelector('.btn-submit').disabled = false;
+                });
         }
 
         // Thêm validation form

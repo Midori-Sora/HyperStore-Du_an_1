@@ -387,4 +387,76 @@ class CheckoutModel
             throw $e;
         }
     }
+
+    public function updateShippingAddress($data)
+    {
+        try {
+            // Validate dữ liệu
+            foreach (['receiver_name', 'phone', 'address', 'user_id'] as $field) {
+                if (empty($data[$field])) {
+                    throw new Exception("Vui lòng điền đầy đủ thông tin");
+                }
+            }
+
+            $sql = "UPDATE users 
+                    SET fullname = ?, 
+                        phone = ?, 
+                        address = ?
+                    WHERE user_id = ?";
+
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Lỗi hệ thống, vui lòng thử lại sau");
+            }
+
+            $stmt->bind_param(
+                "sssi",
+                $data['receiver_name'],
+                $data['phone'],
+                $data['address'],
+                $data['user_id']
+            );
+
+            if (!$stmt->execute()) {
+                throw new Exception("Không thể cập nhật địa chỉ, vui lòng thử lại");
+            }
+
+            return true;
+        } catch (Exception $e) {
+            error_log('Update shipping address error: ' . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getOrderItems($orderId)
+    {
+        try {
+            $sql = "SELECT od.product_id, od.quantity, od.price, p.pro_name 
+                    FROM order_details od
+                    JOIN products p ON od.product_id = p.pro_id
+                    WHERE od.order_id = ?";
+
+            $stmt = $this->conn->prepare($sql);
+            if (!$stmt) {
+                throw new Exception("Lỗi chuẩn bị câu lệnh SQL");
+            }
+
+            $stmt->bind_param("i", $orderId);
+            if (!$stmt->execute()) {
+                throw new Exception("Lỗi thực thi truy vấn");
+            }
+
+            $result = $stmt->get_result();
+            $items = [];
+
+            while ($row = $result->fetch_assoc()) {
+                $items[] = $row;
+            }
+
+            return $items;
+        } catch (Exception $e) {
+            error_log("Error getting order items: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }

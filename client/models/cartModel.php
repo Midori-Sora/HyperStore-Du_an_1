@@ -74,9 +74,24 @@ class CartModel
         return $product ? $product['quantity'] : 0;
     }
 
-    public function clearCart()
+    public function clearCart($productIds = null)
     {
-        if (isset($_SESSION['cart'])) {
+        if (empty($_SESSION['cart'])) {
+            return;
+        }
+
+        if ($productIds === null) {
+            unset($_SESSION['cart']);
+        } else {
+            foreach ($productIds as $productId) {
+                if (isset($_SESSION['cart'][$productId])) {
+                    unset($_SESSION['cart'][$productId]);
+                }
+            }
+        }
+
+        // Cập nhật session nếu giỏ hàng trống
+        if (empty($_SESSION['cart'])) {
             unset($_SESSION['cart']);
         }
     }

@@ -91,7 +91,7 @@ class CheckoutController
                 throw new Exception('Không tìm thấy thông tin địa chỉ');
             }
 
-            // Create order first
+            // Create order
             $orderData = [
                 'user_id' => $_SESSION['user_id'],
                 'total_amount' => floatval($_POST['total_amount']),
@@ -111,16 +111,23 @@ class CheckoutController
                 throw new Exception('Không thể tạo đơn hàng');
             }
 
-            // Process products
+            // Process products and remove from cart
+            $purchasedProducts = [];
             foreach ($_POST['products'] as $productJson) {
                 $product = json_decode($productJson, true);
                 if (!$product) {
                     throw new Exception('Dữ liệu sản phẩm không hợp lệ');
                 }
 
-                // Add order details
                 $this->checkoutModel->addOrderDetails($orderId, $product['id'], $product['quantity'], $product['price']);
                 $this->checkoutModel->updateProductQuantity($product['id'], $product['quantity']);
+                $purchasedProducts[] = $product['id'];
+            }
+
+            // Xóa sản phẩm đã mua khỏi giỏ hàng
+            if (!empty($purchasedProducts)) {
+                $cartModel = new CartModel();
+                $cartModel->clearCart($purchasedProducts);
             }
 
             // Process payment based on method
@@ -336,6 +343,16 @@ class CheckoutController
             // Lưu log xác nhận thanh toán
             $this->checkoutModel->logPaymentConfirmation($orderId, $transactionCode);
 
+            // Sau khi xác nhận thanh toán thành công
+            if ($orderId) {
+                // Lấy thông tin đơn hàng và xóa sản phẩm khỏi giỏ hàng
+                $orderItems = $this->checkoutModel->getOrderItems($orderId);
+                $productIds = array_column($orderItems, 'product_id');
+
+                $cartModel = new CartModel();
+                $cartModel->clearCart($productIds);
+            }
+
             $this->checkoutModel->commit();
 
             unset($_SESSION['bank_transfer_info']);
@@ -349,6 +366,40 @@ class CheckoutController
             $_SESSION['error'] = $e->getMessage();
             header('Location: index.php?action=bank-transfer-info');
             exit();
+        }
+    }
+
+    public function updateShippingAddress()
+    {
+        header('Content-Type: application/json');
+        
+        try {
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Vui lòng đăng nhập để cập nhật địa chỉ");
+            }
+
+            $data = [
+                'receiver_name' => trim($_POST['receiver_name'] ?? ''),
+                'phone' => trim($_POST['phone'] ?? ''),
+                'address' => trim($_POST['address'] ?? ''),
+                'user_id' => $_SESSION['user_id']
+            ];
+
+            if (empty($data['receiver_name']) || empty($data['phone']) || empty($data['address'])) {
+                throw new Exception("Vui lòng điền đầy đủ thông tin");
+            }
+
+            $result = $this->checkoutModel->updateShippingAddress($data);
+            
+            echo json_encode([
+                'success' => true,
+                'message' => 'Cập nhật địa chỉ thành công'
+            ]);
+        } catch (Exception $e) {
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
         }
     }
 }

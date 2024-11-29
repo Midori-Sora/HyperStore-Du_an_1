@@ -101,9 +101,6 @@ switch ($action) {
         require_once 'client/views/checkout/bank-transfer-info.php';
         break;
     case 'order-success':
-        if (isset($_SESSION['cart'])) {
-            unset($_SESSION['cart']);
-        }
         require_once 'client/views/checkout/order-success.php';
         break;
     case 'payment-callback':
@@ -129,5 +126,8 @@ switch ($action) {
     case 'request-return':
         $controller = new OrderController();
         $controller->requestReturn();
+        break;
+    case 'update-shipping-address':
+        $checkoutController->updateShippingAddress();
         break;
 }
