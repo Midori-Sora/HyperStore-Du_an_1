@@ -19,7 +19,7 @@
             <?php include 'client/views/layout/sidebar.php' ?>
         </div>
 
-        <div class="product-container container">
+        <div class="product-container">
             <div class="category-title">
                 <h2>Sản Phẩm Mới Nhất</h2>
                 <div class="product-filters">
@@ -38,46 +38,71 @@
                     <?php foreach ($products as $product) : ?>
                         <div class="product-box">
                             <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
-                                <div class="product-image">
-                                    <img src="Uploads/Product/<?php echo $product['img']; ?>" 
-                                         alt="<?php echo $product['pro_name']; ?>">
-                                    <?php if ($product['current_discount'] > 0) : ?>
-                                        <div class="discount-badge">
-                                            -<?php echo $product['current_discount']; ?>%
-                                        </div>
+                            <div class="product-image">
+                                <img src="Uploads/Product/<?php echo $product['img']; ?>"
+                                    alt="<?php echo $product['pro_name']; ?>">
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-infor">
+                                <h3 class="product-name">
+                                    <?php echo $product['pro_name']; ?>
+                                </h3>
+                                <div class="product-meta">
+                                    <?php if (!empty($product['storage_type'])) : ?>
+                                        <span class="product-specs">
+                                            <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($product['color_type'])) : ?>
+                                        <span class="product-color">
+                                            <i class="fas fa-palette"></i> <?php echo $product['color_type']; ?>
+                                        </span>
                                     <?php endif; ?>
                                 </div>
-                                <div class="product-info">
-                                    <h3 class="product-name"><?php echo $product['pro_name']; ?></h3>
-                                    <div class="product-meta">
-                                        <?php if (!empty($product['storage_type'])) : ?>
-                                            <div class="storage-container">
-                                                <i class="fa-solid fa-memory"></i>
-                                                <span class="storage"><?php echo $product['storage_type']; ?></span>
+                                <div class="product-price">
+                                    <?php 
+                                        $total_price = $product['price'] + 
+                                            floatval($product['color_price'] ?? 0) + 
+                                            floatval($product['storage_price'] ?? 0);
+                                        
+                                        if (!empty($product['discount'])) : 
+                                            $discount_price = $total_price * (100 - $product['discount']) / 100;
+                                        ?>
+                                            <div class="price-wrapper">
+                                                <span class="original-price">
+                                                    <?php echo number_format($total_price, 0, ',', '.'); ?>₫
+                                                </span>
+                                                <span class="discount-price">
+                                                    <?php echo number_format($discount_price, 0, ',', '.'); ?>₫
+                                                </span>
+                                                <span class="discount-percent">
+                                                    -<?php echo $product['discount']; ?>%
+                                                </span>
                                             </div>
-                                        <?php endif; ?>
-                                        <?php if (!empty($product['color_type'])) : ?>
-                                            <div class="color-container">
-                                                <i class="fa-solid fa-palette"></i>
-                                                <span class="color"><?php echo $product['color_type']; ?></span>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="product-price">
-                                        <?php if ($product['current_discount'] > 0) : ?>
-                                            <span class="original-price">
-                                                <?php echo number_format($product['final_price'], 0, ',', '.'); ?>₫
-                                            </span>
-                                            <span class="discounted-price">
-                                                <?php echo number_format($product['discounted_price'], 0, ',', '.'); ?>₫
-                                            </span>
                                         <?php else : ?>
-                                            <span class="price">
-                                                <?php echo number_format($product['final_price'], 0, ',', '.'); ?>₫
+                                            <span class="normal-price">
+                                                <?php echo number_format($total_price, 0, ',', '.'); ?>₫
                                             </span>
                                         <?php endif; ?>
-                                    </div>
                                 </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>(45)</span>
+                                </div>
+                            </div>
                             </a>
                         </div>
                     <?php endforeach; ?>
@@ -90,49 +115,12 @@
             <?php endif; ?>
 
             <div class="pagination">
-                <?php if ($totalPages > 1): ?>
-                    <!-- Nút Previous -->
-                    <?php if ($currentPage > 1): ?>
-                        <a href="?action=product&page=<?php echo ($currentPage - 1); ?>" class="page-link">
-                            <i class="fas fa-chevron-left"></i>
-                        </a>
-                    <?php endif; ?>
-
-                    <!-- Các số trang -->
-                    <?php
-                    $startPage = max(1, $currentPage - 2);
-                    $endPage = min($totalPages, $currentPage + 2);
-                    
-                    if ($startPage > 1): ?>
-                        <a href="?action=product&page=1" class="page-link">1</a>
-                        <?php if ($startPage > 2): ?>
-                            <span class="page-dots">...</span>
-                        <?php endif;
-                    endif;
-
-                    for ($i = $startPage; $i <= $endPage; $i++): ?>
-                        <a href="?action=product&page=<?php echo $i; ?>" 
-                           class="page-link <?php echo ($i == $currentPage) ? 'active' : ''; ?>">
-                            <?php echo $i; ?>
-                        </a>
-                    <?php endfor;
-
-                    if ($endPage < $totalPages): ?>
-                        <?php if ($endPage < $totalPages - 1): ?>
-                            <span class="page-dots">...</span>
-                        <?php endif; ?>
-                        <a href="?action=product&page=<?php echo $totalPages; ?>" class="page-link">
-                            <?php echo $totalPages; ?>
-                        </a>
-                    <?php endif; ?>
-
-                    <!-- Nút Next -->
-                    <?php if ($currentPage < $totalPages): ?>
-                        <a href="?action=product&page=<?php echo ($currentPage + 1); ?>" class="page-link">
-                            <i class="fas fa-chevron-right"></i>
-                        </a>
-                    <?php endif; ?>
-                <?php endif; ?>
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">
+                    <i class="fas fa-angle-right"></i>
+                </a>
             </div>
         </div>
     </div>

@@ -1,25 +1,12 @@
 <?php
+require_once "client/models/productModel.php";
+
 class ProductController
 {
     public static function productController()
     {
         $productModel = new ProductModel();
-        
-        // Lấy trang hiện tại từ URL, mặc định là trang 1
-        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-        $itemsPerPage = 20; // Số sản phẩm mỗi trang
-        
-        // Lấy tổng số sản phẩm và số trang
-        $totalProducts = $productModel->getTotalProducts();
-        $totalPages = ceil($totalProducts / $itemsPerPage);
-        
-        // Đảm bảo trang hiện tại không vượt quá tổng số trang
-        $currentPage = max(1, min($currentPage, $totalPages));
-        
-        // Lấy danh sách sản phẩm cho trang hiện tại
-        $products = $productModel->getProductListPaginated($currentPage, $itemsPerPage);
-        
-        // Truyền dữ liệu sang view
+        $products = $productModel->getProductList();
         require_once "client/views/product/product.php";
     }
 
@@ -58,32 +45,20 @@ class ProductController
             exit;
         }
 
-        // Lấy variant của sản phẩm
-        $variant = $productModel->getProductVariant(
-            $productId,
-            $colorId ?? $product['color_id'],
-            $storageId ?? $product['storage_id']
-        );
-        
-        if ($variant) {
-            $product = array_merge($product, $variant);
-        }
-
-        // Lấy ảnh theo màu sắc
-        if ($colorId) {
-            $productImage = $productModel->getProductImageByColor($productId, $colorId);
-            if ($productImage) {
-                $product['img'] = $productImage;
-            }
-        }
-
-        // Đảm bảo variant_price luôn có giá trị
-        if (!isset($product['variant_price'])) {
-            $product['variant_price'] = $product['price'];
-        }
-
         $availableColors = $productModel->getAllColorsByCategory($product['cate_id']);
         $availableStorages = $productModel->getAllStoragesByCategory($product['cate_id']);
+        
+        if ($colorId || $storageId) {
+            $variant = $productModel->getProductVariant(
+                $productId,
+                $colorId ?? $product['color_id'],
+                $storageId ?? $product['storage_id']
+            );
+            
+            if ($variant) {
+                $product = $variant;
+            }
+        }
 
         require_once "client/views/product/product-detail.php";
     }

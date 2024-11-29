@@ -67,40 +67,36 @@
                 </div>
 
                 <div class="product-price">
-                    <?php
-                    // Đảm bảo variant_price có giá trị
-                    $displayPrice = isset($product['variant_price']) ? $product['variant_price'] : $product['price'];
-
-                    // Kiểm tra xem có khuyến mãi không
-                    if (isset($product['current_discount']) && $product['current_discount'] > 0):
-                        // Tính giá sau khuyến mãi
-                        $discountedPrice = $displayPrice * (1 - $product['current_discount'] / 100);
+                    <?php 
+                    $total_price = $product['price'] + 
+                        floatval($product['color_price'] ?? 0) + 
+                        floatval($product['storage_price'] ?? 0);
+                    
+                    if (!empty($product['discount'])) : 
+                        $discount_price = $total_price * (100 - $product['discount']) / 100;
                     ?>
-                        <div class="discount-info">
-                            <div class="current-price">
-                                <?php echo number_format($discountedPrice, 0, ',', '.'); ?>₫
+                        <div class="price-wrapper">
+                            <div class="discount-info">
+                                <span class="original-price">
+                                    <?php echo number_format($total_price, 0, ',', '.'); ?>₫
+                                </span>
+                                <span class="discount-badge">
+                                    -<?php echo $product['discount']; ?>%
+                                </span>
                             </div>
-                            <div class="original-price">
-                                <span><?php echo number_format($displayPrice, 0, ',', '.'); ?>₫</span>
+                            <div class="current-price discount-price">
+                                <?php echo number_format($discount_price, 0, ',', '.'); ?>₫
+                            </div>
+                            <div class="save-price">
+                                Tiết kiệm: <?php echo number_format($total_price - $discount_price, 0, ',', '.'); ?>₫
                             </div>
                         </div>
-                    <?php else: ?>
+                    <?php else : ?>
                         <div class="current-price">
-                            <?php echo number_format($displayPrice, 0, ',', '.'); ?>₫
+                            <?php echo number_format($total_price, 0, ',', '.'); ?>₫
                         </div>
                     <?php endif; ?>
                 </div>
-
-                <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
-                    <div class="promotion-info">
-                        <h3><i class="fas fa-gift"></i> Khuyến mãi đặc biệt</h3>
-                        <div class="promotion-details">
-                            <p>Giảm ngay <?php echo $product['current_discount']; ?>% khi mua sản phẩm</p>
-                            <p class="promotion-saving">Tiết kiệm:
-                                <?php echo number_format($displayPrice - $discountedPrice, 0, ',', '.'); ?>₫</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
 
                 <?php if (!empty($availableStorages)): ?>
                     <div class="product-variants">
@@ -108,6 +104,7 @@
                         <div class="variant-options">
                             <?php foreach ($availableStorages as $storage): ?>
                                 <?php
+                                // Kiểm tra xem có variant cho storage này không
                                 $variantExists = $productModel->checkVariantExists(
                                     $product['pro_id'],
                                     $product['color_id'],
@@ -118,10 +115,6 @@
                                     <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&storage=<?php echo $storage['storage_id']; ?>&color=<?php echo $product['color_id']; ?>"
                                         class="variant-btn <?php echo ($storage['storage_id'] == $product['storage_id']) ? 'active' : ''; ?>">
                                         <?php echo $storage['storage_type']; ?>
-                                        <?php if ($storage['storage_price'] > 0): ?>
-                                            <span
-                                                class="price-diff">+<?php echo number_format($storage['storage_price'], 0, ',', '.'); ?>₫</span>
-                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -135,6 +128,7 @@
                         <div class="color-options">
                             <?php foreach ($availableColors as $color): ?>
                                 <?php
+                                // Kiểm tra xem có variant cho màu này không
                                 $variantExists = $productModel->checkVariantExists(
                                     $product['pro_id'],
                                     $color['color_id'],
@@ -143,7 +137,8 @@
                                 if ($variantExists):
                                 ?>
                                     <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>&color=<?php echo $color['color_id']; ?>&storage=<?php echo $product['storage_id']; ?>"
-                                        class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>">
+                                        class="color-btn <?php echo ($color['color_id'] == $product['color_id']) ? 'active' : ''; ?>"
+                                        data-color="<?php echo $color['color_type']; ?>">
                                         <div class="color-wrapper">
                                             <span class="color-circle"
                                                 style="background-color: <?php echo $productModel->getColorCode($color['color_type']); ?>"></span>
@@ -154,10 +149,6 @@
                                             <?php endif; ?>
                                         </div>
                                         <span class="color-name"><?php echo $color['color_type']; ?></span>
-                                        <?php if ($color['color_price'] > 0): ?>
-                                            <span
-                                                class="price-diff">+<?php echo number_format($color['color_price'], 0, ',', '.'); ?>₫</span>
-                                        <?php endif; ?>
                                     </a>
                                 <?php endif; ?>
                             <?php endforeach; ?>
@@ -175,23 +166,18 @@
                 </div>
 
                 <div class="action-buttons">
-                    <!-- Form thêm vào giỏ hàng -->
-                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
+                    <form action="index.php?action=add-to-cart" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
-                        <input type="hidden" name="quantity" id="hidden-quantity" value="1">
-                        <button type="submit" class="add-to-cart-btn">
+                        <input type="hidden" name="quantity" id="hidden-quantity" value="1" min="1" max="10">
+                        <button type="submit" class="btn-add-cart">
                             <i class="fas fa-shopping-cart"></i>
                             Thêm vào giỏ hàng
                         </button>
                     </form>
-
-                    <!-- Form mua ngay -->
-                    <form action="index.php?action=checkout" method="POST" class="buy-now-form">
-                        <input type="hidden" name="buy_now" value="1">
-                        <input type="hidden" name="selected_products[]" value="<?php echo $product['pro_id']; ?>">
-                        <input type="hidden" name="quantities[<?php echo $product['pro_id']; ?>]" id="buy-now-quantity"
-                            value="1">
-                        <button type="submit" class="buy-now-btn">Mua ngay</button>
+                    <form action="index.php?action=checkout" method="POST">
+                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                        <input type="hidden" name="quantity" id="buy-now-quantity" value="1">
+                        <button type="submit" class="btn-buy-now">Mua ngay</button>
                     </form>
                 </div>
             </div>
@@ -259,8 +245,51 @@
     </div>
 
     <script>
+        // Xử lý chuyển đổi ảnh thumbnail
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.getElementById('mainImage');
+
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                // Remove active class from all thumbnails
+                thumbnails.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked thumbnail
+                this.classList.add('active');
+                // Update main image
+                mainImage.src = this.src;
+            });
+        });
+
+        // Xử lý tăng giảm s lượng
+        const minusBtn = document.querySelector('.minus');
+        const plusBtn = document.querySelector('.plus');
+        const qtyInput = document.querySelector('.qty-input');
+        const hiddenQuantity = document.getElementById('hidden-quantity');
+        const buyNowQuantity = document.getElementById('buy-now-quantity');
+
+        // Cập nhật hidden input khi số lượng thay đổi
+        qtyInput.addEventListener('change', function() {
+            hiddenQuantity.value = this.value;
+            buyNowQuantity.value = this.value; // Cập nhật số lượng cho form mua ngay
+        });
+
+        minusBtn.addEventListener('click', () => {
+            const currentValue = parseInt(qtyInput.value);
+            if (currentValue > 1) {
+                qtyInput.value = currentValue - 1;
+                hiddenQuantity.value = currentValue - 1;
+                buyNowQuantity.value = currentValue - 1; // Cập nhật số lượng cho form mua ngay
+            }
+        });
+
+        plusBtn.addEventListener('click', () => {
+            const currentValue = parseInt(qtyInput.value);
+            qtyInput.value = currentValue + 1;
+            hiddenQuantity.value = currentValue + 1;
+            buyNowQuantity.value = currentValue + 1; // Cập nhật số lượng cho form mua ngay
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
-            // Xử lý alerts
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 // Tự động ẩn sau 3 giây
@@ -278,39 +307,17 @@
                     });
                 }
             });
+        });
 
-            // Xử lý số lượng sản phẩm
-            const qtyInput = document.querySelector('.qty-input');
-            const hiddenQuantity = document.getElementById('hidden-quantity');
-            const buyNowQuantity = document.getElementById('buy-now-quantity');
-            const minusBtn = document.querySelector('.minus');
-            const plusBtn = document.querySelector('.plus');
+        // Cập nhật ảnh sản phẩm khi đổi màu
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainImage = document.getElementById('mainImage');
+            const thumbnail = document.querySelector('.thumbnail');
 
-            if (qtyInput && hiddenQuantity && buyNowQuantity) {
-                qtyInput.addEventListener('change', function() {
-                    hiddenQuantity.value = this.value;
-                    buyNowQuantity.value = this.value;
-                });
-
-                if (minusBtn) {
-                    minusBtn.addEventListener('click', () => {
-                        const currentValue = parseInt(qtyInput.value);
-                        if (currentValue > 1) {
-                            qtyInput.value = currentValue - 1;
-                            hiddenQuantity.value = currentValue - 1;
-                            buyNowQuantity.value = currentValue - 1;
-                        }
-                    });
-                }
-
-                if (plusBtn) {
-                    plusBtn.addEventListener('click', () => {
-                        const currentValue = parseInt(qtyInput.value);
-                        qtyInput.value = currentValue + 1;
-                        hiddenQuantity.value = currentValue + 1;
-                        buyNowQuantity.value = currentValue + 1;
-                    });
-                }
+            // Cập nhật ảnh khi URL thay đổi
+            if (mainImage && thumbnail) {
+                const newImageUrl = mainImage.src;
+                thumbnail.src = newImageUrl;
             }
         });
     </script>
