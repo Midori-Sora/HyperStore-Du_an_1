@@ -126,10 +126,10 @@ class OrderModel
                 throw new Exception("Đơn hàng không hợp lệ hoặc không thể trả hàng");
             }
 
-            // Cập nhật trạng thái
+            // Cập nhật trạng thái thành "yêu cầu trả hàng" và lưu lý do
             $updateSql = "UPDATE orders 
-                         SET status = 'returned',
-                             return_reason = ?,
+                         SET status = 'return_requested',
+                             return_request_reason = ?,
                              updated_at = NOW()
                          WHERE order_id = ? AND user_id = ?";
 

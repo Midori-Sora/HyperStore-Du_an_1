@@ -188,4 +188,7 @@ switch ($action) {
     case 'editStorage':
         ProductController::editStorageController();
         break;
+    case 'handleReturnRequest':
+        OrderController::handleReturnRequestController();
+        break;
 }

@@ -74,29 +74,30 @@ class OrderModel
     }
 
     // Cập nhật trạng thái đơn hàng
-    public function updateOrderStatus($orderId, $newStatus)
+    public function updateOrderStatus($orderId, $status)
     {
         try {
-            // Lấy trạng thái hiện tại của đơn hàng
-            $sql = "SELECT status FROM orders WHERE order_id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$orderId]);
-            $currentStatus = $stmt->fetchColumn();
+            $validStatuses = [
+                'pending',           // Chờ xác nhận
+                'confirmed',         // Đã xác nhận
+                'processing',        // Đang xử lý
+                'shipping',          // Đang giao
+                'delivered',         // Đã giao
+                'cancelled',         // Đã hủy
+                'return_requested',  // Yêu cầu trả hàng
+                'returned'           // Đã trả hàng
+            ];
 
-            // Kiểm tra xem trạng thái mới có được phép chuyển đổi không
-            $allowedTransitions = OrderHelper::getAllowedStatusTransitions($currentStatus);
-
-            if (!array_key_exists($newStatus, $allowedTransitions)) {
-                throw new Exception("Không thể chuyển từ trạng thái $currentStatus sang $newStatus");
+            if (!in_array($status, $validStatuses)) {
+                throw new Exception("Trạng thái không hợp lệ");
             }
 
-            // Thực hiện cập nhật nếu được phép
             $sql = "UPDATE orders SET status = ?, updated_at = NOW() WHERE order_id = ?";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$newStatus, $orderId]);
+            return $stmt->execute([$status, $orderId]);
         } catch (Exception $e) {
             error_log("Error updating order status: " . $e->getMessage());
-            throw $e;
+            return false;
         }
     }
 
@@ -228,8 +229,9 @@ class OrderModel
             'processing' => 'Đang xử lý',
             'shipping' => 'Đang giao',
             'delivered' => 'Đã giao',
-            'returned' => 'Yêu cầu trả hàng',
-            'cancelled' => 'Đã hủy'
+            'cancelled' => 'Đã hủy',
+            'return_requested' => 'Yêu cầu trả hàng',
+            'returned' => 'Đã trả hàng'
         ];
         return $statusMap[$status] ?? 'Không xác định';
     }
@@ -242,8 +244,9 @@ class OrderModel
             'processing' => 'status-processing',
             'shipping' => 'status-shipping',
             'delivered' => 'status-success',
-            'returned' => 'status-warning',
-            'cancelled' => 'status-danger'
+            'cancelled' => 'status-danger',
+            'return_requested' => 'status-warning',
+            'returned' => 'status-info'
         ];
         return $classMap[$status] ?? '';
     }
@@ -276,6 +279,42 @@ class OrderModel
             return $stmt->execute([$reason, $orderId, $userId]);
         } catch (Exception $e) {
             error_log("Error in requestReturn: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function handleReturnRequest($orderId, $status, $adminNote)
+    {
+        try {
+            $this->db->beginTransaction();
+
+            // Cập nhật trạng thái đơn hàng
+            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$status, $orderId]);
+
+            // Tạo return request mới
+            $sql = "INSERT INTO return_requests (order_id, user_id, status, admin_note, processed_date) 
+                    SELECT order_id, user_id, ?, ?, NOW() 
+                    FROM orders WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$status === 'returned' ? 'approved' : 'rejected', $adminNote, $orderId]);
+
+            // Nếu chấp nhận trả hàng, cập nhật số lượng sản phẩm
+            if ($status === 'returned') {
+                $sql = "UPDATE products p 
+                       INNER JOIN order_details od ON p.pro_id = od.product_id 
+                       SET p.quantity = p.quantity + od.quantity 
+                       WHERE od.order_id = ?";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$orderId]);
+            }
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            error_log($e->getMessage());
             return false;
         }
     }

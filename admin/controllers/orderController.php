@@ -77,26 +77,28 @@ class OrderController
     public static function updateOrderStatusController()
     {
         try {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id']) && isset($_POST['status'])) {
-                self::init();
+            if (!isset($_POST['order_id']) || !isset($_POST['status'])) {
+                throw new Exception("Thiếu thông tin cần thiết");
+            }
 
-                try {
-                    if (self::$orderModel->updateOrderStatus($_POST['order_id'], $_POST['status'])) {
-                        $_SESSION['success'] = "Cập nhật trạng thái đơn hàng thành công";
-                    }
-                } catch (Exception $e) {
-                    $_SESSION['error'] = $e->getMessage();
-                }
+            self::init();
+            $orderId = (int)$_POST['order_id'];
+            $status = $_POST['status'];
 
-                // Redirect về trang chi tiết đơn hàng
-                header("Location: index.php?action=orderDetail&id=" . $_POST['order_id']);
-                exit();
+            $result = self::$orderModel->updateOrderStatus($orderId, $status);
+
+            if ($result) {
+                echo json_encode(['success' => true]);
+            } else {
+                throw new Exception("Không thể cập nhật trạng thái");
             }
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
-            header('Location: index.php?action=order');
-            exit();
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
         }
+        exit();
     }
 
     public static function searchOrderController()
@@ -164,5 +166,30 @@ class OrderController
             header('Location: index.php?action=order');
             exit();
         }
+    }
+
+    public static function handleReturnRequestController()
+    {
+        try {
+            if (!isset($_POST['order_id']) || !isset($_POST['status']) || !isset($_POST['admin_note'])) {
+                throw new Exception("Thiếu thông tin cần thiết");
+            }
+
+            self::init();
+            $orderId = (int)$_POST['order_id'];
+            $status = $_POST['status'] === 'approve' ? 'returned' : 'cancelled';
+            $adminNote = $_POST['admin_note'];
+
+            $result = self::$orderModel->handleReturnRequest($orderId, $status, $adminNote);
+
+            if ($result) {
+                echo json_encode(['success' => true, 'message' => 'Đã xử lý yêu cầu trả hàng thành công']);
+            } else {
+                throw new Exception("Không thể xử lý yêu cầu trả hàng");
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+        exit();
     }
 }

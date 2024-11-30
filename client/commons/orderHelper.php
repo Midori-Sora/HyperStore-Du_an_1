@@ -10,6 +10,7 @@ class OrderHelper
             'shipping' => 'Đang giao hàng',
             'delivered' => 'Đã giao thành công',
             'cancelled' => 'Đã hủy',
+            'return_requested' => 'Yêu cầu trả hàng',
             'returned' => 'Đã trả hàng',
             'refunded' => 'Đã hoàn tiền',
             'failed' => 'Giao hàng thất bại'
@@ -27,27 +28,13 @@ class OrderHelper
             'shipping' => 'status-shipping',
             'delivered' => 'status-delivered',
             'cancelled' => 'status-cancelled',
+            'return_requested' => 'status-warning',
             'returned' => 'status-returned',
             'refunded' => 'status-refunded',
             'failed' => 'status-failed'
         ];
 
         return $classMap[$status] ?? 'status-pending';
-    }
-
-    public static function canCancelOrder($status)
-    {
-        return in_array($status, ['pending', 'confirmed', 'processing']);
-    }
-
-    public static function formatOrderDate($date)
-    {
-        return date('d/m/Y H:i', strtotime($date));
-    }
-
-    public static function formatCurrency($amount)
-    {
-        return number_format($amount, 0, ',', '.') . 'đ';
     }
 
     public static function getAllowedStatusTransitions($currentStatus)
@@ -70,34 +57,50 @@ class OrderHelper
             ],
             'shipping' => [
                 'delivered' => 'Giao thành công',
-                'returned' => 'Đã trả hàng',
-                'refunded' => 'Đã hoàn tiền'
+                'failed' => 'Thất bại'
             ],
             'delivered' => [
-                'returned' => 'Đã trả hàng',
-                'refunded' => 'Đã hoàn tiền',
+                'return_requested' => 'Yêu cầu trả hàng',
                 'failed' => 'Thất bại'
             ],
-            'cancelled' => [
-                'failed' => 'Thất bại'
+            'return_requested' => [
+                'returned' => 'Chấp nhận trả hàng',
+                'delivered' => 'Từ chối trả hàng'
             ],
             'returned' => [
                 'refunded' => 'Đã hoàn tiền'
             ],
+            'cancelled' => [
+                'failed' => 'Thất bại'
+            ],
             'refunded' => [
-                'returned' => 'Đã trả hàng',
                 'failed' => 'Thất bại'
             ],
             'failed' => [
-                'cancelled' => 'Đã hủy',
-                'awaiting_payment' => 'Chờ thanh toán'
-            ],
-            'awaiting_payment' => [
-                'confirmed' => 'Đã xác nhận',
-                'failed' => 'Thất bại'
+                'cancelled' => 'Đã hủy'
             ]
         ];
 
         return $transitions[$currentStatus] ?? [];
+    }
+
+    public static function canCancelOrder($status)
+    {
+        return in_array($status, ['pending', 'confirmed', 'processing']);
+    }
+
+    public static function canRequestReturn($status)
+    {
+        return $status === 'delivered';
+    }
+
+    public static function formatOrderDate($date)
+    {
+        return date('d/m/Y H:i', strtotime($date));
+    }
+
+    public static function formatCurrency($amount)
+    {
+        return number_format($amount, 0, ',', '.') . 'đ';
     }
 }

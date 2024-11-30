@@ -62,11 +62,14 @@
 
                         <p class="product-quantity">x<?= $item['quantity'] ?></p>
                         <div class="product-price">
-                            <?php
-                            // Sử dụng giá đã lưu trong order_details
-                            $finalPrice = $item['final_price'];
-                            ?>
-                            <span class="final-price"><?= number_format($finalPrice, 0, ',', '.') ?>₫</span>
+                            <?php if (isset($item['current_discount']) && $item['current_discount'] > 0): ?>
+                                <span class="original-price"><?= number_format($item['final_price'], 0, ',', '.') ?>₫</span>
+                                <span class="discounted-price">
+                                    <?= number_format($item['final_price'] * (1 - $item['current_discount'] / 100), 0, ',', '.') ?>₫
+                                </span>
+                            <?php else: ?>
+                                <span class="final-price"><?= number_format($item['final_price'], 0, ',', '.') ?>₫</span>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
