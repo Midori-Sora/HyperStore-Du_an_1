@@ -68,20 +68,10 @@
                         <div class="user-dropdown">
                             <a href="#" class="user-menu">
                                 <i class="fas fa-user"></i>
-                                <span><?php echo $_SESSION['user_name']; ?></span>
+                                <span><?php echo htmlspecialchars($_SESSION['fullname']); ?></span>
                             </a>
                             <div class="user-popup">
                                 <ul>
-                                    <?php if (isset($_SESSION['role_name']) && $_SESSION['role_name'] === 'Admin'): ?>
-                                        <li>
-                                            <a href="admin/index.php" class="admin-link">
-                                                <i class="fas fa-cog"></i> Quản trị website
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <hr class="dropdown-divider">
-                                        </li>
-                                    <?php endif; ?>
                                     <li>
                                         <a href="index.php?action=profile">
                                             <i class="fas fa-user-circle"></i> Tài khoản của tôi

@@ -12,7 +12,7 @@ class LoginModel {
 
     public function checkLogin($email, $password) {
         try {
-            $sql = "SELECT u.*, r.role_name 
+            $sql = "SELECT u.user_id, u.email, u.password, u.fullname, u.role_id, r.role_name 
                     FROM users u 
                     LEFT JOIN roles r ON u.role_id = r.role_id 
                     WHERE u.email = ? 
