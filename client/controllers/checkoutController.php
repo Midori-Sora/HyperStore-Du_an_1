@@ -125,7 +125,18 @@ class CheckoutController
                     throw new Exception('Dữ liệu sản phẩm không hợp lệ');
                 }
 
-                $this->checkoutModel->addOrderDetails($orderId, $product['id'], $product['quantity'], $product['price']);
+                // Tính toán giá cuối cùng và lưu vào order_details
+                $productDetails = $this->checkoutModel->getProductDetails($product['id']);
+                $finalPrice = $productDetails['price'] +
+                    (isset($productDetails['color_price']) ? $productDetails['color_price'] : 0) +
+                    (isset($productDetails['storage_price']) ? $productDetails['storage_price'] : 0);
+
+                if (isset($productDetails['current_discount']) && $productDetails['current_discount'] > 0) {
+                    $finalPrice = $finalPrice * (1 - $productDetails['current_discount'] / 100);
+                }
+
+                // Lưu giá đã tính vào order_details
+                $this->checkoutModel->addOrderDetails($orderId, $product['id'], $product['quantity'], $finalPrice);
                 $this->checkoutModel->updateProductQuantity($product['id'], $product['quantity']);
                 $purchasedProducts[] = $product['id'];
             }

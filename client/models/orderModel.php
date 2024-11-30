@@ -16,6 +16,7 @@ class OrderModel
     public function getOrdersByUserId($userId)
     {
         $sql = "SELECT o.*, 
+                SUM(od.quantity * od.price) as total_amount,
                 SUM(od.quantity) as total_items,
                 MIN(p.pro_name) as pro_name,
                 MIN(CONCAT('Uploads/Product/', p.img)) as product_image,
@@ -77,7 +78,7 @@ class OrderModel
                 ps.storage_type,
                 ps.storage_price,
                 pd.discount as current_discount,
-                (od.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
+                od.price as final_price
                 FROM order_details od
                 JOIN products p ON od.product_id = p.pro_id
                 LEFT JOIN product_color pc ON p.color_id = pc.color_id

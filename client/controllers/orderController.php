@@ -45,6 +45,14 @@ class OrderController
 
         $orderDetails = $this->orderModel->getOrderDetailById($orderId);
 
+        // Tính lại tổng tiền từ order details
+        $totalAmount = 0;
+        foreach ($orderDetails as &$item) {
+            // Sử dụng giá đã lưu trong order_details thay vì tính toán lại
+            $totalAmount += $item['final_price'] * $item['quantity'];
+        }
+        $order['total_amount'] = $totalAmount;
+
         require_once 'client/views/order/order-detail.php';
     }
 
