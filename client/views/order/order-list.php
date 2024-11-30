@@ -93,10 +93,6 @@ require_once "client/commons/orderHelper.php";
                                 <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
                                     Yêu cầu trả hàng
                                 </button>
-                            <?php elseif ($order['status'] === 'returned'): ?>
-                                <div class="alert alert-info">
-                                    Vui lòng đợi xác nhận từ người bán
-                                </div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -173,7 +169,7 @@ require_once "client/commons/orderHelper.php";
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        alert('Yêu cầu trả hàng đã được gửi. Vui lòng đợi xác nhận từ người bán');
+                        alert('Yêu cầu trả hàng đã được gửi thành công');
                         location.reload();
                     } else {
                         alert(data.message);

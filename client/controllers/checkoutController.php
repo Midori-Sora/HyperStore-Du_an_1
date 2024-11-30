@@ -28,7 +28,7 @@ class CheckoutController
                     $product['quantity'] = $quantity;
                     $selectedProducts[] = $product;
 
-                    // Tính giá tương tự như trong CartModel
+                    // Tính giá cuối cùng
                     $finalPrice = $product['price'] +
                         (isset($product['color_price']) ? $product['color_price'] : 0) +
                         (isset($product['storage_price']) ? $product['storage_price'] : 0);

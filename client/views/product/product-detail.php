@@ -54,7 +54,7 @@
                     <div class="stock-status <?php echo $product['quantity'] > 0 ? 'in-stock' : 'out-of-stock'; ?>">
                         <i
                             class="fas <?php echo $product['quantity'] > 0 ? 'fa-check-circle' : 'fa-times-circle'; ?>"></i>
-                        <?php 
+                        <?php
                         if ($product['quantity'] > 0) {
                             echo 'Còn hàng (' . $product['quantity'] . ' sản phẩm)';
                         } else {
@@ -65,12 +65,12 @@
                 </div>
 
                 <div class="product-price">
-                    <?php 
-                    $total_price = $product['price'] + 
-                        floatval($product['color_price'] ?? 0) + 
+                    <?php
+                    $total_price = $product['price'] +
+                        floatval($product['color_price'] ?? 0) +
                         floatval($product['storage_price'] ?? 0);
-                    
-                    if (!empty($product['discount'])) : 
+
+                    if (!empty($product['discount'])) :
                         $discount_price = $total_price * (100 - $product['discount']) / 100;
                     ?>
                         <div class="price-wrapper">
@@ -158,25 +158,32 @@
                     <h3>Số lượng</h3>
                     <div class="quantity-controls">
                         <button class="qty-btn minus"><i class="fas fa-minus"></i></button>
-                        <input type="number" value="1" min="1" max="<?php echo min(10, $product['quantity']); ?>" class="qty-input">
+                        <input type="number" value="1" min="1" max="<?php echo min(10, $product['quantity']); ?>"
+                            class="qty-input">
                         <button class="qty-btn plus"><i class="fas fa-plus"></i></button>
                     </div>
                 </div>
 
                 <div class="action-buttons">
-                    <form action="index.php?action=add-to-cart" method="POST">
-                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
-                        <input type="hidden" name="quantity" id="hidden-quantity" value="1" min="1" max="<?php echo min(10, $product['quantity']); ?>">
-                        <button type="submit" class="btn-add-cart" <?php echo $product['quantity'] > 0 ? '' : 'disabled'; ?>>
-                            <i class="fas fa-shopping-cart"></i>
-                            <?php echo $product['quantity'] > 0 ? 'Thêm vào giỏ hàng' : 'Hết hàng'; ?>
+                    <form action="index.php?action=checkout" method="POST">
+                        <input type="hidden" name="buy_now" value="1">
+                        <input type="hidden" name="selected_products[]" value="<?php echo $product['pro_id']; ?>">
+                        <input type="hidden" name="quantities[<?php echo $product['pro_id']; ?>]" id="buy-now-quantity"
+                            value="1">
+                        <button type="submit" class="btn-buy-now"
+                            <?php echo $product['quantity'] > 0 ? '' : 'disabled'; ?>>
+                            <i class="fas fa-bolt"></i>
+                            Mua ngay
                         </button>
                     </form>
-                    <form action="index.php?action=checkout" method="POST">
+
+                    <form action="index.php?action=add-to-cart" method="POST">
                         <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
-                        <input type="hidden" name="quantity" id="buy-now-quantity" value="1" max="<?php echo min(10, $product['quantity']); ?>">
-                        <button type="submit" class="btn-buy-now" <?php echo $product['quantity'] > 0 ? '' : 'disabled'; ?>>
-                            <?php echo $product['quantity'] > 0 ? 'Mua ngay' : 'Hết hàng'; ?>
+                        <input type="hidden" name="quantity" id="hidden-quantity" value="1">
+                        <button type="submit" class="btn-add-cart"
+                            <?php echo $product['quantity'] > 0 ? '' : 'disabled'; ?>>
+                            <i class="fas fa-shopping-cart"></i>
+                            Thêm vào giỏ hàng
                         </button>
                     </form>
                 </div>
@@ -186,13 +193,13 @@
         <div class="product-sections">
             <div class="product-section">
                 <h2 class="section-title">Đánh giá sản phẩm</h2>
-                    <!-- Container cho danh sách bình luận -->
-                    <div id="comments-container">
-                        <?php 
-                        // Truyền biến comments vào view
-                        include 'client/views/product/comments-list.php'; 
-                        ?>
-                    </div>
+                <!-- Container cho danh sách bình luận -->
+                <div id="comments-container">
+                    <?php
+                    // Truyền biến comments vào view
+                    include 'client/views/product/comments-list.php';
+                    ?>
+                </div>
             </div>
         </div>
     </div>
@@ -223,7 +230,8 @@
         const qtyInput = document.querySelector('.qty-input');
         const hiddenQuantity = document.getElementById('hidden-quantity');
         const buyNowQuantity = document.getElementById('buy-now-quantity');
-        const MAX_QUANTITY = <?php echo min(10, $product['quantity']); ?>; // Giới hạn tối đa 10 hoặc số lượng tồn kho nếu nhỏ hơn 10
+        const MAX_QUANTITY =
+            <?php echo min(10, $product['quantity']); ?>; // Giới hạn tối đa 10 hoặc số lượng tồn kho nếu nhỏ hơn 10
 
         // Cập nhật hidden input khi số lượng thay đổi
         qtyInput.addEventListener('change', function() {
@@ -270,7 +278,7 @@
             const currentValue = parseInt(qtyInput.value);
             minusBtn.disabled = currentValue <= 1;
             plusBtn.disabled = currentValue >= MAX_QUANTITY;
-            
+
             // Thêm class để style cho nút bị disable
             minusBtn.classList.toggle('disabled', currentValue <= 1);
             plusBtn.classList.toggle('disabled', currentValue >= MAX_QUANTITY);
@@ -362,14 +370,16 @@
                     const rating = this.dataset.rating;
                     commentsContainer.innerHTML = '<div class="loading">Đang tải...</div>';
 
-                    fetch(`index.php?action=filter-comments&product_id=${productId}&rating=${rating}`)
+                    fetch(
+                            `index.php?action=filter-comments&product_id=${productId}&rating=${rating}`)
                         .then(response => response.text())
                         .then(html => {
                             commentsContainer.innerHTML = html;
                         })
                         .catch(error => {
                             console.error('Error:', error);
-                            commentsContainer.innerHTML = '<div class="error">Có lỗi xảy ra khi tải bình luận</div>';
+                            commentsContainer.innerHTML =
+                                '<div class="error">Có lỗi xảy ra khi tải bình luận</div>';
                         });
                 });
             });
