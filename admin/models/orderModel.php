@@ -77,27 +77,27 @@ class OrderModel
     public function updateOrderStatus($orderId, $status)
     {
         try {
-            $validStatuses = [
-                'pending',           // Chờ xác nhận
-                'confirmed',         // Đã xác nhận
-                'processing',        // Đang xử lý
-                'shipping',          // Đang giao
-                'delivered',         // Đã giao
-                'cancelled',         // Đã hủy
-                'return_requested',  // Yêu cầu trả hàng
-                'returned'           // Đã trả hàng
-            ];
+            // Lấy trạng thái hiện tại của đơn hàng
+            $sql = "SELECT status FROM orders WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderId]);
+            $currentStatus = $stmt->fetchColumn();
 
-            if (!in_array($status, $validStatuses)) {
-                throw new Exception("Trạng thái không hợp lệ");
+            // Lấy danh sách trạng thái được phép chuyển đổi
+            $allowedTransitions = OrderHelper::getAllowedStatusTransitions($currentStatus);
+
+            // Kiểm tra xem trạng thái mới có được phép không
+            if (!array_key_exists($status, $allowedTransitions)) {
+                throw new Exception("Không thể chuyển từ trạng thái $currentStatus sang $status");
             }
 
+            // Nếu hợp lệ, thực hiện cập nhật
             $sql = "UPDATE orders SET status = ?, updated_at = NOW() WHERE order_id = ?";
             $stmt = $this->db->prepare($sql);
             return $stmt->execute([$status, $orderId]);
         } catch (Exception $e) {
             error_log("Error updating order status: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 

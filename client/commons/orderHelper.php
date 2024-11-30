@@ -42,43 +42,29 @@ class OrderHelper
         $transitions = [
             'pending' => [
                 'confirmed' => 'Đã xác nhận',
-                'cancelled' => 'Đã hủy',
-                'failed' => 'Thất bại'
+                'cancelled' => 'Đã hủy'
             ],
             'confirmed' => [
-                'processing' => 'Đang chuẩn bị hàng',
-                'cancelled' => 'Đã hủy',
-                'failed' => 'Thất bại'
+                'processing' => 'Đang xử lý',
+                'cancelled' => 'Đã hủy'
             ],
             'processing' => [
                 'shipping' => 'Đang giao hàng',
-                'cancelled' => 'Đã hủy',
-                'failed' => 'Thất bại'
+                'cancelled' => 'Đã hủy'
             ],
             'shipping' => [
-                'delivered' => 'Giao thành công',
-                'failed' => 'Thất bại'
+                'delivered' => 'Đã giao hàng',
+                'cancelled' => 'Đã hủy'
             ],
             'delivered' => [
-                'return_requested' => 'Yêu cầu trả hàng',
-                'failed' => 'Thất bại'
+                'return_requested' => 'Yêu cầu trả hàng'
             ],
             'return_requested' => [
-                'returned' => 'Chấp nhận trả hàng',
+                'returned' => 'Đã trả hàng',
                 'delivered' => 'Từ chối trả hàng'
             ],
-            'returned' => [
-                'refunded' => 'Đã hoàn tiền'
-            ],
-            'cancelled' => [
-                'failed' => 'Thất bại'
-            ],
-            'refunded' => [
-                'failed' => 'Thất bại'
-            ],
-            'failed' => [
-                'cancelled' => 'Đã hủy'
-            ]
+            'returned' => [],
+            'cancelled' => []
         ];
 
         return $transitions[$currentStatus] ?? [];
