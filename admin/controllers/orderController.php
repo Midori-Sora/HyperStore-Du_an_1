@@ -1,5 +1,6 @@
 <?php
 require_once 'models/orderModel.php';
+require_once '../client/commons/orderHelper.php';
 
 class OrderController
 {
@@ -78,12 +79,18 @@ class OrderController
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['order_id']) && isset($_POST['status'])) {
                 self::init();
-                if (self::$orderModel->updateOrderStatus($_POST['order_id'], $_POST['status'])) {
-                    $_SESSION['success'] = "Cập nhật trạng thái đơn hàng thành công";
-                } else {
-                    $_SESSION['error'] = "Cập nhật trạng thái thất bại";
+
+                try {
+                    if (self::$orderModel->updateOrderStatus($_POST['order_id'], $_POST['status'])) {
+                        $_SESSION['success'] = "Cập nhật trạng thái đơn hàng thành công";
+                    }
+                } catch (Exception $e) {
+                    $_SESSION['error'] = $e->getMessage();
                 }
-                header("Location: index.php?action=order");
+
+                // Redirect về trang chi tiết đơn hàng
+                header("Location: index.php?action=orderDetail&id=" . $_POST['order_id']);
+                exit();
             }
         } catch (Exception $e) {
             $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();

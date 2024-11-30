@@ -74,15 +74,29 @@ class OrderModel
     }
 
     // Cập nhật trạng thái đơn hàng
-    public function updateOrderStatus($orderId, $status)
+    public function updateOrderStatus($orderId, $newStatus)
     {
         try {
-            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+            // Lấy trạng thái hiện tại của đơn hàng
+            $sql = "SELECT status FROM orders WHERE order_id = ?";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([$status, $orderId]);
-        } catch (PDOException $e) {
+            $stmt->execute([$orderId]);
+            $currentStatus = $stmt->fetchColumn();
+
+            // Kiểm tra xem trạng thái mới có được phép chuyển đổi không
+            $allowedTransitions = OrderHelper::getAllowedStatusTransitions($currentStatus);
+
+            if (!array_key_exists($newStatus, $allowedTransitions)) {
+                throw new Exception("Không thể chuyển từ trạng thái $currentStatus sang $newStatus");
+            }
+
+            // Thực hiện cập nhật nếu được phép
+            $sql = "UPDATE orders SET status = ?, updated_at = NOW() WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$newStatus, $orderId]);
+        } catch (Exception $e) {
             error_log("Error updating order status: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 
