@@ -28,13 +28,16 @@ class CheckoutController
                     $product['quantity'] = $quantity;
                     $selectedProducts[] = $product;
 
-                    // Tính tổng tiền
+                    // Tính giá tương tự như trong CartModel
+                    $finalPrice = $product['price'] +
+                        (isset($product['color_price']) ? $product['color_price'] : 0) +
+                        (isset($product['storage_price']) ? $product['storage_price'] : 0);
+
                     if (isset($product['current_discount']) && $product['current_discount'] > 0) {
-                        $price = $product['price'] * (1 - $product['current_discount'] / 100);
-                    } else {
-                        $price = $product['price'];
+                        $finalPrice = $finalPrice * (1 - $product['current_discount'] / 100);
                     }
-                    $totalAmount += $price * $quantity;
+
+                    $totalAmount += $finalPrice * $quantity;
                 }
             }
         }
@@ -50,13 +53,16 @@ class CheckoutController
                     $product['quantity'] = $quantity;
                     $selectedProducts[] = $product;
 
-                    // Tính tổng tiền
+                    // Tính giá tương tự như trong CartModel
+                    $finalPrice = $product['price'] +
+                        (isset($product['color_price']) ? $product['color_price'] : 0) +
+                        (isset($product['storage_price']) ? $product['storage_price'] : 0);
+
                     if (isset($product['current_discount']) && $product['current_discount'] > 0) {
-                        $price = $product['price'] * (1 - $product['current_discount'] / 100);
-                    } else {
-                        $price = $product['price'];
+                        $finalPrice = $finalPrice * (1 - $product['current_discount'] / 100);
                     }
-                    $totalAmount += $price * $quantity;
+
+                    $totalAmount += $finalPrice * $quantity;
                 }
             }
         }

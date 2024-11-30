@@ -20,8 +20,7 @@ class CheckoutModel
 
     public function getProductDetails($productId)
     {
-        $sql = "SELECT p.*, 
-                pc.color_type, pc.color_price,
+        $sql = "SELECT p.*, pc.color_type, pc.color_price, 
                 ps.storage_type, ps.storage_price,
                 pd.discount as current_discount,
                 p.price as base_price,
@@ -391,7 +390,6 @@ class CheckoutModel
     public function updateShippingAddress($data)
     {
         try {
-            // Validate dữ liệu
             if (empty($data['receiver_name']) || empty($data['phone']) || empty($data['address'])) {
                 throw new Exception("Vui lòng điền đầy đủ thông tin");
             }

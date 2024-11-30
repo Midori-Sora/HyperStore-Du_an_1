@@ -17,43 +17,43 @@
             <h2><i class="fas fa-map-marker-alt"></i> Địa Chỉ Nhận Hàng</h2>
             <div class="address-content">
                 <?php if (isset($userAddress)): ?>
-                    <div class="address-info" id="default-address">
-                        <div class="info-row">
-                            <i class="fas fa-user"></i>
-                            <span class="name"><?= $userAddress['receiver_name'] ?></span>
-                        </div>
-                        <div class="info-row">
-                            <i class="fas fa-phone"></i>
-                            <span class="phone"><?= $userAddress['phone'] ?></span>
-                        </div>
-                        <div class="info-row">
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span class="address"><?= $userAddress['address'] ?></span>
-                        </div>
-                        <button type="button" class="change-address-btn" onclick="toggleAddressForm()">Thay đổi</button>
+                <div class="address-info" id="default-address">
+                    <div class="info-row">
+                        <i class="fas fa-user"></i>
+                        <span class="name"><?= $userAddress['receiver_name'] ?></span>
                     </div>
+                    <div class="info-row">
+                        <i class="fas fa-phone"></i>
+                        <span class="phone"><?= $userAddress['phone'] ?></span>
+                    </div>
+                    <div class="info-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span class="address"><?= $userAddress['address'] ?></span>
+                    </div>
+                    <button type="button" class="change-address-btn" onclick="toggleAddressForm()">Thay đổi</button>
+                </div>
 
-                    <!-- Form địa chỉ mới -->
-                    <div class="new-address-form" id="address-form" style="display: none;">
-                        <form id="shipping-form" onsubmit="updateAddress(event)">
-                            <div class="form-group">
-                                <input type="text" name="receiver_name" placeholder="Họ tên người nhận"
-                                    value="<?= htmlspecialchars($userAddress['receiver_name'] ?? '') ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <input type="tel" name="phone" placeholder="Số điện thoại"
-                                    value="<?= htmlspecialchars($userAddress['phone'] ?? '') ?>" required>
-                            </div>
-                            <div class="form-group">
-                                <textarea name="address" placeholder="Địa chỉ chi tiết"
-                                    required><?= htmlspecialchars($userAddress['address'] ?? '') ?></textarea>
-                            </div>
-                            <div class="form-buttons">
-                                <button type="button" class="btn-cancel" onclick="toggleAddressForm()">Hủy</button>
-                                <button type="submit" class="btn-submit">Xác nhận</button>
-                            </div>
-                        </form>
-                    </div>
+                <!-- Form địa chỉ mới -->
+                <div class="new-address-form" id="address-form" style="display: none;">
+                    <form id="shipping-form" onsubmit="updateAddress(event)">
+                        <div class="form-group">
+                            <input type="text" name="receiver_name" placeholder="Họ tên người nhận"
+                                value="<?= htmlspecialchars($userAddress['receiver_name'] ?? '') ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="phone" placeholder="Số điện thoại"
+                                value="<?= htmlspecialchars($userAddress['phone'] ?? '') ?>" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="address" placeholder="Địa chỉ chi tiết"
+                                required><?= htmlspecialchars($userAddress['address'] ?? '') ?></textarea>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" class="btn-cancel" onclick="toggleAddressForm()">Hủy</button>
+                            <button type="submit" class="btn-submit">Xác nhận</button>
+                        </div>
+                    </form>
+                </div>
                 <?php endif; ?>
             </div>
         </div>
@@ -63,51 +63,57 @@
             <h2><i class="fas fa-shopping-cart"></i> HyperStore Official</h2>
             <div class="products-list">
                 <?php foreach ($selectedProducts as $product): ?>
-                    <div class="product-item">
-                        <div class="product-image">
-                            <img src="<?= $product['img'] ? 'Uploads/Product/' . $product['img'] : 'assets/images/no-image.png' ?>"
-                                alt="<?= htmlspecialchars($product['pro_name']) ?>">
-                            <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
-                                <div class="discount-badge">-<?= $product['current_discount'] ?>%</div>
-                            <?php endif; ?>
-                        </div>
-                        <div class="product-details">
-                            <h3><?= htmlspecialchars($product['pro_name']) ?></h3>
-                            <div class="product-variants">
-                                <?php if ($product['storage_type']): ?>
-                                    <span class="variant storage">
-                                        <i class="fas fa-memory"></i>
-                                        <?= htmlspecialchars($product['storage_type']) ?>
-                                        <?php if ($product['storage_price'] > 0): ?>
-                                            <span
-                                                class="price-diff">+<?= number_format($product['storage_price'], 0, ',', '.') ?>₫</span>
-                                        <?php endif; ?>
-                                    </span>
-                                <?php endif; ?>
-
-                                <?php if ($product['color_type']): ?>
-                                    <span class="variant color">
-                                        <i class="fas fa-palette"></i>
-                                        <?= htmlspecialchars($product['color_type']) ?>
-                                        <?php if ($product['color_price'] > 0): ?>
-                                            <span
-                                                class="price-diff">+<?= number_format($product['color_price'], 0, ',', '.') ?>₫</span>
-                                        <?php endif; ?>
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                            <p class="product-quantity">x<?= $product['quantity'] ?></p>
-                        </div>
-                        <div class="product-price">
-                            <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
-                                <span class="original-price"><?= number_format($product['final_price'], 0, ',', '.') ?>₫</span>
-                                <span
-                                    class="discounted-price"><?= number_format($product['discounted_price'], 0, ',', '.') ?>₫</span>
-                            <?php else: ?>
-                                <span class="final-price"><?= number_format($product['final_price'], 0, ',', '.') ?>₫</span>
-                            <?php endif; ?>
-                        </div>
+                <div class="product-item">
+                    <div class="product-image">
+                        <img src="<?= $product['img'] ? 'Uploads/Product/' . $product['img'] : 'assets/images/no-image.png' ?>"
+                            alt="<?= htmlspecialchars($product['pro_name']) ?>">
+                        <?php if (isset($product['current_discount']) && $product['current_discount'] > 0): ?>
+                        <div class="discount-badge">-<?= $product['current_discount'] ?>%</div>
+                        <?php endif; ?>
                     </div>
+                    <div class="product-details">
+                        <h3><?= htmlspecialchars($product['pro_name']) ?></h3>
+                        <div class="product-variants">
+                            <?php if ($product['storage_type']): ?>
+                            <span class="variant storage">
+                                <i class="fas fa-memory"></i>
+                                <?= htmlspecialchars($product['storage_type']) ?>
+                                <?php if ($product['storage_price'] > 0): ?>
+                                <span
+                                    class="price-diff">+<?= number_format($product['storage_price'], 0, ',', '.') ?>₫</span>
+                                <?php endif; ?>
+                            </span>
+                            <?php endif; ?>
+
+                            <?php if ($product['color_type']): ?>
+                            <span class="variant color">
+                                <i class="fas fa-palette"></i>
+                                <?= htmlspecialchars($product['color_type']) ?>
+                                <?php if ($product['color_price'] > 0): ?>
+                                <span
+                                    class="price-diff">+<?= number_format($product['color_price'], 0, ',', '.') ?>₫</span>
+                                <?php endif; ?>
+                            </span>
+                            <?php endif; ?>
+                        </div>
+                        <p class="product-quantity">x<?= $product['quantity'] ?></p>
+                    </div>
+                    <div class="product-price">
+                        <?php
+                            $finalPrice = $product['price'] +
+                                (isset($product['color_price']) ? $product['color_price'] : 0) +
+                                (isset($product['storage_price']) ? $product['storage_price'] : 0);
+
+                            if (isset($product['current_discount']) && $product['current_discount'] > 0):
+                                $discountedPrice = $finalPrice * (1 - $product['current_discount'] / 100);
+                            ?>
+                        <span class="original-price"><?= number_format($finalPrice, 0, ',', '.') ?>₫</span>
+                        <span class="discounted-price"><?= number_format($discountedPrice, 0, ',', '.') ?>₫</span>
+                        <?php else: ?>
+                        <span class="final-price"><?= number_format($finalPrice, 0, ',', '.') ?>₫</span>
+                        <?php endif; ?>
+                    </div>
+                </div>
                 <?php endforeach; ?>
             </div>
         </div>
@@ -125,7 +131,7 @@
 
             <!-- Thêm sản phẩm vào form -->
             <?php foreach ($selectedProducts as $product): ?>
-                <input type="hidden" name="products[]" value='<?= json_encode([
+            <input type="hidden" name="products[]" value='<?= json_encode([
                                                                     "id" => $product["pro_id"],
                                                                     "quantity" => $product["quantity"],
                                                                     "price" => $product["price"]
@@ -230,28 +236,28 @@
 
     <!-- Thêm script -->
     <script>
-        function toggleBankInfo(show) {
-            const bankInfo = document.getElementById('bank-info');
-            bankInfo.style.display = show ? 'block' : 'none';
-        }
+    function toggleBankInfo(show) {
+        const bankInfo = document.getElementById('bank-info');
+        bankInfo.style.display = show ? 'block' : 'none';
+    }
 
-        function toggleAddressForm() {
-            const defaultAddress = document.getElementById('default-address');
-            const addressForm = document.getElementById('address-form');
-            defaultAddress.style.display = defaultAddress.style.display === 'none' ? 'block' : 'none';
-            addressForm.style.display = addressForm.style.display === 'none' ? 'block' : 'none';
-        }
+    function toggleAddressForm() {
+        const defaultAddress = document.getElementById('default-address');
+        const addressForm = document.getElementById('address-form');
+        defaultAddress.style.display = defaultAddress.style.display === 'none' ? 'block' : 'none';
+        addressForm.style.display = addressForm.style.display === 'none' ? 'block' : 'none';
+    }
 
-        function togglePaymentInfo(method) {
-            const bankList = document.getElementById('bank-list');
-            bankList.style.display = method === 'bank' ? 'block' : 'none';
-        }
+    function togglePaymentInfo(method) {
+        const bankList = document.getElementById('bank-list');
+        bankList.style.display = method === 'bank' ? 'block' : 'none';
+    }
 
-        function showBankInfo(bankCode) {
-            const bankInfo = document.getElementById('bank-info');
-            const bankDetails = getBankDetails(bankCode);
+    function showBankInfo(bankCode) {
+        const bankInfo = document.getElementById('bank-info');
+        const bankDetails = getBankDetails(bankCode);
 
-            bankInfo.innerHTML = `
+        bankInfo.innerHTML = `
                 <div class="bank-details">
                     <h4>Thông tin chuyển khoản:</h4>
                     <p>Ngân hàng: <strong>${bankDetails.name}</strong></p>
@@ -260,141 +266,117 @@
                     <p>Chi nhánh: <strong>${bankDetails.branch}</strong></p>
                 </div>
             `;
-            bankInfo.style.display = 'block';
-        }
+        bankInfo.style.display = 'block';
+    }
 
-        function getBankDetails(bankCode) {
-            const banks = {
-                vietcombank: {
-                    name: 'Vietcombank',
-                    accountNumber: '1234567890',
-                    accountName: 'CONG TY TNHH CONG NGHE REALTECH',
-                    branch: 'Chi nhánh Bà Rịa - Vũng Tàu'
-                },
-                techcombank: {
-                    name: 'Techcombank',
-                    accountNumber: '0987654321',
-                    accountName: 'CONG TY TNHH CONG NGHE REALTECH',
-                    branch: 'Chi nhánh Bà Rịa - Vũng Tàu'
-                }
-            };
-            return banks[bankCode];
-        }
+    function getBankDetails(bankCode) {
+        const banks = {
+            vietcombank: {
+                name: 'Vietcombank',
+                accountNumber: '1234567890',
+                accountName: 'CONG TY TNHH CONG NGHE REALTECH',
+                branch: 'Chi nhánh Bà Rịa - Vũng Tàu'
+            },
+            techcombank: {
+                name: 'Techcombank',
+                accountNumber: '0987654321',
+                accountName: 'CONG TY TNHH CONG NGHE REALTECH',
+                branch: 'Chi nhánh Bà Rịa - Vũng Tàu'
+            }
+        };
+        return banks[bankCode];
+    }
 
-        function toggleBankList(show) {
-            const bankList = document.getElementById('bank-list');
-            bankList.style.display = show ? 'block' : 'none';
-        }
+    function toggleBankList(show) {
+        const bankList = document.getElementById('bank-list');
+        bankList.style.display = show ? 'block' : 'none';
+    }
 
-        // Thêm sự kiện cho việc chọn ngân hàng
-        document.querySelectorAll('input[name="bank_code"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                if (this.checked) {
-                    document.getElementById('selected_bank_code').value = this.value;
-                    document.querySelector('input[name="payment_method"][value="bank_transfer"]').checked =
-                        true;
-                }
-            });
-        });
-
-        function updateAddress(event) {
-            event.preventDefault();
-
-            const form = document.getElementById('shipping-form');
-            const formData = new FormData(form);
-            const submitBtn = form.querySelector('button[type="submit"]');
-
-            submitBtn.disabled = true;
-
-            fetch('index.php?action=update-shipping-address', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.success) {
-                        // Cập nhật UI với dữ liệu từ server
-                        const defaultAddress = document.getElementById('default-address');
-                        if (defaultAddress) {
-                            defaultAddress.querySelector('.name').textContent = data.data.receiver_name;
-                            defaultAddress.querySelector('.phone').textContent = data.data.phone;
-                            defaultAddress.querySelector('.address').textContent = data.data.address;
-                        }
-                        alert('Cập nhật địa chỉ thành công');
-                        // Đóng form
-                        const addressForm = document.getElementById('address-form');
-                        if (addressForm) {
-                            addressForm.style.display = 'none';
-                        }
-                    } else {
-                        throw new Error(data.message || 'Có lỗi xảy ra');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert(error.message || 'Đã có lỗi xảy ra khi cập nhật địa chỉ');
-                })
-                .finally(() => {
-                    submitBtn.disabled = false;
-                });
-        }
-
-        // Thêm validation form
-        document.getElementById('checkout-form').addEventListener('submit', function(e) {
-            const bankTransfer = document.querySelector('input[name="payment_method"][value="bank_transfer"]');
-            if (bankTransfer.checked) {
-                const selectedBank = document.querySelector('input[name="bank_code"]:checked');
-                if (!selectedBank) {
-                    e.preventDefault();
-                    alert('Vui lòng chọn ngân hàng để thanh toán');
-                }
+    // Thêm sự kiện cho việc chọn ngân hàng
+    document.querySelectorAll('input[name="bank_code"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.checked) {
+                document.getElementById('selected_bank_code').value = this.value;
+                document.querySelector('input[name="payment_method"][value="bank_transfer"]').checked =
+                    true;
             }
         });
+    });
 
-        // Cập nhật đường dẫn ảnh ngân hàng
+    function updateAddress(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
 
-        // Thêm event listener cho radio buttons
-        document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
-            radio.addEventListener('change', function() {
-                document.getElementById('payment_method').value = this.value;
-                if (this.value === 'bank_transfer') {
-                    toggleBankList(true);
+        fetch('index.php?action=update-shipping-address', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Cập nhật hiển thị địa chỉ mới
+                    document.querySelector('.shipping-address .name').textContent = data.data.receiver_name;
+                    document.querySelector('.shipping-address .phone').textContent = data.data.phone;
+                    document.querySelector('.shipping-address .address').textContent = data.data.address;
+                    toggleAddressForm();
                 } else {
-                    toggleBankList(false);
-                    document.getElementById('bank-info').style.display = 'none';
+                    alert(data.message);
                 }
-            });
-        });
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
-        function validateForm() {
-            const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
-            if (!paymentMethod) {
-                alert('Vui lòng chọn phương thức thanh toán');
-                return false;
+    // Thêm validation form
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        const bankTransfer = document.querySelector('input[name="payment_method"][value="bank_transfer"]');
+        if (bankTransfer.checked) {
+            const selectedBank = document.querySelector('input[name="bank_code"]:checked');
+            if (!selectedBank) {
+                e.preventDefault();
+                alert('Vui lòng chọn ngân hàng để thanh toán');
             }
-
-            if (paymentMethod.value === 'bank_transfer') {
-                const selectedBank = document.querySelector('input[name="bank_code"]:checked');
-                if (!selectedBank) {
-                    alert('Vui lòng chọn ngân hàng để thanh toán');
-                    return false;
-                }
-            }
-
-            // Validate products
-            const products = document.querySelectorAll('input[name="products[]"]');
-            if (products.length === 0) {
-                alert('Giỏ hàng trống');
-                return false;
-            }
-
-            return true;
         }
+    });
+
+    // Cập nhật đường dẫn ảnh ngân hàng
+
+    // Thêm event listener cho radio buttons
+    document.querySelectorAll('input[name="payment_method"]').forEach(radio => {
+        radio.addEventListener('change', function() {
+            document.getElementById('payment_method').value = this.value;
+            if (this.value === 'bank_transfer') {
+                toggleBankList(true);
+            } else {
+                toggleBankList(false);
+                document.getElementById('bank-info').style.display = 'none';
+            }
+        });
+    });
+
+    function validateForm() {
+        const paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+        if (!paymentMethod) {
+            alert('Vui lòng chọn phương thức thanh toán');
+            return false;
+        }
+
+        if (paymentMethod.value === 'bank_transfer') {
+            const selectedBank = document.querySelector('input[name="bank_code"]:checked');
+            if (!selectedBank) {
+                alert('Vui lòng chọn ngân hàng để thanh toán');
+                return false;
+            }
+        }
+
+        // Validate products
+        const products = document.querySelectorAll('input[name="products[]"]');
+        if (products.length === 0) {
+            alert('Giỏ hàng trống');
+            return false;
+        }
+
+        return true;
+    }
     </script>
 </body>
 
