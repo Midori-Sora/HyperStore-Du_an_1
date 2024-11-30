@@ -26,6 +26,42 @@
         padding: 25px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     }
+
+    .product-image-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .product-thumbnail {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 4px;
+        border: 1px solid #ddd;
+    }
+
+    .table {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .table td {
+        vertical-align: middle;
+        word-wrap: break-word;
+    }
+
+    .table-responsive {
+        min-height: 200px;
+    }
+
+    .product-name {
+        flex: 1;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
     </style>
 </head>
 
@@ -81,10 +117,17 @@
                                         ?>
                                 <tr>
                                     <td>
-                                        <img src="<?= $product['img'] ?>"
-                                            alt="<?= htmlspecialchars($product['pro_name']) ?>" width="50" class="me-2"
-                                            onerror="this.src='../uploads/default.jpg'">
-                                        <?= htmlspecialchars($product['pro_name']) ?>
+                                        <?php
+                                                $imagePath = $product['img'] ? "../Uploads/Product/" . $product['img'] : "../assets/images/default.jpg";
+                                                ?>
+                                        <div class="product-image-container">
+                                            <img src="<?= htmlspecialchars($imagePath) ?>"
+                                                alt="<?= htmlspecialchars($product['pro_name']) ?>"
+                                                class="product-thumbnail"
+                                                onerror="this.src='../assets/images/default.jpg'">
+                                            <span
+                                                class="product-name ms-2"><?= htmlspecialchars($product['pro_name']) ?></span>
+                                        </div>
                                     </td>
                                     <td><?= htmlspecialchars($product['storage_type']) ?></td>
                                     <td><?= htmlspecialchars($product['color_type']) ?></td>

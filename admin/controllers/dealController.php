@@ -109,30 +109,30 @@ class DealController
 
     public static function dealDetailsController()
     {
-        self::init();
-        if (isset($_GET['id'])) {
-            $deal_id = $_GET['id'];
+        try {
+            self::init();
+
+            error_log("dealDetailsController called - " . date('Y-m-d H:i:s'));
+            error_log("GET params: " . print_r($_GET, true));
+
+            if (!isset($_GET['id'])) {
+                throw new Exception("ID không hợp lệ");
+            }
+
+            $deal_id = (int)$_GET['id'];
+            error_log("Processing deal ID: " . $deal_id);
+
             $dealDetails = self::$dealModel->getDealDetails($deal_id);
 
-            if ($dealDetails === false) {
-                $_SESSION['error'] = 'Không thể tải thông tin chi tiết khuyến mãi';
-                header('Location: index.php?action=deal');
-                exit();
+            if (!$dealDetails) {
+                throw new Exception("Không tìm thấy thông tin khuyến mãi");
             }
 
-            error_log('Deal Details: ' . print_r($dealDetails, true));
-
-            $view_path = './views/deal/deal-details.php';
-            if (!file_exists($view_path)) {
-                error_log('View file not found: ' . $view_path);
-                $_SESSION['error'] = 'Không tìm thấy trang chi tiết';
-                header('Location: index.php?action=deal');
-                exit();
-            }
-
-            require_once $view_path;
-            exit();
-        } else {
+            error_log("Deal details found: " . print_r($dealDetails, true));
+            require_once './views/deal/deal-details.php';
+        } catch (Exception $e) {
+            error_log("Error in dealDetailsController: " . $e->getMessage());
+            $_SESSION['error'] = $e->getMessage();
             header('Location: index.php?action=deal');
             exit();
         }

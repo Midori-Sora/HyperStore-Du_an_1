@@ -136,7 +136,7 @@ class DealModel
                 ':old_end_date' => $oldDeal['end_date']
             ]);
 
-            // Thêm deal mới cho từng sản phẩm
+            // Thm deal mới cho từng sản phẩm
             foreach ($product_ids as $pro_id) {
                 $sql = "INSERT INTO product_deals (pro_id, discount, start_date, end_date, status) 
                         VALUES (:pro_id, :discount, :start_date, :end_date, :status)";
@@ -191,10 +191,33 @@ class DealModel
     public function deleteDeal($deal_id)
     {
         try {
-            $sql = "DELETE FROM product_deals WHERE deal_id = :deal_id";
+            $this->db->beginTransaction();
+
+            // Lấy thông tin của deal cần xóa
+            $sql = "SELECT discount, start_date, end_date FROM product_deals WHERE deal_id = :deal_id";
             $stmt = $this->db->prepare($sql);
-            return $stmt->execute([':deal_id' => $deal_id]);
+            $stmt->execute([':deal_id' => $deal_id]);
+            $dealInfo = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($dealInfo) {
+                // Xóa tất cả các deal có cùng discount và thời gian
+                $sql = "DELETE FROM product_deals 
+                        WHERE discount = :discount 
+                        AND start_date = :start_date 
+                        AND end_date = :end_date";
+
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([
+                    ':discount' => $dealInfo['discount'],
+                    ':start_date' => $dealInfo['start_date'],
+                    ':end_date' => $dealInfo['end_date']
+                ]);
+            }
+
+            $this->db->commit();
+            return true;
         } catch (PDOException $e) {
+            $this->db->rollBack();
             error_log("Delete deal error: " . $e->getMessage());
             return false;
         }
@@ -231,9 +254,15 @@ class DealModel
     public function getDealDetails($deal_id)
     {
         try {
+            error_log("Getting deal details for ID: " . $deal_id); // Debug log
+
             // Lấy thông tin deal chính
-            $sql = "SELECT pd.*, p.pro_name, p.price, p.img,
-                           ps.storage_type, pc.color_type
+            $sql = "SELECT pd.*, 
+                           p.pro_name, 
+                           p.price, 
+                           p.img,
+                           ps.storage_type, 
+                           pc.color_type
                     FROM product_deals pd
                     JOIN products p ON pd.pro_id = p.pro_id 
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
@@ -244,14 +273,20 @@ class DealModel
             $stmt->execute([':deal_id' => $deal_id]);
             $mainDeal = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            error_log("Main deal data: " . print_r($mainDeal, true)); // Debug log
+
             if (!$mainDeal) {
-                error_log("No deal found with ID: " . $deal_id);
+                error_log("No main deal found for ID: " . $deal_id);
                 return false;
             }
 
-            // Lấy tất cả sản phẩm cùng đợt khuyến mãi
-            $sql = "SELECT pd.*, p.pro_name, p.price, p.img,
-                           ps.storage_type, pc.color_type
+            // Lấy tất cả sản phẩm trong cùng đợt khuyến mãi
+            $sql = "SELECT pd.*, 
+                           p.pro_name, 
+                           p.price, 
+                           p.img,
+                           ps.storage_type, 
+                           pc.color_type
                     FROM product_deals pd
                     JOIN products p ON pd.pro_id = p.pro_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
@@ -268,16 +303,14 @@ class DealModel
             ]);
 
             $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Debug
-            error_log("Found " . count($products) . " products for deal ID: " . $deal_id);
+            error_log("Related products: " . count($products)); // Debug log
 
             return [
                 'main_deal' => $mainDeal,
                 'products' => $products
             ];
         } catch (PDOException $e) {
-            error_log("Get deal details error: " . $e->getMessage());
+            error_log("Error in getDealDetails: " . $e->getMessage());
             return false;
         }
     }
