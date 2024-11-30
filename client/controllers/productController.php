@@ -1,5 +1,6 @@
 <?php
 require_once "client/models/productModel.php";
+require_once 'client/controllers/commentController.php';
 
 class ProductController
 {
@@ -59,6 +60,10 @@ class ProductController
                 $product = $variant;
             }
         }
+
+        // Initialize CommentController and get rating info
+        CommentController::init();
+        $ratingInfo = CommentController::getAverageRating($productId);
 
         require_once "client/views/product/product-detail.php";
     }

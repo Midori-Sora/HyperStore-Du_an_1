@@ -7,36 +7,27 @@ class CommentModel {
         $this->db = $MainModel->SUNNY;
     }
 
-    public function getCommentsByProduct($product_id, $rating_filter = null) {
+    public function getCommentsByProduct($product_id) {
         try {
-            $sql = "SELECT c.*, u.username, u.avatar,
-                    GROUP_CONCAT(ci.image_url) as images
+            $sql = "SELECT c.*, u.username, u.avatar
                     FROM comments c 
-                    LEFT JOIN users u ON c.user_id = u.user_id 
-                    LEFT JOIN comment_images ci ON c.com_id = ci.comment_id
-                    WHERE c.pro_id = :product_id";
-            
-            if ($rating_filter !== null && $rating_filter !== 'all') {
-                $sql .= " AND c.rating = :rating";
-            }
-            
-            $sql .= " GROUP BY c.com_id ORDER BY c.import_date DESC";
+                    INNER JOIN users u ON c.user_id = u.user_id 
+                    WHERE c.pro_id = :product_id
+                    AND c.cmt_status = 1
+                    ORDER BY c.import_date DESC";
             
             $stmt = $this->db->prepare($sql);
-            $params = [':product_id' => $product_id];
-            
-            if ($rating_filter !== null && $rating_filter !== 'all') {
-                $params[':rating'] = $rating_filter;
-            }
-            
-            $stmt->execute($params);
+            $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+            $stmt->execute();
             $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            
-            // Process images
+
+            // Xử lý avatar mặc định
             foreach ($comments as &$comment) {
-                $comment['images'] = $comment['images'] ? explode(',', $comment['images']) : [];
+                if (empty($comment['avatar'])) {
+                    $comment['avatar'] = 'assets/images/default-avatar.jpg';
+                }
             }
-            
+
             return $comments;
         } catch (PDOException $e) {
             error_log("Get comments error: " . $e->getMessage());
@@ -169,6 +160,117 @@ class CommentModel {
         } catch (PDOException $e) {
             error_log("Get rating count error: " . $e->getMessage());
             return 0;
+        }
+    }
+
+    public function getRatingInfo($product_id) {
+        try {
+            // Kiểm tra xem bảng comments có tồn tại không
+            $checkTable = "SHOW TABLES LIKE 'comments'";
+            $stmt = $this->db->prepare($checkTable);
+            $stmt->execute();
+            if ($stmt->rowCount() == 0) {
+                return $this->getDefaultRatingInfo();
+            }
+
+            // Lấy thông tin đánh giá
+            $sql = "SELECT 
+                    COUNT(*) as total_ratings,
+                    COALESCE(AVG(rating), 0) as average,
+                    COUNT(CASE WHEN rating = 5 THEN 1 END) as five_star,
+                    COUNT(CASE WHEN rating = 4 THEN 1 END) as four_star,
+                    COUNT(CASE WHEN rating = 3 THEN 1 END) as three_star,
+                    COUNT(CASE WHEN rating = 2 THEN 1 END) as two_star,
+                    COUNT(CASE WHEN rating = 1 THEN 1 END) as one_star
+                    FROM comments 
+                    WHERE pro_id = :product_id 
+                    AND cmt_status = 1";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindParam(':product_id', $product_id, PDO::PARAM_INT);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $this->formatRatingInfo($result);
+        } catch (PDOException $e) {
+            error_log("Get rating info error: " . $e->getMessage());
+            return $this->getDefaultRatingInfo();
+        }
+    }
+
+    private function getDefaultRatingInfo() {
+        return [
+            'total_ratings' => 0,
+            'average' => 0,
+            'ratings' => [
+                5 => ['count' => 0, 'percent' => 0],
+                4 => ['count' => 0, 'percent' => 0],
+                3 => ['count' => 0, 'percent' => 0],
+                2 => ['count' => 0, 'percent' => 0],
+                1 => ['count' => 0, 'percent' => 0]
+            ]
+        ];
+    }
+
+    private function formatRatingInfo($result) {
+        $total = (int)$result['total_ratings'];
+        return [
+            'total_ratings' => $total,
+            'average' => $total > 0 ? round($result['average'], 1) : 0,
+            'ratings' => [
+                5 => [
+                    'count' => (int)$result['five_star'],
+                    'percent' => $total > 0 ? round(($result['five_star'] / $total) * 100) : 0
+                ],
+                4 => [
+                    'count' => (int)$result['four_star'],
+                    'percent' => $total > 0 ? round(($result['four_star'] / $total) * 100) : 0
+                ],
+                3 => [
+                    'count' => (int)$result['three_star'],
+                    'percent' => $total > 0 ? round(($result['three_star'] / $total) * 100) : 0
+                ],
+                2 => [
+                    'count' => (int)$result['two_star'],
+                    'percent' => $total > 0 ? round(($result['two_star'] / $total) * 100) : 0
+                ],
+                1 => [
+                    'count' => (int)$result['one_star'],
+                    'percent' => $total > 0 ? round(($result['one_star'] / $total) * 100) : 0
+                ]
+            ]
+        ];
+    }
+
+    public function getUserPendingComments($user_id, $product_id) {
+        try {
+            $sql = "SELECT c.*, u.username, u.avatar
+                    FROM comments c 
+                    INNER JOIN users u ON c.user_id = u.user_id 
+                    WHERE c.pro_id = :product_id 
+                    AND c.user_id = :user_id
+                    AND c.cmt_status = 0
+                    ORDER BY c.import_date DESC";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':product_id' => $product_id,
+                ':user_id' => $user_id
+            ]);
+            
+            $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Xử lý avatar mặc định
+            foreach ($comments as &$comment) {
+                if (empty($comment['avatar'])) {
+                    $comment['avatar'] = 'assets/images/default-avatar.jpg';
+                }
+            }
+            
+            return $comments;
+        } catch (PDOException $e) {
+            error_log("Get user pending comments error: " . $e->getMessage());
+            return [];
         }
     }
 }
