@@ -166,7 +166,7 @@
                     <label class="method-item">
                         <input type="radio" name="payment_method" value="bank_transfer">
                         <div class="method-info">
-                            <img src="Uploads/Payment/bank-transfer.png" alt="Bank Transfer">
+                            <img src="Uploads/Payment/bank.jpg" alt="Bank Transfer">
                             <span>Chuyển khoản ngân hàng</span>
                         </div>
                     </label>
