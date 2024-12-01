@@ -38,19 +38,18 @@ class OrderController
         $order = $this->orderModel->getOrderById($orderId, $userId);
 
         if (!$order) {
-            $_SESSION['error'] = "Không tìm thấy đơn hàng hoặc bn không có quyền xem đơn hàng này";
+            $_SESSION['error'] = "Không tìm thấy đơn hàng hoặc bạn không có quyền xem đơn hàng này";
             header('Location: index.php?action=orders');
             exit();
         }
 
         $orderDetails = $this->orderModel->getOrderDetailById($orderId);
 
-        // Tính lại tổng tiền từ order details
-        $totalAmount = 0;
-        foreach ($orderDetails as &$item) {
-            // Sử dụng giá đã lưu trong order_details thay vì tính toán lại
-            $totalAmount += $item['final_price'] * $item['quantity'];
-        }
+        // Tính tổng tiền từ chi tiết đơn hàng
+        $totalAmount = array_reduce($orderDetails, function ($carry, $item) {
+            return $carry + ($item['unit_price'] * $item['quantity']);
+        }, 0);
+
         $order['total_amount'] = $totalAmount;
 
         require_once 'client/views/order/order-detail.php';

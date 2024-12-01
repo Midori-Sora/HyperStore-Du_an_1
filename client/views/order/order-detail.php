@@ -43,9 +43,6 @@
                                 <span class="variant color">
                                     <i class="fas fa-palette"></i>
                                     <?= htmlspecialchars($item['color_type']) ?>
-                                    <?php if ($item['color_price'] > 0): ?>
-                                        <span class="price-diff">+<?= number_format($item['color_price'], 0, ',', '.') ?>₫</span>
-                                    <?php endif; ?>
                                 </span>
                             <?php endif; ?>
 
@@ -53,23 +50,20 @@
                                 <span class="variant storage">
                                     <i class="fas fa-memory"></i>
                                     <?= htmlspecialchars($item['storage_type']) ?>
-                                    <?php if ($item['storage_price'] > 0): ?>
-                                        <span class="price-diff">+<?= number_format($item['storage_price'], 0, ',', '.') ?>₫</span>
-                                    <?php endif; ?>
                                 </span>
                             <?php endif; ?>
                         </div>
 
-                        <p class="product-quantity">x<?= $item['quantity'] ?></p>
+                        <p class="product-quantity">Số lượng: <?= $item['quantity'] ?></p>
                         <div class="product-price">
-                            <?php if (isset($item['current_discount']) && $item['current_discount'] > 0): ?>
-                                <span class="original-price"><?= number_format($item['final_price'], 0, ',', '.') ?>₫</span>
-                                <span class="discounted-price">
-                                    <?= number_format($item['final_price'] * (1 - $item['current_discount'] / 100), 0, ',', '.') ?>₫
-                                </span>
-                            <?php else: ?>
-                                <span class="final-price"><?= number_format($item['final_price'], 0, ',', '.') ?>₫</span>
-                            <?php endif; ?>
+                            <div class="price-row">
+                                <span class="price-label">Đơn giá:</span>
+                                <span class="unit-price"><?= number_format($item['unit_price'], 0, ',', '.') ?>₫</span>
+                            </div>
+                            <div class="price-row">
+                                <span class="price-label">Thành tiền:</span>
+                                <span class="total-price"><?= number_format($item['total_price'], 0, ',', '.') ?>₫</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -77,7 +71,19 @@
         </div>
 
         <div class="order-summary">
-            <p>Tổng tiền: <?= OrderHelper::formatCurrency($order['total_amount']) ?></p>
+            <div class="summary-row">
+                <span class="summary-label">Tổng tiền hàng:</span>
+                <span class="summary-value"><?= number_format($order['total_amount'], 0, ',', '.') ?>₫</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">Phí vận chuyển:</span>
+                <span class="summary-value">0₫</span>
+            </div>
+            <div class="summary-row total">
+                <span class="summary-label">Tổng thanh toán:</span>
+                <span
+                    class="summary-value final-total"><?= number_format($order['total_amount'], 0, ',', '.') ?>₫</span>
+            </div>
         </div>
     </div>
 

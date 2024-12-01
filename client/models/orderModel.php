@@ -78,7 +78,9 @@ class OrderModel
                 ps.storage_type,
                 ps.storage_price,
                 pd.discount as current_discount,
-                od.price as final_price
+                od.price as unit_price,
+                od.quantity,
+                (od.price * od.quantity) as total_price
                 FROM order_details od
                 JOIN products p ON od.product_id = p.pro_id
                 LEFT JOIN product_color pc ON p.color_id = pc.color_id
