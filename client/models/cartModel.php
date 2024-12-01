@@ -57,10 +57,22 @@ class CartModel
 
     public function getProductById($pro_id)
     {
-        $sql = "SELECT * FROM products WHERE pro_id = ?";
+        $sql = "SELECT p.*, pc.color_type, pc.color_price, 
+                   ps.storage_type, ps.storage_price,
+                   pd.discount as current_discount,
+                   p.price as base_price,
+                   (p.price + COALESCE(pc.color_price, 0) + COALESCE(ps.storage_price, 0)) as final_price
+            FROM products p 
+            LEFT JOIN product_color pc ON p.color_id = pc.color_id 
+            LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id 
+            LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id 
+            WHERE p.pro_id = ?";
+
         $stmt = $this->conn->prepare($sql);
-        $stmt->execute([$pro_id]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt->bind_param("i", $pro_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
     public function checkStockQuantity($product_id)

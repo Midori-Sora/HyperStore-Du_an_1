@@ -17,14 +17,22 @@ class CartController
         $quantity = $_POST['quantity'] ?? 1;
 
         if ($product_id) {
-            if (isset($_SESSION['cart'][$product_id])) {
-                $_SESSION['cart'][$product_id] += $quantity;
-            } else {
-                $_SESSION['cart'][$product_id] = $quantity;
+            // Lấy thông tin sản phẩm
+            $cart_model = new CartModel();
+            $product = $cart_model->getProductById($product_id);
+
+            if ($product) {
+                if (isset($_SESSION['cart'][$product_id])) {
+                    $_SESSION['cart'][$product_id] += $quantity;
+                } else {
+                    $_SESSION['cart'][$product_id] = $quantity;
+                }
+                $_SESSION['success'] = 'Đã thêm ' . $product['pro_name'] . ' vào giỏ hàng';
             }
         }
 
         header('Location: ' . $_SERVER['HTTP_REFERER']);
+        exit();
     }
 
     public static function viewCart()
