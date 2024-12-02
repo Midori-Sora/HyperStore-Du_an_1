@@ -160,6 +160,22 @@
         background: #ffc107;
         border: none;
     }
+    .rating-stars {
+    display: flex;
+    gap: 2px;
+    }
+
+    .rating-stars i {
+        font-size: 14px;
+    }
+
+    .text-warning {
+        color: #ffc107;
+    }
+
+    .text-muted {
+        color: #6c757d;
+    }
 </style>
 <body>
     <header>
@@ -203,11 +219,12 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th width="15%">NGƯỜI DÙNG</th>
+                                        <th width="10%">NGƯỜI DÙNG</th>
                                         <th width="20%">SẢN PHẨM</th>
+                                        <th width="10%">ĐÁNH GIÁ</th>
                                         <th width="20%">NỘI DUNG</th>
                                         <th width="15%">THỜI GIAN</th>
-                                        <th width="30%">THAO TÁC</th>
+                                        <th width="20%">THAO TÁC</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -225,6 +242,17 @@
                                             <a href="#" class="product-link">
                                                 <?= htmlspecialchars($comment['pro_name']) ?>
                                             </a>
+                                        </td>
+                                        <td>
+                                            <div class="rating-stars">
+                                                <?php for($i = 1; $i <= 5; $i++): ?>
+                                                    <?php if($i <= $comment['rating']): ?>
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    <?php else: ?>
+                                                        <i class="far fa-star text-muted"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                            </div>
                                         </td>
                                         <td>
                                             <div class="comment-content">

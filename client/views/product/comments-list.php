@@ -301,12 +301,6 @@ $comments = CommentController::getComments($product['pro_id']);
     transition: width 0.3s ease;
 }
 
-.count {
-    width: 40px;
-    color: #666;
-    font-size: 14px;
-}
-
 /* Style hiện tại cho phần comments */
 .comments-section {
     margin-top: 20px;

@@ -14,6 +14,7 @@ class CommentModel
             $sql = "SELECT 
                     c.com_id,
                     c.content,
+                    c.rating,
                     c.cmt_status,
                     DATE_FORMAT(c.import_date, '%d/%m/%Y %H:%i') as import_date,
                     c.pro_id,
