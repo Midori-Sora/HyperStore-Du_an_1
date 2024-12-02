@@ -227,10 +227,14 @@ class ProductModel
             'Đen' => '#000000',
             'Trắng' => '#FFFFFF',
             'Vàng Kim' => '#FFD700',
-            'Xanh Lưu Ly' => '#0066CC', // Màu xanh dương đậm
-            'Xanh Mòng Két' => '#00A36C', // Màu xanh ngọc
+            'Xanh Lưu Ly' => '#0066CC',
+            'Xanh Mòng Két' => '#00A36C',
             'Hồng' => '#FFC0CB',
-            'Đỏ' => '#FF0000'
+            'Đỏ' => '#FF0000',
+            'Xanh Biển' => '#1E90FF',
+            'Xanh Lá' => '#32CD32',
+            'Vàng' => '#FFD700',
+            'Tím' => '#800080'
         ];
         
         return $colorMap[$colorName] ?? '#CCCCCC'; // Màu mặc định nếu không tìm thấy
