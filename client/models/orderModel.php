@@ -175,18 +175,23 @@ class OrderModel
 
     public function requestCancel($orderId, $userId, $reason)
     {
-        $sql = "UPDATE orders 
-                SET status = 'cancel_requested',
-                    cancel_reason = ?,
-                    updated_at = NOW()
-                WHERE order_id = ? 
-                AND user_id = ? 
-                AND status NOT IN ('cancelled', 'returned')";
+        try {
+            // Lấy và lưu trạng thái hiện tại trước khi cập nhật
+            $sql = "UPDATE orders 
+                    SET previous_status = status,
+                        status = 'cancel_requested',
+                        cancel_reason = ?,
+                        updated_at = NOW()
+                    WHERE order_id = ? 
+                    AND user_id = ? 
+                    AND status NOT IN ('cancelled', 'returned')";
 
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("sii", $reason, $orderId, $userId);
-        $stmt->execute();
-
-        return $stmt->affected_rows > 0;
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sii", $reason, $orderId, $userId);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error in requestCancel: " . $e->getMessage());
+            return false;
+        }
     }
 }

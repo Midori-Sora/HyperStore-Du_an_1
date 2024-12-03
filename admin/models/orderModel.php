@@ -322,7 +322,19 @@ class OrderModel
     public function processCancelRequest($orderId, $approve)
     {
         try {
-            $status = $approve ? 'cancelled' : 'pending';
+            if ($approve) {
+                $status = 'cancelled';
+            } else {
+                // Lấy trạng thái trước đó
+                $sql = "SELECT previous_status FROM orders WHERE order_id = ?";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$orderId]);
+                $previousStatus = $stmt->fetchColumn();
+
+                // Nếu không có trạng thái trước đó, giữ nguyên trạng thái hiện tại
+                $status = $previousStatus ?: 'processing';
+            }
+
             $sql = "UPDATE orders 
                     SET status = ?,
                         updated_at = NOW()
