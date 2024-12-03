@@ -177,7 +177,7 @@ class OrderController
 
             self::init();
             $orderId = (int)$_POST['order_id'];
-            $status = $_POST['status'] === 'approve' ? 'returned' : 'cancelled';
+            $status = $_POST['status'] === 'approve' ? 'returned' : 'return_failed';
             $adminNote = $_POST['admin_note'];
 
             $result = self::$orderModel->handleReturnRequest($orderId, $status, $adminNote);

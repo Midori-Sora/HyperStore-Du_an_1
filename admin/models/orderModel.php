@@ -288,17 +288,18 @@ class OrderModel
         try {
             $this->db->beginTransaction();
 
-            // Cập nhật trạng thái đơn hàng
-            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$status, $orderId]);
-
-            // Tạo return request mới
-            $sql = "INSERT INTO return_requests (order_id, user_id, status, admin_note, processed_date) 
-                    SELECT order_id, user_id, ?, ?, NOW() 
-                    FROM orders WHERE order_id = ?";
+            // Cập nhật trạng thái yêu cầu trả hàng
+            $sql = "UPDATE return_requests 
+                    SET status = ?, admin_note = ?, processed_date = NOW() 
+                    WHERE order_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$status === 'returned' ? 'approved' : 'rejected', $adminNote, $orderId]);
+
+            // Cập nhật trạng thái đơn hàng
+            $orderStatus = $status === 'returned' ? 'returned' : 'return_failed';
+            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderStatus, $orderId]);
 
             // Nếu chấp nhận trả hàng, cập nhật số lượng sản phẩm
             if ($status === 'returned') {

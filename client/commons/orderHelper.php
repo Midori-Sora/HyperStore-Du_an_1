@@ -1,6 +1,8 @@
 <?php
 class OrderHelper
 {
+    const RETURN_PERIOD_DAYS = 7; // 7 ngày
+
     public static function getOrderStatus($status)
     {
         $statusMap = [
@@ -12,29 +14,31 @@ class OrderHelper
             'cancelled' => 'Đã hủy',
             'return_requested' => 'Yêu cầu trả hàng',
             'returned' => 'Đã trả hàng',
+            'return_failed' => 'Từ chối trả hàng',
             'refunded' => 'Đã hoàn tiền',
             'failed' => 'Giao hàng thất bại'
         ];
 
-        return $statusMap[$status] ?? 'Không xác định';
+        return isset($statusMap[$status]) ? $statusMap[$status] : 'Không xác định';
     }
 
     public static function getOrderStatusClass($status)
     {
         $classMap = [
-            'pending' => 'status-pending',
-            'confirmed' => 'status-confirmed',
-            'processing' => 'status-processing',
-            'shipping' => 'status-shipping',
-            'delivered' => 'status-delivered',
-            'cancelled' => 'status-cancelled',
-            'return_requested' => 'status-warning',
-            'returned' => 'status-returned',
-            'refunded' => 'status-refunded',
-            'failed' => 'status-failed'
+            'pending' => 'pending',
+            'confirmed' => 'confirmed',
+            'processing' => 'processing',
+            'shipping' => 'shipping',
+            'delivered' => 'delivered',
+            'cancelled' => 'cancelled',
+            'return_requested' => 'return-requested',
+            'returned' => 'returned',
+            'return_failed' => 'return-failed',
+            'refunded' => 'refunded',
+            'failed' => 'failed'
         ];
 
-        return $classMap[$status] ?? 'status-pending';
+        return isset($classMap[$status]) ? $classMap[$status] : 'unknown';
     }
 
     public static function getAllowedStatusTransitions($currentStatus)
@@ -75,9 +79,26 @@ class OrderHelper
         return in_array($status, ['pending', 'confirmed', 'processing']);
     }
 
-    public static function canRequestReturn($status)
+    public static function canRequestReturn($status, $deliveredDate)
     {
-        return $status === 'delivered';
+        if ($status !== 'delivered') {
+            return false;
+        }
+
+        $deliveredDateTime = new DateTime($deliveredDate);
+        $now = new DateTime();
+        $daysSinceDelivery = $now->diff($deliveredDateTime)->days;
+
+        return $daysSinceDelivery <= self::RETURN_PERIOD_DAYS;
+    }
+
+    public static function getRemainingReturnDays($deliveredDate)
+    {
+        $deliveredDateTime = new DateTime($deliveredDate);
+        $now = new DateTime();
+        $daysSinceDelivery = $now->diff($deliveredDateTime)->days;
+
+        return max(0, self::RETURN_PERIOD_DAYS - $daysSinceDelivery);
     }
 
     public static function formatOrderDate($date)

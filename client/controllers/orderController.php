@@ -102,17 +102,13 @@ class OrderController
             $userId = (int)$_SESSION['user_id'];
             $reason = htmlspecialchars($_POST['reason']);
 
-            // Gọi phương thức từ model thay vì truy vấn trực tiếp
+            // Gọi phương thức từ model
             $result = $this->orderModel->requestReturn($orderId, $userId, $reason);
 
-            if ($result) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Yêu cầu trả hàng đã được gửi thành công'
-                ]);
-            } else {
-                throw new Exception("Không thể xử lý yêu cầu trả hàng");
-            }
+            echo json_encode([
+                'success' => true,
+                'message' => 'Yêu cầu trả hàng đã được gửi thành công'
+            ]);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
