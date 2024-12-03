@@ -191,4 +191,10 @@ switch ($action) {
     case 'handleReturnRequest':
         OrderController::handleReturnRequestController();
         break;
+    case 'handleCancelRequest':
+        OrderController::handleCancelRequestController();
+        break;
+    case 'approveCancelRequest':
+        OrderController::approveCancelRequest();
+        break;
 }

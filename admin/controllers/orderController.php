@@ -192,4 +192,46 @@ class OrderController
         }
         exit();
     }
+
+    public static function approveCancelRequest()
+    {
+        try {
+            self::init();
+            if (!isset($_POST['order_id']) || !isset($_POST['approve'])) {
+                throw new Exception("Thiếu thông tin cần thiết");
+            }
+
+            $orderId = (int)$_POST['order_id'];
+            $approve = $_POST['approve'] === 'true';
+
+            $result = self::$orderModel->processCancelRequest($orderId, $approve);
+
+            if ($result) {
+                echo json_encode([
+                    'success' => true,
+                    'message' => 'Đã ' . ($approve ? 'chấp nhận' : 'từ chối') . ' yêu cầu hủy đơn hàng'
+                ]);
+            } else {
+                throw new Exception("Không thể xử lý yêu cầu hủy đơn hàng");
+            }
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+        exit();
+    }
+
+    public static function handleCancelRequestController()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $orderId = $_POST['order_id'] ?? null;
+            $status = $_POST['status'] ?? null;
+
+            if ($orderId && $status) {
+                OrderModel::updateCancelRequest($orderId, $status);
+                header('Location: index.php?action=order');
+                exit;
+            }
+        }
+        header('Location: index.php?action=order');
+    }
 }

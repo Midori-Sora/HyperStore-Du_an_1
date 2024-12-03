@@ -12,11 +12,10 @@ class OrderHelper
             'shipping' => 'Đang giao hàng',
             'delivered' => 'Đã giao thành công',
             'cancelled' => 'Đã hủy',
+            'cancel_requested' => 'Yêu cầu hủy',
             'return_requested' => 'Yêu cầu trả hàng',
             'returned' => 'Đã trả hàng',
-            'return_failed' => 'Từ chối trả hàng',
-            'refunded' => 'Đã hoàn tiền',
-            'failed' => 'Giao hàng thất bại'
+            'return_failed' => 'Từ chối trả hàng'
         ];
 
         return isset($statusMap[$status]) ? $statusMap[$status] : 'Không xác định';

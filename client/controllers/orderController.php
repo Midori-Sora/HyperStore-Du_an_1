@@ -137,4 +137,25 @@ class OrderController
         }
         exit();
     }
+
+    public function requestCancel()
+    {
+        if (!isset($_SESSION['user_id']) || !isset($_POST['order_id']) || !isset($_POST['reason'])) {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            exit();
+        }
+
+        $orderId = $_POST['order_id'];
+        $userId = $_SESSION['user_id'];
+        $reason = $_POST['reason'];
+
+        $result = $this->orderModel->requestCancel($orderId, $userId, $reason);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Yêu cầu hủy đơn hàng đã được gửi']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không thể gửi yêu cầu hủy đơn hàng']);
+        }
+        exit();
+    }
 }

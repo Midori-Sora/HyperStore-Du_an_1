@@ -30,15 +30,14 @@ class OrderModel
     public function getOrderById($orderId)
     {
         try {
-            $sql = "SELECT orders.*, users.username, users.email, users.phone 
+            $sql = "SELECT orders.*, users.username, users.email, users.phone,
+                    orders.cancel_reason, orders.status 
                     FROM orders 
                     LEFT JOIN users ON orders.user_id = users.user_id 
                     WHERE orders.order_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$orderId]);
-            $order = $stmt->fetch(PDO::FETCH_ASSOC);
-            error_log(print_r($order, true));
-            return $order;
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Error getting order by ID: " . $e->getMessage());
             return false;
@@ -318,5 +317,31 @@ class OrderModel
             error_log($e->getMessage());
             return false;
         }
+    }
+
+    public function processCancelRequest($orderId, $approve)
+    {
+        try {
+            $status = $approve ? 'cancelled' : 'pending';
+            $sql = "UPDATE orders 
+                    SET status = ?,
+                        updated_at = NOW()
+                    WHERE order_id = ? 
+                    AND status = 'cancel_requested'";
+
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$status, $orderId]);
+        } catch (PDOException $e) {
+            error_log("Error processing cancel request: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function updateCancelRequest($orderId, $status)
+    {
+        global $MainModel;
+        $sql = "UPDATE orders SET cancel_status = ? WHERE id = ?";
+        $stmt = $MainModel->SUNNY->prepare($sql);
+        return $stmt->execute([$status, $orderId]);
     }
 }

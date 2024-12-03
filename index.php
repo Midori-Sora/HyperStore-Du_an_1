@@ -135,4 +135,8 @@ switch ($action) {
         $controller = new CheckoutController();
         $controller->updateShippingAddress();
         break;
+    case 'request-cancel':
+        $controller = new OrderController();
+        $controller->requestCancel();
+        break;
 }

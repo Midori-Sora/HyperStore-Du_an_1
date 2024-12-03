@@ -30,198 +30,306 @@ require_once "client/commons/orderHelper.php";
         </div>
 
         <?php if (empty($orders)): ?>
-            <div class="empty-orders">
+        <div class="empty-orders">
 
-                <h3>Chưa có đơn hàng nào</h3>
-                <p>Hãy khám phá các sản phẩm và đặt hàng ngay!</p>
-                <a href="index.php?action=product" class="btn btn-primary">Mua sắm ngay</a>
-            </div>
+            <h3>Chưa có đơn hàng nào</h3>
+            <p>Hãy khám phá các sản phẩm và đặt hàng ngay!</p>
+            <a href="index.php?action=product" class="btn btn-primary">Mua sắm ngay</a>
+        </div>
         <?php else: ?>
-            <div class="order-list">
-                <?php foreach ($orders as $order): ?>
-                    <div class="order-item" data-status="<?= $order['status'] ?>">
-                        <div class="order-header">
-                            <div>
-                                <span class="order-code">#<?= $order['order_code'] ?></span>
-                                <span class="order-date">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <?= OrderHelper::formatOrderDate($order['created_at']) ?>
-                                </span>
-                            </div>
-                            <span class="order-status <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
-                                <?= OrderHelper::getOrderStatus($order['status']) ?>
+        <div class="order-list">
+            <?php foreach ($orders as $order): ?>
+            <div class="order-item" data-status="<?= $order['status'] ?>">
+                <div class="order-header">
+                    <div>
+                        <span class="order-code">#<?= $order['order_code'] ?></span>
+                        <span class="order-date">
+                            <i class="fas fa-calendar-alt"></i>
+                            <?= OrderHelper::formatOrderDate($order['created_at']) ?>
+                        </span>
+                    </div>
+                    <span class="order-status <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
+                        <?= OrderHelper::getOrderStatus($order['status']) ?>
+                    </span>
+                </div>
+                <div class="order-content">
+                    <?php if (!empty($order['product_image'])): ?>
+                    <img src="<?= htmlspecialchars($order['product_image']) ?>" alt="Sản phẩm">
+                    <?php else: ?>
+                    <img src="assets/images/default-product.png" alt="Sản phẩm mặc định">
+                    <?php endif; ?>
+                    <div class="order-info">
+                        <h3><?= htmlspecialchars($order['pro_name']) ?></h3>
+                        <?php if ($order['color_type'] || $order['storage_type']): ?>
+                        <div class="product-variants">
+                            <?php if ($order['color_type']): ?>
+                            <span class="variant color">
+                                <i class="fas fa-palette"></i> <?= htmlspecialchars($order['color_type']) ?>
                             </span>
-                        </div>
-                        <div class="order-content">
-                            <?php if (!empty($order['product_image'])): ?>
-                                <img src="<?= htmlspecialchars($order['product_image']) ?>" alt="Sản phẩm">
-                            <?php else: ?>
-                                <img src="assets/images/default-product.png" alt="Sản phẩm mặc định">
                             <?php endif; ?>
-                            <div class="order-info">
-                                <h3><?= htmlspecialchars($order['pro_name']) ?></h3>
-                                <?php if ($order['color_type'] || $order['storage_type']): ?>
-                                    <div class="product-variants">
-                                        <?php if ($order['color_type']): ?>
-                                            <span class="variant color">
-                                                <i class="fas fa-palette"></i> <?= htmlspecialchars($order['color_type']) ?>
-                                            </span>
-                                        <?php endif; ?>
-                                        <?php if ($order['storage_type']): ?>
-                                            <span class="variant storage">
-                                                <i class="fas fa-memory"></i> <?= htmlspecialchars($order['storage_type']) ?>
-                                            </span>
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                                <p><?= $order['total_items'] ?> sản phẩm</p>
-                                <p class="total">
-                                    <?= OrderHelper::formatCurrency($order['total_amount']) ?>
-                                </p>
-                            </div>
-                        </div>
-                        <div class="order-footer">
-                            <a href="index.php?action=order-detail&id=<?= htmlspecialchars($order['order_id']) ?>"
-                                class="btn btn-detail">
-                                Xem chi tiết
-                            </a>
-                            <?php if (OrderHelper::canCancelOrder($order['status'])): ?>
-                                <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
-                                    Hủy đơn hàng
-                                </button>
+                            <?php if ($order['storage_type']): ?>
+                            <span class="variant storage">
+                                <i class="fas fa-memory"></i> <?= htmlspecialchars($order['storage_type']) ?>
+                            </span>
                             <?php endif; ?>
-                            <?php if ($order['status'] === 'delivered'): ?>
-                                <?php
+                        </div>
+                        <?php endif; ?>
+                        <p><?= $order['total_items'] ?> sản phẩm</p>
+                        <p class="total">
+                            <?= OrderHelper::formatCurrency($order['total_amount']) ?>
+                        </p>
+                    </div>
+                </div>
+                <div class="order-footer">
+                    <a href="index.php?action=order-detail&id=<?= htmlspecialchars($order['order_id']) ?>"
+                        class="btn btn-detail">
+                        Xem chi tiết
+                    </a>
+                    <?php if (OrderHelper::canCancelOrder($order['status'])): ?>
+                    <button onclick="cancelOrder(<?= $order['order_id'] ?>)" class="btn btn-cancel">
+                        Hủy đơn hàng
+                    </button>
+                    <?php endif; ?>
+                    <?php if ($order['status'] === 'delivered'): ?>
+                    <?php
                                 $remainingDays = OrderHelper::getRemainingReturnDays($order['updated_at']);
                                 if ($remainingDays > 0):
                                 ?>
-                                    <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
-                                        Yêu cầu trả hàng (còn <?= $remainingDays ?> ngày)
-                                    </button>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
+                    <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
+                        Yêu cầu trả hàng (còn <?= $remainingDays ?> ngày)
+                    </button>
+                    <?php endif; ?>
+                    <?php endif; ?>
+                </div>
             </div>
+            <?php endforeach; ?>
+        </div>
         <?php endif; ?>
     </div>
 
     <?php require_once "client/views/layout/footer.php"; ?>
 
     <script>
-        function cancelOrder(orderId) {
-            if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
-                return;
-            }
-
-            fetch('index.php?action=cancel-order', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'order_id=' + orderId
-                })
-                .then(response => response.json())
-                .then(data => {
-                    alert(data.message);
-                    if (data.success) {
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
+    function cancelOrder(orderId) {
+        if (!confirm('Bạn có chắc chắn muốn hủy đơn hàng này?')) {
+            return;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const tabs = document.querySelectorAll('.order-tab');
-            const orders = document.querySelectorAll('.order-item');
+        fetch('index.php?action=cancel-order', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'order_id=' + orderId
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
 
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    tabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabs = document.querySelectorAll('.order-tab');
+        const orders = document.querySelectorAll('.order-item');
 
-                    const status = tab.dataset.status;
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                tab.classList.add('active');
 
-                    // Show/hide orders based on status
-                    orders.forEach(order => {
-                        if (status === 'all' || order.dataset.status === status) {
-                            order.style.display = 'block';
-                        } else {
-                            order.style.display = 'none';
-                        }
-                    });
+                const status = tab.dataset.status;
+
+                // Show/hide orders based on status
+                orders.forEach(order => {
+                    if (status === 'all' || order.dataset.status === status) {
+                        order.style.display = 'block';
+                    } else {
+                        order.style.display = 'none';
+                    }
                 });
             });
         });
+    });
 
-        function confirmReturn(orderId) {
-            const reason = prompt('Vui lòng nhập lý do trả hàng:');
-            if (!reason) return;
+    function confirmReturn(orderId) {
+        const reason = prompt('Vui lòng nhập lý do trả hàng:');
+        if (!reason) return;
 
-            const formData = new FormData();
-            formData.append('order_id', orderId);
-            formData.append('reason', reason);
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
 
-            fetch('index.php?action=request-return', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Yêu cầu trả hàng đã được gửi thành công');
-                        location.reload();
-                    } else {
-                        alert(data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
-        }
-
-        function closeModal() {
-            document.getElementById('returnModal').style.display = 'none';
-        }
-
-        function submitReturn(orderId) {
-            const reason = document.getElementById('returnReason').value;
-            if (!reason) {
-                alert('Vui lòng nhập lý do trả hàng');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('order_id', orderId);
-            formData.append('reason', reason);
-
-            fetch('index.php?action=request-return', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.json())
-                .then(data => {
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Yêu cầu trả hàng đã được gửi thành công');
+                    location.reload();
+                } else {
                     alert(data.message);
-                    if (data.success) {
-                        location.reload();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Đã có lỗi xảy ra');
-                });
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
+
+    function closeModal() {
+        document.getElementById('returnModal').style.display = 'none';
+    }
+
+    function submitReturn(orderId) {
+        const reason = document.getElementById('returnReason').value;
+        if (!reason) {
+            alert('Vui lòng nhập lý do trả hàng');
+            return;
         }
+
+        const formData = new FormData();
+        formData.append('order_id', orderId);
+        formData.append('reason', reason);
+
+        fetch('index.php?action=request-return', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
     </script>
 
     <!-- Thêm modal -->
+    <div id="cancelModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Hủy đơn hàng</h3>
+            <div class="form-group">
+                <label for="cancelReason">Lý do hủy đơn hàng:</label>
+                <textarea id="cancelReason" class="form-control" rows="3"
+                    placeholder="Vui lòng nhập lý do hủy đơn hàng"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="submitCancelRequest()" class="btn btn-danger">Xác nhận hủy</button>
+                <button onclick="closeCancelModal()" class="btn btn-secondary">Đóng</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+    let currentOrderId = null;
+
+    function cancelOrder(orderId) {
+        currentOrderId = orderId;
+        document.getElementById('cancelModal').style.display = 'block';
+        document.getElementById('cancelReason').value = '';
+    }
+
+    function closeCancelModal() {
+        document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    function submitCancelRequest() {
+        const reason = document.getElementById('cancelReason').value.trim();
+        if (!reason) {
+            alert('Vui lòng nhập lý do hủy đơn hàng');
+            return;
+        }
+
+        fetch('index.php?action=request-cancel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `order_id=${currentOrderId}&reason=${encodeURIComponent(reason)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
+
+    // Đóng modal khi click bên ngoài
+    window.onclick = function(event) {
+        const modal = document.getElementById('cancelModal');
+        if (event.target == modal) {
+            closeCancelModal();
+        }
+    }
+    </script>
+
+    <style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    </style>
 
 </body>
 

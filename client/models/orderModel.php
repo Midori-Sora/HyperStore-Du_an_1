@@ -172,4 +172,21 @@ class OrderModel
 
         return $stmt->affected_rows > 0;
     }
+
+    public function requestCancel($orderId, $userId, $reason)
+    {
+        $sql = "UPDATE orders 
+                SET status = 'cancel_requested',
+                    cancel_reason = ?,
+                    updated_at = NOW()
+                WHERE order_id = ? 
+                AND user_id = ? 
+                AND status NOT IN ('cancelled', 'returned')";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bind_param("sii", $reason, $orderId, $userId);
+        $stmt->execute();
+
+        return $stmt->affected_rows > 0;
+    }
 }
