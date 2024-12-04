@@ -21,6 +21,13 @@ class CommentController {
         }
 
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT);
+        
+        if (!self::canUserReview($_SESSION['user_id'], $product_id)) {
+            $_SESSION['error'] = 'Bạn cần mua sản phẩm và nhận hàng thành công mới có thể đánh giá';
+            header('Location: ' . $_SERVER['HTTP_REFERER']);
+            exit();
+        }
+
         $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
         $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
 
@@ -56,5 +63,10 @@ class CommentController {
     public static function getUserPendingComments($user_id, $product_id) {
         self::init();
         return self::$commentModel->getUserPendingComments($user_id, $product_id);
+    }
+
+    public static function canUserReview($user_id, $product_id) {
+        self::init();
+        return self::$commentModel->hasUserPurchasedProduct($user_id, $product_id);
     }
 }

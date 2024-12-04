@@ -102,11 +102,13 @@ class HomeModel
     public function getTopProducts($limit = 5)
     {
         try {
-            $sql = "SELECT p.pro_name, p.quantity, p.price, c.cate_name
-                    FROM products p
+            $sql = "SELECT p.pro_name, SUM(od.quantity) as total_sold, SUM(od.price * od.quantity) as total_revenue, c.cate_name
+                    FROM order_details od
+                    JOIN products p ON od.product_id = p.pro_id
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     WHERE p.pro_status = 1
-                    ORDER BY p.quantity DESC
+                    GROUP BY p.pro_id, p.pro_name, c.cate_name
+                    ORDER BY total_sold DESC
                     LIMIT :limit";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
@@ -143,6 +145,77 @@ class HomeModel
                 'completed' => 0,
                 'processing' => 0,
                 'pending' => 0
+            ];
+        }
+    }
+
+    public function getMonthlyRevenue($year = null)
+    {
+        try {
+            if (!$year) {
+                $year = date('Y');
+            }
+            
+            $sql = "SELECT 
+                    MONTH(o.created_at) as month,
+                    SUM(od.price * od.quantity) as revenue
+                    FROM orders o
+                    JOIN order_details od ON o.order_id = od.order_id
+                    WHERE YEAR(o.created_at) = :year
+                    AND o.status IN ('delivered', 'completed') -- Chỉ tính các đơn hàng đã hoàn thành
+                    GROUP BY MONTH(o.created_at)
+                    ORDER BY month";
+                    
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':year', $year, PDO::PARAM_INT);
+            $stmt->execute();
+            
+            // Khởi tạo mảng 12 tháng với giá trị 0
+            $monthlyRevenue = array_fill(1, 12, 0);
+            
+            // Cập nhật doanh thu cho các tháng có dữ liệu
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $monthlyRevenue[(int)$row['month']] = (float)$row['revenue'];
+            }
+            
+            return array_values($monthlyRevenue); // Chuyển về mảng tuần tự
+        } catch (PDOException $e) {
+            error_log("Get monthly revenue error: " . $e->getMessage());
+            return array_fill(0, 12, 0);
+        }
+    }
+
+    public function getProductDistribution()
+    {
+        try {
+            $sql = "SELECT c.cate_name as category, 
+                    COUNT(p.pro_id) as product_count
+                    FROM categories c
+                    LEFT JOIN products p ON c.cate_id = p.cate_id
+                    WHERE p.pro_status = 1
+                    GROUP BY c.cate_id, c.cate_name
+                    ORDER BY product_count DESC";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            
+            $labels = [];
+            $data = [];
+            
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $labels[] = $row['category'];
+                $data[] = (int)$row['product_count'];
+            }
+            
+            return [
+                'labels' => $labels,
+                'data' => $data
+            ];
+        } catch (PDOException $e) {
+            error_log("Get product distribution error: " . $e->getMessage());
+            return [
+                'labels' => [],
+                'data' => []
             ];
         }
     }

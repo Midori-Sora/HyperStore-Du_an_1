@@ -273,4 +273,27 @@ class CommentModel {
             return [];
         }
     }
+
+    public function hasUserPurchasedProduct($user_id, $product_id) {
+        try {
+            $sql = "SELECT COUNT(*) as purchased
+                    FROM orders o
+                    INNER JOIN order_details od ON o.order_id = od.order_id
+                    WHERE o.user_id = :user_id 
+                    AND od.product_id = :product_id
+                    AND o.status = 'delivered'";
+            
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':user_id' => $user_id,
+                ':product_id' => $product_id
+            ]);
+            
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['purchased'] > 0;
+        } catch (PDOException $e) {
+            error_log("Check user purchase error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

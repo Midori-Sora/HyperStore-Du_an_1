@@ -135,4 +135,7 @@ switch ($action) {
         $controller = new CheckoutController();
         $controller->updateShippingAddress();
         break;
+    case 'get-order-status':
+        OrderController::getOrderStatusController();
+        break;
 }

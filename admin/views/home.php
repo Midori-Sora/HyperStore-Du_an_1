@@ -190,24 +190,14 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>iPhone 15 Pro Max</td>
-                                        <td>Điện thoại</td>
-                                        <td>150</td>
-                                        <td>75.000.000đ</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Samsung Galaxy S24</td>
-                                        <td>Điện thoại</td>
-                                        <td>120</td>
-                                        <td>60.000.000đ</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Xiaomi 14 Pro</td>
-                                        <td>Điện thoại</td>
-                                        <td>90</td>
-                                        <td>45.000.000đ</td>
-                                    </tr>
+                                    <?php foreach ($topProducts as $product): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($product['pro_name']); ?></td>
+                                            <td><?php echo htmlspecialchars($product['cate_name']); ?></td>
+                                            <td><?php echo number_format($product['total_sold']); ?></td>
+                                            <td><?php echo number_format($product['total_revenue']); ?>đ</td>
+                                        </tr>
+                                    <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -225,10 +215,11 @@
             data: {
                 labels: ['T1', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7', 'T8', 'T9', 'T10', 'T11', 'T12'],
                 datasets: [{
-                    label: 'Doanh thu (triệu đồng)',
-                    data: [65, 59, 80, 81, 56, 55, 40, 88, 96, 67, 120, 150],
+                    label: 'Doanh thu (VNĐ)',
+                    data: <?php echo json_encode($monthlyRevenue); ?>,
                     borderColor: 'rgb(75, 192, 192)',
-                    tension: 0.1
+                    tension: 0.1,
+                    fill: false
                 }]
             },
             options: {
@@ -236,6 +227,35 @@
                 plugins: {
                     legend: {
                         position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                label += new Intl.NumberFormat('vi-VN', { 
+                                    style: 'currency', 
+                                    currency: 'VND' 
+                                }).format(context.parsed.y);
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return new Intl.NumberFormat('vi-VN', { 
+                                    style: 'currency', 
+                                    currency: 'VND',
+                                    maximumFractionDigits: 0
+                                }).format(value);
+                            }
+                        }
                     }
                 }
             }
@@ -246,9 +266,9 @@
         new Chart(productCtx, {
             type: 'doughnut',
             data: {
-                labels: ['iPhone 11', 'iPhone 12', 'iPhone 13', 'iPhone 14', 'iPhone 15', 'iPhone 16'],
+                labels: <?php echo json_encode($productDistribution['labels']); ?>,
                 datasets: [{
-                    data: [30, 25, 20, 15, 10, 5],
+                    data: <?php echo json_encode($productDistribution['data']); ?>,
                     backgroundColor: [
                         'rgb(255, 99, 132)',
                         'rgb(54, 162, 235)',
@@ -264,6 +284,17 @@
                 plugins: {
                     legend: {
                         position: 'right',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                let value = context.raw;
+                                let total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                let percentage = Math.round((value * 100) / total);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
                     }
                 }
             }

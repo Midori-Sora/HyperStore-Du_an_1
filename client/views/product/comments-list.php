@@ -121,24 +121,30 @@ $comments = CommentController::getComments($product['pro_id']);
 <div class="review-form-section">
     <h3>Đánh giá sản phẩm</h3>
     <?php if (isset($_SESSION['user_id'])): ?>
-        <form action="index.php?action=add-comment" method="POST" class="review-form">
-            <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
-            
-            <div class="rating-input">
-                <div class="star-rating">
-                    <?php for ($i = 5; $i >= 1; $i--): ?>
-                        <input type="radio" id="star<?php echo $i; ?>" name="rating" value="<?php echo $i; ?>" required>
-                        <label for="star<?php echo $i; ?>"><i class="fas fa-star"></i></label>
-                    <?php endfor; ?>
+        <?php if (CommentController::canUserReview($_SESSION['user_id'], $product['pro_id'])): ?>
+            <form action="index.php?action=add-comment" method="POST" class="review-form">
+                <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                
+                <div class="rating-input">
+                    <div class="star-rating">
+                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                            <input type="radio" id="star<?php echo $i; ?>" name="rating" value="<?php echo $i; ?>" required>
+                            <label for="star<?php echo $i; ?>"><i class="fas fa-star"></i></label>
+                        <?php endfor; ?>
+                    </div>
                 </div>
-            </div>
 
-            <div class="comment-input">
-                <textarea name="content" rows="4" placeholder="Chia sẻ đánh giá của bạn về sản phẩm..." required></textarea>
-            </div>
+                <div class="comment-input">
+                    <textarea name="content" rows="4" placeholder="Chia sẻ đánh giá của bạn về sản phẩm..." required></textarea>
+                </div>
 
-            <button type="submit" class="submit-review">Gửi đánh giá</button>
-        </form>
+                <button type="submit" class="submit-review">Gửi đánh giá</button>
+            </form>
+        <?php else: ?>
+            <div class="purchase-required">
+                <p>Bạn cần mua sản phẩm và nhận hàng thành công mới có thể đánh giá</p>
+            </div>
+        <?php endif; ?>
     <?php else: ?>
         <div class="login-prompt">
             <p>Vui lòng <a href="index.php?action=login">đăng nhập</a> để đánh giá sản phẩm</p>
@@ -147,6 +153,18 @@ $comments = CommentController::getComments($product['pro_id']);
 </div>
 
 <style>
+    .purchase-required {
+    text-align: center;
+    padding: 20px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+    border-radius: 4px;
+    color: #856404;
+    }
+
+    .purchase-required p {
+        margin: 0;
+    }
 /* Style cho form đánh giá */
 .review-form-section {
     background: #fff;

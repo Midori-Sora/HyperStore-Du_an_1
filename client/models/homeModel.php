@@ -10,7 +10,7 @@ class HomeModel
         $this->db = $MainModel->SUNNY;
     }
 
-    public function calculateProductPrice(&$product) 
+    public function calculateProductPrice(&$product)
     {
         $total_price = $product['price'] + 
                     floatval($product['storage_price'] ?? 0) + 
@@ -24,14 +24,14 @@ class HomeModel
     public function getFeaturedProducts()
     {
         try {
-            $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, 
+            $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price,
                     pc.color_type, pc.color_price, pd.discount, pd.start_date, pd.end_date
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id
                     LEFT JOIN product_color pc ON p.color_id = pc.color_id
-                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id 
-                        AND pd.status = 1 
+                    LEFT JOIN product_deals pd ON p.pro_id = pd.pro_id
+                        AND pd.status = 1
                         AND CURRENT_DATE BETWEEN pd.start_date AND pd.end_date
                     WHERE p.pro_status = 1
                     ORDER BY p.price DESC LIMIT 5";

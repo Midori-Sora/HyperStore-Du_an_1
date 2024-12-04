@@ -24,9 +24,10 @@ class HomeController
             $totalProducts = self::$mainModel->countProducts();
             $totalUsers = self::$mainModel->countUsers();
             $totalComments = self::$mainModel->countComments();
-            $totalRevenue = self::$mainModel->getTotalRevenue();
-            $topProducts = self::$mainModel->getTopProducts();
             $totalOrders = self::$mainModel->countOrders();
+            $monthlyRevenue = self::$mainModel->getMonthlyRevenue();
+            $productDistribution = self::$mainModel->getProductDistribution();
+            $topProducts = self::$mainModel->getTopProducts();
 
             require_once './views/home.php';
         } catch (Exception $e) {
