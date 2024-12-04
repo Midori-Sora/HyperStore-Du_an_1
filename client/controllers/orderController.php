@@ -102,17 +102,13 @@ class OrderController
             $userId = (int)$_SESSION['user_id'];
             $reason = htmlspecialchars($_POST['reason']);
 
-            // Gọi phương thức từ model thay vì truy vấn trực tiếp
+            // Gọi phương thức từ model
             $result = $this->orderModel->requestReturn($orderId, $userId, $reason);
 
-            if ($result) {
-                echo json_encode([
-                    'success' => true,
-                    'message' => 'Yêu cầu trả hàng đã được gửi thành công'
-                ]);
-            } else {
-                throw new Exception("Không thể xử lý yêu cầu trả hàng");
-            }
+            echo json_encode([
+                'success' => true,
+                'message' => 'Yêu cầu trả hàng đã được gửi thành công'
+            ]);
         } catch (Exception $e) {
             echo json_encode([
                 'success' => false,
@@ -138,6 +134,27 @@ class OrderController
             echo json_encode(['success' => true, 'message' => 'Yêu cầu hoàn tiền đã được gửi']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Không thể gửi yêu cầu hoàn tiền']);
+        }
+        exit();
+    }
+
+    public function requestCancel()
+    {
+        if (!isset($_SESSION['user_id']) || !isset($_POST['order_id']) || !isset($_POST['reason'])) {
+            echo json_encode(['success' => false, 'message' => 'Yêu cầu không hợp lệ']);
+            exit();
+        }
+
+        $orderId = $_POST['order_id'];
+        $userId = $_SESSION['user_id'];
+        $reason = $_POST['reason'];
+
+        $result = $this->orderModel->requestCancel($orderId, $userId, $reason);
+
+        if ($result) {
+            echo json_encode(['success' => true, 'message' => 'Yêu cầu hủy đơn hàng đã được gửi']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Không thể gửi yêu cầu hủy đơn hàng']);
         }
         exit();
     }

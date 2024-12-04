@@ -30,15 +30,14 @@ class OrderModel
     public function getOrderById($orderId)
     {
         try {
-            $sql = "SELECT orders.*, users.username, users.email, users.phone 
+            $sql = "SELECT orders.*, users.username, users.email, users.phone,
+                    orders.cancel_reason, orders.status 
                     FROM orders 
                     LEFT JOIN users ON orders.user_id = users.user_id 
                     WHERE orders.order_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$orderId]);
-            $order = $stmt->fetch(PDO::FETCH_ASSOC);
-            error_log(print_r($order, true));
-            return $order;
+            return $stmt->fetch(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             error_log("Error getting order by ID: " . $e->getMessage());
             return false;
@@ -288,17 +287,18 @@ class OrderModel
         try {
             $this->db->beginTransaction();
 
-            // Cập nhật trạng thái đơn hàng
-            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute([$status, $orderId]);
-
-            // Tạo return request mới
-            $sql = "INSERT INTO return_requests (order_id, user_id, status, admin_note, processed_date) 
-                    SELECT order_id, user_id, ?, ?, NOW() 
-                    FROM orders WHERE order_id = ?";
+            // Cập nhật trạng thái yêu cầu trả hàng
+            $sql = "UPDATE return_requests 
+                    SET status = ?, admin_note = ?, processed_date = NOW() 
+                    WHERE order_id = ?";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([$status === 'returned' ? 'approved' : 'rejected', $adminNote, $orderId]);
+
+            // Cập nhật trạng thái đơn hàng
+            $orderStatus = $status === 'returned' ? 'returned' : 'return_failed';
+            $sql = "UPDATE orders SET status = ? WHERE order_id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([$orderStatus, $orderId]);
 
             // Nếu chấp nhận trả hàng, cập nhật số lượng sản phẩm
             if ($status === 'returned') {
@@ -317,5 +317,43 @@ class OrderModel
             error_log($e->getMessage());
             return false;
         }
+    }
+
+    public function processCancelRequest($orderId, $approve)
+    {
+        try {
+            if ($approve) {
+                $status = 'cancelled';
+            } else {
+                // Lấy trạng thái trước đó
+                $sql = "SELECT previous_status FROM orders WHERE order_id = ?";
+                $stmt = $this->db->prepare($sql);
+                $stmt->execute([$orderId]);
+                $previousStatus = $stmt->fetchColumn();
+
+                // Nếu không có trạng thái trước đó, giữ nguyên trạng thái hiện tại
+                $status = $previousStatus ?: 'processing';
+            }
+
+            $sql = "UPDATE orders 
+                    SET status = ?,
+                        updated_at = NOW()
+                    WHERE order_id = ? 
+                    AND status = 'cancel_requested'";
+
+            $stmt = $this->db->prepare($sql);
+            return $stmt->execute([$status, $orderId]);
+        } catch (PDOException $e) {
+            error_log("Error processing cancel request: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public static function updateCancelRequest($orderId, $status)
+    {
+        global $MainModel;
+        $sql = "UPDATE orders SET cancel_status = ? WHERE id = ?";
+        $stmt = $MainModel->SUNNY->prepare($sql);
+        return $stmt->execute([$status, $orderId]);
     }
 }

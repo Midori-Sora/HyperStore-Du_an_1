@@ -114,7 +114,7 @@ class OrderModel
             $this->conn->begin_transaction();
 
             // Kiểm tra trạng thái và quyền sở hữu
-            $checkSql = "SELECT status FROM orders 
+            $checkSql = "SELECT status, updated_at FROM orders 
                         WHERE order_id = ? AND user_id = ? 
                         AND status = 'delivered'
                         FOR UPDATE";
@@ -122,13 +122,18 @@ class OrderModel
             $checkStmt = $this->conn->prepare($checkSql);
             $checkStmt->bind_param("ii", $orderId, $userId);
             $checkStmt->execute();
-            $result = $checkStmt->get_result()->fetch_assoc();
+            $order = $checkStmt->get_result()->fetch_assoc();
 
-            if (!$result) {
+            if (!$order) {
                 throw new Exception("Đơn hàng không hợp lệ hoặc không thể trả hàng");
             }
 
-            // Cập nhật trạng thái thành "yêu cầu trả hàng" và lưu lý do
+            // Kiểm tra thời gian
+            if (!OrderHelper::canRequestReturn($order['status'], $order['updated_at'])) {
+                throw new Exception("Đã quá thời hạn " . OrderHelper::RETURN_PERIOD_DAYS . " ngày để trả hàng");
+            }
+
+            // Cập nhật trạng thái
             $updateSql = "UPDATE orders 
                          SET status = 'return_requested',
                              return_request_reason = ?,
@@ -147,7 +152,7 @@ class OrderModel
         } catch (Exception $e) {
             $this->conn->rollback();
             error_log("Error in requestReturn: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 
@@ -166,5 +171,27 @@ class OrderModel
         $stmt->execute();
 
         return $stmt->affected_rows > 0;
+    }
+
+    public function requestCancel($orderId, $userId, $reason)
+    {
+        try {
+            // Lấy và lưu trạng thái hiện tại trước khi cập nhật
+            $sql = "UPDATE orders 
+                    SET previous_status = status,
+                        status = 'cancel_requested',
+                        cancel_reason = ?,
+                        updated_at = NOW()
+                    WHERE order_id = ? 
+                    AND user_id = ? 
+                    AND status NOT IN ('cancelled', 'returned')";
+
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("sii", $reason, $orderId, $userId);
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            error_log("Error in requestCancel: " . $e->getMessage());
+            return false;
+        }
     }
 }

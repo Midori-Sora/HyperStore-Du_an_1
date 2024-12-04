@@ -91,9 +91,14 @@ require_once "client/commons/orderHelper.php";
                     </button>
                     <?php endif; ?>
                     <?php if ($order['status'] === 'delivered'): ?>
+                    <?php
+                                $remainingDays = OrderHelper::getRemainingReturnDays($order['updated_at']);
+                                if ($remainingDays > 0):
+                                ?>
                     <button class="btn btn-primary" onclick="confirmReturn('<?= $order['order_id'] ?>')">
-                        Yêu cầu trả hàng
+                        Yêu cầu trả hàng (còn <?= $remainingDays ?> ngày)
                     </button>
+                    <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
@@ -216,7 +221,115 @@ require_once "client/commons/orderHelper.php";
     </script>
 
     <!-- Thêm modal -->
+    <div id="cancelModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h3>Hủy đơn hàng</h3>
+            <div class="form-group">
+                <label for="cancelReason">Lý do hủy đơn hàng:</label>
+                <textarea id="cancelReason" class="form-control" rows="3"
+                    placeholder="Vui lòng nhập lý do hủy đơn hàng"></textarea>
+            </div>
+            <div class="modal-buttons">
+                <button onclick="submitCancelRequest()" class="btn btn-danger">Xác nhận hủy</button>
+                <button onclick="closeCancelModal()" class="btn btn-secondary">Đóng</button>
+            </div>
+        </div>
+    </div>
 
+    <script>
+    let currentOrderId = null;
+
+    function cancelOrder(orderId) {
+        currentOrderId = orderId;
+        document.getElementById('cancelModal').style.display = 'block';
+        document.getElementById('cancelReason').value = '';
+    }
+
+    function closeCancelModal() {
+        document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    function submitCancelRequest() {
+        const reason = document.getElementById('cancelReason').value.trim();
+        if (!reason) {
+            alert('Vui lòng nhập lý do hủy đơn hàng');
+            return;
+        }
+
+        fetch('index.php?action=request-cancel', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `order_id=${currentOrderId}&reason=${encodeURIComponent(reason)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    location.reload();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Đã có lỗi xảy ra');
+            });
+    }
+
+    // Đóng modal khi click bên ngoài
+    window.onclick = function(event) {
+        const modal = document.getElementById('cancelModal');
+        if (event.target == modal) {
+            closeCancelModal();
+        }
+    }
+    </script>
+
+    <style>
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
+        border-radius: 5px;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .modal-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        margin-top: 15px;
+    }
+    </style>
 
 </body>
 

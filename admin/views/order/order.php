@@ -241,8 +241,8 @@
                                 <td><?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></td>
                                 <td>
                                     <span
-                                        class="status-badge <?= self::$orderModel->getOrderStatusClass($order['status']) ?>">
-                                        <?= self::$orderModel->getOrderStatusText($order['status']) ?>
+                                        class="status-badge <?= OrderHelper::getOrderStatusClass($order['status']) ?>">
+                                        <?= OrderHelper::getOrderStatus($order['status']) ?>
                                     </span>
                                 </td>
                                 <td>
