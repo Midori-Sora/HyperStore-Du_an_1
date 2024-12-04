@@ -206,20 +206,6 @@ class OrderModel
         }
     }
 
-    // Thêm phương thức gửi SMS
-    public function sendSMS($phone, $message)
-    {
-        try {
-            // Giả lập gửi SMS thành công
-            // Trong thực tế, bạn sẽ tích hợp API gửi SMS thật ở đây
-            error_log("SMS sent to $phone: $message");
-            return true;
-        } catch (Exception $e) {
-            error_log("Error sending SMS: " . $e->getMessage());
-            return false;
-        }
-    }
-
     public function getOrderStatusText($status)
     {
         $statusMap = [

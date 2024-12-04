@@ -120,29 +120,6 @@ class OrderController
         }
     }
 
-    public static function sendSMSController()
-    {
-        try {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['phone']) && isset($_POST['message'])) {
-                self::init();
-                $phone = $_POST['phone'];
-                $message = $_POST['message'];
-
-                if (self::$orderModel->sendSMS($phone, $message)) {
-                    $_SESSION['success'] = "Đã gửi SMS thành công đến số $phone";
-                } else {
-                    $_SESSION['error'] = "Gửi SMS thất bại";
-                }
-            }
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit();
-        } catch (Exception $e) {
-            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
-            header('Location: ' . $_SERVER['HTTP_REFERER']);
-            exit();
-        }
-    }
-
     public static function printInvoiceController()
     {
         try {

@@ -148,9 +148,6 @@ switch ($action) {
     case 'searchOrder':
         OrderController::searchOrderController();
         break;
-    case 'sendSMS':
-        OrderController::sendSMSController();
-        break;
         // ... cc case khác ...
     case 'searchUsers':
         UserController::searchUsersController();

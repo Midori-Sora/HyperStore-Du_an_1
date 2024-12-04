@@ -48,7 +48,7 @@ class OrderHelper
                 'cancelled' => 'Đã hủy'
             ],
             'confirmed' => [
-                'processing' => 'Đang xử lý',
+                'processing' => 'Đang chuẩn bị hàng',
                 'cancelled' => 'Đã hủy'
             ],
             'processing' => [

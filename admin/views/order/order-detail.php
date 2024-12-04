@@ -206,7 +206,7 @@
                             <p><strong>Ngày đặt:</strong> <?= date('d/m/Y H:i', strtotime($order['created_at'])) ?></p>
                             <p><strong>Tổng tiền:</strong> <?= number_format($order['total_amount']) ?>đ</p>
                             <p><strong>Phương thức thanh toán:</strong>
-                                <?= $order['payment_method'] == 1 ? 'Thanh toán khi nhận hàng' : 'Chuyển khoản' ?>
+                                <?= $order['payment_method'] == 1 ? 'Thanh toán khi nhận hàng' : 'Thanh toán khi nhận hàng' ?>
                             </p>
                         </div>
                     </div>
@@ -228,20 +228,6 @@
                         ?>
                     </select>
                     <button onclick="updateStatus()" class="btn btn-primary mt-2">Cập nhật trạng thái</button>
-                </div>
-
-                <div class="sms-box mt-4">
-                    <h4>Gửi SMS thông báo</h4>
-                    <form action="?action=sendSMS" method="POST">
-                        <input type="hidden" name="phone" value="<?= $order['shipping_phone'] ?>">
-                        <div class="mb-3">
-                            <textarea name="message" class="form-control" rows="3" required
-                                placeholder="Nhập nội dung tin nhắn..."></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-paper-plane"></i> Gửi SMS
-                        </button>
-                    </form>
                 </div>
 
                 <div class="order-products mt-4">
