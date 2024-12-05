@@ -73,10 +73,10 @@ class ProfileController
 
             // Handle avatar upload
             if (isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK) {
-                $avatarPath = 'Uploads/User/' . basename($_FILES['avatar']['name']);
+                $avatarPath = '/' . basename($_FILES['avatar']['name']);
                 // Kiểm tra xem thư mục có tồn tại không, nếu không thì tạo nó
-                if (!is_dir(PATH_ROOT . '/Uploads/User/')) {
-                    mkdir(PATH_ROOT . '/Uploads/User/', 0777, true);
+                if (!is_dir(PATH_ROOT . '/')) {
+                    mkdir(PATH_ROOT . '/', 0777, true);
                 }
                 if (move_uploaded_file($_FILES['avatar']['tmp_name'], PATH_ROOT . '/' . $avatarPath)) {
                     $data['avatar'] = $avatarPath; // Set the avatar path

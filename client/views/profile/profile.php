@@ -122,12 +122,6 @@
                         <a href="index.php?action=orders">
                             <i class="fas fa-shopping-bag"></i>Đơn hàng của tôi
                         </a>
-                        <a href="#address">
-                            <i class="fas fa-map-marker-alt"></i>Sổ địa chỉ
-                        </a>
-                        <a href="#password">
-                            <i class="fas fa-lock"></i>Đổi mật khẩu
-                        </a>
                     </nav>
                 </div>
 
