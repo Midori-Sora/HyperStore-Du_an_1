@@ -1,6 +1,4 @@
 <?php
-require_once './models/bannerModel.php';
-
 class BannerController {
     private static $bannerModel;
 

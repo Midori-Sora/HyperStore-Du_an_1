@@ -1,40 +1,51 @@
 <?php
-require_once './models/commentModel.php';
-
 class CommentController {
+    private static $commentModel;
+
+    public static function init() {
+        if (!self::$commentModel) {
+            self::$commentModel = new CommentModel();
+        }
+    }
+
     public static function commentController() {
-        $commentModel = new CommentModel();
-        $comments = $commentModel->getCommentList();
-        require_once './views/comment/comment.php';
+        self::init();
+        try {
+            $comments = self::$commentModel->getCommentList();
+            require_once './views/comment/comment.php';
+        } catch (Exception $e) {
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
+            header('Location: index.php');
+            exit();
+        }
     }
 
     public static function deleteCommentController() 
     {
+        self::init();
         try {
-            $commentModel = new CommentModel();
             if (!isset($_GET['id'])) {
                 throw new Exception('ID không hợp lệ');
             }
             
             $id = $_GET['id'];
 
-            if ($commentModel->deleteComment($id)) {
+            if (self::$commentModel->deleteComment($id)) {
                 $_SESSION['success'] = 'Xóa bình luận thành công';
             } else {
                 throw new Exception('Không thể xóa bình luận');
             }
             
-            header('Location: index.php?action=comment');
-            exit();
-            
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
-            header('Location: index.php?action=comment');
-            exit();
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
         }
+        
+        header('Location: index.php?action=comment');
+        exit();
     }
 
     public static function updateStatusController() {
+        self::init();
         try {
             if (!isset($_GET['id']) || !isset($_GET['status'])) {
                 throw new Exception('Thiếu thông tin cần thiết');
@@ -47,9 +58,7 @@ class CommentController {
                 throw new Exception('Trạng thái không hợp lệ');
             }
             
-            $commentModel = new CommentModel();
-            
-            if ($commentModel->updateCommentStatus($id, $status)) {
+            if (self::$commentModel->updateCommentStatus($id, $status)) {
                 $_SESSION['success'] = $status == 1 ? 
                     'Duyệt bình luận thành công' : 
                     'Hủy duyệt bình luận thành công';
@@ -58,7 +67,7 @@ class CommentController {
             }
             
         } catch (Exception $e) {
-            $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
         }
         
         header('Location: index.php?action=comment');

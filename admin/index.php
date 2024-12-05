@@ -15,7 +15,6 @@ require_once 'models/dealModel.php';
 require_once 'models/bannerModel.php';
 require_once 'models/categoryModel.php';
 require_once 'models/userModel.php';
-require_once 'models/MainModel.php';
 require_once 'models/orderModel.php';
 
 require_once 'controllers/homeController.php';

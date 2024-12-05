@@ -9,18 +9,16 @@ class HomeController
 {
     private static $mainModel;
 
-    public function __construct()
-    {
-        self::$mainModel = new HomeModel();
+    public static function init() {
+        if (!self::$mainModel) {
+            self::$mainModel = new HomeModel();
+        }
     }
-    
+
     public static function homeController()
     {
+        self::init();
         try {
-            if (!self::$mainModel) {
-                self::$mainModel = new HomeModel();
-            }
-
             $totalProducts = self::$mainModel->countProducts();
             $totalUsers = self::$mainModel->countUsers();
             $totalComments = self::$mainModel->countComments();
@@ -31,8 +29,7 @@ class HomeController
 
             require_once './views/home.php';
         } catch (Exception $e) {
-            error_log("Home controller error: " . $e->getMessage());
-            $_SESSION['error'] = 'Có lỗi xảy ra';
+            $_SESSION['error'] = 'Có lỗi xảy ra: ' . $e->getMessage();
             header('Location: index.php');
             exit();
         }

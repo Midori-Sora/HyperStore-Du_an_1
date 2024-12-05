@@ -1,6 +1,4 @@
 <?php
-require_once './models/productModel.php';
-
 class ProductController
 {
     private static $productModel;
