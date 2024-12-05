@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -6,10 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $category['cate_name']; ?> - HyperStore</title>
-    <link rel="stylesheet" href="assets/css/client/product-cate.css">
+    <link rel="stylesheet" href="assets/css/client/product.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
+<style>
+    .product-name a{
+        color: #000;
+    }
+</style>
 <body>
     <div class="header">
         <?php include 'client/views/layout/header.php'; ?>
@@ -22,7 +25,15 @@
 
         <div class="product-container">
             <div class="category-title">
-                <h2><?php echo $category['cate_name']; ?></h2>
+                <div class="product-filters">
+                    <select class="filter-select">
+                        <option value="">Sắp xếp theo</option>
+                        <option value="price-asc">Giá tăng dần</option>
+                        <option value="price-desc">Giá giảm dần</option>
+                        <option value="name-asc">Tên A-Z</option>
+                        <option value="name-desc">Tên Z-A</option>
+                    </select>
+                </div>
             </div>
 
             <?php if (!empty($products)) : ?>
@@ -50,8 +61,43 @@
                                         <?php echo $product['pro_name']; ?>
                                     </a>
                                 </h3>
+                                <div class="product-meta">
+                                    <?php if (!empty($product['storage_type'])) : ?>
+                                        <span class="product-specs">
+                                            <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($product['color_type'])) : ?>
+                                        <span class="product-color">
+                                            <i class="fas fa-palette"></i> <?php echo $product['color_type']; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
                                 <div class="product-price">
-                                    <?php echo number_format($product['price'], 0, ',', '.'); ?>₫
+                                    <?php 
+                                        $total_price = $product['price'] + 
+                                            floatval($product['color_price'] ?? 0) + 
+                                            floatval($product['storage_price'] ?? 0);
+                                        
+                                        if (!empty($product['discount'])) : 
+                                            $discount_price = $total_price * (100 - $product['discount']) / 100;
+                                        ?>
+                                            <div class="price-wrapper">
+                                                <span class="original-price">
+                                                    <?php echo number_format($total_price, 0, ',', '.'); ?>₫
+                                                </span>
+                                                <span class="discount-price">
+                                                    <?php echo number_format($discount_price, 0, ',', '.'); ?>₫
+                                                </span>
+                                                <span class="discount-percent">
+                                                    -<?php echo $product['discount']; ?>%
+                                                </span>
+                                            </div>
+                                        <?php else : ?>
+                                            <span class="normal-price">
+                                                <?php echo number_format($total_price, 0, ',', '.'); ?>₫
+                                            </span>
+                                        <?php endif; ?>
                                 </div>
                                 <div class="product-rating">
                                     <i class="fas fa-star"></i>
@@ -72,6 +118,15 @@
                     <p>Không có sản phẩm nào trong danh mục này.</p>
                 </div>
             <?php endif; ?>
+
+            <div class="pagination">
+                <a href="#" class="page-link active">1</a>
+                <a href="#" class="page-link">2</a>
+                <a href="#" class="page-link">3</a>
+                <a href="#" class="page-link">
+                    <i class="fas fa-angle-right"></i>
+                </a>
+            </div>
         </div>
     </div>
 

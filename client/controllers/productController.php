@@ -29,6 +29,7 @@ class ProductController
         // Lấy sản phẩm theo danh mục
         $products = $productModel->getProductsByCategory($cateId);
 
+        // Truyền thông tin danh mục đến view
         require_once "client/views/product/product-cate.php";
     }
 

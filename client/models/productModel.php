@@ -97,11 +97,16 @@ class ProductModel
 
     // Lấy thông tin danh mục theo ID
     public function getCategoryById($cateId) {
-        $sql = "SELECT * FROM categories WHERE cate_id = ? AND cate_status = 1";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $cateId);
-        $stmt->execute();
-        return $stmt->get_result()->fetch_assoc();
+        try {
+            $sql = "SELECT * FROM categories WHERE cate_id = ? AND cate_status = 1";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bind_param("i", $cateId);
+            $stmt->execute();
+            return $stmt->get_result()->fetch_assoc();
+        } catch (Exception $e) {
+            error_log("Error in getCategoryById: " . $e->getMessage());
+            return null;
+        }
     }
 
     public function getProductById($id)
