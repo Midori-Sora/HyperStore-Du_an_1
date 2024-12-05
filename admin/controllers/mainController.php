@@ -1,19 +1,26 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 require_once './models/mainModel.php';
+require_once 'productController.php';
 
 class MainController
 {
-    public static function productController()
+    public function __construct()
     {
-        // $authModel = new AuthModel;
-        // $authModel->check_login();
-        $productModel = new ProductModel;
-        $products = $productModel->getProductList();
-        require_once './views/product.php';
+        // Constructor
     }
-    public static function editProductController()
+    
+    public static function homeController()
     {
-        if(isset($_POST['']))
+        // $productModel = new ProductModel();
+        // $totalProducts = $productModel->countProducts();
+        // $totalCategories = $productModel->countCategories();
+        // $totalUsers = $productModel->countUsers();
+        require_once './views/home.php';
     }
+
+    // Các phương thức khác không liên quan đến product
 }
 ?>

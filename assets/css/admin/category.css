@@ -1,0 +1,39 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background: #f5f5f5;
+}
+header{
+    margin-bottom: 50px;
+}
+.row{
+    display: flex;
+    justify-content: space-between;
+    width: 1300px;
+    margin: auto;
+}
+.row .sidebar{
+    width: 20%;
+}
+.row main{
+    width: 80%;
+    border-radius: 15px;
+    overflow: hidden;
+}
+main table{
+    width: 100%;
+    text-align: center;
+    border-radius: 15px;
+}
+main table thead{
+    height: 40px;
+}
+main table tr th{
+    font-weight: normal;
+}
+main tbody img{
+    width: 30%;
+}

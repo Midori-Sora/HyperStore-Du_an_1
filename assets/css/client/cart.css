@@ -1,0 +1,419 @@
+.cart-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+.cart-container h2 {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 24px;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+/* Khi giỏ hàng trống */
+.cart-container > p {
+  text-align: center;
+  font-size: 18px;
+  color: #666;
+  padding: 40px 0;
+}
+
+/* Danh sách sản phẩm */
+.cart-items {
+  margin-bottom: 30px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 20px;
+  border: 1px solid #eee;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  background: #fff;
+  gap: 20px;
+}
+
+.cart-item img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  margin-right: 20px;
+  border-radius: 4px;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-info h3 {
+  color: #333;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.item-info p {
+  color: #666;
+  margin: 5px 0;
+  font-size: 14px;
+}
+
+/* Giá và số lượng */
+.item-info p:nth-child(4) {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.item-info p:last-child {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Tổng giỏ hàng */
+.cart-summary {
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border: 1px solid #eee;
+}
+
+.cart-summary h3 {
+  color: #333;
+  margin-bottom: 15px;
+  font-size: 20px;
+}
+
+.cart-summary p {
+  color: #e94560;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.checkout-btn {
+  background: #e94560;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.3s ease;
+}
+
+.checkout-btn:hover {
+  background: #d63851;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .cart-container {
+    padding: 10px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .cart-item img {
+    margin-right: 0;
+    margin-bottom: 15px;
+  }
+
+  .item-info h3 {
+    font-size: 16px;
+  }
+
+  .cart-summary p {
+    font-size: 20px;
+  }
+}
+
+/* Styles cho phần tổng giỏ hàng */
+.cart-summary {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 0;
+  margin-top: 10px;
+  border-top: 2px solid #eee;
+  font-size: 18px;
+  font-weight: 600;
+  color: #ee4d2d;
+}
+
+.checkout-btn {
+  display: block;
+  background: #ee4d2d;
+  color: white;
+  text-align: center;
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 20px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s;
+}
+
+.checkout-btn:hover {
+  background: #d73211;
+  transform: translateY(-2px);
+}
+
+.continue-shopping {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #ee4d2d;
+  text-decoration: none;
+}
+
+.continue-shopping:hover {
+  text-decoration: underline;
+}
+
+/* Thêm responsive cho mobile */
+@media (max-width: 768px) {
+  .cart-summary {
+    margin-top: 20px;
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+  }
+
+  .checkout-btn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+
+.item-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+}
+
+.quantity-controls form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.qty-btn {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  background: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-display {
+  min-width: 40px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.item-variants {
+  display: flex;
+  gap: 10px;
+  margin: 10px 0;
+}
+
+.variant {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.9em;
+  background: #f8f9fa;
+  gap: 5px;
+}
+
+.variant.storage {
+  background: #e3f2fd;
+  color: #1976d2;
+}
+
+.variant.color {
+  background: #fce4ec;
+  color: #c2185b;
+}
+
+.price-diff {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.discount-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: #e94560;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.85em;
+}
+
+.price-section {
+  margin: 10px 0;
+}
+
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  margin-right: 10px;
+}
+
+.discounted-price {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.final-price {
+  color: #e94560;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.remove-btn:hover {
+  background-color: #fff0f0;
+  color: #e94560;
+}
+
+.remove-btn i {
+  font-size: 14px;
+}
+
+.remove-btn span {
+  font-size: 14px;
+}
+
+/* Custom checkbox styles */
+.checkbox-wrapper {
+  position: relative;
+  padding-left: 35px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.checkbox-wrapper input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+}
+
+.checkbox-wrapper:hover input ~ .checkmark {
+  border-color: #2196f3;
+}
+
+.checkbox-wrapper input:checked ~ .checkmark {
+  background-color: #2196f3;
+  border-color: #2196f3;
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkbox-wrapper input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkbox-wrapper .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.label-text {
+  margin-left: 10px;
+}
+
+.shop-header {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  background: #fff;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.shop-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+}
+
+.shop-name i {
+  color: #ff7200;
+}
