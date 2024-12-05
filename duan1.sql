@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th12 02, 2024 lúc 03:04 PM
+-- Thời gian đã tạo: Th12 05, 2024 lúc 10:03 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -40,13 +40,13 @@ CREATE TABLE `banners` (
 --
 
 INSERT INTO `banners` (`id`, `title`, `image_url`, `status`, `created_at`) VALUES
-(1, 'Banner 1', 'b1.png', 1, '2024-11-16 14:19:01'),
-(2, 'Banner 2', 'b2.png', 1, '2024-11-16 16:36:32'),
-(3, 'Banner 3', 'b3.png', 1, '2024-11-16 16:36:53'),
-(4, 'Banner 4', 'b4.png', 1, '2024-11-16 16:37:22'),
-(5, 'Banner 5', 'b5.png', 1, '2024-11-16 16:37:54'),
-(6, 'Banner 6', 'b6.png', 1, '2024-11-16 16:38:11'),
-(7, 'Banner 7', 'b7.png', 1, '2024-11-21 16:03:38');
+(1, 'Banner 1', 's1.png', 1, '2024-12-05 18:17:56'),
+(2, 'Banner 2', 's2.png', 1, '2024-12-05 18:18:11'),
+(3, 'Banner 3', 's3.png', 1, '2024-12-05 18:18:16'),
+(4, 'Banner 4', 's4.png', 1, '2024-12-05 18:18:22'),
+(5, 'Banner 5', 's5.png', 1, '2024-12-05 18:18:27'),
+(6, 'Banner 6', 's6.png', 1, '2024-12-05 18:20:18'),
+(7, 'Banner 7', 's7.png', 1, '2024-12-05 18:20:23');
 
 -- --------------------------------------------------------
 
@@ -111,41 +111,36 @@ CREATE TABLE `comments` (
 --
 
 INSERT INTO `comments` (`com_id`, `rating`, `content`, `user_id`, `pro_id`, `import_date`, `cmt_status`) VALUES
-(16, 5, 'Sản phẩm rất tốt, đóng gói cẩn thận', 3, 31, '2024-11-25 10:00:00', 1),
-(17, 4, 'Máy đẹp, chụp ảnh sắc nét', 4, 31, '2024-11-26 15:30:00', 1),
-(18, 5, 'Pin trâu, dùng rất bền', 5, 31, '2024-11-27 09:15:00', 1),
-(19, 5, 'Màu xanh rất đẹp, rất hài lòng', 3, 32, '2024-11-25 11:20:00', 1),
-(20, 4, 'Máy mượt, camera chụp đẹp', 4, 32, '2024-11-26 14:45:00', 1),
-(21, 5, 'Giao hàng nhanh, sản phẩm chất lượng', 5, 32, '2024-11-27 16:30:00', 1),
-(22, 5, 'Màu trắng sang trọng, rất thích', 3, 33, '2024-11-25 13:40:00', 1),
-(23, 4, 'Hiệu năng tốt, pin trâu', 4, 33, '2024-11-26 17:20:00', 1),
-(24, 5, 'Sản phẩm chính hãng, rất yên tâm', 5, 33, '2024-11-27 08:50:00', 1),
-(25, 5, 'Bộ nhớ lớn, lưu trữ thoải mái', 3, 60, '2024-11-25 09:30:00', 1),
-(26, 4, 'Thiết kế đẹp, cầm vừa tay', 4, 60, '2024-11-26 14:15:00', 1),
-(27, 5, 'Camera chụp đêm rất tốt', 5, 60, '2024-11-27 16:45:00', 1),
-(28, 5, 'Màu xanh biển rất độc đáo', 3, 61, '2024-11-25 10:45:00', 1),
-(29, 4, 'Máy mượt, chơi game tốt', 4, 61, '2024-11-26 15:30:00', 1),
-(30, 5, 'Rất hài lòng với sản phẩm', 5, 61, '2024-11-27 11:20:00', 1),
-(31, 5, 'Dynamic Island rất tiện lợi', 3, 65, '2024-11-25 08:20:00', 1),
-(32, 4, 'Pin trâu, sạc nhanh', 4, 65, '2024-11-26 13:40:00', 1),
-(33, 5, 'Camera chụp rất đẹp', 5, 65, '2024-11-27 15:15:00', 1),
-(34, 5, 'Màu trắng rất sang trọng', 3, 66, '2024-11-25 09:50:00', 1),
-(35, 4, 'Máy mượt, không lag', 4, 66, '2024-11-26 14:25:00', 1),
-(36, 5, 'Rất hài lòng với chất lượng', 5, 66, '2024-11-27 16:30:00', 1),
-(37, 5, 'Máy chạy rất mượt, pin trâu', 3, 81, '2024-11-25 10:15:00', 1),
-(38, 4, 'Camera chụp đẹp, màu sắc tự nhiên', 4, 81, '2024-11-26 15:45:00', 1),
-(39, 5, 'Giao hàng nhanh, đóng gói cẩn thận', 5, 81, '2024-11-27 14:20:00', 1),
-(40, 5, 'Màu trắng rất đẹp và sang trọng', 3, 82, '2024-11-25 11:30:00', 1),
-(41, 4, 'Hiệu năng tốt, chơi game mượt', 4, 82, '2024-11-26 16:20:00', 1),
-(42, 5, 'Sản phẩm chính hãng, rất uy tín', 5, 82, '2024-11-27 13:45:00', 1),
-(43, 5, 'Màu đỏ rất nổi bật và đẹp', 3, 93, '2024-11-25 09:40:00', 1),
-(44, 4, 'Máy chạy ổn định, pin tốt', 4, 93, '2024-11-26 14:50:00', 1),
-(45, 5, 'Giá tốt, chất lượng đáng mua', 5, 93, '2024-11-27 16:15:00', 1),
-(46, 5, 'Thiết kế đẹp, cầm vừa tay', 3, 94, '2024-11-25 10:55:00', 1),
-(47, 4, 'Camera chụp đẹp, màu sắc tự nhiên', 4, 94, '2024-11-26 15:30:00', 1),
-(48, 5, 'Rất hài lòng với sản phẩm', 5, 94, '2024-11-27 13:25:00', 1),
-(49, 4, 'srbdrbdb', 1, 32, '2024-12-02 17:37:33', 0),
-(50, 5, 'jyjyjyky', 1, 31, '2024-12-02 19:00:30', 1);
+(17, 5, 'Sản phẩm rất tốt, đáng tiền', 2, 31, '2024-12-06 03:19:36', 1),
+(18, 4, 'Pin trâu, camera đẹp', 20, 31, '2024-12-06 03:19:36', 1),
+(19, 5, 'Giao hàng nhanh, đóng gói cẩn thận', 2, 31, '2024-12-06 03:19:36', 1),
+(20, 5, 'Máy chạy mượt, pin tốt', 2, 32, '2024-12-06 03:19:36', 1),
+(21, 4, 'Camera chụp đẹp, màn hình sắc nét', 20, 32, '2024-12-06 03:19:36', 1),
+(22, 5, 'Thiết kế đẹp, cầm vừa tay', 2, 32, '2024-12-06 03:19:36', 1),
+(23, 5, 'Hiệu năng mạnh mẽ, chơi game tốt', 2, 33, '2024-12-06 03:19:36', 1),
+(24, 4, 'Màn hình đẹp, độ sáng cao', 20, 33, '2024-12-06 03:19:36', 1),
+(25, 5, 'Camera chụp đêm rất tốt', 2, 33, '2024-12-06 03:19:36', 1),
+(26, 5, 'Sản phẩm chất lượng cao', 2, 34, '2024-12-06 03:19:36', 1),
+(27, 4, 'Pin dùng được 2 ngày', 20, 34, '2024-12-06 03:19:36', 1),
+(28, 5, 'Camera chụp ảnh rất đẹp', 2, 34, '2024-12-06 03:19:36', 1),
+(29, 5, 'Thiết kế sang trọng, đẳng cấp', 2, 35, '2024-12-06 03:19:36', 1),
+(30, 4, 'Face ID nhận diện nhanh', 20, 35, '2024-12-06 03:19:36', 1),
+(31, 5, 'Chụp ảnh xóa phông tuyệt vời', 2, 35, '2024-12-06 03:19:36', 1),
+(32, 5, 'Máy mới 100%, chính hãng', 2, 36, '2024-12-06 03:19:36', 1),
+(33, 4, 'Giao hàng đúng hẹn', 20, 36, '2024-12-06 03:19:36', 1),
+(34, 5, 'Sản phẩm worth the money', 2, 36, '2024-12-06 03:19:36', 1),
+(35, 5, 'Rất hài lòng với sản phẩm', 2, 37, '2024-12-06 03:19:36', 1),
+(36, 4, 'Chất lượng tốt, giá hợp lý', 20, 37, '2024-12-06 03:19:36', 1),
+(37, 5, 'Đáng đồng tiền bát gạo', 2, 37, '2024-12-06 03:19:36', 1),
+(38, 5, 'Sản phẩm chính hãng, yên tâm', 2, 85, '2024-12-06 03:19:36', 1),
+(39, 4, 'Dịch vụ bảo hành tốt', 20, 85, '2024-12-06 03:19:36', 1),
+(40, 5, 'Máy dùng rất ổn định', 2, 85, '2024-12-06 03:19:36', 1),
+(41, 5, 'Chụp ảnh siêu nét', 2, 86, '2024-12-06 03:19:36', 1),
+(42, 4, 'Pin trâu dùng thoải mái', 20, 86, '2024-12-06 03:19:36', 1),
+(43, 5, 'Màn hình hiển thị sắc nét', 2, 86, '2024-12-06 03:19:36', 1),
+(44, 5, 'Cấu hình mạnh mẽ', 2, 91, '2024-12-06 03:19:36', 1),
+(45, 4, 'Chơi game không giật lag', 20, 91, '2024-12-06 03:19:36', 1),
+(46, 5, 'Camera chụp đêm tuyệt vời', 2, 91, '2024-12-06 03:19:36', 1);
 
 -- --------------------------------------------------------
 
@@ -163,35 +158,51 @@ CREATE TABLE `orders` (
   `shipping_phone` varchar(20) NOT NULL,
   `shipping_email` varchar(255) DEFAULT NULL,
   `bank_code` varchar(50) DEFAULT NULL,
-  `status` enum('pending','confirmed','processing','shipping','delivered','cancelled','returned','refunded','failed','awaiting_payment','return_requested') NOT NULL DEFAULT 'pending',
+  `status` enum('pending','confirmed','processing','shipping','delivered','cancelled','returned','refunded','failed','awaiting_payment','return_requested','cancel_requested') NOT NULL DEFAULT 'pending',
   `payment_method` varchar(50) NOT NULL DEFAULT 'cod',
   `payment_status` varchar(50) NOT NULL DEFAULT 'unpaid',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `return_reason` text DEFAULT NULL,
-  `return_request_reason` text DEFAULT NULL
+  `return_request_reason` text DEFAULT NULL,
+  `cancel_reason` text DEFAULT NULL,
+  `previous_status` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `bank_code`, `status`, `payment_method`, `payment_status`, `created_at`, `updated_at`, `return_reason`, `return_request_reason`) VALUES
-(161, 'ORD1733054135', 1, 'Bùi Đức Dương', 21239700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-01 11:55:35', '2024-12-01 11:55:35', NULL, NULL),
-(162, 'ORD1733076726', 1, 'Bùi Đức Dương', 52895900.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-01 18:12:06', '2024-12-01 18:12:06', NULL, NULL),
-(163, 'ORD1733076951', 1, 'Bùi Đức Dương', 42935900.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-01 18:15:51', '2024-12-01 18:15:51', NULL, NULL),
-(164, 'ORD1733130155', 1, 'Bùi Đức Dương', 48496900.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'returned', 'cod', 'unpaid', '2024-12-02 09:02:35', '2024-12-02 09:32:00', NULL, 'ukuikil'),
-(165, 'ORD1733132022', 1, 'Bùi Đức Dương', 21239700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 09:33:42', '2024-12-02 09:34:22', NULL, 'dgnfgng'),
-(166, 'ORD1733135313', 1, 'Bùi Đức Dương', 73679100.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 10:28:33', '2024-12-02 10:29:01', NULL, NULL),
-(167, 'ORD1733135670', 1, 'Bùi Đức Dương', 21239700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-12-02 10:34:30', '2024-12-02 10:34:55', NULL, NULL),
-(168, 'ORD1733135920', 1, 'Bùi Đức Dương', 31199700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'return_requested', 'cod', 'unpaid', '2024-12-02 10:38:40', '2024-12-02 10:39:09', NULL, 'egwrg'),
-(169, 'ORD1733135967', 1, 'Bùi Đức Dương', 21239700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 10:39:27', '2024-12-02 10:39:31', NULL, NULL),
-(170, 'ORD1733138356', 1, 'Bùi Đức Dương', 31199700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-02 11:19:16', '2024-12-02 11:19:16', NULL, NULL),
-(171, 'ORD1733138377', 1, 'Bùi Đức Dương', 31199700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 11:19:37', '2024-12-02 11:37:51', NULL, 'rthrynyrn'),
-(172, 'ORD1733140568', 1, 'Bùi Đức Dương', 43101900.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 11:56:08', '2024-12-02 11:56:17', NULL, NULL),
-(173, 'ORD1733140587', 1, 'Bùi Đức Dương', 63312400.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-02 11:56:27', '2024-12-02 12:00:02', NULL, 'htjggj'),
-(174, 'ORD1733141909', 1, 'Bùi Đức Dương', 21696200.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-02 12:18:29', '2024-12-02 12:18:29', NULL, NULL),
-(177, 'ORD1733143880', 1, 'Bùi Đức Dương', 31199700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-02 12:51:20', '2024-12-02 12:51:20', NULL, NULL);
+INSERT INTO `orders` (`order_id`, `order_code`, `user_id`, `receiver_name`, `total_amount`, `shipping_address`, `shipping_phone`, `shipping_email`, `bank_code`, `status`, `payment_method`, `payment_status`, `created_at`, `updated_at`, `return_reason`, `return_request_reason`, `cancel_reason`, `previous_status`) VALUES
+(172, 'ORD1733063503', 20, 'đỗ trung kiên', 52439400.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-12-01 14:31:43', '2024-12-03 16:24:07', NULL, NULL, NULL, NULL),
+(173, 'ORD1733123393', 20, 'đỗ trung kiên', 26053700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-02 07:09:53', '2024-12-02 07:09:54', NULL, NULL, NULL, NULL),
+(174, 'ORD1733220354', 2, 'sfafasdzxv', 21239700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-03 10:05:54', '2024-12-03 10:05:54', NULL, NULL, NULL, NULL),
+(175, 'ORD1733220392', 20, 'đỗ trung kiên', 21239700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'returned', 'cod', 'unpaid', '2024-12-03 10:06:32', '2024-12-03 10:07:45', NULL, 'àdfsf', NULL, NULL),
+(176, 'ORD1733220626', 20, 'đỗ trung kiên', 35183700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 10:10:26', '2024-12-03 10:12:46', NULL, 'hàng xấu quá ', NULL, NULL),
+(177, 'ORD1733221213', 20, 'đỗ trung kiên', 21239700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, '', 'cod', 'unpaid', '2024-12-03 10:20:13', '2024-12-03 10:21:09', NULL, 'hàng xấu ', NULL, NULL),
+(178, 'ORD1733221566', 20, 'đỗ trung kiên', 35183700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, '', 'cod', 'unpaid', '2024-12-03 10:26:06', '2024-12-03 10:27:35', NULL, 'tôi muốn trả hàng ', NULL, NULL),
+(179, 'ORD1733221695', 20, 'đỗ trung kiên', 35183700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 10:28:15', '2024-12-03 10:28:19', NULL, NULL, NULL, NULL),
+(180, 'ORD1733222273', 20, 'đỗ trung kiên', 30286700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'cancel_requested', 'cod', 'unpaid', '2024-12-03 10:37:53', '2024-12-03 16:36:19', NULL, NULL, 'tôi muốn hủy ', NULL),
+(181, 'ORD1733231753', 2, 'sfafasdzxv', 35183700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 13:15:53', '2024-12-03 17:09:42', NULL, NULL, NULL, NULL),
+(182, 'ORD1733245802', 20, 'đỗ trung kiên', 35183700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-03 17:10:02', '2024-12-03 17:10:02', NULL, NULL, NULL, NULL),
+(183, 'ORD1733245823', 2, 'sfafasdzxv', 35183700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-12-03 17:10:23', '2024-12-03 17:11:26', NULL, NULL, NULL, NULL),
+(184, 'ORD1733245908', 2, 'sfafasdzxv', 30286700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-12-03 17:11:48', '2024-12-03 17:12:02', NULL, NULL, NULL, NULL),
+(185, 'ORD1733246191', 2, 'sfafasdzxv', 20326700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-12-03 17:16:31', '2024-12-03 17:17:16', NULL, NULL, NULL, NULL),
+(186, 'ORD1733246971', 2, 'sfafasdzxv', 20326700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 17:29:31', '2024-12-03 17:29:38', NULL, NULL, NULL, NULL),
+(187, 'ORD1733246994', 2, 'sfafasdzxv', 30286700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 17:29:54', '2024-12-03 17:38:04', NULL, NULL, 'xấu', NULL),
+(188, 'ORD1733247521', 2, 'sfafasdzxv', 21239700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 17:38:41', '2024-12-03 17:42:53', NULL, NULL, 'xấu', NULL),
+(189, 'ORD1733247831', 2, 'sfafasdzxv', 21239700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-03 17:43:51', '2024-12-03 17:47:09', NULL, NULL, 'xấu', NULL),
+(190, 'ORD1733247962', 2, 'sfafasdzxv', 20326700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 17:46:02', '2024-12-03 17:46:36', NULL, NULL, 'xấu', NULL),
+(191, 'ORD1733248112', 2, 'sfafasdzxv', 30286700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-03 17:48:32', '2024-12-03 17:54:50', NULL, NULL, 'tôi muốn hủy', 'pending'),
+(192, 'ORD1733248505', 2, 'sfafasdzxv', 30286700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'pending', 'cod', 'unpaid', '2024-12-03 17:55:05', '2024-12-03 17:55:26', NULL, NULL, 'hủy', 'pending'),
+(193, 'ORD1733248567', 20, 'đỗ trung kiên', 21239700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'cancel_requested', 'cod', 'unpaid', '2024-12-03 17:56:07', '2024-12-03 17:56:11', NULL, NULL, 'dgsdg', 'pending'),
+(194, 'ORD1733248593', 20, 'đỗ trung kiên', 35183700.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-12-03 17:56:33', '2024-12-04 12:07:37', NULL, NULL, NULL, NULL),
+(195, 'ORD1733248612', 2, 'sfafasdzxv', 21239700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-12-03 17:56:52', '2024-12-03 17:57:39', NULL, NULL, 'dfgdgf', 'processing'),
+(196, 'ORD1733248709', 20, 'đỗ trung kiên', 70367400.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'cancel_requested', 'cod', 'unpaid', '2024-12-03 17:58:29', '2024-12-03 17:58:39', NULL, NULL, 'dffgsdg', 'pending'),
+(197, 'ORD1733248741', 2, 'sfafasdzxv', 21239700.00, 'văn khúc, cẩm khê, nckdj,gfgf', '09987667656', NULL, NULL, 'confirmed', 'cod', 'unpaid', '2024-12-03 17:59:01', '2024-12-03 17:59:42', NULL, NULL, 'dgsg', 'confirmed'),
+(198, 'ORD1733248810', 20, 'đỗ trung kiên', 62150400.00, 'văn khúc , cẩm khê', '0998766765633', NULL, NULL, 'processing', 'cod', 'unpaid', '2024-12-03 18:00:10', '2024-12-04 12:04:25', NULL, NULL, NULL, NULL),
+(199, 'ORD1733313434', 1, 'Bùi Đức Dương', 20326700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'cancelled', 'cod', 'unpaid', '2024-12-04 11:57:14', '2024-12-04 11:57:53', NULL, NULL, 'eewvrwv', 'pending'),
+(200, 'ORD1733313596', 1, 'Bùi Đức Dương', 20326700.00, 'Thanh Liêm-Hà Nam', '0355032605', NULL, NULL, 'delivered', 'cod', 'unpaid', '2024-12-04 11:59:56', '2024-12-04 12:00:25', NULL, NULL, NULL, NULL);
 
 --
 -- Bẫy `orders`
@@ -225,26 +236,37 @@ CREATE TABLE `order_details` (
 --
 
 INSERT INTO `order_details` (`detail_id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
-(158, 161, 32, 1, 21239700.00),
-(159, 162, 35, 1, 21696200.00),
-(160, 162, 39, 1, 31199700.00),
-(161, 163, 32, 1, 21239700.00),
-(162, 163, 35, 1, 21696200.00),
-(163, 164, 39, 1, 31199700.00),
-(164, 164, 47, 1, 17297200.00),
-(165, 165, 33, 1, 21239700.00),
-(166, 166, 39, 1, 31199700.00),
-(167, 166, 32, 2, 21239700.00),
-(168, 167, 33, 1, 21239700.00),
-(169, 168, 39, 1, 31199700.00),
-(170, 169, 32, 1, 21239700.00),
-(171, 170, 39, 1, 31199700.00),
-(172, 171, 39, 1, 31199700.00),
-(173, 172, 44, 1, 16840700.00),
-(174, 172, 64, 1, 26261200.00),
-(175, 173, 40, 2, 31656200.00),
-(176, 174, 35, 1, 21696200.00),
-(181, 177, 37, 1, 31199700.00);
+(175, 172, 32, 1, 21239700.00),
+(176, 172, 37, 1, 31199700.00),
+(177, 173, 85, 1, 26053700.00),
+(178, 174, 32, 1, 21239700.00),
+(179, 175, 32, 1, 21239700.00),
+(180, 176, 91, 1, 35183700.00),
+(181, 177, 32, 1, 21239700.00),
+(182, 178, 91, 1, 35183700.00),
+(183, 179, 91, 1, 35183700.00),
+(184, 180, 36, 1, 30286700.00),
+(185, 181, 91, 1, 35183700.00),
+(186, 182, 91, 1, 35183700.00),
+(187, 183, 91, 1, 35183700.00),
+(188, 184, 36, 1, 30286700.00),
+(189, 185, 31, 1, 20326700.00),
+(190, 186, 31, 1, 20326700.00),
+(191, 187, 36, 1, 30286700.00),
+(192, 188, 32, 1, 21239700.00),
+(193, 189, 32, 1, 21239700.00),
+(194, 190, 31, 1, 20326700.00),
+(195, 191, 36, 1, 30286700.00),
+(196, 192, 36, 1, 30286700.00),
+(197, 193, 33, 1, 21239700.00),
+(198, 194, 91, 1, 35183700.00),
+(199, 195, 32, 1, 21239700.00),
+(200, 196, 91, 2, 35183700.00),
+(201, 197, 32, 1, 21239700.00),
+(202, 198, 91, 1, 35183700.00),
+(203, 198, 86, 1, 26966700.00),
+(204, 199, 31, 1, 20326700.00),
+(205, 200, 31, 1, 20326700.00);
 
 -- --------------------------------------------------------
 
@@ -285,11 +307,10 @@ CREATE TABLE `payment_logs` (
 --
 
 INSERT INTO `payment_logs` (`id`, `order_id`, `payment_type`, `status`, `message`, `created_at`) VALUES
-(20, 164, 'return', 'pending', 'Yêu cầu trả hàng: ukuikil', '2024-12-02 09:31:42'),
-(21, 165, 'return', 'pending', 'Yêu cầu trả hàng: dgnfgng', '2024-12-02 09:34:16'),
-(22, 168, 'return', 'pending', 'Yêu cầu trả hàng: egwrg', '2024-12-02 10:39:09'),
-(23, 171, 'return', 'pending', 'Yêu cầu trả hàng: rthrynyrn', '2024-12-02 11:37:41'),
-(24, 173, 'return', 'pending', 'Yêu cầu trả hàng: htjggj', '2024-12-02 11:59:52');
+(26, 175, 'return', 'pending', 'Yêu cầu trả hàng: àdfsf', '2024-12-03 10:07:21'),
+(27, 176, 'return', 'pending', 'Yêu cầu trả hàng: hàng xấu quá ', '2024-12-03 10:11:50'),
+(28, 177, 'return', 'pending', 'Yêu cầu trả hàng: hàng xấu ', '2024-12-03 10:20:49'),
+(29, 178, 'return', 'pending', 'Yêu cầu trả hàng: tôi muốn trả hàng ', '2024-12-03 10:27:17');
 
 -- --------------------------------------------------------
 
@@ -317,26 +338,26 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `import_date`, `description`, `pro_view`, `pro_status`, `cate_id`, `storage_id`, `color_id`) VALUES
-(31, 'IPhone 16 256Gb Mới chính hãng', 21490000, 5, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 2, 1),
-(32, 'IPhone 16 256Gb Mới chính hãng', 21490000, 35, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 2, 4),
-(33, 'IPhone 16 256Gb Mới chính hãng', 21490000, 40, 'iphone16 trang.png', '2024-11-28', '', 0, 1, 6, 2, 2),
+(31, 'IPhone 16 256Gb Mới chính hãng', 21490000, 40, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 2, 1),
+(32, 'IPhone 16 256Gb Mới chính hãng', 21490000, 28, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 2, 4),
+(33, 'IPhone 16 256Gb Mới chính hãng', 21490000, 37, 'iphone16 trang.png', '2024-11-28', '', 0, 1, 6, 2, 2),
 (34, 'IPhone 16 256Gb Mới chính hãng', 21490000, 50, 'iphone16 xanhmk.png', '2024-11-28', '', 0, 1, 6, 2, 5),
-(35, 'IPhone 16 256Gb Mới chính hãng', 21490000, 43, 'iphone16 hong.png', '2024-11-28', '', 0, 1, 6, 2, 6),
-(36, 'IPhone 16 512Gb Mới chính hãng', 27490000, 50, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 3, 1),
+(35, 'IPhone 16 256Gb Mới chính hãng', 21490000, 47, 'iphone16 hong.png', '2024-11-28', '', 0, 1, 6, 2, 6),
+(36, 'IPhone 16 512Gb Mới chính hãng', 27490000, 41, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 3, 1),
 (37, 'IPhone 16 512Gb Mới chính hãng', 27490000, 45, 'iphone16 trang.png', '2024-11-28', '', 0, 1, 6, 3, 2),
-(38, 'IPhone 16 512Gb Mới chính hãng', 27490000, 47, 'iphone16 xanhmk.png', '2024-11-28', '', 0, 1, 6, 3, 5),
-(39, 'IPhone 16 512Gb Mới chính hãng', 27490000, 43, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 3, 4),
-(40, 'IPhone 16 512Gb Mới chính hãng', 27490000, 48, 'iphone16 hong.png', '2024-11-28', '', 0, 1, 6, 3, 6),
-(41, 'IPhone 16 128Gb Mới chính hãng', 19190000, 50, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 1, 1),
-(42, 'IPhone 16 128Gb Mới chính hãng', 19190000, 50, 'iphone16 trang.png', '2024-11-28', '', 0, 1, 6, 1, 2),
+(38, 'IPhone 16 512Gb Mới chính hãng', 27490000, 49, 'iphone16 xanhmk.png', '2024-11-28', '', 0, 1, 6, 3, 5),
+(39, 'IPhone 16 512Gb Mới chính hãng', 27490000, 47, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 3, 4),
+(40, 'IPhone 16 512Gb Mới chính hãng', 27490000, 50, 'iphone16 hong.png', '2024-11-28', '', 0, 1, 6, 3, 6),
+(41, 'IPhone 16 128Gb Mới chính hãng', 19190000, 46, 'iphone16 den.png', '2024-11-28', '', 0, 1, 6, 1, 1),
+(42, 'IPhone 16 128Gb Mới chính hãng', 19190000, 46, 'iphone16 trang.png', '2024-11-28', '', 0, 1, 6, 1, 2),
 (43, 'IPhone 16 128Gb Mới chính hãng', 19190000, 50, 'iphone16 xanhmk.png', '2024-11-28', '', 0, 1, 6, 1, 5),
-(44, 'IPhone 16 128Gb Mới chính hãng', 19190000, 49, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 1, 4),
+(44, 'IPhone 16 128Gb Mới chính hãng', 19190000, 50, 'iphone16 xanhll.png', '2024-11-28', '', 0, 1, 6, 1, 4),
 (47, 'IPhone 16 128Gb Mới chính hãng', 19190000, 50, 'iphone16 hong.png', '2024-11-28', '', 0, 1, 6, 1, 6),
 (60, 'IPhone 15 512Gb Mới chính hãng', 20990000, 50, 'iphone15 den.png', '2024-11-28', '', 0, 1, 5, 3, 1),
 (61, 'IPhone 15 512Gb Mới chính hãng', 20990000, 50, 'iphone15 xanhbien.png', '2024-11-28', '', 0, 1, 5, 3, 10),
 (62, 'IPhone 15 512Gb Mới chính hãng', 20990000, 50, 'iphone15 xanhla.png', '2024-11-28', '', 0, 1, 5, 3, 11),
 (63, 'IPhone 15 512Gb Mới chính hãng', 20990000, 50, 'iphone15 vang.png', '2024-11-28', '', 0, 1, 5, 3, 12),
-(64, 'IPhone 15 512Gb Mới chính hãng', 20990000, 49, 'iphone15 hong.png', '2024-11-28', '', 0, 1, 5, 3, 6),
+(64, 'IPhone 15 512Gb Mới chính hãng', 20990000, 50, 'iphone15 hong.png', '2024-11-28', '', 0, 1, 5, 3, 6),
 (65, 'IPhone 14 128Gb Mới chính hãng', 24490000, 50, 'iphone14pm den.png', '2024-11-28', '', 0, 1, 4, 1, 1),
 (66, 'IPhone 14 128Gb Mới chính hãng', 24490000, 50, 'iphone14pm trang.png', '2024-11-28', '', 0, 1, 4, 1, 2),
 (67, 'IPhone 14 128Gb Mới chính hãng', 24490000, 50, 'iphone14pm vangkim.png', '2024-11-28', '', 0, 1, 4, 1, 3),
@@ -357,13 +378,13 @@ INSERT INTO `products` (`pro_id`, `pro_name`, `price`, `quantity`, `img`, `impor
 (82, 'IPhone 13 Pro Max 128Gb Mới chính hãng', 26390000, 50, 'iphone13pm trang.png', '2024-11-28', '', 0, 1, 3, 1, 2),
 (83, 'IPhone 13 Pro Max 128Gb Mới chính hãng', 26390000, 50, 'iphone13pm vangkim.png', '2024-11-28', '', 0, 1, 3, 1, 3),
 (84, 'IPhone 13 Pro Max 128Gb Mới chính hãng', 26390000, 50, 'iphone13pm xanh.png', '2024-11-28', '', 0, 1, 3, 1, 10),
-(85, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 50, 'iphone13pm den.png', '2024-11-28', '', 0, 1, 3, 2, 1),
-(86, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 50, 'iphone13pm trang.png', '2024-11-28', '', 0, 1, 3, 2, 2),
+(85, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 49, 'iphone13pm den.png', '2024-11-28', '', 0, 1, 3, 2, 1),
+(86, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 49, 'iphone13pm trang.png', '2024-11-28', '', 0, 1, 3, 2, 2),
 (87, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 50, 'iphone13pm vangkim.png', '2024-11-28', '', 0, 1, 3, 2, 3),
 (88, 'IPhone 13 Pro Max 256Gb Mới chính hãng', 28390000, 50, 'iphone13pm xanh.png', '2024-11-28', '', 0, 1, 3, 2, 10),
 (89, 'IPhone 13 Pro Max 512Gb Mới chính hãng', 32890000, 50, 'iphone13pm den.png', '2024-11-28', '', 0, 1, 3, 3, 1),
 (90, 'IPhone 13 Pro Max 512Gb Mới chính hãng', 32890000, 50, 'iphone13pm trang.png', '2024-11-28', '', 0, 1, 3, 3, 2),
-(91, 'IPhone 13 Pro Max 512Gb Mới chính hãng', 32890000, 47, 'iphone13pm vangkim.png', '2024-11-28', '', 0, 1, 3, 3, 3),
+(91, 'IPhone 13 Pro Max 512Gb Mới chính hãng', 32890000, 34, 'iphone13pm vangkim.png', '2024-11-28', '', 0, 1, 3, 3, 3),
 (92, 'IPhone 13 Pro Max 512Gb Mới chính hãng', 32890000, 50, 'iphone13pm xanh.png', '2024-11-28', '', 0, 1, 3, 3, 10),
 (93, 'IPhone 12 128Gb Mới chính hãng', 13290000, 50, 'iphone12 do.png', '2024-11-28', '', 0, 1, 7, 1, 7),
 (94, 'IPhone 12 128Gb Mới chính hãng', 13290000, 50, 'iphone12 trang.png', '2024-11-28', '', 0, 1, 7, 1, 2),
@@ -432,18 +453,70 @@ CREATE TABLE `product_deals` (
 --
 
 INSERT INTO `product_deals` (`deal_id`, `pro_id`, `discount`, `start_date`, `end_date`, `status`) VALUES
-(246, 96, 25.00, '2024-12-20', '2025-01-03', 1),
-(247, 93, 25.00, '2024-12-20', '2025-01-03', 1),
-(248, 95, 25.00, '2024-12-20', '2025-01-03', 1),
-(249, 94, 25.00, '2024-12-20', '2025-01-03', 1),
-(250, 99, 25.00, '2024-12-20', '2025-01-03', 1),
-(251, 98, 25.00, '2024-12-20', '2025-01-03', 1),
-(252, 100, 25.00, '2024-12-20', '2025-01-03', 1),
-(253, 97, 25.00, '2024-12-20', '2025-01-03', 1),
-(254, 104, 25.00, '2024-12-20', '2025-01-03', 1),
-(255, 101, 25.00, '2024-12-20', '2025-01-03', 1),
-(256, 103, 25.00, '2024-12-20', '2025-01-03', 1),
-(257, 102, 25.00, '2024-12-20', '2025-01-03', 1);
+(246, 108, 20.00, '2024-12-01', '2024-12-29', 1),
+(247, 107, 20.00, '2024-12-01', '2024-12-29', 1),
+(248, 106, 20.00, '2024-12-01', '2024-12-29', 1),
+(249, 105, 20.00, '2024-12-01', '2024-12-29', 1),
+(250, 96, 20.00, '2024-12-01', '2024-12-29', 1),
+(251, 93, 20.00, '2024-12-01', '2024-12-29', 1),
+(252, 95, 20.00, '2024-12-01', '2024-12-29', 1),
+(253, 94, 20.00, '2024-12-01', '2024-12-29', 1),
+(254, 98, 20.00, '2024-12-01', '2024-12-29', 1),
+(255, 100, 20.00, '2024-12-01', '2024-12-29', 1),
+(256, 97, 20.00, '2024-12-01', '2024-12-29', 1),
+(257, 99, 20.00, '2024-12-01', '2024-12-29', 1),
+(258, 104, 20.00, '2024-12-01', '2024-12-29', 1),
+(259, 101, 20.00, '2024-12-01', '2024-12-29', 1),
+(260, 103, 20.00, '2024-12-01', '2024-12-29', 1),
+(261, 102, 20.00, '2024-12-01', '2024-12-29', 1),
+(262, 82, 20.00, '2024-12-01', '2024-12-29', 1),
+(263, 84, 20.00, '2024-12-01', '2024-12-29', 1),
+(264, 81, 20.00, '2024-12-01', '2024-12-29', 1),
+(265, 83, 20.00, '2024-12-01', '2024-12-29', 1),
+(266, 88, 20.00, '2024-12-01', '2024-12-29', 1),
+(267, 85, 20.00, '2024-12-01', '2024-12-29', 1),
+(268, 87, 20.00, '2024-12-01', '2024-12-29', 1),
+(269, 86, 20.00, '2024-12-01', '2024-12-29', 1),
+(270, 90, 20.00, '2024-12-01', '2024-12-29', 1),
+(271, 92, 20.00, '2024-12-01', '2024-12-29', 1),
+(272, 89, 20.00, '2024-12-01', '2024-12-29', 1),
+(273, 91, 20.00, '2024-12-01', '2024-12-29', 1),
+(274, 66, 20.00, '2024-12-01', '2024-12-29', 1),
+(275, 68, 20.00, '2024-12-01', '2024-12-29', 1),
+(276, 65, 20.00, '2024-12-01', '2024-12-29', 1),
+(277, 67, 20.00, '2024-12-01', '2024-12-29', 1),
+(278, 80, 20.00, '2024-12-01', '2024-12-29', 1),
+(279, 77, 20.00, '2024-12-01', '2024-12-29', 1),
+(280, 79, 20.00, '2024-12-01', '2024-12-29', 1),
+(281, 78, 20.00, '2024-12-01', '2024-12-29', 1),
+(282, 72, 20.00, '2024-12-01', '2024-12-29', 1),
+(283, 69, 20.00, '2024-12-01', '2024-12-29', 1),
+(284, 71, 20.00, '2024-12-01', '2024-12-29', 1),
+(285, 70, 20.00, '2024-12-01', '2024-12-29', 1),
+(286, 74, 20.00, '2024-12-01', '2024-12-29', 1),
+(287, 76, 20.00, '2024-12-01', '2024-12-29', 1),
+(288, 73, 20.00, '2024-12-01', '2024-12-29', 1),
+(289, 75, 20.00, '2024-12-01', '2024-12-29', 1),
+(290, 64, 20.00, '2024-12-01', '2024-12-29', 1),
+(291, 61, 20.00, '2024-12-01', '2024-12-29', 1),
+(292, 63, 20.00, '2024-12-01', '2024-12-29', 1),
+(293, 60, 20.00, '2024-12-01', '2024-12-29', 1),
+(294, 62, 20.00, '2024-12-01', '2024-12-29', 1),
+(295, 42, 20.00, '2024-12-01', '2024-12-29', 1),
+(296, 44, 20.00, '2024-12-01', '2024-12-29', 1),
+(297, 41, 20.00, '2024-12-01', '2024-12-29', 1),
+(298, 43, 20.00, '2024-12-01', '2024-12-29', 1),
+(299, 47, 20.00, '2024-12-01', '2024-12-29', 1),
+(300, 34, 20.00, '2024-12-01', '2024-12-29', 1),
+(301, 31, 20.00, '2024-12-01', '2024-12-29', 1),
+(302, 33, 20.00, '2024-12-01', '2024-12-29', 1),
+(303, 35, 20.00, '2024-12-01', '2024-12-29', 1),
+(304, 32, 20.00, '2024-12-01', '2024-12-29', 1),
+(305, 39, 20.00, '2024-12-01', '2024-12-29', 1),
+(306, 36, 20.00, '2024-12-01', '2024-12-29', 1),
+(307, 38, 20.00, '2024-12-01', '2024-12-29', 1),
+(308, 40, 20.00, '2024-12-01', '2024-12-29', 1),
+(309, 37, 20.00, '2024-12-01', '2024-12-29', 1);
 
 -- --------------------------------------------------------
 
@@ -506,10 +579,9 @@ CREATE TABLE `return_requests` (
 --
 
 INSERT INTO `return_requests` (`request_id`, `order_id`, `user_id`, `request_date`, `reason`, `images`, `status`, `admin_note`, `processed_date`) VALUES
-(4, 164, 1, '2024-12-02 09:32:00', '', NULL, 'approved', 'jmuu', '2024-12-02 09:32:00'),
-(5, 165, 1, '2024-12-02 09:34:22', '', NULL, 'rejected', 'mghm', '2024-12-02 09:34:22'),
-(6, 171, 1, '2024-12-02 11:37:51', '', NULL, 'rejected', 'rehet', '2024-12-02 11:37:51'),
-(7, 173, 1, '2024-12-02 12:00:02', '', NULL, 'rejected', 'fntt', '2024-12-02 12:00:02');
+(10, 175, 20, '2024-12-03 10:07:45', '', NULL, 'approved', 'sfsaf', '2024-12-03 10:07:45'),
+(11, 176, 20, '2024-12-03 10:12:47', '', NULL, 'rejected', 'không đồng ý ', '2024-12-03 10:12:47'),
+(12, 177, 20, '2024-12-03 10:21:09', '', NULL, 'rejected', 'sfd', '2024-12-03 10:21:09');
 
 --
 -- Bẫy `return_requests`
@@ -610,19 +682,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `password`, `email`, `fullname`, `phone`, `address`, `avatar`, `role_id`, `status`, `created_at`, `birthday`, `gender`) VALUES
-(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', 'Uploads/User/Sora.jpg', 1, 1, '2024-11-13 07:46:27', '1990-01-01', 1),
+(1, 'Sora', 'sora123', 'soramidori843@gmail.com', 'Bùi Đức Dương', '0355032605', 'Thanh Liêm-Hà Nam', '/Screenshot_2024-04-03-01-39-25-433_com.miui.videoplayer.jpg', 1, 1, '2024-11-13 07:46:27', '2005-06-30', 1),
 (2, 'duongbd', 'duong123', 'duongbdph50213@gmail.com', 'sfafasdzxv', '09987667656', 'văn khúc, cẩm khê, nckdj,gfgf', 'Uploads/User/user.png', 2, 1, '2024-11-17 21:00:12', NULL, NULL),
-(3, 'nguyenthanhnam', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'thanhnam@gmail.com', 'Nguyễn Thành Nam', '0912345678', 'Quận 1, TP.HCM', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(4, 'tranthihuong', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'huong.tran@gmail.com', 'Trần Thị Hương', '0923456789', 'Cầu Giấy, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(5, 'levanminh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'minhle@gmail.com', 'Lê Văn Minh', '0934567890', 'Hải Châu, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(6, 'phamthi', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hoapham@gmail.com', 'Phạm Thị Hoa', '0945678901', 'Ninh Kiều, Cần Thơ', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(7, 'hoangvantuan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'tuanhoang@gmail.com', 'Hoàng Văn Tuấn', '0956789012', 'Ngô Quyền, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(8, 'nguyenthilan', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'lan.nguyen@gmail.com', 'Nguyễn Thị Lan', '0967890123', 'Lê Chân, Hải Phòng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(9, 'vuducmanh', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'manhvu@gmail.com', 'Vũ Đức Mạnh', '0978901234', 'Thanh Xuân, Hà Nội', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(10, 'tranthihien', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'hientran@gmail.com', 'Trần Thị Hiền', '0989012345', 'Sơn Trà, Đà Nẵng', 'Uploads/User/nam.jpg', 2, 1, '2024-11-17 21:30:55', NULL, NULL),
-(20, 'kien', '1', 'kien49182@gmail.com', 'đỗ trung kiên ', '0998766765633', 'văn khúc ', 'Uploads/User/nam.jpg', 1, 1, '2024-11-25 09:10:43', NULL, NULL),
-(21, 'kienneeee', '1', 'kiennenennen@gmail.com', 'kiên', '0998766777', 'văn khúc', 'Uploads/User/nam.jpg', 2, 1, '2024-11-26 10:40:54', '2014-11-14', 1),
-(22, '', '1', 'mm@gmail.com', 'đỗ trung kiên ', '03777777777', 'văn khúc , cẩm khê , phú thọ ', NULL, 2, 1, '2024-11-30 11:36:05', '2024-11-13', NULL);
+(20, 'kien', '1', 'kien49182@gmail.com', 'đỗ trung kiên', '0998766765633', 'văn khúc , cẩm khê', 'Uploads/User/nam.jpg', 1, 1, '2024-11-25 09:10:43', NULL, NULL),
+(21, 'kienneeee', '1', 'kiennenennen@gmail.com', 'kiên', '0998766777', 'văn khúc', 'Uploads/User/nam.jpg', 2, 1, '2024-11-26 10:40:54', '2014-11-14', 1);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -787,19 +850,19 @@ ALTER TABLE `categories`
 -- AUTO_INCREMENT cho bảng `comments`
 --
 ALTER TABLE `comments`
-  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `com_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT cho bảng `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=178;
+  MODIFY `order_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=201;
 
 --
 -- AUTO_INCREMENT cho bảng `order_details`
 --
 ALTER TABLE `order_details`
-  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `detail_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- AUTO_INCREMENT cho bảng `payments`
@@ -811,7 +874,7 @@ ALTER TABLE `payments`
 -- AUTO_INCREMENT cho bảng `payment_logs`
 --
 ALTER TABLE `payment_logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `products`
@@ -829,7 +892,7 @@ ALTER TABLE `product_color`
 -- AUTO_INCREMENT cho bảng `product_deals`
 --
 ALTER TABLE `product_deals`
-  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
+  MODIFY `deal_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=310;
 
 --
 -- AUTO_INCREMENT cho bảng `product_storage`
@@ -847,7 +910,7 @@ ALTER TABLE `return_items`
 -- AUTO_INCREMENT cho bảng `return_requests`
 --
 ALTER TABLE `return_requests`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `roles`
@@ -865,13 +928,13 @@ ALTER TABLE `thumbnails`
 -- AUTO_INCREMENT cho bảng `transactions`
 --
 ALTER TABLE `transactions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT cho bảng `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
