@@ -86,9 +86,11 @@ class HomeModel
     public function getTotalRevenue()
     {
         try {
-            $sql = "SELECT SUM(price * quantity) as total_revenue 
-                    FROM products 
-                    WHERE pro_status = 1";
+            $sql = "SELECT SUM(od.price * od.quantity) as total_revenue 
+                    FROM order_details od
+                    JOIN orders o ON od.order_id = o.order_id
+                    WHERE o.status = 'delivered'";
+                    
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -102,14 +104,21 @@ class HomeModel
     public function getTopProducts($limit = 5)
     {
         try {
-            $sql = "SELECT p.pro_name, SUM(od.quantity) as total_sold, SUM(od.price * od.quantity) as total_revenue, c.cate_name
+            $sql = "SELECT 
+                    p.pro_name, 
+                    SUM(od.quantity) as total_sold, 
+                    SUM(od.price * od.quantity) as total_revenue, 
+                    c.cate_name
                     FROM order_details od
                     JOIN products p ON od.product_id = p.pro_id
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
-                    WHERE p.pro_status = 1
+                    JOIN orders o ON od.order_id = o.order_id
+                    WHERE p.pro_status = 1 
+                    AND o.status = 'delivered'  -- Chỉ tính đơn hàng đã giao thành công
                     GROUP BY p.pro_id, p.pro_name, c.cate_name
                     ORDER BY total_sold DESC
                     LIMIT :limit";
+                    
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
             $stmt->execute();
@@ -125,18 +134,23 @@ class HomeModel
         try {
             $sql = "SELECT 
                     COUNT(*) as total,
-                    COUNT(CASE WHEN status = 2 THEN 1 END) as completed,
-                    COUNT(CASE WHEN status = 1 THEN 1 END) as processing,
-                    COUNT(CASE WHEN status = 3 THEN 1 END) as pending
+                    COUNT(CASE WHEN status = 'delivered' THEN 1 END) as completed,
+                    COUNT(CASE WHEN status IN ('confirmed', 'processing') THEN 1 END) as processing,
+                    COUNT(CASE WHEN status = 'shipping' THEN 1 END) as shipping,
+                    COUNT(CASE WHEN status = 'cancelled' THEN 1 END) as cancelled,
+                    COUNT(CASE WHEN status IN ('return_requested', 'returned') THEN 1 END) as returns
                     FROM orders";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
             return [
                 'total' => (int)($result['total'] ?? 0),
                 'completed' => (int)($result['completed'] ?? 0),
                 'processing' => (int)($result['processing'] ?? 0),
-                'pending' => (int)($result['pending'] ?? 0)
+                'shipping' => (int)($result['shipping'] ?? 0),
+                'cancelled' => (int)($result['cancelled'] ?? 0),
+                'returns' => (int)($result['returns'] ?? 0)
             ];
         } catch (PDOException $e) {
             error_log("Count orders error: " . $e->getMessage());
@@ -144,7 +158,9 @@ class HomeModel
                 'total' => 0,
                 'completed' => 0,
                 'processing' => 0,
-                'pending' => 0
+                'shipping' => 0,
+                'cancelled' => 0,
+                'returns' => 0
             ];
         }
     }

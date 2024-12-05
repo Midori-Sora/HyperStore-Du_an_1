@@ -64,7 +64,7 @@ class CommentModel {
                         SUM(CASE WHEN c.rating = 2 THEN 1 ELSE 0 END) as two_star,
                         SUM(CASE WHEN c.rating = 1 THEN 1 ELSE 0 END) as one_star
                     FROM comments c
-                    WHERE c.pro_id = :product_id 
+                    WHERE c.pro_id = :product_id
                     AND c.cmt_status = 1
                     AND c.rating > 0";
             

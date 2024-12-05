@@ -153,7 +153,9 @@
                                 <br>
                                 <i class="fas fa-cog me-2 text-primary"></i>Đang xử lý: <?php echo number_format($totalOrders['processing']); ?>
                                 <br>
-                                <i class="fas fa-clock me-2 text-warning"></i>Chờ xử lý: <?php echo number_format($totalOrders['pending']); ?>
+                                <i class="fas fa-truck me-2 text-warning"></i>Đang giao hàng: <?php echo number_format($totalOrders['shipping']); ?>
+                                <br>
+                                <i class="fas fa-undo me-2 text-danger"></i>Trả hàng: <?php echo number_format($totalOrders['returns']); ?>
                             </p>
                         </a>
                     </div>

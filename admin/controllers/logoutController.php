@@ -1,6 +1,4 @@
 <?php
-require_once "models/logoutModel.php";
-
 class LogoutController {
     public static function logoutController() {
         if (session_status() === PHP_SESSION_NONE) {

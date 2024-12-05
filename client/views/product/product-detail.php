@@ -215,11 +215,8 @@
 
         thumbnails.forEach(thumb => {
             thumb.addEventListener('click', function() {
-                // Remove active class from all thumbnails
                 thumbnails.forEach(t => t.classList.remove('active'));
-                // Add active class to clicked thumbnail
                 this.classList.add('active');
-                // Update main image
                 mainImage.src = this.src;
             });
         });
@@ -291,7 +288,7 @@
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
                 // Tự động ẩn sau 3 giây
-                setTimeout(() => {
+                setTimeout(() => {  
                     alert.style.animation = 'slideOut 0.3s ease-out forwards';
                     setTimeout(() => alert.remove(), 300);
                 }, 3000);
