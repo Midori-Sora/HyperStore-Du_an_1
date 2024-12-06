@@ -150,9 +150,9 @@
                                     <form action="index.php?action=deleteStorage" method="POST" class="d-inline" 
                                           onsubmit="return confirm('Bạn có chắc muốn xóa bộ nhớ này?');">
                                         <input type="hidden" name="storage_id" value="<?= $storage['storage_id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
+                                        <!-- <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
                                             <i class="fas fa-trash"></i>
-                                        </button>
+                                        </button> -->
                                     </form>
                                 </td>
                             </tr>
@@ -201,9 +201,9 @@
                                     <form action="index.php?action=deleteColor" method="POST" class="d-inline"
                                           onsubmit="return confirm('Bạn có chắc muốn xóa màu này?');">
                                         <input type="hidden" name="color_id" value="<?= $color['color_id'] ?>">
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
+                                        <!-- <button type="submit" class="btn btn-sm btn-danger" title="Xóa">
                                             <i class="fas fa-trash"></i>
-                                        </button>
+                                        </button> -->
                                     </form>
                                 </td>
                             </tr>

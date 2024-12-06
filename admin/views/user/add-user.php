@@ -207,25 +207,7 @@
                                         <label class="form-label">
                                             <i class="fas fa-image me-2"></i>Ảnh đại diện
                                         </label>
-                                        <div class="select-new-image">
-                                            <select class="form-select" name="avatar" id="imageSelect" required>
-                                                <option value="">Chọn ảnh đại diện</option>
-                                                <?php
-                                                $imageDir = '../Uploads/User/';
-                                                $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-                                                foreach ($images as $image):
-                                                    $imageName = basename($image);
-                                                ?>
-                                                <option value="<?= htmlspecialchars($imageName) ?>">
-                                                    <?= htmlspecialchars($imageName) ?>
-                                                </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <div class="preview-container mt-3" style="display: none;">
-                                                <p class="mb-2">Xem trước ảnh:</p>
-                                                <img id="preview" class="preview-image" alt="Preview">
-                                            </div>
-                                        </div>
+                                        <input type="file" name="avatar" class="form-control" accept="image/*">
                                     </div>
 
                                     <div class="mb-3">

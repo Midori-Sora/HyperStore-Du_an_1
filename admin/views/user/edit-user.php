@@ -191,31 +191,11 @@
                         <div class="current-image mb-3">
                             <p class="mb-2">Ảnh hiện tại:</p>
                             <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="current-avatar"
-                                alt="Current Avatar" onerror="this.src='../Uploads/User/default-avatar.jpg'">
+                                alt="Current Avatar">
                         </div>
                         <div class="select-new-image">
                             <label class="form-label">Chọn ảnh mới (nếu muốn thay đổi):</label>
-                            <select class="form-select" name="avatar" id="imageSelect">
-                                <option value="<?= $user['avatar'] ?>">Giữ ảnh hiện tại
-                                    (<?= basename($user['avatar']) ?>)</option>
-                                <?php
-                                $imageDir = '../Uploads/User/';
-                                $images = glob($imageDir . "*.{jpg,jpeg,png,gif}", GLOB_BRACE);
-                                foreach ($images as $image):
-                                    $imageName = basename($image);
-                                    if ($imageName != basename($user['avatar'])):
-                                ?>
-                                <option value="<?= htmlspecialchars($imageName) ?>"><?= htmlspecialchars($imageName) ?>
-                                </option>
-                                <?php
-                                    endif;
-                                endforeach;
-                                ?>
-                            </select>
-                            <div class="preview-container mt-3" style="display: none;">
-                                <p class="mb-2">Xem trước ảnh mới:</p>
-                                <img id="preview" class="current-avatar" alt="Preview">
-                            </div>
+                            <input type="file" name="avatar" class="form-control" accept="image/*">
                         </div>
                     </div>
 

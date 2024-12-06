@@ -142,8 +142,7 @@
                 <div class="avata">
                     <div>
                         <?php if (!empty($user['avatar'])): ?>
-                        <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar" alt="Avatar"
-                            onerror="this.src='../Uploads/User/nam.jpg'">
+                        <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar" alt="Avatar">
                         <?php else: ?>
                         <img src="../Uploads/User/nam.jpg" class="user-avatar" alt="Default Avatar">
                         <?php endif; ?>

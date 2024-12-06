@@ -60,22 +60,31 @@ class UserController
                     throw new Exception("Vui lòng điền đầy đủ thông tin bắt buộc");
                 }
 
-                // Validate avatar selection
-                if (empty($_POST['avatar'])) {
-                    throw new Exception("Vui lòng chọn ảnh đại diện");
-                }
-
                 $data = [
                     'username' => $_POST['username'],
                     'email' => $_POST['email'],
-                    'password' => $_POST['password'], // Lưu mật khẩu gốc
+                    'password' => $_POST['password'],
                     'fullname' => $_POST['fullname'],
                     'phone' => $_POST['phone'],
                     'address' => $_POST['address'],
                     'role_id' => $_POST['role_id'],
                     'status' => isset($_POST['status']) ? 1 : 0,
-                    'avatar' => 'Uploads/User/' . basename($_POST['avatar'])
+                    'avatar' => 'Uploads/User/nam.jpg' // Default avatar
                 ];
+
+                // Xử lý upload ảnh
+                if (!empty($_FILES['avatar']['name'])) {
+                    $uploadDir = '../Uploads/User/';
+                    $fileExtension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+                    $fileName = uniqid() . '.' . $fileExtension;
+                    $uploadFile = $uploadDir . $fileName;
+
+                    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile)) {
+                        $data['avatar'] = 'Uploads/User/' . $fileName;
+                    } else {
+                        throw new Exception("Không thể upload ảnh");
+                    }
+                }
 
                 // Check if username exists
                 if (UserModel::isUsernameExists($data['username'])) {
@@ -85,12 +94,6 @@ class UserController
                 // Check if email exists
                 if (UserModel::isEmailExists($data['email'])) {
                     throw new Exception("Email đã tồn tại. Vui lòng chọn email khác.");
-                }
-
-                // Verify that the selected image exists
-                $imagePath = PATH_ROOT . '/' . $data['avatar'];
-                if (!file_exists($imagePath)) {
-                    throw new Exception("Ảnh đã chọn không tồn tại trong hệ thống");
                 }
 
                 if (UserModel::addUser($data)) {
@@ -140,27 +143,31 @@ class UserController
                     'status' => isset($_POST['status']) ? 1 : 0,
                 ];
 
-                // Xử lý avatar
-                if (!empty($_POST['avatar'])) {
-                    if (strpos($_POST['avatar'], 'Uploads/') === 0) {
-                        $data['avatar'] = $_POST['avatar'];
+                // Xử lý upload ảnh mới
+                if (!empty($_FILES['avatar']['name'])) {
+                    $uploadDir = '../Uploads/User/';
+                    $fileExtension = pathinfo($_FILES['avatar']['name'], PATHINFO_EXTENSION);
+                    $fileName = uniqid() . '.' . $fileExtension;
+                    $uploadFile = $uploadDir . $fileName;
+
+                    if (move_uploaded_file($_FILES['avatar']['tmp_name'], $uploadFile)) {
+                        $data['avatar'] = 'Uploads/User/' . $fileName;
                     } else {
-                        $data['avatar'] = 'Uploads/User/' . basename($_POST['avatar']);
+                        throw new Exception("Không thể upload ảnh");
                     }
                 }
 
                 // Xử lý mật khẩu nếu có thay đổi
                 if (!empty($_POST['password'])) {
-                    $data['password'] = $_POST['password']; // Lưu mật khẩu gốc
+                    $data['password'] = $_POST['password'];
                 }
 
                 if (UserModel::updateUser($data)) {
+                    $_SESSION['success'] = "Cập nhật người dùng thành công";
                     header("Location: index.php?action=user");
                     exit();
                 } else {
-                    $_SESSION['error'] = "Lỗi: Không thể cập nhật người dùng.";
-                    header("Location: index.php?action=editUser&id=" . $data['user_id']);
-                    exit();
+                    throw new Exception("Lỗi: Không thể cập nhật người dùng.");
                 }
             } catch (Exception $e) {
                 $_SESSION['error'] = $e->getMessage();

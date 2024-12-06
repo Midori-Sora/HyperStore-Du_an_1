@@ -267,9 +267,9 @@
                                             <td class="text-center">
                                                 <?php if (!empty($user['avatar'])): ?>
                                                     <img src="../<?= htmlspecialchars($user['avatar']) ?>" class="user-avatar"
-                                                        alt="Avatar" onerror="this.src='../Uploads/User/default-avatar.jpg'">
+                                                        alt="Avatar">
                                                 <?php else: ?>
-                                                    <img src="../Uploads/User/default-avatar.jpg" class="user-avatar"
+                                                    <img src="../Uploads/User/nam.jpg" class="user-avatar"
                                                         alt="Default Avatar">
                                                 <?php endif; ?>
                                             </td>

@@ -27,12 +27,6 @@ class UserModel
     {
         global $MainModel;
         try {
-            // Validate image before inserting
-            $imagePath = PATH_ROOT . '/' . $data['avatar'];
-            if (!self::validateImage($imagePath)) {
-                throw new Exception("Ảnh không hợp lệ");
-            }
-
             $stmt = $MainModel->SUNNY->prepare("INSERT INTO users (username, password, email, fullname, phone, address, avatar, role_id, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
             return $stmt->execute([
                 $data['username'],
@@ -98,7 +92,7 @@ class UserModel
             $stmt = $MainModel->SUNNY->prepare($sql);
             return $stmt->execute($params);
         } catch (PDOException $e) {
-            echo "Lỗi khi cập nhật người dùng: " . $e->getMessage();
+            error_log("Lỗi khi cập nhật người dùng: " . $e->getMessage());
             return false;
         }
     }
