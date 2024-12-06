@@ -53,6 +53,11 @@ class DealModel
     public function addDeal($discount, $start_date, $end_date, $status, $product_ids)
     {
         try {
+            // Chỉ kiểm tra khi thêm mới
+            if ($discount > 10) {
+                return false;
+            }
+
             $this->db->beginTransaction();
 
             foreach ($product_ids as $pro_id) {
@@ -116,6 +121,11 @@ class DealModel
     public function updateDeal($deal_id, $discount, $start_date, $end_date, $status, $product_ids)
     {
         try {
+            // Chỉ kiểm tra khi cập nhật
+            if ($discount > 10) {
+                return false;
+            }
+
             $this->db->beginTransaction();
 
             // Lấy thông tin deal cũ

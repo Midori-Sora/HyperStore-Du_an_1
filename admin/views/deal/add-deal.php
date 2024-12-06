@@ -8,178 +8,178 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-        background: #f5f5f5;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        padding-top: 80px;
-    }
+        body {
+            background: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 80px;
+        }
 
-    .main {
-        display: flex;
-        max-width: 100%;
-        margin: 0 auto;
-        padding: 20px;
-    }
+        .main {
+            display: flex;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-    .container {
-        --bs-gutter-x: 0;
-    }
+        .container {
+            --bs-gutter-x: 0;
+        }
 
-    .main main {
-        width: calc(100% - 270px);
-        margin-left: 270px;
-        background: white;
-        border-radius: 15px;
-        padding: 25px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
+        .main main {
+            width: calc(100% - 270px);
+            margin-left: 270px;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
 
-    .form-control,
-    .form-select {
-        border-radius: 8px;
-        padding: 12px 15px;
-        border: 1px solid #dce0e4;
-        margin: 10px 0;
-    }
+        .form-control,
+        .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #dce0e4;
+            margin: 10px 0;
+        }
 
-    .btn-primary {
-        background: #1976D2;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s;
-    }
+        .btn-primary {
+            background: #1976D2;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
 
-    .btn-primary:hover {
-        background: #1565C0;
-        transform: translateY(-2px);
-    }
+        .btn-primary:hover {
+            background: #1565C0;
+            transform: translateY(-2px);
+        }
 
-    .btn-secondary {
-        background: #f5f5f5;
-        color: #666;
-        border: none;
-        padding: 12px 30px;
-        border-radius: 8px;
-        font-weight: 500;
-        margin-left: 10px;
-        transition: all 0.3s;
-    }
+        .btn-secondary {
+            background: #f5f5f5;
+            color: #666;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
 
-    .btn-secondary:hover {
-        background: #e0e0e0;
-    }
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
 
-    .form-label {
-        font-weight: 500;
-        color: #444;
-        margin-bottom: 8px;
-    }
+        .form-label {
+            font-weight: 500;
+            color: #444;
+            margin-bottom: 8px;
+        }
 
-    .input-group-text {
-        background: #f8f9fa;
-        border: 1px solid #dce0e4;
-        border-radius: 0 8px 8px 0;
-    }
+        .input-group-text {
+            background: #f8f9fa;
+            border: 1px solid #dce0e4;
+            border-radius: 0 8px 8px 0;
+        }
 
-    #discountedPrice {
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 8px;
-        margin-top: 10px;
-    }
+        #discountedPrice {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
 
-    .alert {
-        display: flex;
-        align-items: center;
-        padding: 15px 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
-        border: none;
-    }
+        .alert {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border: none;
+        }
 
-    .select2-container--default .select2-selection--multiple {
-        min-height: 200px;
-        border: 1px solid #dce0e4;
-        border-radius: 8px;
-        padding: 8px;
-    }
+        .select2-container--default .select2-selection--multiple {
+            min-height: 200px;
+            border: 1px solid #dce0e4;
+            border-radius: 8px;
+            padding: 8px;
+        }
 
-    .select2-container--default .select2-selection--multiple .select2-selection__choice {
-        background: #1976D2;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        border-radius: 4px;
-        margin: 4px;
-    }
+        .select2-container--default .select2-selection--multiple .select2-selection__choice {
+            background: #1976D2;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            margin: 4px;
+        }
 
-    .select2-container--default .select2-selection__choice__remove {
-        color: white !important;
-        margin-right: 5px;
-    }
+        .select2-container--default .select2-selection__choice__remove {
+            color: white !important;
+            margin-right: 5px;
+        }
 
-    .select2-container--default .select2-search__field {
-        margin-top: 7px;
-    }
+        .select2-container--default .select2-search__field {
+            margin-top: 7px;
+        }
 
-    .select2-container--default .select2-results__option {
-        padding: 8px 12px;
-    }
+        .select2-container--default .select2-results__option {
+            padding: 8px 12px;
+        }
 
-    .select2-container--default .select2-results__group {
-        background: #f8f9fa;
-        font-weight: 600;
-        padding: 8px 12px;
-    }
+        .select2-container--default .select2-results__group {
+            background: #f8f9fa;
+            font-weight: 600;
+            padding: 8px 12px;
+        }
 
-    .select-actions {
-        display: flex;
-        gap: 10px;
-    }
+        .select-actions {
+            display: flex;
+            gap: 10px;
+        }
 
-    .price-details {
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-    }
+        .price-details {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
 
-    .price-details table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+        .price-details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-    .price-details th,
-    .price-details td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #eee;
-    }
+        .price-details th,
+        .price-details td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
 
-    .price-details th {
-        background: #f8f9fa;
-        font-weight: 600;
-    }
+        .price-details th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
 
-    .price-details tr:last-child td {
-        border-bottom: none;
-    }
+        .price-details tr:last-child td {
+            border-bottom: none;
+        }
 
-    .price-details .discount {
-        color: #dc3545;
-    }
+        .price-details .discount {
+            color: #dc3545;
+        }
 
-    .price-details .final-price {
-        color: #28a745;
-        font-weight: 600;
-    }
+        .price-details .final-price {
+            color: #28a745;
+            font-weight: 600;
+        }
     </style>
 </head>
 
@@ -206,7 +206,8 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Phần trăm giảm giá</label>
                                     <input type="number" name="discount" id="discount" class="form-control" min="0"
-                                        max="100" required>
+                                        max="10" required>
+                                    <small class="text-muted">Giảm giá tối đa 10%</small>
                                 </div>
                             </div>
 
@@ -226,12 +227,12 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             <?php foreach ($categories as $category): ?>
-                                            <li>
-                                                <a class="dropdown-item category-filter" href="#"
-                                                    data-category="<?= $category['cate_id'] ?>">
-                                                    <?= $category['cate_name'] ?>
-                                                </a>
-                                            </li>
+                                                <li>
+                                                    <a class="dropdown-item category-filter" href="#"
+                                                        data-category="<?= $category['cate_id'] ?>">
+                                                        <?= $category['cate_name'] ?>
+                                                    </a>
+                                                </li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
@@ -239,17 +240,17 @@
 
                                 <select name="product_ids[]" id="product_ids" class="form-select" multiple required>
                                     <?php foreach ($categories as $category): ?>
-                                    <optgroup label="<?= $category['cate_name'] ?>">
-                                        <?php foreach ($products as $product): ?>
-                                        <?php if ($product['cate_id'] == $category['cate_id']): ?>
-                                        <option value="<?= $product['pro_id'] ?>"
-                                            data-category="<?= $category['cate_id'] ?>"
-                                            data-price="<?= $product['price'] ?>">
-                                            <?= $product['pro_name'] ?> - <?= number_format($product['price']) ?>đ
-                                        </option>
-                                        <?php endif; ?>
-                                        <?php endforeach; ?>
-                                    </optgroup>
+                                        <optgroup label="<?= $category['cate_name'] ?>">
+                                            <?php foreach ($products as $product): ?>
+                                                <?php if ($product['cate_id'] == $category['cate_id']): ?>
+                                                    <option value="<?= $product['pro_id'] ?>"
+                                                        data-category="<?= $category['cate_id'] ?>"
+                                                        data-price="<?= $product['price'] ?>">
+                                                        <?= $product['pro_name'] ?> - <?= number_format($product['price']) ?>đ
+                                                    </option>
+                                                <?php endif; ?>
+                                            <?php endforeach; ?>
+                                        </optgroup>
                                     <?php endforeach; ?>
                                 </select>
                             </div>
@@ -292,9 +293,9 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    function calculateDiscountedPrice(discount) {
-        const selectedOptions = Array.from($('#product_ids').select2('data'));
-        let html = `
+        function calculateDiscountedPrice(discount) {
+            const selectedOptions = Array.from($('#product_ids').select2('data'));
+            let html = `
                 <table>
                     <thead>
                         <tr>
@@ -307,13 +308,13 @@
                     <tbody>
             `;
 
-        selectedOptions.forEach(option => {
-            const originalPrice = parseFloat($(option.element).data('price'));
-            if (!isNaN(originalPrice) && !isNaN(discount)) {
-                const discountAmount = originalPrice * (discount / 100);
-                const finalPrice = originalPrice - discountAmount;
+            selectedOptions.forEach(option => {
+                const originalPrice = parseFloat($(option.element).data('price'));
+                if (!isNaN(originalPrice) && !isNaN(discount)) {
+                    const discountAmount = originalPrice * (discount / 100);
+                    const finalPrice = originalPrice - discountAmount;
 
-                html += `
+                    html += `
                         <tr>
                             <td>${option.text}</td>
                             <td>${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(originalPrice)}</td>
@@ -321,99 +322,99 @@
                             <td class="final-price">${new Intl.NumberFormat('vi-VN', {style: 'currency', currency: 'VND'}).format(finalPrice)}</td>
                         </tr>
                     `;
-            }
-        });
+                }
+            });
 
-        html += `
+            html += `
                 </tbody>
             </table>
         `;
 
-        $('#discountedPrice').html(html);
-    }
-
-    // Form validation
-    document.addEventListener('DOMContentLoaded', function() {
-        const form = document.querySelector('.needs-validation');
-        form.addEventListener('submit', function(event) {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        });
-    });
-
-    // Tính toán giá khi thay đổi sản phẩm hoặc % giảm giá
-    document.getElementById('product_ids').addEventListener('change', function() {
-        const discount = document.getElementById('discount').value;
-        if (discount) {
-            calculateDiscountedPrice(discount);
+            $('#discountedPrice').html(html);
         }
-    });
 
-    document.getElementById('discount').addEventListener('input', function() {
-        calculateDiscountedPrice(this.value);
-    });
-
-    $(document).ready(function() {
-        // Khởi tạo Select2
-        const $productSelect = $('#product_ids').select2({
-            placeholder: 'Chọn sản phẩm...',
-            allowClear: true,
-            width: '100%',
-            language: {
-                noResults: function() {
-                    return "Không tìm thấy sản phẩm";
+        // Form validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.querySelector('.needs-validation');
+            form.addEventListener('submit', function(event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
                 }
-            }
+                form.classList.add('was-validated');
+            });
         });
 
-        // Xử lý nút ch���n tất cả
-        $('#selectAll').click(function() {
-            $('#product_ids option').prop('selected', true);
-            $productSelect.trigger('change');
-        });
-
-        // Xử lý nút bỏ chọn tất cả
-        $('#clearAll').click(function() {
-            $('#product_ids option').prop('selected', false);
-            $productSelect.trigger('change');
-        });
-
-        // Xử lý lọc theo danh mục
-        $('.category-filter').click(function(e) {
-            e.preventDefault();
-            const categoryId = $(this).data('category');
-
-            // Bỏ chọn tất cả
-            $('#product_ids option').prop('selected', false);
-
-            // Chọn các sản phẩm thuộc danh mục
-            $(`#product_ids option[data-category="${categoryId}"]`).prop('selected', true);
-
-            $productSelect.trigger('change');
-        });
-
-        // Validation thời gian
-        $('#end_date').on('change', function() {
-            const startDate = new Date($('#start_date').val());
-            const endDate = new Date($(this).val());
-
-            if (endDate < startDate) {
-                alert('Thời gian kết thúc phải lớn hơn thời gian bắt đầu');
-                $(this).val('');
-            }
-        });
-
-        // Cập nhật tính toán giá khi thay đ��i select2
-        $('#product_ids').on('change', function() {
-            const discount = $('#discount').val();
+        // Tính toán giá khi thay đổi sản phẩm hoặc % giảm giá
+        document.getElementById('product_ids').addEventListener('change', function() {
+            const discount = document.getElementById('discount').value;
             if (discount) {
                 calculateDiscountedPrice(discount);
             }
         });
-    });
+
+        document.getElementById('discount').addEventListener('input', function() {
+            calculateDiscountedPrice(this.value);
+        });
+
+        $(document).ready(function() {
+            // Khởi tạo Select2
+            const $productSelect = $('#product_ids').select2({
+                placeholder: 'Chọn sản phẩm...',
+                allowClear: true,
+                width: '100%',
+                language: {
+                    noResults: function() {
+                        return "Không tìm thấy sản phẩm";
+                    }
+                }
+            });
+
+            // Xử lý nút ch���n tất cả
+            $('#selectAll').click(function() {
+                $('#product_ids option').prop('selected', true);
+                $productSelect.trigger('change');
+            });
+
+            // Xử lý nút bỏ chọn tất cả
+            $('#clearAll').click(function() {
+                $('#product_ids option').prop('selected', false);
+                $productSelect.trigger('change');
+            });
+
+            // Xử lý lọc theo danh mục
+            $('.category-filter').click(function(e) {
+                e.preventDefault();
+                const categoryId = $(this).data('category');
+
+                // Bỏ chọn tất cả
+                $('#product_ids option').prop('selected', false);
+
+                // Chọn các sản phẩm thuộc danh mục
+                $(`#product_ids option[data-category="${categoryId}"]`).prop('selected', true);
+
+                $productSelect.trigger('change');
+            });
+
+            // Validation thời gian
+            $('#end_date').on('change', function() {
+                const startDate = new Date($('#start_date').val());
+                const endDate = new Date($(this).val());
+
+                if (endDate < startDate) {
+                    alert('Thời gian kết thúc phải lớn hơn thời gian bắt đầu');
+                    $(this).val('');
+                }
+            });
+
+            // Cập nhật tính toán giá khi thay đ��i select2
+            $('#product_ids').on('change', function() {
+                const discount = $('#discount').val();
+                if (discount) {
+                    calculateDiscountedPrice(discount);
+                }
+            });
+        });
     </script>
 </body>
 

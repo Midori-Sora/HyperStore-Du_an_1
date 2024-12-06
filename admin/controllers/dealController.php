@@ -28,6 +28,13 @@ class DealController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $product_ids = isset($_POST['product_ids']) ? $_POST['product_ids'] : [];
             $discount = $_POST['discount'];
+
+            if ($discount > 10) {
+                $_SESSION['error'] = 'Phần trăm giảm giá không được vượt quá 10%';
+                require_once './views/deal/add-deal.php';
+                return;
+            }
+
             $start_date = $_POST['start_date'];
             $end_date = $_POST['end_date'];
             $status = $_POST['status'];
@@ -58,6 +65,13 @@ class DealController
                 $product_ids = array_merge($current_product_ids, $new_product_ids);
 
                 $discount = $_POST['discount'];
+
+                if ($discount > 10) {
+                    $_SESSION['error'] = 'Phần trăm giảm giá không được vượt quá 10%';
+                    require_once './views/deal/edit-deal.php';
+                    return;
+                }
+
                 $start_date = $_POST['start_date'];
                 $end_date = $_POST['end_date'];
                 $status = $_POST['status'];
