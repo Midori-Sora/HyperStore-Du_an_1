@@ -19,102 +19,26 @@
         <div class="slideshowimg">
             <?php include 'layout/slideshow.php' ?>
         </div>
-    </div>
-
-    <div class="features-section">
-        <div class="feature-item">
-            <i class="fas fa-truck"></i>
-            <h4>Miễn phí vận chuyển</h4>
-            <p>Cho đơn hàng trên 5 triệu</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-shield-alt"></i>
-            <h4>Bảo hành chính hãng</h4>
-            <p>12 tháng bảo hành</p>
-        </div>
-        <div class="feature-item">
-            <i class="fas fa-sync"></i>
-            <h4>Đổi trả miễn phí</h4>
-            <p>Trong 7 ngày đầu tiên</p>
+        <div class="right-banner">
+            <img src="Uploads/Slides/s1.png" alt="">
+            <img src="Uploads/Slides/s8.png" alt="">
+            <img src="Uploads/Slides/s3.png" alt="">
         </div>
     </div>
 
     <div class="category-list">
-        <div class="category-item">
+        <div class="category-item" id="hot-sale">
             <div class="category-title">
-                <h2>Sản phẩm nổi bật</h2>
+                <h2> <i class="fa-solid fa-fire"></i>HOT SALE <span>CUỐI TUẦN</span></h2>
                 <a href="#" class="all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
             </div>
-            <div class="product-list">
-                <?php foreach ($featuredProducts as $product): ?>
-                    <div class="product-box">
-                        <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
-                            <div class="product-image">
-                                <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
-                                <?php if (!empty($product['discount'])) : ?>
-                                    <span class="discount-label">-<?php echo $product['discount']; ?>%</span>
-                                <?php endif; ?>
-                                <div class="product-actions">
-                                    <button class="action-btn"><i class="fas fa-heart"></i></button>
-                                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
-                                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
-                                        <input type="hidden" name="quantity" value="1">
-                                        <button type="submit" class="action-btn">
-                                            <i class="fas fa-shopping-cart"></i>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="product-infor">
-                                <h3 class="product-name"><?php echo $product['pro_name']; ?></h3>
-                                <div class="product-meta">
-                                    <?php if (!empty($product['storage_type'])) : ?>
-                                        <span class="product-specs">
-                                            <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                    <?php if (!empty($product['color_type'])) : ?>
-                                        <span class="product-color">
-                                            <i class="fas fa-palette"></i> <?php echo $product['color_type']; ?>
-                                        </span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="product-price">
-                                    <?php if (!empty($product['discount'])) : ?>
-                                        <div class="price-wrapper">
-                                            <span class="original-price"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>₫</span>
-                                            <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?>₫</span>
-                                            <span class="discount-percent">
-                                                -<?php echo $product['discount']; ?>%
-                                            </span>
-                                        </div>
-                                    <?php else : ?>
-                                        <span class="normal-price"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>₫</span>
-                                    <?php endif; ?>
-                                </div>
-                                <div class="product-rating">
-                                    <div class="stars">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                    <span class="rating-count">(45)</span>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        </div>
-    </div>
-
-    <div class="category-list">
-        <div class="category-item">
-            <div class="category-title">
-                <h2>Sản phẩm giảm giá</h2>
-                <a href="#" class="all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            <div class="time">
+                <span>Thời gian: &ensp;</span>
+                <?php if (!empty($discountProducts[0]['formatted_start_date']) && !empty($discountProducts[0]['formatted_end_date'])): ?>
+                    <span><?php echo $discountProducts[0]['formatted_start_date']; ?> - <?php echo $discountProducts[0]['formatted_end_date']; ?></span>
+                <?php else: ?>
+                    <span>Không có khuyến mãi</span>
+                <?php endif; ?>
             </div>
             <div class="product-list">
                 <?php foreach ($discountProducts as $product): ?>
@@ -173,13 +97,66 @@
                                         </span>
                                     <?php endif; ?>
                                 </div>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <span>(45)</span>
+                            </div>
+                        </a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="category-list">
+        <div class="category-item">
+            <div class="category-title">
+                <h2>Sản phẩm nổi bật</h2>
+                <a href="#" class="all">Xem tất cả <i class="fas fa-arrow-right"></i></a>
+            </div>
+            <div class="product-list">
+                <?php foreach ($featuredProducts as $product): ?>
+                    <div class="product-box">
+                        <a href="?action=product-detail&id=<?php echo $product['pro_id']; ?>">
+                            <div class="product-image">
+                                <img src="Uploads/Product/<?php echo $product['img']; ?>" alt="<?php echo $product['pro_name']; ?>">
+                                <?php if (!empty($product['discount'])) : ?>
+                                    <span class="discount-label">-<?php echo $product['discount']; ?>%</span>
+                                <?php endif; ?>
+                                <div class="product-actions">
+                                    <button class="action-btn"><i class="fas fa-heart"></i></button>
+                                    <form action="index.php?action=add-to-cart" method="POST" class="cart-form">
+                                        <input type="hidden" name="product_id" value="<?php echo $product['pro_id']; ?>">
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="action-btn">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="product-infor">
+                                <h3 class="product-name"><?php echo $product['pro_name']; ?></h3>
+                                <div class="product-meta">
+                                    <?php if (!empty($product['storage_type'])) : ?>
+                                        <span class="product-specs">
+                                            <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                    <?php if (!empty($product['color_type'])) : ?>
+                                        <span class="product-color">
+                                            <i class="fas fa-palette"></i> <?php echo $product['color_type']; ?>
+                                        </span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="product-price">
+                                    <?php if (!empty($product['discount'])) : ?>
+                                        <div class="price-wrapper">
+                                            <span class="original-price"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>₫</span>
+                                            <span class="discount-price"><?php echo number_format($product['discount_price'], 0, ',', '.'); ?>₫</span>
+                                            <span class="discount-percent">
+                                                -<?php echo $product['discount']; ?>%
+                                            </span>
+                                        </div>
+                                    <?php else : ?>
+                                        <span class="normal-price"><?php echo number_format($product['original_price'], 0, ',', '.'); ?>₫</span>
+                                    <?php endif; ?>
                                 </div>
                             </div>
                         </a>
@@ -207,15 +184,19 @@
                         </div>
                         <div class="product-infor">
                             <h3 class="product-name"><?php echo $phone['pro_name']; ?></h3>
-                            <div class="product-price"><?php echo number_format($phone['price'], 0, ',', '.'); ?>₫</div>
-                            <div class="product-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="far fa-star"></i>
-                                <span>(45)</span>
+                            <div class="product-meta">
+                                <?php if (!empty($product['storage_type'])) : ?>
+                                    <span class="product-specs">
+                                        <i class="fas fa-microchip"></i> <?php echo $product['storage_type']; ?>
+                                    </span>
+                                <?php endif; ?>
+                                <?php if (!empty($product['color_type'])) : ?>
+                                    <span class="product-color">
+                                        <i class="fas fa-palette"></i> <?php echo $phone['color_type']; ?>
+                                    </span>
+                                <?php endif; ?>
                             </div>
+                            <div class="product-price"><?php echo number_format($phone['price'], 0, ',', '.'); ?>₫</div>
                         </div>
                     </a>
                 <?php endforeach; ?>
@@ -237,6 +218,17 @@
                 <div class="offer-info">
                     <h3>Flash Sale Cuối Tuần</h3>
                     <p>Từ 15/3 - 17/3</p>
+                    <a href="#" class="offer-btn">Xem ngay</a>
+                </div>
+            </div>
+            <div class="offer-item">
+                <div class="offer-image">
+                    <img src="Uploads/News/Co-nen-mua-tecno-spark-30c-2.jpg" alt="">
+                    <div class="offer-tag">Quà tặng</div>
+                </div>
+                <div class="offer-info">
+                    <h3>Ưu đãi sinh viên</h3>
+                    <p>Giảm thêm 5%</p>
                     <a href="#" class="offer-btn">Xem ngay</a>
                 </div>
             </div>
@@ -275,7 +267,7 @@
                 </div>
                 <div class="blog-infor">
                     <h3 class="blog-title">Có nên mua TECNO Spark 30C thời điểm hiện tại?</h3>
-                    <p class="blog-describe">OPPO vừa ra mắt 2 flagship mới nhất mang tên Find X8 và Find X8 Pro với hàng loạt cải tiến vượt trội so với các thế hệ trước. Bên cạnh đó, thông tin OPPO Find X8 Mini cũng đang thu hút sự chú ý. Theo các rò rỉ, phiên bản nhỏ gọn này có thể sẽ được ra...</p>
+                    <p class="blog-describe">OPPO vừa ra mắt 2 flagship mới nhất mang tên Find X8 và Find X8 Pro với hàng loạt cải tiến vư���t trội so với các thế hệ trước. Bên cạnh đó, thông tin OPPO Find X8 Mini cũng đang thu hút sự chú ý. Theo các rò rỉ, phiên bản nhỏ gọn này có thể sẽ được ra...</p>
                     <a href="#">Đọc thêm</a>
                 </div>
             </div>

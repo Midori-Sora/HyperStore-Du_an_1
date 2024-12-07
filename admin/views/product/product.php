@@ -100,6 +100,20 @@
         font-weight: 500;
         margin-left: 4px;
     }
+    .form-control:focus {
+        box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+        border-color: #1976D2;
+    }
+    
+    .btn-outline-primary {
+        color: #1976D2;
+        border-color: #1976D2;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #1976D2;
+        color: white;
+    }
 </style>
 <body>
     <header>
@@ -117,10 +131,23 @@
                             <i class="fas fa-box me-2"></i>
                             Quản lý sản phẩm
                         </h2>
-                        <a href="?action=addProduct" class="btn-add">
-                            <i class="fas fa-plus"></i>
-                            Thêm sản phẩm mới
-                        </a>
+                        <div class="d-flex gap-3 align-items-center">
+                            <form class="d-flex" method="GET" action="">
+                                <input type="hidden" name="action" value="product">
+                                <input type="search" 
+                                       name="search" 
+                                       class="form-control me-2" 
+                                       placeholder="Tìm kiếm sản phẩm..."
+                                       value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
+                                <button class="btn btn-outline-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </form>
+                            <a href="?action=addProduct" class="btn-add">
+                                <i class="fas fa-plus"></i>
+                                Thêm sản phẩm mới
+                            </a>
+                        </div>
                     </div>
 
                     <?php if (isset($_SESSION['success'])): ?>

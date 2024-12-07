@@ -12,23 +12,44 @@
 }
 .slideshow img{
     width: 100%;
-    height: 400px;
+    height: 300px;
     border-radius: 15px;
 }
 .slideshow .action{
     position: relative;
 }
 .slideshow .action i{
-    font-size: 40px;
-    color: red;
+    font-size: 30px;
+    width: 100px;
+    height: 80px;
+    background: #a4a4a4;
+    color: white;
+    line-height: 80px;
+    border-radius: 48%;
+}
+.slideshow .action .prev i{
+    text-align: right;
+    padding-right: 10px;
+}
+.slideshow .action .next i{
+    text-align: left;
+    padding-left: 10px;
 }
 .slideshow .action .prev{
     position: absolute;
-    bottom: 180px;
-    left: 10px;
+    bottom: 110px;
+    left: -100px;
+    transition: all 0.3s ease;
 }
 .slideshow .action .next{
     position: absolute;
-    bottom: 180px;
-    right: 10px;
+    bottom: 110px;
+    right: -100px;
+    transition: all 0.3s ease;
+}
+.slideshow:hover .prev{
+    left: -70px;
+}
+.slideshow:hover .next{
+    right: -70px;
 }

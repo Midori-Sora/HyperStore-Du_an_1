@@ -4,7 +4,9 @@
   box-sizing: border-box;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-
+body{
+  background: url(../../../Uploads/BGNoel-1920x1080.png) left top / 100% no-repeat fixed;
+}
 .container {
   max-width: 1200px;
   margin: 30px auto;
@@ -31,7 +33,7 @@
   position: relative;
   border-radius: 15px;
   overflow: hidden;
-  background: #fff;
+  background: transparent;
   margin-bottom: 20px;
 }
 
@@ -43,6 +45,7 @@
   width: 80%;
   height: 80%;
   object-fit: contain;
+  border-radius: 15px;
 }
 
 .thumbnail-list {
@@ -61,7 +64,7 @@
   transition: all 0.3s;
   object-fit: contain;
   padding: 5px;
-  background: #fff;
+  background: transparent;
 }
 
 .thumbnail:hover,

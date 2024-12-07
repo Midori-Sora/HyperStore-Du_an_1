@@ -1,3 +1,6 @@
+body{
+    background: url(../../../Uploads/BGNoel-1920x1080.png) left top / 100% no-repeat fixed;
+}
 /* Layout */
 .category {
     max-width: 1300px;
