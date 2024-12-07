@@ -71,7 +71,9 @@ class HomeModel
     {
         try {
             $sql = "SELECT p.*, c.cate_name, ps.storage_type, ps.storage_price, 
-                    pc.color_type, pc.color_price, pd.discount, pd.start_date, pd.end_date
+                    pc.color_type, pc.color_price, pd.discount, 
+                    DATE_FORMAT(pd.start_date, '%d/%m/%Y') as formatted_start_date,
+                    DATE_FORMAT(pd.end_date, '%d/%m/%Y') as formatted_end_date
                     FROM products p
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     LEFT JOIN product_storage ps ON p.storage_id = ps.storage_id

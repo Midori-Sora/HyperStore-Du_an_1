@@ -1,14 +1,18 @@
+body{
+    background: url(../../../Uploads/BGNoel-1920x1080.png) left top / 100% no-repeat fixed;
+}
 /* Layout */
 .category {
     max-width: 1300px;
     margin: 20px auto;
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 220px 1fr;
     gap: 20px;
 }
 
 .sidebar {
     background: #fff;
+    width: 220px;
     border-radius: 10px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     height: fit-content;

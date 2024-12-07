@@ -12,7 +12,6 @@ $categories = $productModel->getCategories();
 </head>
 <body>
     <div class="sidebar-container">
-        <h2>Danh mục sản phẩm</h2>
         <ul>
             <li><a href="?action=product">Tất cả sản phẩm</a></li>
             <?php foreach ($categories as $category) : ?>

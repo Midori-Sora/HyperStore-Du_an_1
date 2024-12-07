@@ -30,16 +30,8 @@
             <nav class="main-nav">
                 <ul>
                     <li><a href="index.php?action=home" class="active">Trang chủ</a></li>
-                    <li class="has-child">
-                        <a href="index.php?action=product">Sản phẩm <i class="fas fa-chevron-down"></i></a>
-                        <ul class="sub-menu">
-                            <li><a href="#">iPhone 11</a></li>
-                            <li><a href="#">iPhone 12</a></li>
-                            <li><a href="#">iPhone 13</a></li>
-                            <li><a href="#">iPhone 14</a></li>
-                            <li><a href="#">iPhone 15</a></li>
-                            <li><a href="#">iPhone 16</a></li>
-                        </ul>
+                    <li>
+                        <a href="index.php?action=product">Sản phẩm</a>
                     </li>
                     <li><a href="#">Giới thiệu</a></li>
                     <li class="has-child">

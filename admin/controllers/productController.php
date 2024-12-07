@@ -14,7 +14,14 @@ class ProductController
     {
         try {
             self::init();
-            $products = self::$productModel->getProductList();
+            
+            // Xử lý tìm kiếm
+            if (isset($_GET['search']) && !empty($_GET['search'])) {
+                $searchTerm = trim($_GET['search']);
+                $products = self::$productModel->searchProducts($searchTerm);
+            } else {
+                $products = self::$productModel->getProductList();
+            }
             
             error_log("Products in controller: " . ($products ? count($products) : 'null'));
             
