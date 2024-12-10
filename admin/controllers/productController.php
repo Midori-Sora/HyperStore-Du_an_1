@@ -100,12 +100,12 @@ class ProductController
             if (self::$productModel->deleteProduct($id)) {
                 $_SESSION['success'] = 'Xóa sản phẩm thành công';
             } else {
-                throw new Exception('Không thể xóa sản phẩm');
+                throw new Exception('Không thể xóa sản phẩm vì đã tồn tại trong đơn hàng');
             }
         } catch (Exception $e) {
             $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
         }
-
+        
         header('Location: index.php?action=product');
         exit();
     }
@@ -134,10 +134,9 @@ class ProductController
                     throw new Exception('Số lượng không được âm');
                 }
 
-                // Check if image exists using relative path
-                $target = '../Uploads/Product/' . $img;
-                if (!file_exists($target)) {
-                    throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Product');
+                // Kiểm tra xem sản phẩm đã tồn tại với các biến thể
+                if (self::$productModel->checkProductWithVariantsExists($name, $storage_id, $color_id)) {
+                    throw new Exception('Sản phẩm đã tồn tại');
                 }
 
                 if (self::$productModel->addProduct($name, $img, $price, $description, $status, $cate_id, $storage_id, $color_id, $quantity)) {
@@ -178,7 +177,12 @@ class ProductController
             if (isset($_POST['storage_type']) && isset($_POST['storage_price'])) {
                 $storage_type = $_POST['storage_type'];
                 $storage_price = $_POST['storage_price'];
-                
+
+                // Kiểm tra xem biến thể đã tồn tại
+                if (self::$productModel->checkStorageExists($storage_type)) {
+                    throw new Exception('Bộ nhớ đã tồn tại');
+                }
+
                 if (self::$productModel->addStorage($storage_type, $storage_price)) {
                     $_SESSION['success'] = 'Thêm bộ nhớ thành công';
                 } else {
@@ -200,6 +204,10 @@ class ProductController
                 $storage_id = $_POST['storage_id'];
                 $storage_type = $_POST['storage_type'];
                 $storage_price = $_POST['storage_price'];
+
+                if (self::$productModel->checkStorageExists($storage_type)) {
+                    throw new Exception('Bộ nhớ đã tồn tại');
+                }
                 
                 if (self::$productModel->editStorage($storage_id, $storage_type, $storage_price)) {
                     $_SESSION['success'] = 'Cập nhật bộ nhớ thành công';
@@ -241,6 +249,11 @@ class ProductController
                 $color_type = $_POST['color_type'];
                 $color_price = $_POST['color_price'];
                 
+                // Kiểm tra xem biến thể đã tồn tại
+                if (self::$productModel->checkColorExists($color_type)) {
+                    throw new Exception('Màu sắc đã tồn tại');
+                }
+
                 if (self::$productModel->addColor($color_type, $color_price)) {
                     $_SESSION['success'] = 'Thêm màu thành công';
                 } else {
@@ -257,25 +270,29 @@ class ProductController
     public static function editColorController()
     {
         try {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            self::init();
+            if (isset($_POST['color_id']) && isset($_POST['color_type']) && isset($_POST['color_price'])) {
                 $color_id = $_POST['color_id'];
                 $color_type = $_POST['color_type'];
                 $color_price = $_POST['color_price'];
 
-                $productModel = new ProductModel();
-                if ($productModel->editColor($color_id, $color_type, $color_price)) {
+                // Kiểm tra xem màu sắc đã tồn tại
+                if (self::$productModel->checkColorExists($color_type)) {
+                    throw new Exception('Màu sắc đã tồn tại');
+                }
+
+                // Cập nhật màu sắc
+                if (self::$productModel->editColor($color_id, $color_type, $color_price)) {
                     $_SESSION['success'] = "Cập nhật màu sắc thành công!";
                 } else {
-                    $_SESSION['error'] = "Có lỗi xảy ra khi cập nhật màu sắc!";
+                    throw new Exception("Có lỗi xảy ra khi cập nhật màu sắc!");
                 }
             }
-            header('Location: index.php?action=productVariant');
-            exit();
         } catch (Exception $e) {
-            $_SESSION['error'] = $e->getMessage();
-            header('Location: index.php?action=productVariant');
-            exit();
+            $_SESSION['error'] = 'Lỗi: ' . $e->getMessage();
         }
+        header('Location: index.php?action=productVariant');
+        exit();
     }
 
     public static function deleteColorController()
@@ -312,7 +329,7 @@ class ProductController
                 if (self::$productModel->updateQuantity($pro_id, $quantity)) {
                     $_SESSION['success'] = 'Cập nhật số lượng thành công';
                 } else {
-                    throw new Exception('Cập nhật s lượng thất bại');
+                    throw new Exception('Cập nhật số lượng thất bại');
                 }
             }
         } catch (Exception $e) {

@@ -340,4 +340,47 @@ class ProductModel
             throw new Exception("Không thể tìm kiếm sản phẩm");
         }
     }
+
+    public function checkStorageExists($storageType)
+    {
+        try {
+            $sql = "SELECT COUNT(*) FROM product_storage WHERE storage_type = :storage_type";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':storage_type' => $storageType]);
+            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+        } catch (PDOException $e) {
+            error_log("Check storage exists error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function checkColorExists($colorType)
+    {
+        try {
+            $sql = "SELECT COUNT(*) FROM product_color WHERE color_type = :color_type";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([':color_type' => $colorType]);
+            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+        } catch (PDOException $e) {
+            error_log("Check color exists error: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    public function checkProductWithVariantsExists($name, $storage_id, $color_id)
+    {
+        try {
+            $sql = "SELECT COUNT(*) FROM products WHERE pro_name = :pro_name AND storage_id = :storage_id AND color_id = :color_id";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute([
+                ':pro_name' => $name,
+                ':storage_id' => $storage_id,
+                ':color_id' => $color_id
+            ]);
+            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+        } catch (PDOException $e) {
+            error_log("Check product with variants exists error: " . $e->getMessage());
+            return false;
+        }
+    }
 }
