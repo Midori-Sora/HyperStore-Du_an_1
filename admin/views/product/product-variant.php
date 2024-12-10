@@ -109,8 +109,20 @@
     
     <div class="main">
         <?php include "./views/layout/sidebar.php" ?>
-        
         <main>
+            <?php if (isset($_SESSION['success'])): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['success']; unset($_SESSION['success']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
+
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= $_SESSION['error']; unset($_SESSION['error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            <?php endif; ?>
             <!-- Storage Variants Section -->
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -385,20 +397,6 @@
             </div>
         </div>
     </div>
-
-    <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
