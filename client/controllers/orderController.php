@@ -158,4 +158,41 @@ class OrderController
         }
         exit();
     }
+
+    public function checkOrderStatus()
+    {
+        try {
+            if (!isset($_GET['orderId'])) {
+                throw new Exception("Missing order ID");
+            }
+
+            $orderId = (int)$_GET['orderId'];
+            $userId = $_SESSION['user_id'];
+
+            $order = $this->orderModel->getOrderById($orderId, $userId);
+
+            // Kiểm tra khả năng hủy đơn hàng
+            $canCancel = OrderHelper::canCancelOrder($order['status']);
+
+            // Kiểm tra khả năng trả hàng và tính số ngày còn lại
+            $canReturn = false;
+            $remainingDays = 0;
+            if ($order['status'] === 'delivered') {
+                $remainingDays = OrderHelper::getRemainingReturnDays($order['updated_at']);
+                $canReturn = $remainingDays > 0;
+            }
+
+            echo json_encode([
+                'success' => true,
+                'status' => $order['status'],
+                'statusText' => OrderHelper::getOrderStatus($order['status']),
+                'statusClass' => OrderHelper::getOrderStatusClass($order['status']),
+                'canCancel' => $canCancel,
+                'canReturn' => $canReturn,
+                'remainingDays' => $remainingDays
+            ]);
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        }
+    }
 }

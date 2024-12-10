@@ -142,5 +142,8 @@ switch ($action) {
         $controller = new OrderController();
         $controller->requestCancel();
         break;
+    case 'checkOrderStatus':
+        $controller = new OrderController();
+        $controller->checkOrderStatus();
+        break;
 }
-    
