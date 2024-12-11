@@ -18,29 +18,24 @@ class BannerController {
         self::init();
         try {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Sanitize and validate inputs
                 $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_STRING));
                 $image = trim(filter_var($_POST['image_url'], FILTER_SANITIZE_STRING));
                 $status = filter_var($_POST['status'], FILTER_VALIDATE_INT);
                 $created_at = date('Y-m-d H:i:s');
 
-                // Validate title length
                 if (strlen($title) < 3 || strlen($title) > 255) {
                     throw new Exception('Tiêu đề phải từ 3 đến 255 ký tự');
                 }
 
-                // Validate status
                 if ($status !== 0 && $status !== 1) {
                     throw new Exception('Trạng thái không hợp lệ');
                 }
 
-                // Validate image exists
                 $target = '../Uploads/Slides/' . $image;
                 if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Slides');
                 }
 
-                // Validate image extension
                 $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif'];
                 $extension = strtolower(pathinfo($image, PATHINFO_EXTENSION));
                 if (!in_array($extension, $allowedExtensions)) {
@@ -69,7 +64,6 @@ class BannerController {
             if (isset($_GET['id'])) {
                 $id = (int)$_GET['id'];
                 
-                // Get banner info to check if image exists
                 $banner = self::$bannerModel->getBannerById($id);
                 if (!$banner) {
                     throw new Exception('Banner không tồn tại');
@@ -108,12 +102,10 @@ class BannerController {
             }
 
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                // Sanitize and validate inputs
                 $title = trim(filter_var($_POST['title'], FILTER_SANITIZE_STRING));
                 $image_url = trim(filter_var($_POST['image_url'], FILTER_SANITIZE_STRING));
                 $status = filter_var($_POST['status'], FILTER_VALIDATE_INT);
 
-                // Additional validation
                 if (strlen($title) < 3 || strlen($title) > 255) {
                     throw new Exception('Tiêu đề phải từ 3 đến 255 ký tự');
                 }
@@ -122,7 +114,6 @@ class BannerController {
                     throw new Exception('Trạng thái không hợp lệ');
                 }
 
-                // Validate image exists
                 $target = '../Uploads/Slides/' . $image_url;
                 if (!file_exists($target)) {
                     throw new Exception('Ảnh không tồn tại trong thư mục Uploads/Slides');

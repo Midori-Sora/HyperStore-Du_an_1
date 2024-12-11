@@ -50,8 +50,8 @@ class RegisterModel
                 :address, :birthday, :gender, :role_id, :status, :avatar
             )";
             
-            $roleId = 2; // User role
-            $status = 1; // Active status
+            $roleId = 2;
+            $status = 1;
             $defaultAvatar = 'Uploads/User/nam.jpg';
             
             $stmt = $this->db->prepare($sql);

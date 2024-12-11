@@ -15,10 +15,8 @@ class ProductController
     {
         $productModel = new ProductModel();
 
-        // Lấy category_id từ URL
         $cateId = isset($_GET['cate_id']) ? (int)$_GET['cate_id'] : 0;
 
-        // Lấy thông tin danh mục
         $category = $productModel->getCategoryById($cateId);
 
         if (!$category) {
@@ -26,10 +24,8 @@ class ProductController
             exit;
         }
 
-        // Lấy sản phẩm theo danh mục
         $products = $productModel->getProductsByCategory($cateId);
 
-        // Truyền thông tin danh mục đến view
         require_once "client/views/product/product-cate.php";
     }
 
@@ -61,10 +57,6 @@ class ProductController
                 $product = $variant;
             }
         }
-
-        // Initialize CommentController and get rating info
-        CommentController::init();
-        $ratingInfo = CommentController::getAverageRating($productId);
 
         require_once "client/views/product/product-detail.php";
     }

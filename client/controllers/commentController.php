@@ -15,7 +15,7 @@ class CommentController {
         self::init();
         
         if (!isset($_SESSION['user_id'])) {
-            $_SESSION['error'] = 'Vui lòng đăng nhập để bình luận';
+            $_SESSION['error'] = 'Vui lòng đăng nhập sau đó mua hàng thành công để bình luận';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }
@@ -23,15 +23,14 @@ class CommentController {
         $product_id = filter_input(INPUT_POST, 'product_id', FILTER_SANITIZE_NUMBER_INT);
         
         if (!self::canUserReview($_SESSION['user_id'], $product_id)) {
-            $_SESSION['error'] = 'Bạn cần mua sản phẩm và nhận hàng thành công mới có thể đánh giá';
+            $_SESSION['error'] = 'Bạn cần mua sản phẩm và nhận hàng thành công mới có thể bình luận';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
         }
 
         $content = filter_input(INPUT_POST, 'content', FILTER_SANITIZE_SPECIAL_CHARS);
-        $rating = filter_input(INPUT_POST, 'rating', FILTER_SANITIZE_NUMBER_INT);
 
-        if (!$product_id || !$content || !$rating) {
+        if (!$product_id || !$content) {
             $_SESSION['error'] = 'Vui lòng điền đầy đủ thông tin';
             header('Location: ' . $_SERVER['HTTP_REFERER']);
             exit();
@@ -41,14 +40,13 @@ class CommentController {
             'product_id' => $product_id,
             'user_id' => $_SESSION['user_id'],
             'content' => $content,
-            'rating' => $rating,
-            'cmt_status' => 0 // Mặc định là chờ duyệt
+            'cmt_status' => 0
         ];
 
         if (self::$commentModel->addComment($data)) {
-            $_SESSION['success'] = 'Đã gửi đánh giá thành công, vui lòng chờ duyệt';
+            $_SESSION['success'] = 'Đã gửi bình luận thành công, vui lòng chờ duyệt';
         } else {
-            $_SESSION['error'] = 'Có lỗi xảy ra khi gửi đánh giá';
+            $_SESSION['error'] = 'Có lỗi xảy ra khi gửi bình luận';
         }
 
         header('Location: ' . $_SERVER['HTTP_REFERER']);

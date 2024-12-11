@@ -114,7 +114,7 @@ class HomeModel
                     LEFT JOIN categories c ON p.cate_id = c.cate_id
                     JOIN orders o ON od.order_id = o.order_id
                     WHERE p.pro_status = 1 
-                    AND o.status = 'delivered'  -- Chỉ tính đơn hàng đã giao thành công
+                    AND o.status = 'delivered'
                     GROUP BY p.pro_id, p.pro_name, c.cate_name
                     ORDER BY total_sold DESC
                     LIMIT :limit";
@@ -178,7 +178,7 @@ class HomeModel
                     FROM orders o
                     JOIN order_details od ON o.order_id = od.order_id
                     WHERE YEAR(o.created_at) = :year
-                    AND o.status IN ('delivered', 'completed') -- Chỉ tính các đơn hàng đã hoàn thành
+                    AND o.status IN ('delivered', 'completed')
                     GROUP BY MONTH(o.created_at)
                     ORDER BY month";
                     
@@ -194,7 +194,7 @@ class HomeModel
                 $monthlyRevenue[(int)$row['month']] = (float)$row['revenue'];
             }
             
-            return array_values($monthlyRevenue); // Chuyển về mảng tuần tự
+            return array_values($monthlyRevenue);
         } catch (PDOException $e) {
             error_log("Get monthly revenue error: " . $e->getMessage());
             return array_fill(0, 12, 0);

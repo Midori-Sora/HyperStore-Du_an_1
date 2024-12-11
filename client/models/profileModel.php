@@ -25,7 +25,6 @@ class ProfileModel extends MainModel
     public function updateProfile($data)
     {
         try {
-            // Lấy thông tin người dùng hiện tại
             $currentUser = $this->getUserInfo($data['user_id']);
             
             // Giữ lại thông tin cũ nếu không có thông tin mới

@@ -20,19 +20,6 @@
         </div>
 
         <div class="product-container">
-            <div class="category-title">
-                <h2>Sản Phẩm Mới Nhất</h2>
-                <div class="product-filters">
-                    <select class="filter-select">
-                        <option value="">Sắp xếp theo</option>
-                        <option value="price-asc">Giá tăng dần</option>
-                        <option value="price-desc">Giá giảm dần</option>
-                        <option value="name-asc">Tên A-Z</option>
-                        <option value="name-desc">Tên Z-A</option>
-                    </select>
-                </div>
-            </div>
-
             <?php if (!empty($products)) : ?>
                 <div class="product-list">
                     <?php foreach ($products as $product) : ?>

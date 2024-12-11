@@ -8,7 +8,6 @@ class HomeController
         $newestPhones = $model->getNewestPhones();
         $discountProducts = $model->getDiscountProducts();
         
-        // Tính giá sau giảm giá cho các sản phẩm
         foreach ($featuredProducts as &$product) {
             $model->calculateProductPrice($product);
         }

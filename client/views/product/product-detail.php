@@ -192,11 +192,9 @@
 
         <div class="product-sections">
             <div class="product-section">
-                <h2 class="section-title">Đánh giá sản phẩm</h2>
-                <!-- Container cho danh sách bình luận -->
+                <h2 class="section-title">Bình luận sản phẩm</h2>
                 <div id="comments-container">
                     <?php
-                    // Truyền biến comments vào view
                     include 'client/views/product/comments-list.php';
                     ?>
                 </div>
@@ -209,31 +207,16 @@
     </div>
 
     <script>
-        // Xử lý chuyển đổi ảnh thumbnail
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        const mainImage = document.getElementById('mainImage');
-
-        thumbnails.forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                thumbnails.forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-                mainImage.src = this.src;
-            });
-        });
-
-        // Xử lý tăng giảm số lượng
         const minusBtn = document.querySelector('.minus');
         const plusBtn = document.querySelector('.plus');
         const qtyInput = document.querySelector('.qty-input');
         const hiddenQuantity = document.getElementById('hidden-quantity');
         const buyNowQuantity = document.getElementById('buy-now-quantity');
         const MAX_QUANTITY =
-            <?php echo min(10, $product['quantity']); ?>; // Giới hạn tối đa 10 hoặc số lượng tồn kho nếu nhỏ hơn 10
+            <?php echo min(10, $product['quantity']); ?>;
 
-        // Cập nhật hidden input khi số lượng thay đổi
         qtyInput.addEventListener('change', function() {
             let value = parseInt(this.value);
-            // Giới hạn giá trị trong khoảng 1-MAX_QUANTITY
             value = Math.min(Math.max(value, 1), MAX_QUANTITY);
             this.value = value;
             hiddenQuantity.value = value;
@@ -241,7 +224,6 @@
             updateButtonStates();
         });
 
-        // Ngăn chặn nhập số lượng vượt quá bằng bàn phím
         qtyInput.addEventListener('keydown', function(e) {
             if (e.key === 'ArrowUp' && parseInt(this.value) >= MAX_QUANTITY) {
                 e.preventDefault();
@@ -270,30 +252,25 @@
             }
         });
 
-        // Disable nút plus khi đạt số lượng tối đa
         function updateButtonStates() {
             const currentValue = parseInt(qtyInput.value);
             minusBtn.disabled = currentValue <= 1;
             plusBtn.disabled = currentValue >= MAX_QUANTITY;
 
-            // Thêm class để style cho nút bị disable
             minusBtn.classList.toggle('disabled', currentValue <= 1);
             plusBtn.classList.toggle('disabled', currentValue >= MAX_QUANTITY);
         }
 
-        // Khởi tạo trạng thái ban đầu
         updateButtonStates();
 
         document.addEventListener('DOMContentLoaded', function() {
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
-                // Tự động ẩn sau 3 giây
                 setTimeout(() => {  
                     alert.style.animation = 'slideOut 0.3s ease-out forwards';
                     setTimeout(() => alert.remove(), 300);
                 }, 3000);
 
-                // Xử lý nút đóng
                 const closeBtn = alert.querySelector('.alert-close');
                 if (closeBtn) {
                     closeBtn.addEventListener('click', () => {
@@ -304,82 +281,14 @@
             });
         });
 
-        // Cập nhật ảnh sản phẩm khi đổi màu
         document.addEventListener('DOMContentLoaded', function() {
             const mainImage = document.getElementById('mainImage');
             const thumbnail = document.querySelector('.thumbnail');
 
-            // Cập nhật ảnh khi URL thay đổi
             if (mainImage && thumbnail) {
                 const newImageUrl = mainImage.src;
                 thumbnail.src = newImageUrl;
             }
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const starLabels = document.querySelectorAll('.star-rating label');
-            const ratingText = document.createElement('span');
-            ratingText.className = 'rating-text';
-            document.querySelector('.star-rating').appendChild(ratingText);
-
-            starLabels.forEach(label => {
-                label.addEventListener('mouseover', function() {
-                    const rating = this.getAttribute('for').replace('star', '');
-                    const ratingMessages = {
-                        1: 'Rất tệ',
-                        2: 'Tệ',
-                        3: 'Bình thường',
-                        4: 'Tốt',
-                        5: 'Rất tốt'
-                    };
-                    ratingText.textContent = ratingMessages[rating];
-                });
-            });
-
-            document.querySelector('.star-rating').addEventListener('mouseout', function() {
-                const checkedRating = document.querySelector('.star-rating input:checked');
-                if (checkedRating) {
-                    const rating = checkedRating.value;
-                    const ratingMessages = {
-                        1: 'Rất tệ',
-                        2: 'Tệ',
-                        3: 'Bình thường',
-                        4: 'Tốt',
-                        5: 'Rất tốt'
-                    };
-                    ratingText.textContent = ratingMessages[rating];
-                } else {
-                    ratingText.textContent = '';
-                }
-            });
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const commentsContainer = document.getElementById('comments-container');
-            const filterButtons = document.querySelectorAll('.filter-btn');
-            const productId = <?php echo $product['pro_id']; ?>;
-
-            filterButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    this.classList.add('active');
-
-                    const rating = this.dataset.rating;
-                    commentsContainer.innerHTML = '<div class="loading">Đang tải...</div>';
-
-                    fetch(
-                            `index.php?action=filter-comments&product_id=${productId}&rating=${rating}`)
-                        .then(response => response.text())
-                        .then(html => {
-                            commentsContainer.innerHTML = html;
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            commentsContainer.innerHTML =
-                                '<div class="error">Có lỗi xảy ra khi tải bình luận</div>';
-                        });
-                });
-            });
         });
     </script>
 </body>

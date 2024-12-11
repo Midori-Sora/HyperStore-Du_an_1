@@ -119,7 +119,6 @@ class ProductModel
         try {
             $this->db->beginTransaction();
 
-            // Xóa sản phẩm (các bảng liên quan sẽ tự động xóa do ON DELETE CASCADE)
             $sql = "DELETE FROM products WHERE pro_id = :id";
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(':id', $id, PDO::PARAM_INT);
@@ -347,7 +346,7 @@ class ProductModel
             $sql = "SELECT COUNT(*) FROM product_storage WHERE storage_type = :storage_type";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':storage_type' => $storageType]);
-            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+            return $stmt->fetchColumn() > 0;
         } catch (PDOException $e) {
             error_log("Check storage exists error: " . $e->getMessage());
             return false;
@@ -360,7 +359,7 @@ class ProductModel
             $sql = "SELECT COUNT(*) FROM product_color WHERE color_type = :color_type";
             $stmt = $this->db->prepare($sql);
             $stmt->execute([':color_type' => $colorType]);
-            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+            return $stmt->fetchColumn() > 0;
         } catch (PDOException $e) {
             error_log("Check color exists error: " . $e->getMessage());
             return false;
@@ -377,7 +376,7 @@ class ProductModel
                 ':storage_id' => $storage_id,
                 ':color_id' => $color_id
             ]);
-            return $stmt->fetchColumn() > 0; // Trả về true nếu đã tồn tại
+            return $stmt->fetchColumn() > 0;
         } catch (PDOException $e) {
             error_log("Check product with variants exists error: " . $e->getMessage());
             return false;

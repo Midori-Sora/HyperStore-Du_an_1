@@ -1,32 +1,28 @@
 <?php
 class LoginModel {
-    private $conn;
+    private $db;
 
     public function __construct() {
-        $this->conn = new mysqli("localhost", "root", "", "duan1");
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
-        $this->conn->set_charset("utf8mb4");
+        global $MainModel;
+        $this->db = $MainModel->SUNNY;
     }
 
     public function checkLogin($email, $password) {
         try {
             $sql = "SELECT u.user_id, u.email, u.password, u.fullname, u.role_id, r.role_name 
                     FROM users u 
-                    LEFT JOIN roles r ON u.role_id = r.role_id 
-                    WHERE u.email = ? 
+                    LEFT JOIN roles r ON u.role_id = r.role_id
+                    WHERE u.email = :email 
                     LIMIT 1";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("s", $email);
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':email', $email, PDO::PARAM_STR);
             $stmt->execute();
-            $result = $stmt->get_result();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($result->num_rows > 0) {
-                $user = $result->fetch_assoc();
-                if ($password === $user['password']) {
-                    unset($user['password']); 
-                    return $user;
+            if ($result) {
+                if ($password === $result['password']) {
+                    unset($result['password']); 
+                    return $result;
                 }
             }
             return false;
@@ -42,9 +38,9 @@ class LoginModel {
 
     public function updateLastLogin($userId) {
         try {
-            $sql = "UPDATE users SET last_login = NOW() WHERE user_id = ?";
-            $stmt = $this->conn->prepare($sql);
-            $stmt->bind_param("i", $userId);
+            $sql = "UPDATE users SET last_login = NOW() WHERE user_id = :userId";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(':userId', $userId, PDO::PARAM_INT);
             return $stmt->execute();
         } catch (Exception $e) {
             error_log("Update last login error: " . $e->getMessage());
@@ -53,8 +49,8 @@ class LoginModel {
     }
 
     public function __destruct() {
-        if ($this->conn) {
-            $this->conn->close();
+        if ($this->db) {
+            $this->db = null;
         }
     }
 }

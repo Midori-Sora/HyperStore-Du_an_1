@@ -129,12 +129,10 @@ class ProductController
                 $img = $_POST['img'];
                 $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 0;
 
-                // Validate quantity
                 if ($quantity < 0) {
                     throw new Exception('Số lượng không được âm');
                 }
 
-                // Kiểm tra xem sản phẩm đã tồn tại với các biến thể
                 if (self::$productModel->checkProductWithVariantsExists($name, $storage_id, $color_id)) {
                     throw new Exception('Sản phẩm đã tồn tại');
                 }
@@ -178,7 +176,6 @@ class ProductController
                 $storage_type = $_POST['storage_type'];
                 $storage_price = $_POST['storage_price'];
 
-                // Kiểm tra xem biến thể đã tồn tại
                 if (self::$productModel->checkStorageExists($storage_type)) {
                     throw new Exception('Bộ nhớ đã tồn tại');
                 }
@@ -249,7 +246,6 @@ class ProductController
                 $color_type = $_POST['color_type'];
                 $color_price = $_POST['color_price'];
                 
-                // Kiểm tra xem biến thể đã tồn tại
                 if (self::$productModel->checkColorExists($color_type)) {
                     throw new Exception('Màu sắc đã tồn tại');
                 }
@@ -276,12 +272,10 @@ class ProductController
                 $color_type = $_POST['color_type'];
                 $color_price = $_POST['color_price'];
 
-                // Kiểm tra xem màu sắc đã tồn tại
                 if (self::$productModel->checkColorExists($color_type)) {
                     throw new Exception('Màu sắc đã tồn tại');
                 }
 
-                // Cập nhật màu sắc
                 if (self::$productModel->editColor($color_id, $color_type, $color_price)) {
                     $_SESSION['success'] = "Cập nhật màu sắc thành công!";
                 } else {
@@ -354,14 +348,11 @@ class ProductController
                 throw new Exception('Không tìm thấy sản phẩm');
             }
 
-            // Fetch current deal for the product
             $currentDeal = self::$productModel->getCurrentDeal($id);
             $product['current_discount'] = $currentDeal ? $currentDeal['discount'] : 0;
 
-            // Fetch available colors
             $availableColors = self::$productModel->getColorOptions();
 
-            // Debug log
             error_log("Product detail controller - ID: $id, Data: " . json_encode($product));
 
             require_once './views/product/product-detail.php';

@@ -81,14 +81,6 @@
                                                 </span>
                                             <?php endif; ?>
                                     </div>
-                                    <div class="product-rating">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                        <span>(45)</span>
-                                    </div>
                                 </div>
                             </a>
                         </div>

@@ -30,7 +30,6 @@ class ProductModel
             $result = $stmt->get_result();
             $products = $result->fetch_all(MYSQLI_ASSOC);
             
-            // Tính giá sau giảm giá cho mỗi sản phẩm
             foreach ($products as &$product) {
                 $total_price = $product['price'] + 
                             floatval($product['color_price'] ?? 0) + 
@@ -70,7 +69,6 @@ class ProductModel
             $result = $stmt->get_result();
             $products = $result->fetch_all(MYSQLI_ASSOC);
             
-            // Tính giá sau giảm giá cho mỗi sản phẩm
             foreach ($products as &$product) {
                 $total_price = $product['price'] + 
                             floatval($product['color_price'] ?? 0) + 
@@ -88,14 +86,13 @@ class ProductModel
             return [];
         }
     }
-    // Lấy danh sách danh mục
+
     public function getCategories() {
         $sql = "SELECT * FROM categories WHERE cate_status = 1 ORDER BY cate_name ASC";
         $result = $this->conn->query($sql);
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    // Lấy thông tin danh mục theo ID
     public function getCategoryById($cateId) {
         try {
             $sql = "SELECT * FROM categories WHERE cate_id = ? AND cate_status = 1";
@@ -227,7 +224,6 @@ class ProductModel
     }
 
     public function getColorCode($colorName) {
-        // Mapping màu tiếng Việt sang mã màu dựa theo database
         $colorMap = [
             'Đen' => '#000000',
             'Trắng' => '#FFFFFF',
@@ -242,7 +238,7 @@ class ProductModel
             'Tím' => '#800080'
         ];
         
-        return $colorMap[$colorName] ?? '#CCCCCC'; // Màu mặc định nếu không tìm thấy
+        return $colorMap[$colorName] ?? '#CCCCCC';
     }
 
     public function getProductVariant($productId, $colorId = null, $storageId = null)
